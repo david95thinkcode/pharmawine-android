@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="fragments_padding">16dp</dimen>
+
+
+    <dimen name="menu_card_height">180dp</dimen>
+    <dimen name="menu_card_margin">10dp</dimen>
+    <dimen name="menu_card_img_marginTop">20dp</dimen>
+    <dimen name="menu_card_img_padding">15dp</dimen>
+    <dimen name="menu_card_img_weight">70</dimen>
+    <dimen name="menu_card_text_weight">30</dimen>
+
+    <dimen name="img_laboratory_height_width">170dp</dimen>
+</resources>

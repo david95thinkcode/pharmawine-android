@@ -1,0 +1,82 @@
+<resources>
+    <string name="app_name">PharmaWine</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="empty_string"></string>
+
+    <!--Bottom navigation-->
+    <string name="nav_home_title">@string/app_name</string>
+    <string name="nav_clients_title">Clients</string>
+    <string name="nav_reports_title">Rapports</string>
+    <string name="nav_more_title">Autres</string>
+
+    <!--Context menu-->
+    <string name="menu_option_messenger">Messagerie</string>
+    <string name="menu_option_notifications">Notifications</string>
+    <string name="menu_option_settings">Paramètres</string>
+    <string name="menu_option_about">A propos</string>
+
+    <!--Activities-->
+    <string name="activity_login_title">Connexion</string>
+    <string name="activity_settings_title">Paramètres</string>
+    <string name="activity_notifications_title">Notifications</string>
+    <string name="activity_messenger_title">Messagerie</string>
+    <string name="activity_about_title">A propos</string>
+    <string name="activity_new_client_title">Nouveau client</string>
+    <string name="activity_personal_goals_title">Objectif personnel</string>
+
+    <!--Menus-->
+    <string name="menu_planning_title">Planning</string>
+    <string name="menu_clients_title">Clients</string>
+    <string name="menu_stats_title">Statistiques</string>
+    <string name="menu_products_title">Produits</string>
+    <string name="menu_laboratories_title">Laboratoires</string>
+    <string name="menu_wholesalers_title">Grossistes</string>
+    <string name="menu_profil_title">Profilage</string>
+    <string name="menu_gift_title">Dons</string>
+    <string name="menu_premiums_title">Primes</string>
+    <string name="menu_cal_title">Calendar</string>
+    <string name="menu_network_title">Réseaux</string>
+    <string name="menu_infos_title">Informations</string>
+    <string name="menu_logout_title">Déconnexion</string>
+
+
+    <!--Texts-->
+    <string name="password_forgotten">Mot de passe oublié ?</string>
+    <string name="not_connected">Aucune connexion internet !</string>
+    <string name="field_required">Champ obligatoire</string>
+    <string name="email_not_valid">Adresse email non valide</string>
+    <string name="not_long_enough">% caractères minimum</string>
+    <string name="loading">Chargement en cours...</string>
+    <string name="call">Appeler</string>
+
+    <string name="no_data_returned">Aucune donnée retournée</string>
+    <string name="unauthorised_id">Vos identifiants sont incorrects !</string>
+    <string name="logged_in">Connecté !</string>
+    <string name="smthg_wrong_request">Oops un petit problème ! Réessayez plus tard</string>
+    <string name="references">Références</string>
+    <string name="product_classes">Classes pharmaceutiques</string>
+    <string name="laboratory">Laboratoire</string>
+    <string name="wholesaler">Grossiste</string>
+    <string name="medical_teams">Corps médicaux</string>
+    <string name="hospitals">Hôpitaux</string>
+    <string name="pharmacies">Pharmacies</string>
+
+    <string name="product_classes_number">% classes pharmaceutiques</string>
+    <string name="products_number">% produits</string>
+
+    <string name="sex">Sexe</string>
+    <string name="marital_status">Situation matrimoniale</string>
+    <string name="nationality">Nationalité</string>
+    <string name="birthday">Date de naissance</string>
+    <string name="believes">Croyances religieuses</string>
+    <string name="email">E-mail</string>
+    <string name="address">Adresse</string>
+
+    <string name="reprensentative">Représentant</string>
+    <string name="founder">Fondateur</string>
+    <string name="created_on">Date de création</string>
+    <string name="employees_number">Employés</string>
+    <string name="pharma_annexe">Annexe(s)</string>
+</resources>

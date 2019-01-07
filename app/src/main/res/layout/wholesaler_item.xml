@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center_horizontal"
+    android:layout_gravity="center_horizontal"
+    android:layout_margin="15dp"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cv_wholesaler_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardElevation="3dp"
+        app:cardCornerRadius="5dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground">
+        <ImageView
+            android:id="@+id/img_wholesaler_logo"
+            android:layout_width="@dimen/img_laboratory_height_width"
+            android:layout_height="@dimen/img_laboratory_height_width"
+            android:padding="15dp"/>
+    </android.support.v7.widget.CardView>
+
+    <TextView
+        android:id="@+id/tv_wholesaler_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:gravity="center"
+        android:layout_marginTop="10dp"/>
+
+</LinearLayout>
