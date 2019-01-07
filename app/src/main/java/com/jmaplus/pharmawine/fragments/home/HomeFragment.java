@@ -1,27 +1,27 @@
 package com.jmaplus.pharmawine.fragments.home;
 
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
 import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
-import com.codetroopers.betterpickers.datepicker.DatePickerBuilder;
 import com.jmaplus.pharmawine.PharmaWine;
 import com.jmaplus.pharmawine.R;
 import com.jmaplus.pharmawine.activities.NetworksActivity;
 import com.jmaplus.pharmawine.activities.ProspectionActivity;
+import com.jmaplus.pharmawine.activities.RemainingClientsActivity;
 import com.jmaplus.pharmawine.models.AuthenticatedUser;
 import com.robertlevonyan.views.expandable.Expandable;
 import com.robertlevonyan.views.expandable.ExpandingListener;
@@ -34,13 +34,14 @@ import java.util.Locale;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements View.OnClickListener {
 
     private TextView tvDate, tvNetworkLabel, tvProgress;
     private CardView cvDate;
     private RoundCornerProgressBar dailyProgressBar;
     private Context mContext;
     private FloatingActionButton fabNetwork, fabProspection;
+    private Button btnRemainingClients;
 
     private AuthenticatedUser authenticatedUser;
 
@@ -71,6 +72,7 @@ public class HomeFragment extends Fragment {
         tvNetworkLabel = view.findViewById(R.id.tv_network_label);
         fabNetwork = view.findViewById(R.id.fab_network);
         fabProspection = view.findViewById(R.id.fab_see_more);
+        btnRemainingClients = view.findViewById(R.id.btn_remaining_clients);
 
         initViews();
         return view;
@@ -89,6 +91,9 @@ public class HomeFragment extends Fragment {
         }
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.FRENCH);
         tvDate.setText(dateFormat.format(new Date()));
+
+        // todo: replace the btnremainingClients with the remaining clients card view
+        btnRemainingClients.setOnClickListener(this);
 
         cvDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,19 +136,8 @@ public class HomeFragment extends Fragment {
         expClientsRemaining.setExpandingListener(expandingListener);
         expClientsSeen.setExpandingListener(expandingListener);
 
-        fabNetwork.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(mContext, NetworksActivity.class));
-            }
-        });
-
-        fabProspection.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(mContext, ProspectionActivity.class));
-            }
-        });
+        fabNetwork.setOnClickListener(this);
+        fabProspection.setOnClickListener(this);
     }
 
     private void setDailyProgression(int value) {
@@ -151,4 +145,25 @@ public class HomeFragment extends Fragment {
         tvProgress.setText(String.valueOf(value).concat("%"));
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.fab_see_more:
+                startActivity(new Intent(mContext, ProspectionActivity.class));
+                break;
+            case R.id.fab_network:
+                startActivity(new Intent(mContext, NetworksActivity.class));
+                break;
+
+            // Todo: the case should be replaced with the card view id
+            case R.id.btn_remaining_clients:
+                Log.i("HomeFragment", "Remaining clients button clicked");
+                startActivity(new Intent(mContext, RemainingClientsActivity.class));
+                break;
+
+            default:
+                // Nothing to do
+                break;
+        }
+    }
 }
