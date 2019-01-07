@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.InfosActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#eee"
+            app:contentPadding="10dp"
+            app:cardElevation="2dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:orientation="vertical"
+                android:paddingBottom="5dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:paddingTop="5dp">
+
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/img_profil"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center_horizontal"
+                    android:backgroundTint="@color/light_grey"
+                    android:src="@drawable/profil_sup"
+                    app:civ_border_color="@color/grey"
+                    app:civ_border_width="1dp" />
+
+                <TextView
+                    android:id="@+id/tv_work"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="10dp"
+                    android:text="Délégué médical à Promed"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/darker_grey" />
+
+                <TextView
+                    android:id="@+id/tv_network_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="3dp"
+                    android:text="Réseau - Denk Pharma"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/darker_grey" />
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:layout_marginBottom="40dp">
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:theme="@style/DarkTextLabel">
+                <EditText
+                    android:id="@+id/et_first_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="Nom"
+                    android:text="AÏDASSO"
+                    android:textColor="@color/darker_grey"
+                    android:enabled="false"
+                    android:focusable="false"/>
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:theme="@style/DarkTextLabel">
+                <EditText
+                    android:id="@+id/et_last_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="Prénoms"
+                    android:text="Henri Joël"
+                    android:enabled="false"
+                    android:textColor="@color/darker_grey"
+                    android:focusable="false"/>
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:theme="@style/DarkTextLabel">
+                <EditText
+                    android:id="@+id/et_sex"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="Sexe"
+                    android:text="Homme"
+                    android:textColor="@color/darker_grey"
+                    android:enabled="false"
+                    android:focusable="false"/>
+            </android.support.design.widget.TextInputLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="30"
+                    android:layout_marginTop="10dp"
+                    android:theme="@style/DarkTextLabel">
+                    <EditText
+                        android:id="@+id/et_day_birthday"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="Date de naissance"
+                        android:text="13"
+                        android:textColor="@color/darker_grey"
+                        android:enabled="false"
+                        android:focusable="false"/>
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="40"
+                    android:layout_marginTop="10dp"
+                    android:theme="@style/DarkTextLabel">
+                    <EditText
+                        android:id="@+id/et_month_birthday"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="Juillet"
+                        android:textColor="@color/darker_grey"
+                        android:enabled="false"
+                        android:focusable="false"/>
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="30"
+                    android:layout_marginTop="10dp"
+                    android:theme="@style/DarkTextLabel">
+                    <EditText
+                        android:id="@+id/et_year_birthday"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="1997"
+                        android:textColor="@color/darker_grey"
+                        android:enabled="false"
+                        android:focusable="false"/>
+                </android.support.design.widget.TextInputLayout>
+
+            </LinearLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:theme="@style/DarkTextLabel">
+                <EditText
+                    android:id="@+id/et_marital_status"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="Situation matrimoniale"
+                    android:text="Marié"
+                    android:textColor="@color/darker_grey"
+                    android:enabled="false"
+                    android:focusable="false"/>
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:theme="@style/DarkTextLabel">
+                <EditText
+                    android:id="@+id/et_address"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="Adresse"
+                    android:text="Abomey-Calavi Benin, Quartier Tankpè, Rue Ecobank"
+                    android:lines="3"
+                    android:textColor="@color/darker_grey"
+                    android:enabled="false"
+                    android:focusable="false"/>
+            </android.support.design.widget.TextInputLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="25"
+                    android:layout_marginTop="10dp"
+                    android:theme="@style/DarkTextLabel">
+                    <EditText
+                        android:id="@+id/et_indicatif_tel1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="Téléphone 1"
+                        android:text="+229"
+                        android:enabled="false"
+                        android:textColor="@color/darker_grey"
+                        android:focusable="false"/>
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="75"
+                    android:layout_marginTop="10dp"
+                    android:theme="@style/DarkTextLabel">
+                    <EditText
+                        android:id="@+id/et_phone_number1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="61 32 82 70"
+                        android:textColor="@color/darker_grey"
+                        android:enabled="false"
+                        android:focusable="false"/>
+                </android.support.design.widget.TextInputLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="25"
+                    android:layout_marginTop="10dp"
+                    android:theme="@style/DarkTextLabel">
+                    <EditText
+                        android:id="@+id/et_indicatif_tel2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:hint="Téléphone 2"
+                        android:text="+229"
+                        android:textColor="@color/darker_grey"
+                        android:enabled="false"
+                        android:focusable="false"/>
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="75"
+                    android:layout_marginTop="10dp"
+                    android:theme="@style/DarkTextLabel">
+                    <EditText
+                        android:id="@+id/et_phone_number2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="94 71 88 48"
+                        android:textColor="@color/darker_grey"
+                        android:enabled="false"
+                        android:focusable="false"/>
+                </android.support.design.widget.TextInputLayout>
+
+            </LinearLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:theme="@style/DarkTextLabel">
+                <EditText
+                    android:id="@+id/et_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="Adresse e-mail"
+                    android:text="ahenrij@gmail.com"
+                    android:textColor="@color/darker_grey"
+                    android:enabled="false"
+                    android:focusable="false"/>
+            </android.support.design.widget.TextInputLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>

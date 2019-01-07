@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:padding="10dp">
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="50dp"
+        android:src="@drawable/star"
+        android:padding="8dp"
+        android:layout_marginRight="10dp"/>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/img_client"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/profil_sup"
+        app:civ_border_color="@color/light_grey"
+        android:layout_marginRight="8dp"
+        app:civ_border_width="1dp"/>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="50"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/tv_client_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ablonon Véronique"
+            android:lines="1"
+            android:ellipsize="end"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textSize="17sp"/>
+
+        <TextView
+            android:id="@+id/tv_client_category"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ablonon Véronique"
+            android:layout_marginTop="3dp"
+            android:lines="1"
+            android:ellipsize="end"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/grey"
+            android:textSize="13sp"/>
+
+    </LinearLayout>
+
+</LinearLayout>

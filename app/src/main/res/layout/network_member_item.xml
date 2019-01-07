@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:padding="10dp">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/img_member_picture"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:src="@drawable/profil_sup"
+        app:civ_border_color="@color/light_grey"
+        android:layout_marginRight="15dp"
+        app:civ_border_width="1dp"/>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="50"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/tv_member_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ablonon Véronique"
+            android:lines="1"
+            android:ellipsize="end"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textSize="15sp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Objectif journalier"
+            android:layout_marginTop="2dp"
+            android:lines="1"
+            android:ellipsize="end"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@color/grey"
+            android:textSize="13sp"/>
+
+        <LinearLayout
+            android:layout_width="210dp"
+            android:layout_height="15dp"
+            android:orientation="horizontal"
+            android:layout_gravity="left"
+            android:layout_marginTop="2dp">
+
+            <com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar
+                android:id="@+id/progress_member_goal"
+                android:layout_width="0dp"
+                android:layout_height="5dp"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="75"
+                app:rcProgress="45"
+                app:rcMax="100"
+                app:rcRadius="13dp"
+                app:rcBackgroundPadding="0dp"
+                app:rcProgressColor="@color/green"
+                app:rcBackgroundColor="@color/light_grey" />
+
+            <TextView
+                android:id="@+id/tv_member_progress"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="30"
+                android:layout_gravity="center_vertical"
+                android:gravity="center"
+                android:textColor="@color/grey"
+                android:layout_marginBottom="1dp"
+                android:textSize="11sp"
+                android:text="100 %"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
