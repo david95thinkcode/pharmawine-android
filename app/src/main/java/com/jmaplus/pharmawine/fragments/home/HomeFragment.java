@@ -22,6 +22,7 @@ import com.jmaplus.pharmawine.R;
 import com.jmaplus.pharmawine.activities.NetworksActivity;
 import com.jmaplus.pharmawine.activities.ProspectionActivity;
 import com.jmaplus.pharmawine.activities.RemainingClientsActivity;
+import com.jmaplus.pharmawine.activities.SeenCustomers;
 import com.jmaplus.pharmawine.models.AuthenticatedUser;
 import com.robertlevonyan.views.expandable.Expandable;
 import com.robertlevonyan.views.expandable.ExpandingListener;
@@ -42,6 +43,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private Context mContext;
     private FloatingActionButton fabNetwork, fabProspection;
     private Button btnRemainingClients;
+    private Button btnSeenCustomers;
 
     private AuthenticatedUser authenticatedUser;
 
@@ -73,6 +75,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         fabNetwork = view.findViewById(R.id.fab_network);
         fabProspection = view.findViewById(R.id.fab_see_more);
         btnRemainingClients = view.findViewById(R.id.btn_remaining_clients);
+        btnSeenCustomers = view.findViewById(R.id.btn_seen_customers);
 
         initViews();
         return view;
@@ -94,6 +97,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
         // todo: replace the btnremainingClients with the remaining clients card view
         btnRemainingClients.setOnClickListener(this);
+        btnSeenCustomers.setOnClickListener(this);
 
         cvDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -160,7 +164,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 Log.i("HomeFragment", "Remaining clients button clicked");
                 startActivity(new Intent(mContext, RemainingClientsActivity.class));
                 break;
-
+            case R.id.btn_seen_customers:
+                startActivity(new Intent(mContext, SeenCustomers.class));
+                break;
             default:
                 // Nothing to do
                 break;

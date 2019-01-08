@@ -83,4 +83,16 @@
     <string name="clients_restants">Clients restant</string>
     <string name="full_name_of_the_client">Full name of the client</string>
     <string name="speciality">Speciality</string>
+    <string name="clients_vus">Clients vus</string>
+    <string name="clients_connus">Clients connus</string>
+    <string name="clients_inconnus">Clients inconnus</string>
+    <string name="inconnus">Inconnus</string>
+    <string name="connus">Connus</string>
+    <string name="tous">Tous</string>
+    <string name="aucun_client_connu_vu">Aucun client connu trouvé</string>
+    <string name="aucun_client_inconnu_trouve">Aucun client inconnu trouvé</string>
+    <string name="aucun_client_trouve">Aucun client trouvé</string>
+
+    <string name="status">Status</string>
+
 </resources>

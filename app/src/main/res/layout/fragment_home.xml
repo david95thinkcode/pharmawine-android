@@ -129,6 +129,12 @@
                     android:layout_height="wrap_content"
                     android:text="@string/clients_restants" />
 
+                <Button
+                    android:id="@+id/btn_seen_customers"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/clients_vus" />
+
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -180,6 +186,7 @@
                             layout="@layout/content_home_clients_seen_view" />
                     </com.robertlevonyan.views.expandable.Expandable>
                 </android.support.v7.widget.CardView>
+
             </LinearLayout>
         </android.support.v4.widget.NestedScrollView>
 

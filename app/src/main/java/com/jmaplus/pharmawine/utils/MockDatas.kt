@@ -29,6 +29,7 @@ class MockDatas {
             c2.sex = "F"
             c2.speciality = "Dermatologue"
             c2.status = "CFG"
+            c2.isKnown = true
 
             var c3 = Client()
             c3.firstName = "Afon"
@@ -36,6 +37,7 @@ class MockDatas {
             c3.sex = "M"
             c3.speciality = "Ophtamologue"
             c3.status = "CFM"
+            c3.isKnown = true
 
             var c4 = Client()
             c4.firstName = "Bignon"

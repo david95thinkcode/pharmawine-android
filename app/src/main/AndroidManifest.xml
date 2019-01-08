@@ -106,7 +106,10 @@
             android:theme="@style/MyMaterialTheme" />
         <activity
             android:name=".activities.RemainingClientsActivity"
-            android:label="@string/clients_restants"></activity>
+            android:label="@string/clients_restants" />
+        <activity
+            android:name=".activities.SeenCustomers"
+            android:label="@string/clients_vus"></activity>
     </application>
 
 </manifest>

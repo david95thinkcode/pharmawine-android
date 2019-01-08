@@ -13,6 +13,7 @@ class Client {
     var type: String = ""
     var speciality: String = ""
     var status: String = ""
+    var isKnown: Boolean = false // a true pour les clients connus et a false sinon
 
     fun getFullName(): String = "$firstName $lastName"
 
