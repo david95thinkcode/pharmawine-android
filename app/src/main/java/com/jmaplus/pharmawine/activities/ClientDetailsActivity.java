@@ -2,22 +2,19 @@ package com.jmaplus.pharmawine.activities;
 
 import android.Manifest;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
-import com.bumptech.glide.Glide;
 import com.jmaplus.pharmawine.R;
+import com.jmaplus.pharmawine.fragments.clients.MedicalTeamDetailsFragment;
+import com.jmaplus.pharmawine.fragments.clients.PharmacyDetailsFragment;
 import com.jmaplus.pharmawine.models.Client;
 import com.jmaplus.pharmawine.utils.Constants;
 import com.karumi.dexter.Dexter;
@@ -27,9 +24,11 @@ import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 
-import de.hdodenhof.circleimageview.CircleImageView;
+import org.jetbrains.annotations.NotNull;
 
-public class ClientDetailsActivity extends AppCompatActivity {
+public class ClientDetailsActivity extends AppCompatActivity implements
+        MedicalTeamDetailsFragment.OnFragmentInteractionListener,
+        PharmacyDetailsFragment.OnFragmentInteractionListener {
 
 //    public static final String CLIENT_MEDICAL_TEAM = "medical_team";
 //    public static final String CLIENT_PHARMACY = "pharmacy";
@@ -39,20 +38,6 @@ public class ClientDetailsActivity extends AppCompatActivity {
 
     private String clientId;
     private String clientType;
-
-    private LinearLayout layMedicalInfos, layPharmacyInfos;
-//    VIEWS SHARED
-
-    private CircleImageView imgProfile;
-    private TextView tvClientName, tvClientCategory, tvClientType, tvProfileProgress;
-    private RoundCornerProgressBar profileProgress;
-    private Button btnCall1, btnCall2;
-
-    //    VIEWS FOR MEDICAL TEAM
-    private TextView tvSexe, tvBirthday, tvNationality, tvMaritalStatus, tvBelieves, tvEmail, tvAddress;
-
-    //    VIEWS FOR PHARMACY
-    private TextView tvRepresentative, tvFounder, tvCreatedOn, tvNbEmployees, tvAnnexe, tvPharmaAddress;
 
 
     @Override
@@ -69,24 +54,21 @@ public class ClientDetailsActivity extends AppCompatActivity {
             Log.i("ClientDetailsActivity", "Activity finished");
             finish();
         } else {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
             if (clientType.equals(Constants.CLIENT_MEDICAL_TEAM_TYPE_KEY)) {
-
-//                Changes views configuration
-                layMedicalInfos.setVisibility(View.VISIBLE);
-                layPharmacyInfos.setVisibility(View.GONE);
-
-                initViewsForMedicalTeam();
+                // Medical team client
+                MedicalTeamDetailsFragment fragment = new MedicalTeamDetailsFragment();
+                fragmentTransaction.add(R.id.client_detail_fragment_container, fragment);
+                fragmentTransaction.commit();
             }
 
             if (clientType.equals(Constants.CLIENT_PHARMACY_TYPE_KEY)) {
-
-//                Changes views configuration
-                layMedicalInfos.setVisibility(View.GONE);
-                layPharmacyInfos.setVisibility(View.VISIBLE);
-                btnCall2.setVisibility(View.GONE);
-
-                initViewsForPharmacy();
+                // Pharmacy client
+                PharmacyDetailsFragment fragment = new PharmacyDetailsFragment();
+                fragmentTransaction.add(R.id.client_detail_fragment_container, fragment);
+                fragmentTransaction.commit();
             }
         }
     }
@@ -95,18 +77,24 @@ public class ClientDetailsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.close);
         getSupportActionBar().setSubtitle("Client");
+    }
 
-        imgProfile = findViewById(R.id.img_profile_picture);
-        tvClientName = findViewById(R.id.tv_i_client_name);
-        tvClientCategory = findViewById(R.id.tv_i_client_category);
-        tvClientType = findViewById(R.id.tv_i_client_type);
-        tvProfileProgress = findViewById(R.id.tv_i_client_progress);
-        profileProgress = findViewById(R.id.progress_client_i_filling);
-        btnCall1 = findViewById(R.id.btn_call_1);
-        btnCall2 = findViewById(R.id.btn_call_2);
+    @Override
+    public void onPhoneNumberCallInteraction(@NotNull String phoneNumber) {
+        makeCall(phoneNumber);
+    }
 
-        layMedicalInfos = findViewById(R.id.lay_medical_infos);
-        layPharmacyInfos = findViewById(R.id.lay_pharmacy_infos);
+    @Override
+    public void onClientDetailsReceived(@NotNull Client clientDetails) {
+        // update UI Views With Client Details
+        getSupportActionBar().setTitle(clientDetails.getFullName());
+
+        if (!clientDetails.getAvatarUrl().isEmpty()) {
+            //TODO: find a way to set icon with user avatar url
+            getSupportActionBar().setIcon(clientDetails.getDefaultAvatarUrl());
+        } else {
+            getSupportActionBar().setIcon(clientDetails.getDefaultAvatarUrl());
+        }
     }
 
     @Override
@@ -138,115 +126,12 @@ public class ClientDetailsActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
-    private void getMedicalTeamClientDetails() {
-        // todo: Fetch client datas from api and use it instead of mock data
-        Client currentClient = new Client();
-
-        // Using mock values
-        currentClient.setId("2");
-        currentClient.setFirstName("Baba");
-        currentClient.setLastName("Pauline");
-        currentClient.setSex("F");
-        currentClient.setSpeciality("Dermatologue");
-        currentClient.setStatus("CFG");
-        currentClient.setKnown(true);
-        currentClient.setEmail("davidhihea@gmail.com");
-        currentClient.setBirthday("08-09-2000");
-        currentClient.setPhoneNumber("+22966843445");
-        currentClient.setMaritalStatus("Marié");
-        currentClient.setType(Constants.CLIENT_PHARMACY_TYPE_KEY);
-
-        // TODO: Call this method only when data was successfully fetched from server
-        updateViewsForMedicalTeamClient(currentClient);
-    }
-
-    private void initViewsForMedicalTeam() {
-
-        tvSexe = findViewById(R.id.tv_i_client_sex);
-        tvBirthday = findViewById(R.id.tv_i_client_birthday);
-        tvNationality = findViewById(R.id.tv_i_client_nationality);
-        tvMaritalStatus = findViewById(R.id.tv_i_client_marital_status);
-        tvBelieves = findViewById(R.id.tv_i_client_believes);
-        tvEmail = findViewById(R.id.tv_i_client_email);
-        tvAddress = findViewById(R.id.tv_i_client_address);
-
-        getMedicalTeamClientDetails();
-
-    }
-
-    private void updateViewsForMedicalTeamClient(final Client client) {
-
-        // Action bar properties
-        getSupportActionBar().setTitle(client.getFullName());
-
-        if (!client.getAvatarUrl().isEmpty()) {
-            Glide.with(this).load(client.getAvatarUrl()).into(imgProfile);
-            //TODO: find a way to set icon with user avatar url
-            getSupportActionBar().setIcon(client.getDefaultAvatarUrl());
-        } else {
-            Glide.with(this).load(client.getDefaultAvatarUrl()).into(imgProfile);
-            getSupportActionBar().setIcon(client.getDefaultAvatarUrl());
-        }
-
-        profileProgress.setProgress(client.getFillingLevel());
-
-        tvProfileProgress.setText(String.valueOf(client.getFillingLevel()) + " %");
-
-        int fillingLevel = client.getFillingLevel();
-        if (fillingLevel < 35) {
-            profileProgress.setProgressColor(getResources().getColor(R.color.red));
-        } else if (fillingLevel < 69) {
-            profileProgress.setProgressColor(getResources().getColor(R.color.orange));
-        } else {
-            profileProgress.setProgressColor(getResources().getColor(R.color.green));
-        }
-
-        tvClientName.setText(client.getFullName());
-        tvClientCategory.setText(client.getSpeciality());
-        tvSexe.setText((client.getSex().equals("M")) ? "Homme" : (client.getSex().equals("F")) ? "Femme" : "-");
-        tvNationality.setText(client.getNationality());
-        tvMaritalStatus.setText(client.getMaritalStatus());
-        tvEmail.setText(client.getEmail());
-        tvAddress.setText(client.getAddress());
-        tvBirthday.setText(client.getRedabledate());
-
-        if (!client.getPhoneNumber().trim().isEmpty()) {
-            btnCall1.setText(client.getPhoneNumber());
-            btnCall1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    makeCall(client.getPhoneNumber().trim());
-                }
-            });
-        } else {
-            btnCall1.setText(R.string.call);
-            btnCall1.setEnabled(false);
-            btnCall1.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.grey)));
-
-            if (!client.getPhoneNumber2().trim().isEmpty()) {
-                btnCall1.setVisibility(View.GONE);
-            }
-        }
-
-        if (!client.getPhoneNumber2().trim().isEmpty()) {
-            btnCall2.setText(client.getPhoneNumber2());
-            btnCall2.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    makeCall(client.getPhoneNumber2().trim());
-                }
-            });
-        } else {
-            btnCall2.setVisibility(View.GONE);
-        }
-    }
-
+/*
     private void initViewsForPharmacy() {
 
 
 
-        /*
+
 
         final Pharmacy pharmacy = Pharmacy.getById(PharmaWine.mRealm, clientId);
         pharmacy.load();
@@ -305,8 +190,9 @@ public class ClientDetailsActivity extends AppCompatActivity {
             finish();
         }
 
-        */
+
     }
+    */
 
     private void makeCall(final String phoneNumber) {
 

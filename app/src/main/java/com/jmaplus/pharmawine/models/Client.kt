@@ -14,6 +14,7 @@ class Client {
     var email: String = ""
     var preference: String = ""
     var maritalStatus: String = ""
+    var religion: String = ""
     var type: String = ""
     var phoneNumber: String = ""
     var phoneNumber2: String = ""

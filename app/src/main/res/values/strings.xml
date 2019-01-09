@@ -94,5 +94,6 @@
     <string name="aucun_client_trouve">Aucun client trouvé</string>
 
     <string name="status">Status</string>
+    <string name="autres_infos">Autres informations</string>
 
 </resources>

@@ -62,4 +62,27 @@
         <item name="android:textSize">20sp</item>
     </style>
 
+    <style name="btn_primary_rounded_margin_tb_3_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">35dp</item>
+        <item name="android:layout_marginTop">3dp</item>
+        <item name="android:layout_marginBottom">3dp</item>
+        <item name="android:background">@drawable/button_rounded</item>
+        <item name="android:backgroundTint">@color/colorAccent</item>
+        <item name="android:drawablePadding">5dp</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+
+    <style name="client_details_info_title_style">
+        <item name="android:layout_width">60dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">40</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textColor">@color/project_grey</item>
+    </style>
+
 </resources>
