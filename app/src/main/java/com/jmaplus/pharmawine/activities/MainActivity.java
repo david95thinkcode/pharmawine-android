@@ -38,7 +38,9 @@ public class MainActivity extends AppCompatActivity {
     private final int IND_NAV_HOME = 0;
     private final int IND_NAV_REPORTS = 1;
     private final int IND_NAV_NOTIFS = 2;
-    private final int IND_NAV_MORE = 3;
+    private final int IND_NAV_CLIENT = 3;
+    private final int IND_NAV_MORE = 4;
+
 
     private AuthenticatedUser authenticatedUser;
 
@@ -63,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
 //
         authenticatedUser = AuthenticatedUser.getAuthenticatedUser(PharmaWine.mRealm);
 
-        Toast.makeText(this, "Content de vour revoir " + authenticatedUser.getLastName() + " !", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Content de vous revoir " + authenticatedUser.getLastName() + " !", Toast.LENGTH_LONG).show();
 
     }
 
@@ -95,8 +97,8 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigation.addItem(new AHBottomNavigationItem(R.string.empty_string, R.drawable.home, R.color.nav_item_state_list));
         bottomNavigation.addItem(new AHBottomNavigationItem(R.string.empty_string, R.drawable.file_document_box_multiple_outline, R.color.nav_item_state_list));
         bottomNavigation.addItem(new AHBottomNavigationItem(R.string.empty_string, R.drawable.bell_ring, R.color.nav_item_state_list));
+        bottomNavigation.addItem(new AHBottomNavigationItem(R.string.empty_string, R.drawable.ic_client, R.color.nav_item_state_list));
         bottomNavigation.addItem(new AHBottomNavigationItem(R.string.empty_string, R.drawable.view_dashboard, R.color.nav_item_state_list));
-
         bottomNavigation.setTitleState(AHBottomNavigation.TitleState.ALWAYS_HIDE);
         bottomNavigation.setAccentColor(getResources().getColor(R.color.colorPrimary));
         bottomNavigation.setOnTabSelectedListener(new AHBottomNavigation.OnTabSelectedListener() {
@@ -118,6 +120,10 @@ public class MainActivity extends AppCompatActivity {
                         bottomNavigation.setBehaviorTranslationEnabled(true);
                         getSupportActionBar().setTitle(getResources().getString(R.string.menu_option_notifications));
                         showFragment(mNotificationsFragment);
+                        break;
+                    case IND_NAV_CLIENT:
+                        bottomNavigation.setBehaviorTranslationEnabled(true);
+                        startActivity(new Intent(MainActivity.this, ClientsActivity.class));
                         break;
                     case IND_NAV_MORE :
                         bottomNavigation.setBehaviorTranslationEnabled(true);
