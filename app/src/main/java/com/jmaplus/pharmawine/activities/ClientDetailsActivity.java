@@ -35,6 +35,7 @@ public class ClientDetailsActivity extends AppCompatActivity implements
 
     public static final String CLIENT_ID_KEY = "com.jmaplus.pharmawine.activities.ClientDetailsActivity.clientId";
     public static final String CLIENT_TYPE_KEY = "com.jmaplus.pharmawine.activities.ClientDetailsActivity.clientType";
+    public static final String TAG = "ClientDetailsActivity";
 
     private String clientId;
     private String clientType;
@@ -51,7 +52,6 @@ public class ClientDetailsActivity extends AppCompatActivity implements
         clientType = getIntent().getStringExtra(CLIENT_TYPE_KEY);
 
         if (clientId.isEmpty() || clientType.isEmpty()) { // If values passed by intent are not correct
-            Log.i("ClientDetailsActivity", "Activity finished");
             finish();
         } else {
             FragmentManager fragmentManager = getSupportFragmentManager();
@@ -60,6 +60,7 @@ public class ClientDetailsActivity extends AppCompatActivity implements
             if (clientType.equals(Constants.CLIENT_MEDICAL_TEAM_TYPE_KEY)) {
                 // Medical team client
                 MedicalTeamDetailsFragment fragment = new MedicalTeamDetailsFragment();
+                Log.i(TAG, "Client is medical");
                 fragmentTransaction.add(R.id.client_detail_fragment_container, fragment);
                 fragmentTransaction.commit();
             }
@@ -111,91 +112,30 @@ public class ClientDetailsActivity extends AppCompatActivity implements
                 finish();
                 break;
             case R.id.action_edit:
+                Log.e(TAG, "Type : " + clientType);
 
-                switch (clientType) {
-//                    case CLIENT_MEDICAL_TEAM :
-//                        startActivity(new Intent(this, EditMedicalTeamActivity.class).putExtra(EditMedicalTeamActivity.MEDICAL_ID_KEY, clientId));
-//                        break;
-//                    case CLIENT_PHARMACY:
-//                        startActivity(new Intent(this, EditPharmacyActivity.class).putExtra(EditPharmacyActivity.PHARMACY_ID_KEY, clientId));
-//                        break;
+                if (clientType.equals(Constants.CLIENT_MEDICAL_TEAM_TYPE_KEY)) {
+                    Log.e(TAG, "Opening edit page for client");
+
+                    Intent i = new Intent(this, EditMedicalTeamActivity.class);
+                    i.putExtra(EditMedicalTeamActivity.MEDICAL_ID_KEY, clientId);
+                    startActivity(i);
+
+                } else if (clientType == Constants.CLIENT_PHARMACY_TYPE_KEY) {
+                    startActivity(new Intent(this, EditPharmacyActivity.class)
+                            .putExtra(EditPharmacyActivity.PHARMACY_ID_KEY, clientId));
                 }
-
+                break;
+            default:
                 break;
         }
 
         return super.onOptionsItemSelected(item);
     }
-/*
-    private void initViewsForPharmacy() {
-
-
-
-
-
-        final Pharmacy pharmacy = Pharmacy.getById(PharmaWine.mRealm, clientId);
-        pharmacy.load();
-
-        if (pharmacy.isValid()) {
-
-            getSupportActionBar().setTitle(pharmacy.getName());
-
-            Glide.with(this).load(R.drawable.pharma_icon).into(imgProfile);
-
-            tvClientName.setText(pharmacy.getName());
-            tvClientCategory.setVisibility(View.GONE);
-            profileProgress.setProgress(pharmacy.getFillingLevel());
-            tvProfileProgress.setText(String.valueOf(pharmacy.getFillingLevel()).concat(" %"));
-
-            int fillingLevel = pharmacy.getFillingLevel();
-            if (fillingLevel < 35) {
-                profileProgress.setProgressColor(getResources().getColor(R.color.red));
-            } else if (fillingLevel < 69) {
-                profileProgress.setProgressColor(getResources().getColor(R.color.orange));
-            } else {
-                profileProgress.setProgressColor(getResources().getColor(R.color.green));
-            }
-
-
-            tvRepresentative = findViewById(R.id.tv_pharma_representative);
-            tvFounder = findViewById(R.id.tv_pharma_founder);
-            tvCreatedOn = findViewById(R.id.tv_pharma_created_on);
-            tvNbEmployees = findViewById(R.id.tv_pharma_employees);
-            tvAnnexe = findViewById(R.id.tv_pharma_annexe);
-            tvPharmaAddress = findViewById(R.id.tv_pharma_address);
-
-            tvRepresentative.setText(pharmacy.getRepresentative());
-            tvFounder.setText(pharmacy.getFounder());
-            tvCreatedOn.setText(pharmacy.getCreatedOn());
-            tvNbEmployees.setText(String.valueOf(pharmacy.getEmployees()));
-            tvAnnexe.setText(String.valueOf(pharmacy.getAnnexe()));
-            tvPharmaAddress.setText(pharmacy.getAddress());
-
-            if (!pharmacy.getContact().isEmpty()) {
-                btnCall1.setText(pharmacy.getContact());
-                btnCall1.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        makeCall(pharmacy.getContact());
-                    }
-                });
-            } else {
-                btnCall1.setText(R.string.call);
-                btnCall1.setEnabled(false);
-                btnCall1.setBackgroundTintList(ColorStateList.valueOf(getResources().getColor(R.color.grey)));
-            }
-
-        } else {
-            Toast.makeText(this, getResources().getString(R.string.smthg_wrong_request), Toast.LENGTH_SHORT).show();
-            finish();
-        }
-
-
-    }
-    */
 
     private void makeCall(final String phoneNumber) {
 
+        // TODO
         Dexter.withActivity(this)
                 .withPermission(Manifest.permission.CALL_PHONE)
                 .withListener(new PermissionListener() {

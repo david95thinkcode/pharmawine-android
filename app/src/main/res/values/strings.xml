@@ -95,5 +95,18 @@
 
     <string name="status">Status</string>
     <string name="autres_infos">Autres informations</string>
+    <string name="profil">Profil</string>
+    <string name="suivant">Suivant</string>
+
+    <string name="etape_1">Etape 1</string>
+    <string name="etape_2">Etape 2</string>
+    <string name="etape_3">Etape 3</string>
+    <string name="etape_4">Etape 4</string>
+    <string name="etape_5">Etape 5</string>
+    <string name="etape_6">Etape 6</string>
+    <string name="mois">Mois</string>
+    <string name="annee">Annee</string>
+    <string name="jour">Jour</string>
+
 
 </resources>
