@@ -4,15 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.ReportEtape1Fragment">
-
+    tools:context=".fragments.ReportEtape2Fragment">
 
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="16dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="16dp">
 
         <android.support.v7.widget.CardView
             android:layout_width="300dp"
@@ -22,6 +21,17 @@
             app:cardBackgroundColor="@color/grey"
             app:cardCornerRadius="30dp"
             app:contentPadding="2dp">
+
+            <ImageButton
+                android:id="@+id/imageButtoBackToEtape1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|start"
+                android:layout_marginStart="15dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/grey"
+                android:contentDescription="chevronBack"
+                android:src="@drawable/chevron_left" />
 
             <TextView
                 android:id="@+id/textView"
@@ -47,11 +57,11 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/textViewCentre"
+                    android:id="@+id/textViewZone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_black"
-                    android:text="@string/centre"
+                    android:text="@string/zone"
                     android:textColor="@color/black_variant"
                     android:textSize="16sp" />
 
@@ -67,7 +77,7 @@
 
 
             <Spinner
-                android:id="@+id/choix_centre_pour_rapport"
+                android:id="@+id/choix_zone_pour_rapport"
                 android:layout_width="350dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp" />
@@ -77,7 +87,7 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/btn_suivant_etape_1"
+        android:id="@+id/btn_suivant_etape_2"
         style="?android:attr/buttonBarButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

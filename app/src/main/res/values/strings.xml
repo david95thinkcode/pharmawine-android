@@ -84,4 +84,10 @@
     <string name="oui">Oui</string>
     <string name="non">Non</string>
     <string name="msg_confim_visite_end">Êtes vous sûr d\'avoir terminé votre visite avec cette personne?</string>
+    <string name="suivant">Suivant</string>
+    <string name="rapport">Rapport</string>
+    <string name="centre">Centre</string>
+    <string name="changer_si_pas_correcte">(Changer si pas correcte)</string>
+    <string name="zone">Zone</string>
+    <string name="objectif_de_la_visite">Objectif de la visite</string>
 </resources>
