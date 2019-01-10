@@ -1,542 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/client_detail_main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#eee"
-    android:orientation="vertical"
     tools:context=".activities.ClientDetailsActivity">
 
-
-    <LinearLayout
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/client_detail_fragment_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:orientation="vertical"
-        android:padding="16dp">
+        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <android.support.v7.widget.CardView
-            android:layout_width="match_parent"
+
+    </android.support.v4.widget.NestedScrollView>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/layout_bordered_background_simple"
+        android:elevation="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/btn_call_on_client_details_activity"
+            android:layout_width="193dp"
+            android:layout_height="41dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/button_rounded"
+            android:backgroundTint="@color/colorAccent"
+            android:drawableLeft="@drawable/phone"
+            android:drawablePadding="5dp"
+            android:drawableTint="@android:color/white"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:text="@string/call"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="13sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Space
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="2dp"
-            app:cardElevation="3dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:padding="16dp">
-
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/img_profile_picture"
-                        android:layout_width="75dp"
-                        android:layout_height="75dp"
-                        android:src="@drawable/profil_sup"
-                        app:civ_border_color="@color/light_grey"
-                        app:civ_border_width="1dp" />
-
-                    <TextView
-                        android:id="@+id/tv_i_client_name"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:gravity="center"
-                        android:text="Ablonon Véronique"
-                        android:textAppearance="?android:attr/textAppearanceMedium" />
-
-                    <TextView
-                        android:id="@+id/tv_i_client_category"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="Médécin généraliste"
-                        android:textAppearance="?android:attr/textAppearanceSmall" />
-
-                    <TextView
-                        android:id="@+id/tv_i_client_type"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="3dp"
-                        android:gravity="center"
-                        android:text="CFG"
-                        android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:textSize="15sp" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:gravity="center"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="15dp"
-                            android:text="Profil"
-                            android:visibility="invisible"
-                            android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textColor="@color/darker_grey"
-                            android:textSize="13sp" />
-
-                        <LinearLayout
-                            android:layout_width="120dp"
-                            android:layout_height="match_parent"
-                            android:layout_gravity="left"
-                            android:orientation="horizontal">
-
-                            <com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar
-                                android:id="@+id/progress_client_i_filling"
-                                android:layout_width="0dp"
-                                android:layout_height="10dp"
-                                android:layout_gravity="center_vertical"
-                                android:layout_weight="65"
-                                app:rcBackgroundColor="@color/light_grey"
-                                app:rcBackgroundPadding="0dp"
-                                app:rcMax="100"
-                                app:rcProgress="45"
-                                app:rcProgressColor="@color/green"
-                                app:rcRadius="13dp" />
-
-                            <TextView
-                                android:id="@+id/tv_i_client_progress"
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_gravity="center_vertical"
-                                android:layout_marginBottom="1dp"
-                                android:layout_weight="40"
-                                android:gravity="center"
-                                android:text="100 %"
-                                android:textSize="11sp" />
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/lay_medical_infos"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/light_grey"
-                    android:orientation="vertical"
-                    android:padding="20dp"
-                    android:visibility="gone">
-
-                    <ImageView
-                        android:id="@+id/img_toogle_favorite1"
-                        android:layout_width="50dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end"
-                        android:scaleType="center"
-                        android:src="@drawable/star_outline"
-                        android:tint="@color/grey" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="40"
-                            android:ellipsize="end"
-                            android:maxLines="1"
-                            android:text="@string/sex" />
-
-                        <TextView
-                            android:id="@+id/tv_i_client_sex"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"
-                            android:layout_weight="60"
-                            android:ellipsize="end"
-                            android:maxLines="1"
-                            android:text="Femme" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="40"
-                            android:ellipsize="end"
-                            android:maxLines="1"
-                            android:text="@string/birthday" />
-
-                        <TextView
-                            android:id="@+id/tv_i_client_birthday"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"
-                            android:layout_weight="60"
-                            android:ellipsize="end"
-                            android:maxLines="1"
-                            android:text="14/05/1997" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="40"
-                            android:ellipsize="end"
-                            android:maxLines="1"
-                            android:text="@string/nationality" />
-
-                        <TextView
-                            android:id="@+id/tv_i_client_nationality"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"
-                            android:layout_weight="60"
-                            android:ellipsize="end"
-                            android:maxLines="1"
-                            android:text="Béninoise" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="40"
-                            android:ellipsize="end"
-                            android:maxLines="1"
-                            android:text="@string/marital_status" />
-
-                        <TextView
-                            android:id="@+id/tv_i_client_marital_status"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"
-                            android:layout_weight="60"
-                            android:ellipsize="end"
-                            android:maxLines="1"
-                            android:text="Marié" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="40"
-                            android:ellipsize="end"
-                            android:maxLines="1"
-                            android:text="@string/believes" />
-
-                        <TextView
-                            android:id="@+id/tv_i_client_believes"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"
-                            android:layout_weight="60"
-                            android:ellipsize="end"
-                            android:maxLines="1"
-                            android:text="Chrétien - Catholique" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="40"
-                            android:ellipsize="end"
-                            android:maxLines="1"
-                            android:text="@string/email" />
-
-                        <TextView
-                            android:id="@+id/tv_i_client_email"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"
-                            android:layout_weight="60"
-                            android:ellipsize="end"
-                            android:maxLines="1"
-                            android:text="ahenrij@gmail.com" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="40"
-                            android:ellipsize="end"
-                            android:maxLines="1"
-                            android:text="@string/address" />
-
-                        <TextView
-                            android:id="@+id/tv_i_client_address"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"
-                            android:layout_weight="60"
-                            android:ellipsize="end"
-                            android:maxLines="2"
-                            android:text="Abomey Calavi, Tankpè Rue Ecobank" />
-                    </LinearLayout>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/lay_pharmacy_infos"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/light_grey"
-                    android:orientation="vertical"
-                    android:padding="20dp"
-                    android:visibility="visible">
-
-
-                    <ImageView
-                        android:id="@+id/img_toogle_favorite2"
-                        android:layout_width="50dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end"
-                        android:scaleType="center"
-                        android:src="@drawable/star_outline"
-                        android:tint="@color/grey" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="40"
-                            android:ellipsize="end"
-                            android:maxLines="1"
-                            android:text="@string/reprensentative" />
-
-                        <TextView
-                            android:id="@+id/tv_pharma_representative"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"
-                            android:layout_weight="60"
-                            android:ellipsize="end"
-                            android:maxLines="1"
-                            android:text="M. Henri J. Aïdasso" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="40"
-                            android:ellipsize="end"
-                            android:maxLines="1"
-                            android:text="@string/founder" />
-
-                        <TextView
-                            android:id="@+id/tv_pharma_founder"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"
-                            android:layout_weight="60"
-                            android:ellipsize="end"
-                            android:maxLines="1"
-                            android:text="M. Henri J. Aïdasso" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="40"
-                            android:ellipsize="end"
-                            android:maxLines="1"
-                            android:text="@string/created_on" />
-
-                        <TextView
-                            android:id="@+id/tv_pharma_created_on"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"
-                            android:layout_weight="60"
-                            android:ellipsize="end"
-                            android:maxLines="1"
-                            android:text="17/12/1997" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="40"
-                            android:ellipsize="end"
-                            android:maxLines="1"
-                            android:text="@string/employees_number" />
-
-                        <TextView
-                            android:id="@+id/tv_pharma_employees"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"
-                            android:layout_weight="60"
-                            android:ellipsize="end"
-                            android:maxLines="1"
-                            android:text="15" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="40"
-                            android:ellipsize="end"
-                            android:maxLines="1"
-                            android:text="@string/pharma_annexe" />
-
-                        <TextView
-                            android:id="@+id/tv_pharma_annexe"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"
-                            android:layout_weight="60"
-                            android:ellipsize="end"
-                            android:maxLines="1"
-                            android:text="Oui" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:orientation="horizontal">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="40"
-                            android:ellipsize="end"
-                            android:maxLines="1"
-                            android:text="@string/address" />
-
-                        <TextView
-                            android:id="@+id/tv_pharma_address"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"
-                            android:layout_weight="60"
-                            android:ellipsize="end"
-                            android:maxLines="1"
-                            android:text="Abomey-Calci, Tankpè" />
-                    </LinearLayout>
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-        </android.support.v7.widget.CardView>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@android:color/white"
-            android:gravity="center"
-            android:orientation="horizontal"
-            android:paddingBottom="15dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            android:paddingTop="15dp">
-
-            <Button
-                android:id="@+id/btn_call_1"
-                android:layout_width="wrap_content"
-                android:layout_height="35dp"
-                android:background="@drawable/button_rounded"
-                android:backgroundTint="@color/colorAccent"
-                android:drawableLeft="@drawable/phone"
-                android:drawablePadding="5dp"
-                android:drawableTint="@android:color/white"
-                android:paddingLeft="10dp"
-                android:paddingRight="15dp"
-                android:text="+229 61 32 82 70"
-                android:textColor="@android:color/white"
-                android:layout_marginTop="3dp"
-                android:layout_marginBottom="3dp"
-                android:textSize="13sp" />
-
-            <Button
-                android:id="@+id/btn_call_2"
-                android:layout_width="wrap_content"
-                android:layout_height="35dp"
-                android:layout_marginLeft="8dp"
-                android:background="@drawable/button_rounded"
-                android:backgroundTint="@color/colorAccent"
-                android:drawableLeft="@drawable/phone"
-                android:drawablePadding="5dp"
-                android:drawableTint="@android:color/white"
-                android:gravity="center"
-                android:paddingLeft="10dp"
-                android:paddingRight="15dp"
-                android:text="+229 61 32 82 70"
-                android:textColor="@android:color/white"
-                android:layout_marginTop="3dp"
-                android:layout_marginBottom="3dp"
-                android:textSize="13sp" />
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-</android.support.v4.widget.NestedScrollView>
+            android:layout_weight="1" />
+
+        <ImageView
+            android:id="@+id/img_toogle_favorite2"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginEnd="24dp"
+            android:paddingTop="8dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/star_outline"
+            android:tint="@color/grey"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.constraint.ConstraintLayout>

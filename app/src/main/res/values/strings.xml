@@ -79,4 +79,76 @@
     <string name="created_on">Date de création</string>
     <string name="employees_number">Employés</string>
     <string name="pharma_annexe">Annexe(s)</string>
+
+    <string name="clients_restants">Clients restant</string>
+    <string name="full_name_of_the_client">Full name of the client</string>
+    <string name="speciality">Speciality</string>
+    <string name="clients_vus">Clients vus</string>
+    <string name="clients_connus">Clients connus</string>
+    <string name="clients_inconnus">Clients inconnus</string>
+    <string name="inconnus">Inconnus</string>
+    <string name="connus">Connus</string>
+    <string name="tous">Tous</string>
+    <string name="aucun_client_connu_vu">Aucun client connu trouvé</string>
+    <string name="aucun_client_inconnu_trouve">Aucun client inconnu trouvé</string>
+    <string name="aucun_client_trouve">Aucun client trouvé</string>
+
+    <string name="status">Status</string>
+    <string name="autres_infos">Autres informations</string>
+    <string name="profil">Profil</string>
+    <string name="suivant">Suivant</string>
+
+    <string name="etape_1">Etape 1</string>
+    <string name="etape_2">Etape 2</string>
+    <string name="etape_3">Etape 3</string>
+    <string name="etape_4">Etape 4</string>
+    <string name="etape_5">Etape 5</string>
+    <string name="etape_6">Etape 6</string>
+    <string name="mois">Mois</string>
+    <string name="annee">Annee</string>
+    <string name="jour">Jour</string>
+    <string name="adresse_du_client">Adresse du client</string>
+    <string name="autres_numeros">Autres numeros ?</string>
+    <string name="adresse_email">Adresse email</string>
+    <string name="adresse_email_du_client">Adresse email du client</string>
+    <string name="choisissez">Choisissez</string>
+
+    <!-- Croyances religieuses array-->
+    <string-array name="religious_belief_array">
+        <item>Chrétien</item>
+        <item>Musulman</item>
+        <item>Autres</item>
+    </string-array>
+
+    <!-- Situation matrimoniale array-->
+    <string-array name="marital_status_array_fr">
+        <item>Célibataire</item>
+        <item>Marié(e)</item>
+        <item>Autres</item>
+    </string-array>
+
+    <!-- Nationality exemple array-->
+    <string-array name="nationality_fake_array_fr">
+        <item>Congo Brazaville</item>
+        <item>Cote d\'Ivoire</item>
+        <item>Togo</item>
+        <item>Ghana</item>
+    </string-array>
+
+    <!-- Mois de l'annee -->
+    <string-array name="months_array_fr">
+        <item>Janvier</item>
+        <item>Fevrier</item>
+        <item>Mars</item>
+        <item>Avril</item>
+        <item>Mai</item>
+        <item>Juin</item>
+        <item>Juillet</item>
+        <item>Aout</item>
+        <item>Septembre</item>
+        <item>Octobre</item>
+        <item>Novembre</item>
+        <item>Decembre</item>
+    </string-array>
+
 </resources>

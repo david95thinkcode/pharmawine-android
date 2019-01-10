@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu_option_inconnus"
+        android:icon="@drawable/settings"
+        android:title="@string/inconnus" />
+    <item
+        android:id="@+id/menu_option_connus"
+        android:icon="@drawable/information_outline"
+        android:title="@string/connus" />
+    <item
+        android:id="@+id/menu_option_tous"
+        android:title="@string/tous" />
+</menu>

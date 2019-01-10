@@ -62,4 +62,65 @@
         <item name="android:textSize">20sp</item>
     </style>
 
+    <style name="btn_primary_rounded_margin_tb_3_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">35dp</item>
+        <item name="android:layout_marginTop">3dp</item>
+        <item name="android:layout_marginBottom">3dp</item>
+        <item name="android:background">@drawable/button_rounded</item>
+        <item name="android:backgroundTint">@color/colorAccent</item>
+        <item name="android:drawablePadding">5dp</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+
+    <style name="client_details_info_title_style">
+        <item name="android:layout_width">60dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">40</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textColor">@color/project_grey</item>
+    </style>
+
+    <style name="margin_top_and_bottom_12_dp_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_marginTop">12dp</item>
+        <item name="android:layout_marginBottom">12dp</item>
+    </style>
+
+    <style name="edit_text_bordered_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@drawable/edit_text_bordered_background</item>
+        <item name="android:ems">10</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:layout_marginLeft">6dp</item>
+        <item name="android:layout_marginRight">6dp</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+
+    <style name="edit_text_bordered_lg_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@drawable/edit_text_bordered_lg_background</item>
+        <item name="android:ems">10</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:layout_marginLeft">6dp</item>
+        <item name="android:layout_marginRight">6dp</item>
+        <item name="android:textAlignment">center</item>
+    </style>
+
+    <style name="profilage_medicalTeam_nestedLayout_step_fragment_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:paddingLeft">25dp</item>
+        <item name="android:paddingRight">25dp</item>
+    </style>
+
 </resources>

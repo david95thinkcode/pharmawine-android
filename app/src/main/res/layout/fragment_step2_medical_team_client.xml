@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/profilage_medicalTeam_nestedLayout_step_fragment_style"
+    tools:context=".fragments.profilage.Step2MedicalTeamClientFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="25dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/lay_religion"
+            style="@style/margin_top_and_bottom_12_dp_style"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_religion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="@string/believes"
+                android:textColor="@color/bpDark_gray" />
+
+            <Spinner
+                android:id="@+id/spinner_religion"
+                style="@style/edit_text_bordered_lg_style"
+                android:layout_width="match_parent"
+                android:layout_height="37dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lay_address"
+            style="@style/margin_top_and_bottom_12_dp_style"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="@string/address"
+                android:textColor="@color/bpDark_gray" />
+
+            <EditText
+                android:id="@+id/ed_address"
+                style="@style/edit_text_bordered_style"
+                android:layout_width="match_parent"
+                android:layout_height="184dp"
+                android:ems="10"
+                android:hint="@string/adresse_du_client"
+                android:inputType="text|textMultiLine"
+                android:textSize="14sp" />
+            <!--android:maxLines="6"-->
+            android:paddingStart="30dp"
+            android:textAlignment="textStart"
+            android:textColor="@color/bpDark_gray"
+            android:textSize="14sp" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+</android.support.v4.widget.NestedScrollView>
