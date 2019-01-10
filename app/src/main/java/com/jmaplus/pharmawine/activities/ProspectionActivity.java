@@ -60,8 +60,8 @@ public class ProspectionActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void showNewClientView() {
-        // TODO:
-
+        Intent i = new Intent(this, TranslucentNewClientActivity.class);
+        startActivity(i);
     }
 
     private void fetchRemainingClients() {

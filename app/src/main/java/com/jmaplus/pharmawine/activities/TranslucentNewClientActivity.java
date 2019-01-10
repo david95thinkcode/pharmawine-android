@@ -1,11 +1,11 @@
 package com.jmaplus.pharmawine.activities;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 
 import com.jmaplus.pharmawine.R;
 
-public class NewClientActivity extends AppCompatActivity {
+public class TranslucentNewClientActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

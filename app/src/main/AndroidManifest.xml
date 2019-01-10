@@ -73,7 +73,7 @@
             android:label="@string/menu_clients_title"
             android:theme="@style/MyMaterialTheme" />
         <activity
-            android:name=".activities.NewClientActivity"
+            android:name=".activities.TranslucentNewClientActivity"
             android:label="@string/activity_new_client_title" />
         <activity
             android:name=".activities.LaboratoriesActivity"
