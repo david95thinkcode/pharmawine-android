@@ -162,4 +162,6 @@
     <string name="changer_si_pas_correcte">(Changer si pas correcte)</string>
     <string name="zone">Zone</string>
     <string name="objectif_de_la_visite">Objectif de la visite</string>
+    <string name="objectif_journalier">Objectif journalier</string>
+    <string name="reste">Reste</string>
 </resources>
