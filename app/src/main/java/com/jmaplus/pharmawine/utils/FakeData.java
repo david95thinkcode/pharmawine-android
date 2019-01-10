@@ -61,8 +61,8 @@ public class FakeData {
             client.setFirstName(mFaker.name.firstName());
             client.setLastName(mFaker.name.lastName());
             client.setSex("m");
-            client.setSpeciality(mFaker.lorem.characters(60));
-            client.setStatus(mFaker.lorem.characters(60).toUpperCase());
+            client.setSpeciality(mFaker.lorem.characters(8) + "" + mFaker.lorem.characters(12));
+            client.setStatus(mFaker.lorem.characters(3).toUpperCase());
             client.setKnown(mFaker.bool.bool());
             client.setEmail(mFaker.name.name().concat("@").concat(mFaker.lorem.characters(5)).concat(mFaker.lorem.characters(2)));
             client.setBirthday(mFaker.date.birthday().toString());

@@ -154,6 +154,8 @@
 
     <string name="title_activity_visite_in_progress">Visite en cours &#8230;</string>
     <string name="msg_cancel_visite">Êtes vous sûr de vouloir annuler la visite?</string>
+    <string name="msg_end_visite">La visite est-t-elle terminée ?</string>
+    <string name="msg_confirmation_visite">Êtes vous sûr de vouloir commencer un visite ?</string>
     <string name="oui">Oui</string>
     <string name="non">Non</string>
     <string name="msg_confim_visite_end">Êtes vous sûr d\'avoir terminé votre visite avec cette personne?</string>
@@ -164,4 +166,5 @@
     <string name="objectif_de_la_visite">Objectif de la visite</string>
     <string name="objectif_journalier">Objectif journalier</string>
     <string name="reste">Reste</string>
+    <string name="visite_terminée">Visite terminée</string>
 </resources>
