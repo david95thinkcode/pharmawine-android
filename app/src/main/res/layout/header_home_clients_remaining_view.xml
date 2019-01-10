@@ -24,6 +24,7 @@
         android:textColor="@color/darker_grey" />
 
     <TextView
+        android:id="@+id/textView_num_visit_restant"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"

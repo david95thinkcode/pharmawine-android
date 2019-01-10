@@ -37,6 +37,7 @@
     <string name="menu_gift_title">Dons</string>
     <string name="menu_premiums_title">Primes</string>
     <string name="menu_cal_title">Calendar</string>
+    <string name="menu_cal_title">Evénements</string>
     <string name="menu_network_title">Réseaux</string>
     <string name="menu_infos_title">Informations</string>
     <string name="menu_logout_title">Déconnexion</string>
@@ -48,7 +49,7 @@
     <string name="field_required">Champ obligatoire</string>
     <string name="email_not_valid">Adresse email non valide</string>
     <string name="not_long_enough">% caractères minimum</string>
-    <string name="loading">Chargement en cours...</string>
+    <string name="loading">Chargement en cours &#8230;</string>
     <string name="call">Appeler</string>
 
     <string name="no_data_returned">Aucune donnée retournée</string>
@@ -151,4 +152,9 @@
         <item>Decembre</item>
     </string-array>
 
+    <string name="title_activity_visite_in_progress">Visite en cours &#8230;</string>
+    <string name="msg_cancel_visite">Êtes vous sûr de vouloir annuler la visite?</string>
+    <string name="oui">Oui</string>
+    <string name="non">Non</string>
+    <string name="msg_confim_visite_end">Êtes vous sûr d\'avoir terminé votre visite avec cette personne?</string>
 </resources>

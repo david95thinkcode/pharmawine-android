@@ -44,7 +44,8 @@
             android:label="@string/activity_about_title" />
         <activity
             android:name=".activities.LoginActivity"
-            android:label="@string/app_name" />
+            android:label="@string/app_name"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
         <activity
             android:name=".activities.PlanningActivity"
             android:label="@string/menu_planning_title"
@@ -110,6 +111,9 @@
         <activity
             android:name=".activities.SeenCustomers"
             android:label="@string/clients_vus"></activity>
+        <activity
+            android:name=".activities.VisiteInProgressActivity"
+            android:label="@string/title_activity_visite_in_progress" />
     </application>
 
 </manifest>

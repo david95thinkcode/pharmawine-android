@@ -1,12 +1,17 @@
 package com.jmaplus.pharmawine.adapters;
 
 import android.content.Context;
+
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,6 +22,8 @@ import com.jmaplus.pharmawine.activities.ClientDetailsActivity;
 import com.jmaplus.pharmawine.models.MedicalTeam;
 import com.jmaplus.pharmawine.models.Pharmacy;
 import com.jmaplus.pharmawine.utils.Constants;
+import com.jmaplus.pharmawine.PharmaWine;
+import com.jmaplus.pharmawine.models.FavoriteClient;
 
 import java.util.ArrayList;
 
@@ -127,6 +134,7 @@ public class ClientAdapter extends RecyclerView.Adapter<ClientAdapter.ViewHolder
                         medicalTeam.load();
 
                         if(medicalTeam.isValid()) {
+
                             i.putExtra(ClientDetailsActivity.CLIENT_TYPE_KEY, Constants.CLIENT_MEDICAL_TEAM_TYPE_KEY);
                             i.putExtra(ClientDetailsActivity.CLIENT_ID_KEY, medicalTeam.getId());
                             mContext.startActivity(i);

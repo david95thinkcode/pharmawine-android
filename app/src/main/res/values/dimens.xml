@@ -11,4 +11,5 @@
     <dimen name="menu_card_text_weight">30</dimen>
 
     <dimen name="img_laboratory_height_width">170dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 </resources>
