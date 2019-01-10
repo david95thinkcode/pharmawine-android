@@ -1,6 +1,5 @@
 package com.jmaplus.pharmawine.activities;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -14,11 +13,9 @@ import android.view.View;
 import android.widget.Button;
 
 import com.jmaplus.pharmawine.R;
-import com.jmaplus.pharmawine.fragments.profilage.Step1MedicalTeamClient;
-import com.jmaplus.pharmawine.fragments.profilage.Step2MedicalTeamClient;
-import com.jmaplus.pharmawine.fragments.profilage.Step3MedicalTeamClient;
-import com.jmaplus.pharmawine.fragments.profilage.Step4MedicalTeamClient;
-import com.jmaplus.pharmawine.fragments.profilage.Step5MedicalTeamClient;
+import com.jmaplus.pharmawine.fragments.profilage.Step1MedicalTeamClientFragment;
+import com.jmaplus.pharmawine.fragments.profilage.Step2MedicalTeamClientFragment;
+import com.jmaplus.pharmawine.fragments.profilage.Step3MedicalTeamClientFragment;
 import com.jmaplus.pharmawine.models.Client;
 import com.jmaplus.pharmawine.utils.Utils;
 
@@ -26,19 +23,15 @@ import org.jetbrains.annotations.NotNull;
 
 public class EditMedicalTeamActivity extends AppCompatActivity implements
         View.OnClickListener,
-        Step1MedicalTeamClient.OnFragmentInteractionListener,
-        Step2MedicalTeamClient.OnFragmentInteractionListener,
-        Step3MedicalTeamClient.OnFragmentInteractionListener,
-        Step4MedicalTeamClient.OnFragmentInteractionListener,
-        Step5MedicalTeamClient.OnFragmentInteractionListener {
+        Step1MedicalTeamClientFragment.OnFragmentInteractionListener,
+        Step2MedicalTeamClientFragment.OnFragmentInteractionListener,
+        Step3MedicalTeamClientFragment.OnFragmentInteractionListener {
 
     public static final String MEDICAL_ID_KEY = "com.jmaplus.pharmawine.activities.medicalTeamId";
-    public static final Integer NUM_PAGES = 6;
+    public static final Integer NUM_PAGES = 3;
     public static final int STEP_1_FRAGMENT_INDEX = 0;
     public static final int STEP_2_FRAGMENT_INDEX = 1;
     public static final int STEP_3_FRAGMENT_INDEX = 2;
-    public static final int STEP_4_FRAGMENT_INDEX = 3;
-    public static final int STEP_5_FRAGMENT_INDEX = 4;
 
     private int medicalTeamId;
     private Client client;
@@ -78,16 +71,6 @@ public class EditMedicalTeamActivity extends AppCompatActivity implements
 
     private void getClientDetails() {
         // TODO: fetch details
-    }
-
-    @Override
-    public void onBithdayFullyEntered(@NotNull String birthDay) {
-        changingInProgressClient.setBirthday(birthDay);
-    }
-
-    @Override
-    public void onNationalityChoosed(@NotNull String nationality) {
-        changingInProgressClient.setNationality(nationality);
     }
 
     @Override
@@ -132,8 +115,38 @@ public class EditMedicalTeamActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onFragmentInteraction(@NotNull Uri uri) {
+    public void onReligionSelected(@NotNull String religion) {
+        changingInProgressClient.setReligion(religion);
+    }
 
+    @Override
+    public void onAddressEntered(@NotNull String address) {
+        changingInProgressClient.setAddress(address);
+    }
+
+    @Override
+    public void onAdresseEmailEntered(@NotNull String email) {
+        changingInProgressClient.setEmail(email);
+    }
+
+    @Override
+    public void onPhoneNumber2Entered(@NotNull String phoneNumber2) {
+        changingInProgressClient.setPhoneNumber2(phoneNumber2);
+    }
+
+    @Override
+    public void onBithdayFullyEntered(@NotNull String birthDay) {
+        changingInProgressClient.setBirthday(birthDay);
+    }
+
+    @Override
+    public void onNationalityChoosed(@NotNull String nationality) {
+        changingInProgressClient.setNationality(nationality);
+    }
+
+    @Override
+    public void onMartialStatusChoosed(@NotNull String maritalStatus) {
+        changingInProgressClient.setMaritalStatus(maritalStatus);
     }
 
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
@@ -147,22 +160,16 @@ public class EditMedicalTeamActivity extends AppCompatActivity implements
             Fragment f;
             switch (position) {
                 case STEP_1_FRAGMENT_INDEX:
-                    f = new Step1MedicalTeamClient();
+                    f = new Step1MedicalTeamClientFragment();
                     break;
                 case STEP_2_FRAGMENT_INDEX:
-                    f = new Step2MedicalTeamClient();
+                    f = new Step2MedicalTeamClientFragment();
                     break;
                 case STEP_3_FRAGMENT_INDEX:
-                    f = new Step3MedicalTeamClient();
-                    break;
-                case STEP_4_FRAGMENT_INDEX:
-                    f = new Step4MedicalTeamClient();
-                    break;
-                case STEP_5_FRAGMENT_INDEX:
-                    f = new Step5MedicalTeamClient();
+                    f = new Step3MedicalTeamClientFragment();
                     break;
                 default:
-                    f = new Step1MedicalTeamClient();
+                    f = new Step1MedicalTeamClientFragment();
                     break;
             }
             // TODO: Update title

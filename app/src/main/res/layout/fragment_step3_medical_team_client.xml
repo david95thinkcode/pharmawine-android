@@ -1,13 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingLeft="25dp"
-    android:paddingRight="25dp"
-    tools:context=".fragments.profilage.Step3MedicalTeamClient">
 
-    <!-- TODO: Update blank fragment layout -->
+    style="@style/profilage_medicalTeam_nestedLayout_step_fragment_style"
+    tools:context=".fragments.profilage.Step3MedicalTeamClientFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,9 +19,8 @@
                 android:id="@+id/textView2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
                 android:layout_marginBottom="8dp"
-                android:text="@string/birthday"
+                android:text="@string/autres_numeros"
                 android:textColor="@color/bpDark_gray" />
 
             <LinearLayout
@@ -34,63 +29,29 @@
                 android:orientation="horizontal">
 
                 <EditText
-                    android:id="@+id/tv_day"
-                    style="@style/edit_text_bordered_style"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/ed_country_flag"
+                    style="@style/edit_text_bordered_lg_style"
+                    android:layout_width="101dp"
                     android:layout_height="50dp"
                     android:layout_marginRight="12dp"
                     android:layout_weight="1"
                     android:ems="10"
-                    android:hint="@string/jour"
-                    android:inputType="number"
                     android:maxLength="2" />
 
                 <EditText
-                    android:id="@+id/tv_month"
-                    style="@style/edit_text_bordered_style"
+                    android:id="@+id/ed_phone_number_2_full"
+                    style="@style/edit_text_bordered_lg_style"
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
                     android:layout_marginRight="12dp"
                     android:layout_weight="1"
                     android:ems="10"
-                    android:hint="@string/mois"
-                    android:inputType="number"
                     android:maxLength="2" />
-
-                <EditText
-                    android:id="@+id/tv_year"
-                    style="@style/edit_text_bordered_style"
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:layout_marginRight="12dp"
-                    android:layout_weight="1"
-                    android:ems="10"
-                    android:hint="@string/annee"
-                    android:inputType="number"
-                    android:maxLength="4" />
 
             </LinearLayout>
 
         </LinearLayout>
 
-        <LinearLayout
-            style="@style/margin_top_and_bottom_12_dp_style"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/textView5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginBottom="8dp"
-                android:text="@string/nationality"
-                android:textColor="@color/bpDark_gray" />
-
-            <Spinner
-                android:id="@+id/spinner_nationality"
-                android:layout_width="match_parent"
-                android:layout_height="36dp" />
-        </LinearLayout>
 
         <LinearLayout
             style="@style/margin_top_and_bottom_12_dp_style"
@@ -101,20 +62,19 @@
                 android:id="@+id/textView6"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
                 android:layout_marginBottom="8dp"
-                android:text="@string/birthday"
+                android:text="@string/adresse_email"
                 android:textColor="@color/bpDark_gray" />
 
             <EditText
                 android:id="@+id/editText4"
-                style="@style/edit_text_bordered_style"
+                style="@style/edit_text_bordered_lg_style"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:ems="10"
+                android:hint="@string/adresse_email_du_client"
                 android:inputType="textPersonName"
                 android:paddingStart="30dp"
-                android:text="Name"
                 android:textAlignment="textStart"
                 android:textColor="@color/bpDark_gray"
                 android:textSize="14sp" />

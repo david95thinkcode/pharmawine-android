@@ -107,6 +107,48 @@
     <string name="mois">Mois</string>
     <string name="annee">Annee</string>
     <string name="jour">Jour</string>
+    <string name="adresse_du_client">Adresse du client</string>
+    <string name="autres_numeros">Autres numeros ?</string>
+    <string name="adresse_email">Adresse email</string>
+    <string name="adresse_email_du_client">Adresse email du client</string>
+    <string name="choisissez">Choisissez</string>
 
+    <!-- Croyances religieuses array-->
+    <string-array name="religious_belief_array">
+        <item>Chrétien</item>
+        <item>Musulman</item>
+        <item>Autres</item>
+    </string-array>
+
+    <!-- Situation matrimoniale array-->
+    <string-array name="marital_status_array_fr">
+        <item>Célibataire</item>
+        <item>Marié(e)</item>
+        <item>Autres</item>
+    </string-array>
+
+    <!-- Nationality exemple array-->
+    <string-array name="nationality_fake_array_fr">
+        <item>Congo Brazaville</item>
+        <item>Cote d\'Ivoire</item>
+        <item>Togo</item>
+        <item>Ghana</item>
+    </string-array>
+
+    <!-- Mois de l'annee -->
+    <string-array name="months_array_fr">
+        <item>Janvier</item>
+        <item>Fevrier</item>
+        <item>Mars</item>
+        <item>Avril</item>
+        <item>Mai</item>
+        <item>Juin</item>
+        <item>Juillet</item>
+        <item>Aout</item>
+        <item>Septembre</item>
+        <item>Octobre</item>
+        <item>Novembre</item>
+        <item>Decembre</item>
+    </string-array>
 
 </resources>
