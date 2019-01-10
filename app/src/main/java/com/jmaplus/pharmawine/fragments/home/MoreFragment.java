@@ -69,18 +69,6 @@ public class MoreFragment extends Fragment {
             case R.id.cv_menu_products :
                 startActivity(new Intent(mContext, ProductsActivity.class));
                 break;
-            case R.id.cv_menu_laboratories :
-                startActivity(new Intent(mContext, LaboratoriesActivity.class));
-                break;
-            case R.id.cv_menu_wholesalers :
-                startActivity(new Intent(mContext, WholesalersActivity.class));
-                break;
-            case R.id.cv_menu_premium :
-                startActivity(new Intent(mContext, PremiumsActivity.class));
-                break;
-            case R.id.cv_menu_gift :
-                startActivity(new Intent(mContext, GifsActivity.class));
-                break;
             case R.id.cv_menu_cal :
                 startActivity(new Intent(mContext, CalendarActivity.class));
                 break;

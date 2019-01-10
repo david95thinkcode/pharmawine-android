@@ -1,15 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item
-        android:id="@+id/action_history"
-        android:icon="@drawable/history"
-        android:title="Historique"
-        app:showAsAction="always" />
-    <item
-        android:id="@+id/action_edit"
+    <item android:id="@+id/action_edit"
         android:icon="@drawable/pencil"
-        android:title="Modifier"
-        app:showAsAction="always" />
-
+        app:showAsAction="always"
+        android:title="Modifier"/>
 </menu>

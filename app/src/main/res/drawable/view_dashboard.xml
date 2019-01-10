@@ -1,8 +1,18 @@
-<!-- drawable/view_dashboard.xml -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:height="24dp"
     android:width="24dp"
-    android:viewportWidth="24"
-    android:viewportHeight="24">
-    <path android:fillColor="#000" android:pathData="M13,3V9H21V3M13,21H21V11H13M3,21H11V15H3M3,13H11V3H3V13Z" />
+    android:height="24dp"
+    android:viewportWidth="54.778"
+    android:viewportHeight="54.778">
+    <path
+        android:fillColor="#BDBDBD"
+        android:pathData="M23.175,0H2.107A2.107,2.107 0,0 0,0 2.107V23.175a2.107,2.107 0,0 0,2.107 2.107H23.175a2.107,2.107 0,0 0,2.107 -2.107V2.107A2.107,2.107 0,0 0,23.175 0Z" />
+    <path
+        android:fillColor="#BDBDBD"
+        android:pathData="M52.671,0L31.603,0a2.107,2.107 0,0 0,-2.107 2.107L29.496,23.175a2.107,2.107 0,0 0,2.107 2.107L52.671,25.282a2.107,2.107 0,0 0,2.107 -2.107L54.778,2.107A2.107,2.107 0,0 0,52.671 0Z" />
+    <path
+        android:fillColor="#BDBDBD"
+        android:pathData="M23.175,29.496L2.107,29.496A2.107,2.107 0,0 0,0 31.603v21.069a2.107,2.107 0,0 0,2.107 2.107L23.175,54.779a2.107,2.107 0,0 0,2.107 -2.107L25.282,31.603A2.107,2.107 0,0 0,23.175 29.496Z" />
+    <path
+        android:fillColor="#BDBDBD"
+        android:pathData="M52.671,29.496L31.603,29.496a2.107,2.107 0,0 0,-2.107 2.107v21.069a2.107,2.107 0,0 0,2.107 2.107L52.671,54.779a2.107,2.107 0,0 0,2.107 -2.107L54.778,31.603A2.107,2.107 0,0 0,52.671 29.496Z" />
 </vector>
