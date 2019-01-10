@@ -70,6 +70,7 @@
                 android:id="@+id/choix_centre_pour_rapport"
                 android:layout_width="350dp"
                 android:layout_height="wrap_content"
+                style="@style/edit_text_bordered_lg_style"
                 android:layout_marginTop="12dp" />
         </LinearLayout>
 

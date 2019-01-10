@@ -68,6 +68,7 @@
 
         <EditText
             android:layout_width="350dp"
+            style="@style/edit_text_bordered_lg_style"
             android:layout_height="175dp" />
 
 
