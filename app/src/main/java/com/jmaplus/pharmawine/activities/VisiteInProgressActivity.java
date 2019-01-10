@@ -2,28 +2,29 @@ package com.jmaplus.pharmawine.activities;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.jmaplus.pharmawine.R;
-import com.jmaplus.pharmawine.fragments.ToBeginReportFragment;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class VisiteInProgressActivity extends AppCompatActivity {
 
     private FrameLayout mFrameContainer;
-    private ToBeginReportFragment mToBeginReportFragment = new ToBeginReportFragment();
     private Fragment mFragment = null;
+    private CircleImageView profileImage;
+    private TextView tvNomPrenom, tvTypeClient, tvCategoryClient;
+    private Button btnVisiteEnd;
+
+
 
 
     @Override
@@ -33,6 +34,12 @@ public class VisiteInProgressActivity extends AppCompatActivity {
 
         LayoutInflater mInflater = LayoutInflater.from(this);
         View customActionBarVisite = mInflater.inflate(R.layout.actionbar_visit, null);
+
+        profileImage = findViewById(R.id.img_profil_client);
+        tvNomPrenom = findViewById(R.id.tv_nom_client);
+        tvTypeClient = findViewById(R.id.tv_type_client);
+        tvCategoryClient = findViewById(R.id.tv_category_client);
+        btnVisiteEnd = findViewById(R.id.btn_visit_fini);
 
         ImageView iconClose = customActionBarVisite.findViewById(R.id.actionbar_ic_close);
         TextView titre = customActionBarVisite.findViewById(R.id.title_text);
@@ -50,8 +57,14 @@ public class VisiteInProgressActivity extends AppCompatActivity {
             }
         });
 
-        mFrameContainer = findViewById(R.id.frame_container_visite);
-        showFragment(mToBeginReportFragment);
+        btnVisiteEnd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                confimationDialog();
+            }
+        });
+
+
 
 
     }
@@ -78,13 +91,6 @@ public class VisiteInProgressActivity extends AppCompatActivity {
         });
 
         builder.show();
-    }
-
-    private void showFragment(Fragment fragment) {
-        FragmentTransaction mFragmentTransaction = getSupportFragmentManager().beginTransaction();
-        mFragmentTransaction.replace(R.id.frame_container_visite, fragment);
-        mFragmentTransaction.commit();
-        mFragment = fragment;
     }
 
 

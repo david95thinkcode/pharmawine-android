@@ -164,4 +164,8 @@
     <string name="objectif_de_la_visite">Objectif de la visite</string>
     <string name="objectif_journalier">Objectif journalier</string>
     <string name="reste">Reste</string>
+    <string name="hint_objectif_visit">Entrer les objectifs de la visite</string>
+    <string name="hint_promesse_obtenue">Entrer les promesses obtenues</string>
+    <string name="terminer_mon_rapport">Terminer mon rapport</string>
+    <string name="prescriptions_constat">Prescriptions constatées</string>
 </resources>

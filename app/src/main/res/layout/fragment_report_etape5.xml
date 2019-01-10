@@ -4,12 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.ReportEtape3Fragment">
+    android:orientation="horizontal"
+    tools:context=".fragments.ReportEtape5Fragment">
 
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical"
         android:padding="16dp">
 
@@ -23,7 +24,7 @@
             app:contentPadding="2dp">
 
             <ImageButton
-                android:id="@+id/imageButtonBackToEtape2"
+                android:id="@+id/imageButtonBackToEtape4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|start"
@@ -31,7 +32,8 @@
                 android:layout_weight="1"
                 android:backgroundTint="@color/grey"
                 android:contentDescription="chevronBack"
-                android:src="@drawable/chevron_left" />
+                android:src="@drawable/chevron_left"
+                tools:ignore="HardcodedText" />
 
             <TextView
                 android:id="@+id/textView"
@@ -58,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="64dp"
                 android:fontFamily="@font/roboto_black"
-                android:text="@string/objectif_de_la_visite"
+                android:text="@string/prescriptions_constat"
                 android:textColor="@color/black_variant"
                 android:textSize="16sp" />
 
@@ -67,23 +69,24 @@
 
 
         <EditText
-            android:id="@+id/ed_objectif_visit"
+            android:id="@+id/ed_prescription_constate"
             style="@style/anOtherRoundedTextEditTheme"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:hint="@string/hint_objectif_visit" />
+            android:hint="@string/prescriptions_constat" />
 
 
     </LinearLayout>
 
     <Button
-        android:id="@+id/btn_suivant_etape_3"
+        android:id="@+id/btn_terminer_report_etape_5"
         style="?android:attr/buttonBarButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:background="@color/colorAccent"
-        android:text="@string/suivant"
+        android:text="@string/terminer_mon_rapport"
         android:textColor="@android:color/white"
         android:textSize="13sp" />
+
 </FrameLayout>
