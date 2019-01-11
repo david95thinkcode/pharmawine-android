@@ -43,6 +43,7 @@ public class VisiteInProgressFragment extends Fragment {
     private ImageView mImageViewProspectInconnu;
     private TextView tvNomPrenom, tvTypeClient, tvCategoryClient;
     private Button btnVisiteEnd;
+
     private Visite mVisite = new Visite();
 
     private String mProspectType = "";
@@ -142,16 +143,11 @@ public class VisiteInProgressFragment extends Fragment {
             }
             break;
             case Constants.PROSPECT_KNOWN_CLIENT_PHARMACY_TYPE_KEY: {
-
                 showCorrespondingViewForProfileImage(false);
-
-                mImageViewProspectInconnu.setVisibility(View.INVISIBLE);
-
             }
             break;
             case Constants.PROSPECT_UNKNOWN_MEDICAL_TEAM_TYPE_KEY: {
                 showCorrespondingViewForProfileImage(true);
-
             }
             break;
             case Constants.PROSPECT_UNKNOWN_CLIENT_PHARMACY_TYPE_KEY: {
@@ -159,7 +155,7 @@ public class VisiteInProgressFragment extends Fragment {
             }
             break;
             default: {
-                Log.e(getClass().getName(), "This prospect is not KNOWN MEDICAL TEAM");
+                Log.e(getClass().getName(), "This prospect is suspect ");
             }
             break;
         }
@@ -167,12 +163,17 @@ public class VisiteInProgressFragment extends Fragment {
 
     private void showCorrespondingViewForProfileImage(Boolean estUnProspectInconnu) {
         if (estUnProspectInconnu) {
-            profileImage.setVisibility(View.INVISIBLE);
+            profileImage.setVisibility(View.GONE);
             mImageViewProspectInconnu.setVisibility(View.VISIBLE);
+
+            // Textview
+            tvNomPrenom.setText(getResources().getString(R.string.prospect_inconnu));
+            tvCategoryClient.setVisibility(View.GONE);
+            tvTypeClient.setVisibility(View.GONE);
         } else {
             // Pour les prospects connus
             profileImage.setVisibility(View.VISIBLE);
-            mImageViewProspectInconnu.setVisibility(View.INVISIBLE);
+            mImageViewProspectInconnu.setVisibility(View.GONE);
         }
     }
 
