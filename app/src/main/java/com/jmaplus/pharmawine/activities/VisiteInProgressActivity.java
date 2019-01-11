@@ -1,26 +1,21 @@
 package com.jmaplus.pharmawine.activities;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
+import android.util.Log;
 
-import com.bumptech.glide.Glide;
 import com.jmaplus.pharmawine.R;
-import com.jmaplus.pharmawine.models.Client;
+import com.jmaplus.pharmawine.fragments.rapport.VisiteInProgressFragment;
+import com.jmaplus.pharmawine.models.Visite;
 import com.jmaplus.pharmawine.utils.Constants;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 
-public class VisiteInProgressActivity extends AppCompatActivity {
+public class VisiteInProgressActivity extends AppCompatActivity
+        implements VisiteInProgressFragment.OnFragmentInteractionListener {
 
-    private CircleImageView profileImage;
-    private TextView tvNomPrenom, tvTypeClient, tvCategoryClient;
-    private Button btnVisiteEnd;
-    private Client mClient = new Client();
+    FragmentManager fragmentManager = getSupportFragmentManager();
 
 
     @Override
@@ -28,94 +23,36 @@ public class VisiteInProgressActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_visite_in_progress);
 
-        mClient.setId(getIntent().getStringExtra(Constants.CLIENT_ID_KEY));
-        mClient.setFirstName(getIntent().getStringExtra(Constants.CLIENT_FIRSTNAME_KEY));
-        mClient.setLastName(getIntent().getStringExtra(Constants.CLIENT_LASTNAME_KEY));
-        mClient.setAvatarUrl(getIntent().getStringExtra(Constants.CLIENT_AVATAR_URL_KEY));
-        mClient.setStatus(getIntent().getStringExtra(Constants.CLIENT_STATUS_KEY));
-        mClient.setSpeciality(getIntent().getStringExtra(Constants.CLIENT_SPECIALITY_KEY));
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
-        initViews();
+        // Creating an instance of the fragment and its bundle
+        VisiteInProgressFragment fragment = new VisiteInProgressFragment();
+        Bundle args = new Bundle();
 
-        updateViewsContent();
+        // Populating arguments bundle
+        args.putString(VisiteInProgressFragment.ARGS_PROSPECT_TYPE, getIntent().getStringExtra(VisiteInProgressFragment.ARGS_PROSPECT_TYPE));
+        args.putString(VisiteInProgressFragment.ARGS_CLIENT_ID_KEY, getIntent().getStringExtra(Constants.CLIENT_ID_KEY));
+        args.putString(VisiteInProgressFragment.ARGS_CLIENT_FIRSTNAME_KEY, getIntent().getStringExtra(Constants.CLIENT_FIRSTNAME_KEY));
+        args.putString(VisiteInProgressFragment.ARGS_CLIENT_LASTNAME_KEY, getIntent().getStringExtra(Constants.CLIENT_LASTNAME_KEY));
+        args.putString(VisiteInProgressFragment.ARGS_CLIENT_AVATAR_UTL_KEY, getIntent().getStringExtra(Constants.CLIENT_AVATAR_URL_KEY));
+        args.putString(VisiteInProgressFragment.ARGS_CLIENT_STATUS_KEY, getIntent().getStringExtra(Constants.CLIENT_STATUS_KEY));
+        args.putString(VisiteInProgressFragment.ARGS_CLIENT_SPECIALITY_KEY, getIntent().getStringExtra(Constants.CLIENT_SPECIALITY_KEY));
+
+        // Passing arguments to the fragment
+        fragment.setArguments(args);
+
+        // Adding the fragment to the activity
+        fragmentTransaction.add(R.id.fragment_container_visite_in_progress, fragment);
+        fragmentTransaction.commit();
     }
 
-    private void initViews() {
+    @Override
+    public void onVisiteFinished(Visite v) {
 
-        profileImage = findViewById(R.id.img_profil_client);
-        tvNomPrenom = findViewById(R.id.tv_nom_client);
-        tvTypeClient = findViewById(R.id.tv_type_client);
-        tvCategoryClient = findViewById(R.id.tv_category_client);
-        btnVisiteEnd = findViewById(R.id.btn_visit_fini);
+        // TODO: Go to edit rapport activity and pass the client ID to it
+        // TODO : #Waiting for Waliss work
 
-        btnVisiteEnd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                confirmationDialogToEditRapport();
-            }
-        });
-    }
-
-    private void updateViewsContent() {
-        tvNomPrenom.setText(mClient.getFullName());
-        tvTypeClient.setText(mClient.getSpeciality());
-        tvCategoryClient.setText(mClient.getStatus());
-
-        if (!mClient.getAvatarUrl().isEmpty()) {
-            Glide.with(this).load(mClient.getAvatarUrl()).into(profileImage);
-        }
+        Log.e(getLocalClassName(), v.toString());
 
     }
-
-    private void confirmationDialogToEditRapport() {
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Visite terminée ?");
-        builder.setMessage(R.string.msg_confim_visite_end);
-        builder.setCancelable(false);
-
-        builder.setPositiveButton(R.string.oui, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // TODO: Go to edit rapport activity and pass the client ID to it
-                //
-                finish();
-            }
-        });
-
-        builder.setNegativeButton(R.string.non, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-
-        });
-
-        builder.show();
-    }
-
-    private void confirmationDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("");
-        builder.setMessage(R.string.msg_cancel_visite);
-        builder.setCancelable(false);
-
-        builder.setPositiveButton(R.string.oui, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                finish();
-            }
-        });
-
-        builder.setNegativeButton(R.string.non, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-
-        });
-
-        builder.show();
-    }
-
 }

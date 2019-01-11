@@ -2,7 +2,6 @@ package com.jmaplus.pharmawine.adapters
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,9 +32,6 @@ class RemainingClientsAdapter(val context: Context, var remainingClientsList: Mu
     override fun getItemCount(): Int = remainingClientsList.size
 
     override fun onBindViewHolder(holder: RemainingClientsViewHolder, position: Int) {
-
-        Log.e(TAG, "data gotten")
-
         holder?.fullname.text = remainingClientsList[position].getFullName()
         holder?.speciality.text = remainingClientsList[position].speciality
         holder?.status.text = remainingClientsList[position].status

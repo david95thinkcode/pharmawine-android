@@ -15,5 +15,9 @@ public class Constants {
     public static String CLIENT_AVATAR_URL_KEY = "client_av_url";
 
 
-    //
+    // NEW PROSPECTS
+    public static final String PROSPECT_UNKNOWN_MEDICAL_TEAM_TYPE_KEY = "pukn_medical_team";
+    public static final String PROSPECT_UNKNOWN_CLIENT_PHARMACY_TYPE_KEY = "pukn_pharmacy";
+    public static final String PROSPECT_KNOWN_MEDICAL_TEAM_TYPE_KEY = "pkn_medical_team";
+    public static final String PROSPECT_KNOWN_CLIENT_PHARMACY_TYPE_KEY = "pkn_pharmacy";
 }

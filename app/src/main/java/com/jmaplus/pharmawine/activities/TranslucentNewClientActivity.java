@@ -93,11 +93,11 @@ public class TranslucentNewClientActivity extends AppCompatActivity implements V
             }
             break;
             case R.id.btn_inconnu_cm: {
-                startActivityForPI(Constants.CLIENT_MEDICAL_TEAM_TYPE_KEY);
+                startActivityForPI(Constants.PROSPECT_UNKNOWN_MEDICAL_TEAM_TYPE_KEY);
             }
             break;
             case R.id.btn_inconnu_pharmacie: {
-                startActivityForPI(Constants.CLIENT_PHARMACY_TYPE_KEY);
+                startActivityForPI(Constants.PROSPECT_UNKNOWN_CLIENT_PHARMACY_TYPE_KEY);
             }
             break;
             case R.id.btn_prospect_connu: {
@@ -105,11 +105,11 @@ public class TranslucentNewClientActivity extends AppCompatActivity implements V
             }
             break;
             case R.id.btn_connu_cm: {
-                startActivityForPC(Constants.CLIENT_MEDICAL_TEAM_TYPE_KEY);
+                startActivityForPC(Constants.PROSPECT_KNOWN_MEDICAL_TEAM_TYPE_KEY);
             }
             break;
             case R.id.btn_connu_pharmacie: {
-                startActivityForPC(Constants.CLIENT_PHARMACY_TYPE_KEY);
+                startActivityForPC(Constants.PROSPECT_KNOWN_CLIENT_PHARMACY_TYPE_KEY);
             }
             break;
             default: {
