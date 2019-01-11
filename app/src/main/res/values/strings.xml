@@ -154,6 +154,8 @@
 
     <string name="title_activity_visite_in_progress">Visite en cours &#8230;</string>
     <string name="msg_cancel_visite">Êtes vous sûr de vouloir annuler la visite?</string>
+    <string name="msg_end_visite">La visite est-t-elle terminée ?</string>
+    <string name="msg_confirmation_visite">Êtes vous sûr de vouloir commencer un visite ?</string>
     <string name="oui">Oui</string>
     <string name="non">Non</string>
     <string name="msg_confim_visite_end">Êtes vous sûr d\'avoir terminé votre visite avec cette personne?</string>
@@ -168,4 +170,7 @@
     <string name="hint_promesse_obtenue">Entrer les promesses obtenues</string>
     <string name="terminer_mon_rapport">Terminer mon rapport</string>
     <string name="prescriptions_constat">Prescriptions constatées</string>
+    <string name="visite_terminee">Visite terminée</string>
+    <string name="precedent">Précedent</string>
+
 </resources>

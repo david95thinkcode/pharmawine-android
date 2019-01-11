@@ -2,12 +2,8 @@ package com.jmaplus.pharmawine.utils;
 
 import com.jmaplus.pharmawine.models.AuthenticatedUser;
 import com.jmaplus.pharmawine.models.Bonus;
+import com.jmaplus.pharmawine.models.Client;
 import com.jmaplus.pharmawine.models.Gift;
-import com.jmaplus.pharmawine.models.Laboratory;
-import com.jmaplus.pharmawine.models.MedicalTeam;
-import com.jmaplus.pharmawine.models.Pharmacy;
-import com.jmaplus.pharmawine.models.Product;
-import com.jmaplus.pharmawine.models.ProductCategory;
 import com.jmaplus.pharmawine.models.User;
 import com.jmaplus.pharmawine.models.Wholesaler;
 
@@ -52,6 +48,34 @@ public class FakeData {
 
         }
         return users;
+    }
+
+    public static ArrayList<Client> getMedicalTeamClients() {
+
+        ArrayList<Client> customers = new ArrayList<>();
+
+        for (Integer i = 1; i <= 10; i++) {
+            Client client = new Client();
+
+            client.setId(i.toString());
+            client.setFirstName(mFaker.name.firstName());
+            client.setLastName(mFaker.name.lastName());
+            client.setSex("m");
+            client.setSpeciality(mFaker.lorem.characters(8) + "" + mFaker.lorem.characters(12));
+            client.setStatus(mFaker.lorem.characters(3).toUpperCase());
+            client.setKnown(mFaker.bool.bool());
+            client.setEmail(mFaker.name.name().concat("@").concat(mFaker.lorem.characters(5)).concat(mFaker.lorem.characters(2)));
+            client.setBirthday(mFaker.date.birthday().toString());
+            client.setPhoneNumber(mFaker.phoneNumber.phoneNumber());
+            client.setPhoneNumber2(mFaker.phoneNumber.phoneNumber());
+            client.setMaritalStatus("Marié");
+            client.setNationality("Béninoise");
+            client.setType(Constants.CLIENT_MEDICAL_TEAM_TYPE_KEY);
+
+            customers.add(client);
+        }
+
+        return customers;
     }
 
     //    Connected User
