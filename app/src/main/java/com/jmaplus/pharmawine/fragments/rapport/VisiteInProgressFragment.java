@@ -130,8 +130,7 @@ public class VisiteInProgressFragment extends Fragment {
         switch (mProspectType) {
             case Constants.PROSPECT_KNOWN_MEDICAL_TEAM_TYPE_KEY: {
 
-                profileImage.setVisibility(View.VISIBLE);
-                mImageViewProspectInconnu.setVisibility(View.INVISIBLE);
+                showCorrespondingViewForProfileImage(false);
 
                 tvNomPrenom.setText(mVisite.getClient().getFullName());
                 tvTypeClient.setText(mVisite.getClient().getSpeciality());
@@ -144,28 +143,36 @@ public class VisiteInProgressFragment extends Fragment {
             break;
             case Constants.PROSPECT_KNOWN_CLIENT_PHARMACY_TYPE_KEY: {
 
-                profileImage.setVisibility(View.VISIBLE);
-                mImageViewProspectInconnu.setVisibility(View.INVISIBLE);
+                showCorrespondingViewForProfileImage(false);
 
                 mImageViewProspectInconnu.setVisibility(View.INVISIBLE);
 
             }
             break;
             case Constants.PROSPECT_UNKNOWN_MEDICAL_TEAM_TYPE_KEY: {
-                profileImage.setVisibility(View.INVISIBLE);
-                mImageViewProspectInconnu.setVisibility(View.VISIBLE);
+                showCorrespondingViewForProfileImage(true);
 
             }
             break;
             case Constants.PROSPECT_UNKNOWN_CLIENT_PHARMACY_TYPE_KEY: {
-                profileImage.setVisibility(View.INVISIBLE);
-                mImageViewProspectInconnu.setVisibility(View.VISIBLE);
+                showCorrespondingViewForProfileImage(true);
             }
             break;
             default: {
                 Log.e(getClass().getName(), "This prospect is not KNOWN MEDICAL TEAM");
             }
             break;
+        }
+    }
+
+    private void showCorrespondingViewForProfileImage(Boolean estUnProspectInconnu) {
+        if (estUnProspectInconnu) {
+            profileImage.setVisibility(View.INVISIBLE);
+            mImageViewProspectInconnu.setVisibility(View.VISIBLE);
+        } else {
+            // Pour les prospects connus
+            profileImage.setVisibility(View.VISIBLE);
+            mImageViewProspectInconnu.setVisibility(View.INVISIBLE);
         }
     }
 
