@@ -40,16 +40,19 @@
 
     <Button
         android:id="@+id/btn_suivant_activity_edit_medical"
-        android:layout_width="0dp"
-        android:layout_height="63dp"
-        android:backgroundTint="@color/colorAccent"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:layout_gravity="bottom"
+        android:layout_weight="0"
+        android:background="@color/colorAccent"
         android:text="@string/suivant"
         android:textAllCaps="false"
         android:textColor="@android:color/white"
+        android:textSize="13sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-    <!--style="?android:attr/buttonBarButtonStyle"-->
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline"
