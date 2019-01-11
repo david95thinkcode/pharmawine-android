@@ -7,28 +7,109 @@
     tools:context=".activities.TranslucentNewClientActivity">
 
     <ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/iv_prospect_inconnu"
+        android:layout_width="78dp"
+        android:layout_height="70dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="64dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintHorizontal_bias="0.766"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/profil_sup" />
+        app:srcCompat="@drawable/ic_groupe_981" />
 
-    <TextView
-        android:id="@+id/textView3"
+    <ImageView
+        android:id="@+id/iv_prospect_connu"
+        android:layout_width="78dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="128dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintHorizontal_bias="0.766"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_prospect_inconnu"
+        app:srcCompat="@drawable/ic_prospect_connu_img" />
+
+    <Button
+        android:id="@+id/btn_prospect_inconnu"
+        style="@style/btn_rounded_new_prospect_choice"
+        android:text="@string/prospect_inconnu"
+        android:textColor="#CDDC39"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_prospect_inconnu"
+        app:layout_constraintEnd_toStartOf="@+id/guideline3_end"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toTopOf="@+id/iv_prospect_inconnu" />
+
+    <Button
+        android:id="@+id/btn_prospect_connu"
+        style="@style/btn_rounded_new_prospect_choice"
+        android:text="@string/prospect_connu"
+        android:textColor="@color/project_grey"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_prospect_connu"
+        app:layout_constraintEnd_toStartOf="@+id/guideline3_end"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toTopOf="@+id/iv_prospect_connu" />
+
+    <Button
+        android:id="@+id/btn_inconnu_cm"
+        style="@style/btn_rounded_new_prospect_choice"
+
+        android:drawableLeft="@drawable/ic_corps_medicaux_symbol"
+        android:text="@string/corps_medical"
+        android:textColor="@color/green"
+        app:layout_constraintEnd_toStartOf="@+id/guideline3_end"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toBottomOf="@+id/btn_prospect_inconnu" />
+
+    <Button
+        android:id="@+id/btn_inconnu_pharmacie"
+        style="@style/btn_rounded_new_prospect_choice"
+
+        android:drawableLeft="@drawable/ic_pharmacy_symbol"
+        android:text="@string/pharmacie"
+        android:textColor="@color/project_blue"
+        app:layout_constraintEnd_toStartOf="@+id/guideline3_end"
+        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toBottomOf="@+id/btn_inconnu_cm" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="108dp"
-        android:text="Am a tranparent activity"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="132dp" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline3_end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintGuide_begin="382dp" />
+
+    <Button
+        android:id="@+id/btn_connu_cm"
+        style="@style/btn_rounded_new_prospect_choice"
+
+        android:drawableLeft="@drawable/ic_corps_medicaux_symbol"
+        android:text="@string/corps_medical"
+        android:textColor="@color/green"
+        app:layout_constraintEnd_toStartOf="@+id/guideline3_end"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toBottomOf="@+id/btn_prospect_connu" />
+
+    <Button
+        android:id="@+id/btn_connu_pharmacie"
+        style="@style/btn_rounded_new_prospect_choice"
+        android:drawableLeft="@drawable/ic_pharmacy_symbol"
+        android:text="@string/pharmacie"
+        android:textColor="@color/project_blue"
+        app:layout_constraintEnd_toStartOf="@+id/guideline3_end"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toBottomOf="@+id/btn_connu_cm" />
 </android.support.constraint.ConstraintLayout>

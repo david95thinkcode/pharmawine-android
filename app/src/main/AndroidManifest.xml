@@ -110,10 +110,12 @@
             android:label="@string/clients_restants" />
         <activity
             android:name=".activities.SeenCustomers"
-            android:label="@string/clients_vus"></activity>
+            android:label="@string/clients_vus" />
         <activity
             android:name=".activities.VisiteInProgressActivity"
             android:label="@string/title_activity_visite_in_progress" />
+        <activity android:name=".activities.NewProspectInconnuActivity" />
+        <activity android:name=".activities.NewProspectConnuActivity"></activity>
     </application>
 
 </manifest>
