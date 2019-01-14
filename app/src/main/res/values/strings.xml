@@ -152,6 +152,7 @@
         <item>Decembre</item>
     </string-array>
 
+
     <string name="title_activity_visite_in_progress">Visite en cours &#8230;</string>
     <string name="msg_cancel_visite">Êtes vous sûr de vouloir annuler la visite?</string>
     <string name="msg_end_visite">La visite est-t-elle terminée ?</string>
@@ -173,9 +174,22 @@
     <string name="visite_terminee">Visite terminée</string>
     <string name="precedent">Précedent</string>
 
-    <string name="visite_terminée">Visite terminée</string>
     <string name="prospect_inconnu">Prospect inconnu</string>
     <string name="prospect_connu">Prospect connu</string>
     <string name="corps_medical">Corps médical</string>
     <string name="pharmacie">Pharmacie</string>
+    <string name="nom_prospect">Nom du prospect</string>
+    <string name="ou_num_prospect">Ou numéro</string>
+    <string name="num_prospect">Numéro du prospect</string>
+    <string name="rapport_hebdo">Rapport hebdomadaire</string>
+    <string name="statistique_medicale_week">Statistiques médicale de la semaine</string>
+    <string name="activite_menee">Activités menées</string>
+    <string name="objection">Objections</string>
+    <string name="objectif_next_week">Objectifs de la semaine prochaine</string>
+    <string name="send_my_report">Envoyer mon rapport</string>
+    <string name="valider">Valider</string>
+    <string name="enter_text_here">Entrez votre texte ici.</string>
+    <string name="vos_objection">Vos objections</string>
+    <string name="prescripteurs">Prescripteurs</string>
+    <string name="garde">Gardes</string>
 </resources>

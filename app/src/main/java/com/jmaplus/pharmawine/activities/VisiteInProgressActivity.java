@@ -49,6 +49,7 @@ public class VisiteInProgressActivity extends AppCompatActivity
     @Override
     public void onVisiteFinished(Visite v) {
 
+
         // TODO: Go to edit rapport activity and pass the client ID to it
         // TODO : #Waiting for Waliss work
 

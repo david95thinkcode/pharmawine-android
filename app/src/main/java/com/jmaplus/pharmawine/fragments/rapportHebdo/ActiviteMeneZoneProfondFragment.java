@@ -1,4 +1,4 @@
-package com.jmaplus.pharmawine.fragments;
+package com.jmaplus.pharmawine.fragments.rapportHebdo;
 
 import android.content.Context;
 import android.net.Uri;

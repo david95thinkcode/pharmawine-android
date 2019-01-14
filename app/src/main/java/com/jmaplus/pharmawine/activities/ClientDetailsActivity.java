@@ -118,7 +118,7 @@ public class ClientDetailsActivity extends AppCompatActivity implements
                     i.putExtra(EditMedicalTeamActivity.MEDICAL_ID_KEY, clientId);
                     startActivity(i);
 
-                } else if (clientType == Constants.CLIENT_PHARMACY_TYPE_KEY) {
+                } else if (clientType.equals(Constants.CLIENT_PHARMACY_TYPE_KEY)) {
                     startActivity(new Intent(this, EditPharmacyActivity.class)
                             .putExtra(EditPharmacyActivity.PHARMACY_ID_KEY, clientId));
                 }

@@ -13,6 +13,7 @@
         android:icon="@drawable/logo"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
+        android:screenOrientation="portrait"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="icon">
@@ -115,7 +116,9 @@
             android:name=".activities.VisiteInProgressActivity"
             android:label="@string/title_activity_visite_in_progress" />
         <activity android:name=".activities.NewProspectInconnuActivity" />
-        <activity android:name=".activities.NewProspectConnuActivity"></activity>
+        <activity android:name=".activities.NewProspectConnuActivity" />
+        <activity android:name=".activities.RapportHebdoActivity" />
+        <activity android:name=".activities.ReportHebdoEditManagerActivity"></activity>
     </application>
 
 </manifest>
