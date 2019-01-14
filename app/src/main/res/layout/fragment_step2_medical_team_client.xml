@@ -47,18 +47,13 @@
 
             <EditText
                 android:id="@+id/ed_address"
-                style="@style/edit_text_bordered_style"
-                android:layout_width="match_parent"
-                android:layout_height="184dp"
-                android:ems="10"
-                android:hint="@string/adresse_du_client"
-                android:inputType="text|textMultiLine"
-                android:textSize="14sp" />
+                style="@style/textarea_bordered_style"
+                android:hint="@string/adresse_du_client" />
             <!--android:maxLines="6"-->
-            android:paddingStart="30dp"
-            android:textAlignment="textStart"
-            android:textColor="@color/bpDark_gray"
-            android:textSize="14sp" />
+            <!--android:paddingStart="30dp"-->
+            <!--android:textAlignment="textStart"-->
+            <!--android:textColor="@color/bpDark_gray"-->
+            <!--android:textSize="14sp" />-->
 
         </LinearLayout>
     </LinearLayout>

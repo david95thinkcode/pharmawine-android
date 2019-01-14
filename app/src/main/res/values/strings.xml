@@ -178,4 +178,10 @@
     <string name="prospect_connu">Prospect connu</string>
     <string name="corps_medical">Corps médical</string>
     <string name="pharmacie">Pharmacie</string>
+
+    <string name="informations_maquantes">Informations manquantes</string>
+    <string name="rapport_termine">Rapport terminé</string>
+    <string name="voulez_vous_terminer_le_profilage_de_ce_client">Voulez-vous terminer le profilage de ce client ?</string>
+    <string name="certaines_informations_sont_maquantes">Certraines informations sont manquantes</string>
+
 </resources>

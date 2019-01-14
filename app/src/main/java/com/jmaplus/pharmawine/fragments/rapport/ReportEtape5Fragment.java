@@ -1,12 +1,13 @@
-package com.jmaplus.pharmawine.fragments;
+package com.jmaplus.pharmawine.fragments.rapport;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 
 import com.jmaplus.pharmawine.R;
 
@@ -29,6 +30,9 @@ public class ReportEtape5Fragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+    private Button nextBtn;
+    private EditText prescriptionEditText;
+    private String mPrescription = new String();
 
     public ReportEtape5Fragment() {
         // Required empty public constructor
@@ -64,15 +68,20 @@ public class ReportEtape5Fragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_report_etape5, container, false);
-    }
+        View rootView = inflater.inflate(R.layout.fragment_report_etape5,
+                container, false);
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+        nextBtn = rootView.findViewById(R.id.btn_terminer_report_etape_5);
+        prescriptionEditText = rootView.findViewById(R.id.ed_prescription_constate);
+
+        nextBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPrescription = prescriptionEditText.getText().toString();
+                mListener.onStep5Finished(mPrescription);
+            }
+        });
+        return rootView;
     }
 
     @Override
@@ -92,18 +101,7 @@ public class ReportEtape5Fragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        void onStep5Finished(String prescribedRequirements);
     }
 }

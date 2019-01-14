@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.ReportEtape3Fragment">
+    tools:context=".fragments.rapport.ReportEtape3Fragment">
 
 
     <LinearLayout

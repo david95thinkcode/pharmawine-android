@@ -33,7 +33,7 @@ public class EditMedicalTeamActivity extends AppCompatActivity implements
     public static final int STEP_2_FRAGMENT_INDEX = 1;
     public static final int STEP_3_FRAGMENT_INDEX = 2;
 
-    private int medicalTeamId;
+    private String medicalTeamId = "";
     private Client client;
     private Client changingInProgressClient;
 
@@ -49,7 +49,7 @@ public class EditMedicalTeamActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_medical_team);
 
-        medicalTeamId = getIntent().getIntExtra(MEDICAL_ID_KEY, -1);
+        medicalTeamId = getIntent().getStringExtra(MEDICAL_ID_KEY);
         client = new Client();
         changingInProgressClient = new Client();
 
@@ -70,6 +70,8 @@ public class EditMedicalTeamActivity extends AppCompatActivity implements
     }
 
     private void getClientDetails() {
+        client.setId(medicalTeamId);
+
         // TODO: fetch details
     }
 

@@ -1,12 +1,13 @@
-package com.jmaplus.pharmawine.fragments;
+package com.jmaplus.pharmawine.fragments.rapport;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 
 import com.jmaplus.pharmawine.R;
 
@@ -29,6 +30,9 @@ public class ReportEtape4Fragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+    private Button nextBtn;
+    private EditText promesseEditText;
+    private String mPromesse = new String();
 
     public ReportEtape4Fragment() {
         // Required empty public constructor
@@ -65,14 +69,20 @@ public class ReportEtape4Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_report_etape4, container, false);
-    }
+        View rootView = inflater.inflate(R.layout.fragment_report_etape4, container, false);
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
+        nextBtn = rootView.findViewById(R.id.btn_suivant_etape_4);
+        promesseEditText = rootView.findViewById(R.id.ed_promesse_obtenue);
+
+        nextBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPromesse = promesseEditText.getText().toString();
+                mListener.onStep4Finished(mPromesse);
+            }
+        });
+
+        return rootView;
     }
 
     @Override
@@ -92,18 +102,7 @@ public class ReportEtape4Fragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        void onStep4Finished(String promesesHeld);
     }
 }
