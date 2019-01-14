@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 
 import com.jmaplus.pharmawine.R;
 import com.jmaplus.pharmawine.adapters.RemainingClientsAdapter;
+import com.jmaplus.pharmawine.fragments.rapport.VisiteInProgressFragment;
 import com.jmaplus.pharmawine.models.Client;
 import com.jmaplus.pharmawine.utils.Constants;
 import com.jmaplus.pharmawine.utils.FakeData;
@@ -60,8 +61,8 @@ public class ProspectionActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void showNewClientView() {
-        // TODO:
-
+        Intent i = new Intent(this, TranslucentNewClientActivity.class);
+        startActivity(i);
     }
 
     private void fetchRemainingClients() {
@@ -107,6 +108,12 @@ public class ProspectionActivity extends AppCompatActivity implements View.OnCli
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Intent i = new Intent(mContext, VisiteInProgressActivity.class);
+
+                // TODO: Important thing to considere after implentation of Pharmacy model
+                // IF customer is instance of pharmacy class, so use the following line instead
+                // .putExtra(VisiteInProgressFragment.ARGS_PROSPECT_TYPE, Constants.PROSPECT_KNOWN_PHARMACY_TYPE_KEY);
+
+                i.putExtra(VisiteInProgressFragment.ARGS_PROSPECT_TYPE, Constants.PROSPECT_KNOWN_MEDICAL_TEAM_TYPE_KEY);
 
                 i.putExtra(Constants.CLIENT_ID_KEY, customer.getId());
                 i.putExtra(Constants.CLIENT_FIRSTNAME_KEY, customer.getFirstName());

@@ -30,9 +30,6 @@ public class ClientDetailsActivity extends AppCompatActivity implements
         MedicalTeamDetailsFragment.OnFragmentInteractionListener,
         PharmacyDetailsFragment.OnFragmentInteractionListener {
 
-//    public static final String CLIENT_MEDICAL_TEAM = "medical_team";
-//    public static final String CLIENT_PHARMACY = "pharmacy";
-
     public static final String CLIENT_ID_KEY = "com.jmaplus.pharmawine.activities.ClientDetailsActivity.clientId";
     public static final String CLIENT_TYPE_KEY = "com.jmaplus.pharmawine.activities.ClientDetailsActivity.clientType";
     public static final String TAG = "ClientDetailsActivity";

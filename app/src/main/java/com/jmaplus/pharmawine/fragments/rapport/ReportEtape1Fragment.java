@@ -13,5 +13,8 @@ import com.jmaplus.pharmawine.R;
 
 public class ReportEtape1Fragment extends Fragment {
 
+    public ReportEtape1Fragment() {
+
+    }
 
 }

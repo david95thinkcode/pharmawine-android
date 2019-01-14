@@ -73,7 +73,7 @@
             android:label="@string/menu_clients_title"
             android:theme="@style/MyMaterialTheme" />
         <activity
-            android:name=".activities.NewClientActivity"
+            android:name=".activities.TranslucentNewClientActivity"
             android:label="@string/activity_new_client_title" />
         <activity
             android:name=".activities.LaboratoriesActivity"
@@ -110,10 +110,12 @@
             android:label="@string/clients_restants" />
         <activity
             android:name=".activities.SeenCustomers"
-            android:label="@string/clients_vus"></activity>
+            android:label="@string/clients_vus" />
         <activity
             android:name=".activities.VisiteInProgressActivity"
             android:label="@string/title_activity_visite_in_progress" />
+        <activity android:name=".activities.NewProspectInconnuActivity" />
+        <activity android:name=".activities.NewProspectConnuActivity"></activity>
     </application>
 
 </manifest>

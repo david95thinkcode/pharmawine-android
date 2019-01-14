@@ -173,4 +173,9 @@
     <string name="visite_terminee">Visite terminée</string>
     <string name="precedent">Précedent</string>
 
+    <string name="visite_terminée">Visite terminée</string>
+    <string name="prospect_inconnu">Prospect inconnu</string>
+    <string name="prospect_connu">Prospect connu</string>
+    <string name="corps_medical">Corps médical</string>
+    <string name="pharmacie">Pharmacie</string>
 </resources>
