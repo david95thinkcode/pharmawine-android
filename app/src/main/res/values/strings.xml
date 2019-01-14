@@ -192,4 +192,9 @@
     <string name="vos_objection">Vos objections</string>
     <string name="prescripteurs">Prescripteurs</string>
     <string name="garde">Gardes</string>
+    <string name="reunions">Réunions</string>
+    <string name="precise_centre">Précisez centre</string>
+    <string name="produit">Produit</string>
+    <string name="engagment">Engagement obtenus</string>
+    <string name="mode_de_suivi">Mode de suivi</string>
 </resources>
