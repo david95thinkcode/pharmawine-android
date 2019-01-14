@@ -91,11 +91,23 @@
         <item name="android:layout_marginBottom">12dp</item>
     </style>
 
+    <style name="anOtherRoundedTextEditTheme">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@drawable/edit_text_bordered_background</item>
+        <item name="android:ems">10</item>
+        <item name="android:padding">5dp</item>
+        <item name="android:layout_marginLeft">6dp</item>
+        <item name="android:layout_marginRight">6dp</item>
+        <item name="android:textAlignment">center</item>
+
+    </style>
+
     <style name="edit_text_bordered_style">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_weight">1</item>
-        <item name="android:background">@drawable/edit_text_bordered_background</item>
+        <item name="android:background">@drawable/edit_text_bordered_lg_background</item>
         <item name="android:ems">10</item>
         <item name="android:padding">10dp</item>
         <item name="android:layout_marginLeft">6dp</item>
