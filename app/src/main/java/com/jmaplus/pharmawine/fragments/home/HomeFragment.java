@@ -20,6 +20,7 @@ import com.jmaplus.pharmawine.PharmaWine;
 import com.jmaplus.pharmawine.R;
 import com.jmaplus.pharmawine.activities.NetworksActivity;
 import com.jmaplus.pharmawine.activities.ProspectionActivity;
+import com.jmaplus.pharmawine.activities.RapportHebdoActivity;
 import com.jmaplus.pharmawine.activities.RemainingClientsActivity;
 import com.jmaplus.pharmawine.activities.SeenCustomers;
 import com.jmaplus.pharmawine.models.AuthenticatedUser;

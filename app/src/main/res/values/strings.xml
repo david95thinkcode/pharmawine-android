@@ -184,4 +184,18 @@
     <string name="voulez_vous_terminer_le_profilage_de_ce_client">Voulez-vous terminer le profilage de ce client ?</string>
     <string name="certaines_informations_sont_maquantes">Certraines informations sont manquantes</string>
 
+    <string name="nom_prospect">Nom du prospect</string>
+    <string name="ou_num_prospect">Ou numéro</string>
+    <string name="num_prospect">Numéro du prospect</string>
+    <string name="rapport_hebdo">Rapport hebdomadaire</string>
+    <string name="statistique_medicale_week">Statistiques médicale de la semaine</string>
+    <string name="activite_menee">Activités menées</string>
+    <string name="objection">Objections</string>
+    <string name="objectif_next_week">Objectifs de la semaine prochaine</string>
+    <string name="send_my_report">Envoyer mon rapport</string>
+    <string name="valider">Valider</string>
+    <string name="enter_text_here">Entrez votre texte ici.</string>
+    <string name="vos_objection">Vos objections</string>
+    <string name="prescripteurs">Prescripteurs</string>
+    <string name="garde">Gardes</string>
 </resources>

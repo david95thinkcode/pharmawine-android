@@ -71,7 +71,7 @@ public class ReportEtape4Fragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_report_etape4, container, false);
 
-        nextBtn = rootView.findViewById(R.id.btn_suivant_etape_4);
+        nextBtn = rootView.findViewById(R.id.btn_suivant_etape_4_to_5);
         promesseEditText = rootView.findViewById(R.id.ed_promesse_obtenue);
 
         nextBtn.setOnClickListener(new View.OnClickListener() {

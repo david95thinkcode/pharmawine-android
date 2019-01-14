@@ -100,7 +100,7 @@
             android:layout_gravity="bottom"
             android:layout_weight="0"
             android:background="@color/colorAccent"
-            android:text="@string/visite_terminée"
+            android:text="@string/visite_terminee"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
             android:textSize="13sp" />

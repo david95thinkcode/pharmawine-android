@@ -82,4 +82,7 @@ public class FakeData {
     public static AuthenticatedUser getUserInfos() {
         return new AuthenticatedUser();
     }
+
+
+    //
 }

@@ -180,7 +180,11 @@ public class VisiteInProgressFragment extends Fragment {
     private void confirmationDialogToEditRapport() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+
+        LayoutInflater inflater = getActivity().getLayoutInflater();
         builder.setTitle("Visite terminée ?");
+//      TODO
+//  builder.setView(inflater.inflate(R.layout.custom_dialog_box, null));
         builder.setMessage(R.string.msg_confim_visite_end);
         builder.setCancelable(false);
 

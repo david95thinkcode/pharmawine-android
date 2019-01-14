@@ -39,7 +39,7 @@ public class ReportEtape3Fragment extends Fragment {
                 container, false);
 
         objectifEditText = rootView.findViewById(R.id.ed_objectif_visit);
-        nextBtn = rootView.findViewById(R.id.btn_suivant_etape_3);
+        nextBtn = rootView.findViewById(R.id.btn_suivant_etape_3_to_4);
 
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override

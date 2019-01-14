@@ -39,7 +39,7 @@ public class ReportEtape2Fragment extends Fragment {
                 container, false);
 
         zoneSpinner = rootView.findViewById(R.id.choix_zone_pour_rapport);
-        nextBtn = rootView.findViewById(R.id.btn_suivant_etape_2);
+        nextBtn = rootView.findViewById(R.id.btn_suivant_etape_2_to_3);
 
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override

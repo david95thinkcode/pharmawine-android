@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.ReportEtape4Fragment">
+    tools:context=".fragments.rapport.ReportEtape4Fragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -13,8 +13,8 @@
         android:padding="16dp">
 
         <android.support.v7.widget.CardView
-            android:layout_width="300dp"
-            android:layout_height="57dp"
+            android:layout_width="320dp"
+            android:layout_height="45dp"
             android:layout_gravity="center"
             android:textAppearance="?android:attr/textAppearanceMedium"
             app:cardBackgroundColor="@color/grey"
@@ -30,7 +30,7 @@
                 android:layout_weight="1"
                 android:backgroundTint="@color/grey"
                 android:contentDescription="chevronBack"
-                android:src="@drawable/chevron_left"
+                android:src="@drawable/ic_rapport"
                 tools:ignore="HardcodedText" />
 
             <TextView
@@ -77,13 +77,26 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/btn_suivant_etape_4"
+        android:id="@+id/btn_suivant_etape_4_to_5"
         style="?android:attr/buttonBarButtonStyle"
-        android:layout_width="match_parent"
+        android:layout_width="205dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:background="@color/colorAccent"
+        android:text="@string/suivant"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="13sp" />
+
+    <Button
+        android:id="@+id/btn_precedent_etape_4_to_3"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="205dp"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:background="@color/colorAccent"
-        android:text="@string/suivant"
+        android:text="@string/precedent"
+        android:textAllCaps="false"
         android:textColor="@android:color/white"
         android:textSize="13sp" />
 
