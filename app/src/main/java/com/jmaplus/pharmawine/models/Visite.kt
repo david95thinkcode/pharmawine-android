@@ -6,6 +6,11 @@ class Visite {
     var zone: String = ""
 
     /**
+     * Centre
+     */
+    var center: String = ""
+
+    /**
      * objectifs de la visite
      */
     var purposeOfVisit: String = ""
@@ -42,7 +47,8 @@ class Visite {
     fun isCompleted(): Boolean = true
 
     override fun toString(): String {
-        return "zone: $zone, purposeOfVisit: $purposeOfVisit, promesesHeld: $promesesHeld, " +
+        return "centre: $center" +
+                "zone: $zone, purposeOfVisit: $purposeOfVisit, promesesHeld: $promesesHeld, " +
                 "prescribedRequirements: $prescribedRequirements" +
                 "isKnownProspect : $isForKnownProspect, startTime : $startTime, endTime : $endTime, client : $client";
     }
