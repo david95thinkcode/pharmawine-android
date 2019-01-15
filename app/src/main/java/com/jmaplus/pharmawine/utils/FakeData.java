@@ -2,6 +2,7 @@ package com.jmaplus.pharmawine.utils;
 
 import com.jmaplus.pharmawine.models.AuthenticatedUser;
 import com.jmaplus.pharmawine.models.Bonus;
+import com.jmaplus.pharmawine.models.Center;
 import com.jmaplus.pharmawine.models.Client;
 import com.jmaplus.pharmawine.models.Gift;
 import com.jmaplus.pharmawine.models.User;
@@ -76,6 +77,22 @@ public class FakeData {
         }
 
         return customers;
+    }
+
+    public static ArrayList<Center> getCenters() {
+        ArrayList<Center> centers = new ArrayList<>();
+
+        for (Integer i = 1; i <= 5; i++) {
+            Center c = new Center();
+
+            c.setId(i.toString());
+            c.setName(mFaker.company.name());
+            c.setZone(mFaker.address.city());
+            centers.add(c);
+        }
+
+        return centers;
+
     }
 
     //    Connected User

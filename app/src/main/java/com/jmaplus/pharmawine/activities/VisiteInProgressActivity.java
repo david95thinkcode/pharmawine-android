@@ -28,7 +28,6 @@ import com.jmaplus.pharmawine.utils.Utils;
 public class VisiteInProgressActivity extends AppCompatActivity
         implements VisiteInProgressFragment.OnFragmentInteractionListener,
         ReportEtape1Fragment.OnFragmentInteractionListener,
-//        ReportEtape2ObsoleteFragment.OnFragmentInteractionListener,
         ReportEtape2Fragment.OnFragmentInteractionListener,
         ReportEtape3Fragment.OnFragmentInteractionListener,
         ReportEtape4Fragment.OnFragmentInteractionListener {
@@ -39,7 +38,6 @@ public class VisiteInProgressActivity extends AppCompatActivity
     public static final int STEP_3_FRAGMENT_INDEX = 2;
     public static final int STEP_4_FRAGMENT_INDEX = 3;
     private static final String TAG = "VisiteInProgressActivity";
-
 
     private FragmentManager fragmentManager = getSupportFragmentManager();
     private VisiteInProgressFragment firstFragment;
@@ -122,6 +120,11 @@ public class VisiteInProgressActivity extends AppCompatActivity
         Log.e(getLocalClassName(), v.toString());
 
         showViewPager();
+    }
+
+    @Override
+    public void onCenterUpdated(String updatedCenter) {
+        mVisite.setCenter(updatedCenter);
     }
 
     @Override
