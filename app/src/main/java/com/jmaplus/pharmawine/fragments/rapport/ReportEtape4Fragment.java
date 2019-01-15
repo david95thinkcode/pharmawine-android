@@ -13,42 +13,45 @@ import android.widget.EditText;
 
 import com.jmaplus.pharmawine.R;
 
-public class ReportEtape4Fragment extends Fragment implements View.OnClickListener {
+public class ReportEtape4Fragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
     private Button prevBtn;
     private Button nextBtn;
-    private EditText promesseEditText;
-    private String mPromesse = new String();
+    private EditText prescriptionEditText;
+    private String mPrescription = new String();
 
     public ReportEtape4Fragment() {
         // Required empty public constructor
     }
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
+//        if (getArguments() != null) {
 //            mParam1 = getArguments().getString(ARG_PARAM1);
 //            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+//        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_report_etape4, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_report_etape5,
+                container, false);
 
-        prevBtn = rootView.findViewById(R.id.btn_precedent_etape_4_to_3);
-        nextBtn = rootView.findViewById(R.id.btn_suivant_etape_4_to_5);
-        promesseEditText = rootView.findViewById(R.id.ed_promesse_obtenue);
+        nextBtn = rootView.findViewById(R.id.btn_terminer_report_etape_5);
+        prescriptionEditText = rootView.findViewById(R.id.ed_prescription_constate);
 
-        prevBtn.setOnClickListener(this);
-        nextBtn.setOnClickListener(this);
+        nextBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mPrescription = prescriptionEditText.getText().toString();
+                mListener.onStep4Finished(mPrescription);
+            }
+        });
 
-        promesseEditText.addTextChangedListener(new TextWatcher() {
+        prescriptionEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -56,8 +59,8 @@ public class ReportEtape4Fragment extends Fragment implements View.OnClickListen
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mPromesse = s.toString();
-                mListener.onPromeseUpdated(mPromesse);
+                mPrescription = s.toString();
+                mListener.onPrescriptionUpdated(mPrescription);
             }
 
             @Override
@@ -67,16 +70,6 @@ public class ReportEtape4Fragment extends Fragment implements View.OnClickListen
         });
 
         return rootView;
-    }
-
-    @Override
-    public void onClick(View v) {
-        if (v.getId() == prevBtn.getId()) {
-            mListener.onReturnToStep3();
-        } else if (v.getId() == nextBtn.getId()) {
-            mPromesse = promesseEditText.getText().toString();
-            mListener.onStep4Finished(mPromesse);
-        }
     }
 
     @Override
@@ -97,10 +90,9 @@ public class ReportEtape4Fragment extends Fragment implements View.OnClickListen
     }
 
     public interface OnFragmentInteractionListener {
-        void onStep4Finished(String promesesHeld);
 
-        void onPromeseUpdated(String updatedPromes);
+        void onPrescriptionUpdated(String updatedPrescription);
 
-        void onReturnToStep3();
+        void onStep4Finished(String prescribedRequirements);
     }
 }

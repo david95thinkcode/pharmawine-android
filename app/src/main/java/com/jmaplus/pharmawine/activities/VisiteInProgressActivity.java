@@ -20,7 +20,6 @@ import com.jmaplus.pharmawine.fragments.rapport.ReportEtape1Fragment;
 import com.jmaplus.pharmawine.fragments.rapport.ReportEtape2Fragment;
 import com.jmaplus.pharmawine.fragments.rapport.ReportEtape3Fragment;
 import com.jmaplus.pharmawine.fragments.rapport.ReportEtape4Fragment;
-import com.jmaplus.pharmawine.fragments.rapport.ReportEtape5Fragment;
 import com.jmaplus.pharmawine.fragments.rapport.VisiteInProgressFragment;
 import com.jmaplus.pharmawine.models.Visite;
 import com.jmaplus.pharmawine.utils.Constants;
@@ -29,17 +28,16 @@ import com.jmaplus.pharmawine.utils.Utils;
 public class VisiteInProgressActivity extends AppCompatActivity
         implements VisiteInProgressFragment.OnFragmentInteractionListener,
         ReportEtape1Fragment.OnFragmentInteractionListener,
+//        ReportEtape2ObsoleteFragment.OnFragmentInteractionListener,
         ReportEtape2Fragment.OnFragmentInteractionListener,
         ReportEtape3Fragment.OnFragmentInteractionListener,
-        ReportEtape4Fragment.OnFragmentInteractionListener,
-        ReportEtape5Fragment.OnFragmentInteractionListener {
+        ReportEtape4Fragment.OnFragmentInteractionListener {
 
-    public static final Integer NUM_PAGES = 5;
+    public static final Integer NUM_PAGES = 4;
     public static final int STEP_1_FRAGMENT_INDEX = 0;
     public static final int STEP_2_FRAGMENT_INDEX = 1;
     public static final int STEP_3_FRAGMENT_INDEX = 2;
     public static final int STEP_4_FRAGMENT_INDEX = 3;
-    public static final int STEP_5_FRAGMENT_INDEX = 4;
     private static final String TAG = "VisiteInProgressActivity";
 
 
@@ -148,25 +146,23 @@ public class VisiteInProgressActivity extends AppCompatActivity
     }
 
     @Override
-    public void onStep2Finished(String zone) {
-        mVisite.setZone(zone);
+    public void onStep2Finished(String purposeOfTheVisit) {
+        // TODO: Get zone from center ID from API
+        // Here am using an mock data for zone
+        mVisite.setZone("Une zone contenue dans les donnees recue de l'API");
+
+        mVisite.setPurposeOfVisit(purposeOfTheVisit);
         goToFragment(STEP_3_FRAGMENT_INDEX);
     }
 
     @Override
-    public void onStep3Finished(String purposeOfTheVisit) {
-        mVisite.setPurposeOfVisit(purposeOfTheVisit);
+    public void onStep3Finished(String promesesHeld) {
+        mVisite.setPromesesHeld(promesesHeld);
         goToFragment(STEP_4_FRAGMENT_INDEX);
     }
 
     @Override
-    public void onStep4Finished(String promesesHeld) {
-        mVisite.setPromesesHeld(promesesHeld);
-        goToFragment(STEP_5_FRAGMENT_INDEX);
-    }
-
-    @Override
-    public void onStep5Finished(String prescribedRequirements) {
+    public void onStep4Finished(String prescribedRequirements) {
         mVisite.setPrescribedRequirements(prescribedRequirements);
 
         if (mVisite.isCompleted()) {
@@ -198,11 +194,6 @@ public class VisiteInProgressActivity extends AppCompatActivity
     @Override
     public void onReturnToStep2() {
         goToFragment(STEP_2_FRAGMENT_INDEX);
-    }
-
-    @Override
-    public void onReturnToStep3() {
-        goToFragment(STEP_3_FRAGMENT_INDEX);
     }
 
     /**
@@ -278,9 +269,6 @@ public class VisiteInProgressActivity extends AppCompatActivity
                     break;
                 case STEP_4_FRAGMENT_INDEX:
                     f = new ReportEtape4Fragment();
-                    break;
-                case STEP_5_FRAGMENT_INDEX:
-                    f = new ReportEtape5Fragment();
                     break;
                 default:
                     f = new ReportEtape1Fragment();
