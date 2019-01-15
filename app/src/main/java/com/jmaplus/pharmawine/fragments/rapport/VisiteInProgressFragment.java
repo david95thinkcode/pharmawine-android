@@ -98,7 +98,8 @@ public class VisiteInProgressFragment extends Fragment {
                     + " must get an ARGS_PROSPECT_TYPE argument");
         }
 
-
+        // Getting start time string
+        mVisite.setStartTime(Calendar.getInstance().getTime().toString());
     }
 
     @Override
@@ -130,7 +131,6 @@ public class VisiteInProgressFragment extends Fragment {
 
         switch (mProspectType) {
             case Constants.PROSPECT_KNOWN_MEDICAL_TEAM_TYPE_KEY: {
-
                 showCorrespondingViewForProfileImage(false);
 
                 tvNomPrenom.setText(mVisite.getClient().getFullName());
@@ -183,18 +183,17 @@ public class VisiteInProgressFragment extends Fragment {
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
         builder.setTitle("Visite terminée ?");
-//      TODO
-//  builder.setView(inflater.inflate(R.layout.custom_dialog_box, null));
+
+        // TODO :
+
         builder.setMessage(R.string.msg_confim_visite_end);
         builder.setCancelable(false);
 
         builder.setPositiveButton(R.string.oui, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
                 // update mVisite endTime before call the listenner method
                 mVisite.setEndTime(Calendar.getInstance().getTime().toString());
-
                 mListener.onVisiteFinished(mVisite);
             }
         });

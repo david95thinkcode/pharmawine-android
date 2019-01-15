@@ -28,6 +28,7 @@ import com.jmaplus.pharmawine.utils.Utils;
 
 public class VisiteInProgressActivity extends AppCompatActivity
         implements VisiteInProgressFragment.OnFragmentInteractionListener,
+        ReportEtape1Fragment.OnFragmentInteractionListener,
         ReportEtape2Fragment.OnFragmentInteractionListener,
         ReportEtape3Fragment.OnFragmentInteractionListener,
         ReportEtape4Fragment.OnFragmentInteractionListener,
@@ -39,6 +40,8 @@ public class VisiteInProgressActivity extends AppCompatActivity
     public static final int STEP_3_FRAGMENT_INDEX = 2;
     public static final int STEP_4_FRAGMENT_INDEX = 3;
     public static final int STEP_5_FRAGMENT_INDEX = 4;
+    private static final String TAG = "VisiteInProgressActivity";
+
 
     private FragmentManager fragmentManager = getSupportFragmentManager();
     private VisiteInProgressFragment firstFragment;
@@ -106,17 +109,13 @@ public class VisiteInProgressActivity extends AppCompatActivity
         fragmentTransaction.hide(firstFragment);
         fragmentTransaction.commit();
 
-        // Show the view pager
         mViewPager.setVisibility(View.VISIBLE);
-
-        // Setting up the slide adapter
         mPagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(mPagerAdapter);
     }
 
     @Override
     public void onVisiteFinished(Visite v) {
-
 
         // TODO: Go to edit rapport activity and pass the client ID to it
 
@@ -128,18 +127,42 @@ public class VisiteInProgressActivity extends AppCompatActivity
     }
 
     @Override
+    public void onPromeseUpdated(String updatedPromes) {
+        mVisite.setPromesesHeld(updatedPromes);
+    }
+
+    @Override
+    public void onPurposeUpdated(String updatedPurposeOfTheVisit) {
+        mVisite.setPurposeOfVisit(updatedPurposeOfTheVisit);
+    }
+
+    @Override
+    public void onPrescriptionUpdated(String updatedPrescription) {
+        mVisite.setPrescribedRequirements(updatedPrescription);
+    }
+
+    @Override
+    public void onStep1Finished(String center) {
+        mVisite.setCenter(center);
+        goToFragment(STEP_2_FRAGMENT_INDEX);
+    }
+
+    @Override
     public void onStep2Finished(String zone) {
         mVisite.setZone(zone);
+        goToFragment(STEP_3_FRAGMENT_INDEX);
     }
 
     @Override
     public void onStep3Finished(String purposeOfTheVisit) {
         mVisite.setPurposeOfVisit(purposeOfTheVisit);
+        goToFragment(STEP_4_FRAGMENT_INDEX);
     }
 
     @Override
     public void onStep4Finished(String promesesHeld) {
         mVisite.setPromesesHeld(promesesHeld);
+        goToFragment(STEP_5_FRAGMENT_INDEX);
     }
 
     @Override
@@ -147,15 +170,59 @@ public class VisiteInProgressActivity extends AppCompatActivity
         mVisite.setPrescribedRequirements(prescribedRequirements);
 
         if (mVisite.isCompleted()) {
+            /**
+             * Here we have to :
+             * - TODO: Send rapport to the server using AsyncTask
+             * - Shows confirmation to edit client profile
+             */
 
-            // TODO: Send rapport to the server using AsyncTask
+            Utils.presentToast(this, "Sending report to server...", false);
+
+            logVisiteObject();
 
             confirmationDialogToEditProfile();
         } else {
+            logVisiteObject();
+
             Utils.presentToast(this,
                     getResources().getString(R.string.certaines_informations_sont_maquantes),
                     true);
         }
+    }
+
+    @Override
+    public void onReturnToStep1() {
+        goToFragment(STEP_1_FRAGMENT_INDEX);
+    }
+
+    @Override
+    public void onReturnToStep2() {
+        goToFragment(STEP_2_FRAGMENT_INDEX);
+    }
+
+    @Override
+    public void onReturnToStep3() {
+        goToFragment(STEP_3_FRAGMENT_INDEX);
+    }
+
+    /**
+     * Switch to corresponding fragment index received
+     *
+     * @param fragmentIndex
+     */
+    private void goToFragment(Integer fragmentIndex) {
+        logVisiteObject();
+        try {
+            mViewPager.setCurrentItem(fragmentIndex);
+        } catch (Exception e) {
+            Log.i(getLocalClassName(), "Error switching to fragment " + fragmentIndex);
+            Log.e(getLocalClassName(), "Error message : " + e.getMessage());
+        }
+    }
+
+    private void logVisiteObject() {
+        Log.i(getLocalClassName(), "================");
+        Log.i(getLocalClassName(), mVisite.toString());
     }
 
     private void confirmationDialogToEditProfile() {
@@ -168,17 +235,20 @@ public class VisiteInProgressActivity extends AppCompatActivity
         builder.setPositiveButton(R.string.oui, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
                 Intent i = new Intent(mContext, EditMedicalTeamActivity.class);
+
                 i.putExtra(EditMedicalTeamActivity.MEDICAL_ID_KEY, mVisite.getClient().getId());
+                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
                 startActivity(i);
+                finish();
             }
         });
 
         builder.setNegativeButton(R.string.non, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
+                finish();
             }
 
         });
@@ -220,6 +290,8 @@ public class VisiteInProgressActivity extends AppCompatActivity
 
             return f;
         }
+
+
 
         @Override
         public int getCount() {

@@ -152,6 +152,18 @@
         <item>Decembre</item>
     </string-array>
 
+    <string-array name="centres_array">
+        <item>Centre 1</item>
+        <item>Centre 2</item>
+        <item>Centre 3</item>
+    </string-array>
+
+    <string-array name="zones_array">
+        <item>Zone 1</item>
+        <item>Zone 2</item>
+        <item>Zone 3</item>
+    </string-array>
+
     <string name="title_activity_visite_in_progress">Visite en cours &#8230;</string>
     <string name="msg_cancel_visite">Êtes vous sûr de vouloir annuler la visite?</string>
     <string name="msg_end_visite">La visite est-t-elle terminée ?</string>
@@ -198,4 +210,5 @@
     <string name="vos_objection">Vos objections</string>
     <string name="prescripteurs">Prescripteurs</string>
     <string name="garde">Gardes</string>
+    <string name="promesses_obtenues">Promesses obtenues</string>
 </resources>

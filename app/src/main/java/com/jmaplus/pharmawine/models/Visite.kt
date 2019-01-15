@@ -39,17 +39,20 @@ class Visite {
      * Return true if all required data about visit report
      * is filled
      */
-//    fun isCompleted(): Boolean = (!zone.isNullOrEmpty()
-//            && !purposeOfVisit.isNullOrEmpty() && !promesesHeld.isNullOrEmpty()
-//            && !prescribedRequirements.isNullOrEmpty() && !startTime.isNullOrEmpty())
+    fun isCompleted(): Boolean = (!zone.isNullOrEmpty()
+            && !purposeOfVisit.isNullOrEmpty() && !promesesHeld.isNullOrEmpty()
+            && !prescribedRequirements.isNullOrEmpty() && !startTime.isNullOrEmpty())
 
-
-    fun isCompleted(): Boolean = true
 
     override fun toString(): String {
-        return "centre: $center" +
-                "zone: $zone, purposeOfVisit: $purposeOfVisit, promesesHeld: $promesesHeld, " +
-                "prescribedRequirements: $prescribedRequirements" +
-                "isKnownProspect : $isForKnownProspect, startTime : $startTime, endTime : $endTime, client : $client";
+        return "\n centre: $center," +
+                "\n zone: $zone," +
+                "\n purposeOfVisit: $purposeOfVisit," +
+                "\n promesesHeld: $promesesHeld," +
+                "\n prescribedRequirements: $prescribedRequirements," +
+                "\n isKnownProspect : $isForKnownProspect," +
+                "\n startTime : $startTime," +
+                "\n endTime : $endTime," +
+                "\n client : $client"
     }
 }
