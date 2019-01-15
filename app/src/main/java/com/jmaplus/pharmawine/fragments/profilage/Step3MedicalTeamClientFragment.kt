@@ -3,6 +3,8 @@ package com.jmaplus.pharmawine.fragments.profilage
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,12 +20,36 @@ class Step3MedicalTeamClientFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(R.layout.fragment_step3_medical_team_client, container, false)
+        mEmail = rootView.findViewById(R.id.ed_client_email)
+        mPhoneNumber2 = rootView.findViewById(R.id.ed_phone_number_2_full)
 
-
+        setUpListenners()
 
         return rootView
     }
 
+    private fun setUpListenners() {
+
+        mEmail.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {}
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                listener?.onAdresseEmailEntered(s.toString())
+            }
+        })
+
+        mPhoneNumber2.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {}
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                listener?.onPhoneNumber2Entered(s.toString())
+            }
+        })
+    }
 
 
     override fun onAttach(context: Context) {

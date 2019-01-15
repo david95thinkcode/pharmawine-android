@@ -6,14 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".activities.EditMedicalTeamActivity">
 
-    <Button
+    <RelativeLayout
         android:id="@+id/btn_profil_activity_edit_medical"
         android:layout_width="0dp"
         android:layout_height="46dp"
+        android:background="@drawable/rounded_linearlayout"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:background="@drawable/button_rounded"
+        android:orientation="vertical"
         android:backgroundTint="@color/darker_grey"
         android:drawablePadding="5dp"
         android:paddingLeft="20dp"
@@ -24,7 +25,29 @@
         android:textSize="13sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="10dp"
+            app:srcCompat="@drawable/ic_circular_profil" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="70dp"
+            android:layout_marginEnd="70dp"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="@string/profil"
+            android:textAlignment="center"
+            android:textColor="@android:color/white" />
+    </RelativeLayout>
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/img_profile_picture"
@@ -36,22 +59,6 @@
         app:civ_border_color="@color/light_grey"
         app:civ_border_width="1dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/btn_suivant_activity_edit_medical"
-        style="?android:attr/buttonBarButtonStyle"
-        android:layout_width="match_parent"
-        android:layout_height="72dp"
-        android:layout_gravity="bottom"
-        android:layout_weight="0"
-        android:background="@color/colorAccent"
-        android:text="@string/suivant"
-        android:textAllCaps="false"
-        android:textColor="@android:color/white"
-        android:textSize="13sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <android.support.constraint.Guideline
@@ -105,7 +112,6 @@
             android:layout_weight="40"
             android:gravity="center"
             android:text="100 %"
-            android:textAlignment="viewStart"
             android:textColor="@color/project_grey"
             android:textSize="11sp" />
     </LinearLayout>
@@ -114,9 +120,64 @@
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/btn_suivant_activity_edit_medical"
+        app:layout_constraintBottom_toTopOf="@+id/btn_prev_2_to_1_activity_edit_medical2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/divider2" />
+
+    <Button
+        android:id="@+id/btn_next_activity_edit_medical"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:layout_gravity="bottom"
+        android:background="@color/colorAccent"
+        android:text="@string/suivant"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btn_prev_2_to_1_activity_edit_medical2"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="0dp"
+        android:layout_height="72dp"
+        android:layout_gravity="bottom"
+        android:background="@color/project_grey"
+        android:text="@string/precedent"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline3"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btn_next_2_to_3_activity_edit_medical"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="0dp"
+        android:layout_height="72dp"
+        android:layout_gravity="bottom"
+        android:background="@color/colorAccent"
+        android:text="@string/suivant"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline3" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:foregroundGravity="center_horizontal"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="197dp" />
 
 </android.support.constraint.ConstraintLayout>

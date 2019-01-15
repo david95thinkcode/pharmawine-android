@@ -72,7 +72,7 @@ class Step1MedicalTeamClientFragment : Fragment(), AdapterView.OnItemSelectedLis
         val birthdayInputListenner = object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 // call the listenner method with full birthday string
-                listener?.onBithdayFullyEntered(getFullBirthday())
+                listener?.onBithdayFullyUpdated(getFullBirthday())
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -102,9 +102,12 @@ class Step1MedicalTeamClientFragment : Fragment(), AdapterView.OnItemSelectedLis
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         when (view?.id) {
-            mMonthSpinner.id -> mMonth = parent?.getItemAtPosition(position).toString()
-            mNationalitySpinner.id -> listener?.onNationalityChoosed(parent?.getItemAtPosition(position).toString())
-            mMaritalStatusSpinner.id -> listener?.onMartialStatusChoosed(parent?.getItemAtPosition(position).toString())
+            mMonthSpinner.id -> {
+                mMonth = parent?.getItemAtPosition(position).toString()
+                listener?.onBirthDayPartiallyUpdated(getFullBirthday())
+            }
+            mNationalitySpinner.id -> listener?.onNationalityUpdated(parent?.getItemAtPosition(position).toString())
+            mMaritalStatusSpinner.id -> listener?.onMartialStatusUpdated(parent?.getItemAtPosition(position).toString())
             else -> {
             }
         }
@@ -121,7 +124,7 @@ class Step1MedicalTeamClientFragment : Fragment(), AdapterView.OnItemSelectedLis
         var b = ""
         if (!mDay.text.isEmpty() && !mMonth.isNullOrEmpty() && !mYear.text.isNullOrEmpty()) {
             b = "${mDay.text}/$mMonth/${mYear.text}"
-            listener?.onBithdayFullyEntered(b)
+            listener?.onBithdayFullyUpdated(b)
         }
 
         return b
@@ -134,11 +137,13 @@ class Step1MedicalTeamClientFragment : Fragment(), AdapterView.OnItemSelectedLis
      * activity.
      */
     interface OnFragmentInteractionListener {
-        fun onBithdayFullyEntered(birthDay: String)
+        fun onBirthDayPartiallyUpdated(partialBirthday: String)
 
-        fun onMartialStatusChoosed(maritalStatus: String)
+        fun onBithdayFullyUpdated(birthDay: String)
 
-        fun onNationalityChoosed(nationality: String)
+        fun onMartialStatusUpdated(maritalStatus: String)
+
+        fun onNationalityUpdated(nationality: String)
 
     }
 

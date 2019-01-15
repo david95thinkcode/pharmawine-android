@@ -181,6 +181,7 @@
     <string name="hint_objectif_visit">Entrer les objectifs de la visite</string>
     <string name="hint_promesse_obtenue">Entrer les promesses obtenues</string>
     <string name="terminer_mon_rapport">Terminer mon rapport</string>
+    <string name="terminer">Terminer</string>
     <string name="prescriptions_constat">Prescriptions constatées</string>
     <string name="visite_terminee">Visite terminée</string>
     <string name="precedent">Précedent</string>
@@ -211,4 +212,5 @@
     <string name="prescripteurs">Prescripteurs</string>
     <string name="garde">Gardes</string>
     <string name="promesses_obtenues">Promesses obtenues</string>
+    <string name="etes_vous_sur_d_avoir_termine">Êtes-vous sur d\'avoir terminé ?</string>
 </resources>
