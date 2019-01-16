@@ -197,4 +197,8 @@
     <string name="produit">Produit</string>
     <string name="engagment">Engagement obtenus</string>
     <string name="mode_de_suivi">Mode de suivi</string>
+    <string name="relation_public">Relations Publiques</string>
+    <string name="action_pharma">Actions pharmacies</string>
+    <string name="parcours_fidel">Parcours Fidélisation</string>
+    <string name="zone_profonde">Zone Profonde</string>
 </resources>

@@ -3,6 +3,7 @@ package com.jmaplus.pharmawine.activities;
 import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AppCompatActivity;
@@ -25,9 +26,6 @@ public class RapportHebdoActivity extends AppCompatActivity {
     private String VuObjection;
     private String VuObjNextWeek;
     private Context mContext;
-    
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

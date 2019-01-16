@@ -3,7 +3,7 @@ package com.jmaplus.pharmawine.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-class ActiviteMene implements Parcelable {
+public class ActiviteMene implements Parcelable {
 
     @SuppressWarnings("unused")
     public static final Parcelable.Creator<ActiviteMene> CREATOR = new Parcelable.Creator<ActiviteMene>() {
