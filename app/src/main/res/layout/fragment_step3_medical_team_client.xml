@@ -34,8 +34,7 @@
                     android:layout_height="50dp"
                     android:layout_marginRight="12dp"
                     android:layout_weight="1"
-                    android:ems="10"
-                    android:maxLength="2" />
+                    android:ems="10" />
 
                 <EditText
                     android:id="@+id/ed_phone_number_2_full"
@@ -45,7 +44,7 @@
                     android:layout_marginRight="12dp"
                     android:layout_weight="1"
                     android:ems="10"
-                    android:maxLength="2" />
+                    android:inputType="phone" />
 
             </LinearLayout>
 
@@ -72,7 +71,7 @@
                 android:layout_height="match_parent"
                 android:ems="10"
                 android:hint="@string/adresse_email_du_client"
-                android:inputType="textPersonName"
+                android:inputType="textEmailAddress"
                 android:paddingStart="30dp"
                 android:textAlignment="textStart"
                 android:textColor="@color/bpDark_gray"

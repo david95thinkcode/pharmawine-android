@@ -38,6 +38,8 @@ public class VisiteInProgressFragment extends Fragment {
     public static final String ARGS_CLIENT_STATUS_KEY = "client_stat";
     public static final String ARGS_CLIENT_AVATAR_UTL_KEY = "ARGS_PROSPECT_TYPE";
 
+    public static final String TAG = "VisInProgressFragment";
+
     private OnFragmentInteractionListener mListener;
     private CircleImageView profileImage;
     private ImageView mImageViewProspectInconnu;
@@ -57,49 +59,7 @@ public class VisiteInProgressFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getArguments() != null) {
 
-            mProspectType = getArguments().getString(ARGS_PROSPECT_TYPE);
-
-            // Log prospect type info
-            Log.w(getClass().getName(), "mProspectType ==> : " + mProspectType);
-
-            switch (mProspectType) {
-                case Constants.PROSPECT_KNOWN_MEDICAL_TEAM_TYPE_KEY: {
-                    mVisite.getClient().setId(getArguments().getString(Constants.CLIENT_ID_KEY));
-                    mVisite.getClient().setFirstName(getArguments().getString(Constants.CLIENT_FIRSTNAME_KEY));
-                    mVisite.getClient().setLastName(getArguments().getString(Constants.CLIENT_LASTNAME_KEY));
-                    mVisite.getClient().setAvatarUrl(getArguments().getString(Constants.CLIENT_AVATAR_URL_KEY));
-                    mVisite.getClient().setStatus(getArguments().getString(Constants.CLIENT_STATUS_KEY));
-                    mVisite.getClient().setSpeciality(getArguments().getString(Constants.CLIENT_SPECIALITY_KEY));
-                }
-                break;
-                case Constants.PROSPECT_KNOWN_CLIENT_PHARMACY_TYPE_KEY: {
-
-                }
-                break;
-                case Constants.PROSPECT_UNKNOWN_MEDICAL_TEAM_TYPE_KEY: {
-
-                }
-                break;
-                case Constants.PROSPECT_UNKNOWN_CLIENT_PHARMACY_TYPE_KEY: {
-
-                }
-                break;
-                default: {
-
-                }
-                break;
-            }
-
-        } else {
-            // Throw an exception
-            throw new RuntimeException(requireContext().toString()
-                    + " must get an ARGS_PROSPECT_TYPE argument");
-        }
-
-        // Getting start time string
-        mVisite.setStartTime(Calendar.getInstance().getTime().toString());
     }
 
     @Override
@@ -121,6 +81,53 @@ public class VisiteInProgressFragment extends Fragment {
                 confirmationDialogToEditRapport();
             }
         });
+
+        //
+        Log.i(TAG, "Arguments is null ==> " + (getArguments() == null));
+        Log.i(TAG, "Arguments ==> " + getArguments().toString());
+
+        if (getArguments() != null) {
+
+            mProspectType = getArguments().getString(ARGS_PROSPECT_TYPE);
+            Log.i(getClass().getName(), "mProspectType ==> : " + mProspectType);
+
+            switch (mProspectType) {
+                case Constants.PROSPECT_KNOWN_MEDICAL_TEAM_TYPE_KEY: {
+                    mVisite.getClient().setId(getArguments().getString(ARGS_CLIENT_ID_KEY));
+                    mVisite.getClient().setFirstName(getArguments().getString(ARGS_CLIENT_FIRSTNAME_KEY));
+                    mVisite.getClient().setLastName(getArguments().getString(ARGS_CLIENT_LASTNAME_KEY));
+                    mVisite.getClient().setAvatarUrl(getArguments().getString(ARGS_CLIENT_AVATAR_UTL_KEY));
+                    mVisite.getClient().setStatus(getArguments().getString(ARGS_CLIENT_STATUS_KEY));
+                    mVisite.getClient().setSpeciality(getArguments().getString(ARGS_CLIENT_SPECIALITY_KEY));
+                }
+                break;
+                case Constants.PROSPECT_KNOWN_CLIENT_PHARMACY_TYPE_KEY: {
+
+                }
+                break;
+                case Constants.PROSPECT_UNKNOWN_MEDICAL_TEAM_TYPE_KEY: {
+
+                }
+                break;
+                case Constants.PROSPECT_UNKNOWN_CLIENT_PHARMACY_TYPE_KEY: {
+
+                }
+                break;
+                default: {
+                    Log.e(VisiteInProgressFragment.class.getName(),
+                            "OnCreate: anormal Prospect type ==> " + mProspectType);
+                }
+                break;
+            }
+
+        } else {
+            // Throw an exception
+            throw new RuntimeException(requireContext().toString()
+                    + " must get an ARGS_PROSPECT_TYPE argument");
+        }
+
+        // Getting start time string
+        mVisite.setStartTime(Calendar.getInstance().getTime().toString());
 
         updateViewsContent();
 
@@ -155,7 +162,7 @@ public class VisiteInProgressFragment extends Fragment {
             }
             break;
             default: {
-                Log.e(getClass().getName(), "This prospect is suspect ");
+                Log.e(getClass().getName(), "updateViewsContent() : This prospect is suspect ");
             }
             break;
         }

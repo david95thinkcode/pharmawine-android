@@ -15,7 +15,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
+import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
 import com.jmaplus.pharmawine.R;
 import com.jmaplus.pharmawine.fragments.profilage.Step1MedicalTeamClientFragment;
 import com.jmaplus.pharmawine.fragments.profilage.Step2MedicalTeamClientFragment;
@@ -24,6 +26,8 @@ import com.jmaplus.pharmawine.models.Client;
 import com.jmaplus.pharmawine.utils.Utils;
 
 import org.jetbrains.annotations.NotNull;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class EditMedicalTeamActivity extends AppCompatActivity implements
         View.OnClickListener,
@@ -46,6 +50,9 @@ public class EditMedicalTeamActivity extends AppCompatActivity implements
     private Button mSuivantBtn;
     private Button mNextAdaptativeBtn;
     private Button mPrevAdaptativeBtn;
+    private CircleImageView mPicture;
+    private RoundCornerProgressBar mRoundCornerProgressBar;
+    private TextView mProgressLabel;
 
     private Context mContext;
     private ViewPager mPager;
@@ -72,6 +79,9 @@ public class EditMedicalTeamActivity extends AppCompatActivity implements
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // Binding views
+        mPicture = findViewById(R.id.img_profile_picture);
+        mRoundCornerProgressBar = findViewById(R.id.progress_client_i_filling);
+        mProgressLabel = findViewById(R.id.tv_i_client_progress);
         mSuivantBtn = findViewById(R.id.btn_next_activity_edit_medical);
         mNextAdaptativeBtn = findViewById(R.id.btn_next_2_to_3_activity_edit_medical);
         mPrevAdaptativeBtn = findViewById(R.id.btn_prev_2_to_1_activity_edit_medical2);
@@ -227,6 +237,16 @@ public class EditMedicalTeamActivity extends AppCompatActivity implements
         builder.show();
     }
 
+    private void updateProgressionBar() {
+
+        Integer progression = changingInProgressClient.getFillingLevel();
+
+        Log.i(TAG, "Progression ==> " + progression);
+
+        mRoundCornerProgressBar.setProgress(progression);
+        mProgressLabel.setText(String.valueOf(progression).concat(" %"));
+    }
+
     private void updateProfileOnServer() {
         // TODO : Call api
         // Start a async task to update profile to server
@@ -252,41 +272,49 @@ public class EditMedicalTeamActivity extends AppCompatActivity implements
     @Override
     public void onReligionSelected(@NotNull String religion) {
         changingInProgressClient.setReligion(religion);
+        updateProgressionBar();
     }
 
     @Override
     public void onAddressEntered(@NotNull String address) {
         changingInProgressClient.setAddress(address);
+        updateProgressionBar();
     }
 
     @Override
     public void onAdresseEmailEntered(@NotNull String email) {
         changingInProgressClient.setEmail(email);
+        updateProgressionBar();
     }
 
     @Override
     public void onPhoneNumber2Entered(@NotNull String phoneNumber2) {
         changingInProgressClient.setPhoneNumber2(phoneNumber2);
+        updateProgressionBar();
     }
 
     @Override
     public void onBirthDayPartiallyUpdated(@NotNull String partialBirthday) {
         changingInProgressClient.setBirthday(partialBirthday);
+        updateProgressionBar();
     }
 
     @Override
     public void onBithdayFullyUpdated(@NotNull String birthDay) {
         changingInProgressClient.setBirthday(birthDay);
+        updateProgressionBar();
     }
 
     @Override
     public void onNationalityUpdated(@NotNull String nationality) {
         changingInProgressClient.setNationality(nationality);
+        updateProgressionBar();
     }
 
     @Override
     public void onMartialStatusUpdated(@NotNull String maritalStatus) {
         changingInProgressClient.setMaritalStatus(maritalStatus);
+        updateProgressionBar();
     }
 
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {

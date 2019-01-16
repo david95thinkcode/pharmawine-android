@@ -1,5 +1,6 @@
 package com.jmaplus.pharmawine.models
 
+import android.util.Log
 import com.jmaplus.pharmawine.R
 
 class Client {
@@ -24,14 +25,6 @@ class Client {
 
     fun getFullName(): String = "$firstName $lastName"
 
-//    fun getDetailsFromServer() {
-//
-//    }
-//
-//    fun getDetailsFromLocalStorage() {
-//
-//    }
-
     fun getDefaultAvatarUrl(): Int {
         return if (this.sex == "m" || this.sex == "M") R.drawable.ic_ast_man
         else R.drawable.ic_ast_woman
@@ -44,51 +37,85 @@ class Client {
     }
 
     fun getFillingLevel(): Int {
-        val totalFieldNumber = 12
+        val totalFieldNumber = 13
         var filledFieldNumber = 0
 
-        if (this.lastName != null || this.lastName.isEmpty()) {
+        if (!this.lastName.isNullOrEmpty()) {
             filledFieldNumber++
+            Log.i("Client", "lastName IS NOT NULL OR EMPTY : $lastName")
         }
-        if (this.firstName != null || this.firstName.isEmpty()) {
+        if (!this.firstName.isNullOrEmpty()) {
             filledFieldNumber++
+            Log.i("Client", "firstName IS NOT NULL OR EMPTY : $firstName")
         }
-        if (this.sex != null || this.sex.isEmpty()) {
+        if (!this.sex.isNullOrEmpty()) {
             filledFieldNumber++
+            Log.i("Client", "sex IS NOT NULL OR EMPTY : $sex")
         }
-        if (this.birthday != null || this.birthday.isEmpty()) {
+        if (!this.birthday.isNullOrEmpty()) {
             filledFieldNumber++
+            Log.i("Client", "birthday IS NOT NULL OR EMPTY : $birthday")
         }
-        if (this.maritalStatus != null || this.maritalStatus.isEmpty()) {
+        if (!this.maritalStatus.isNullOrEmpty()) {
             filledFieldNumber++
+            Log.i("Client", "maritalStatus IS NOT NULL OR EMPTY : $maritalStatus")
         }
-        if (this.phoneNumber != null || this.phoneNumber.isEmpty()) {
+        if (!this.phoneNumber.isNullOrEmpty()) {
             filledFieldNumber++
+            Log.i("Client", "phoneNumber IS NOT NULL OR EMPTY : $phoneNumber")
         }
-        if (this.phoneNumber2 != null || this.phoneNumber2.isEmpty()) {
+        if (!this.phoneNumber2.isNullOrEmpty()) {
             filledFieldNumber++
+            Log.i("Client", "phoneNumber2 IS NOT NULL OR EMPTY : $phoneNumber2")
         }
-        if (this.address != null || this.address.isEmpty()) {
+        if (!this.address.isNullOrEmpty()) {
             filledFieldNumber++
+            Log.i("Client", "address IS NOT NULL OR EMPTY : $address")
         }
-        if (this.email != null || this.email.isEmpty()) {
+        if (!this.email.isNullOrEmpty()) {
             filledFieldNumber++
+            Log.i("Client", "email IS NOT NULL OR EMPTY : $email")
         }
-        if (this.avatarUrl != null || this.avatarUrl.isEmpty()) {
+        if (!this.avatarUrl.isNullOrEmpty()) {
             filledFieldNumber++
+            Log.i("Client", "avatarUrl IS NOT NULL OR EMPTY : $avatarUrl")
         }
-        if (this.nationality != null || this.nationality.isEmpty()) {
+        if (!this.nationality.isNullOrEmpty()) {
             filledFieldNumber++
+            Log.i("Client", "nationality IS NOT NULL OR EMPTY : $nationality")
         }
-        if (this.speciality != null && !this.speciality.isEmpty()) {
+        if (!this.speciality.isNullOrEmpty()) {
             filledFieldNumber++
+            Log.i("Client", "speciality IS NOT NULL OR EMPTY : $speciality")
+        }
+        if (!this.religion.isNullOrEmpty()) {
+            filledFieldNumber++
+            Log.i("Client", "religion IS NOT NULL OR EMPTY : $religion")
         }
 
-        return filledFieldNumber / totalFieldNumber * 100
+        var level = ((filledFieldNumber.toDouble() / totalFieldNumber) * 100).toInt()
+
+        return level
     }
 
     override fun toString(): String {
-        return "[id = $id, firstname = $firstName, lastname = $lastName, sex = $sex, avatarUrl = $avatarUrl " +
-                "birthday = $birthday, email = $email, type = $type, status = $status, speciality = $speciality]"
+        return "" +
+                "\n id = $id, " +
+                "\n filling level = ${getFillingLevel()}" +
+                "\n firstname = $firstName, " +
+                "\n lastname = $lastName, " +
+                "\n sex = $sex, " +
+                "\n avatarUrl = $avatarUrl " +
+                "\n birthday = $birthday, " +
+                "\n email = $email, " +
+                "\n type = $type, " +
+                "\n religion = $religion" +
+                "\n marital status = $maritalStatus" +
+                "\n phone number 1 = $phoneNumber" +
+                "\n phone number 2 = $phoneNumber2" +
+                "\n nationality = $nationality" +
+                "\n address = $address" +
+                "\n status = $status, " +
+                "\n speciality = $speciality"
     }
 }

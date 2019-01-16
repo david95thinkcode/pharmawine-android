@@ -14,7 +14,7 @@ import android.widget.EditText
 import android.widget.Spinner
 import com.jmaplus.pharmawine.R
 
-class Step2MedicalTeamClientFragment : Fragment(), AdapterView.OnItemSelectedListener {
+class Step2MedicalTeamClientFragment : Fragment() {
 
     private var listener: OnFragmentInteractionListener? = null
 
@@ -56,6 +56,15 @@ class Step2MedicalTeamClientFragment : Fragment(), AdapterView.OnItemSelectedLis
     }
 
     private fun setListenners() {
+        mReligion.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                listener?.onReligionSelected(parent?.getItemAtPosition(position).toString())
+            }
+        }
+
         val adresListenner = object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
             }
@@ -68,20 +77,6 @@ class Step2MedicalTeamClientFragment : Fragment(), AdapterView.OnItemSelectedLis
             }
         }
         mAddress.addTextChangedListener(adresListenner)
-    }
-
-    override fun onNothingSelected(parent: AdapterView<*>?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-
-        when (view?.id) {
-            mReligion.id -> listener?.onReligionSelected(parent?.getItemAtPosition(position).toString())
-            else -> {
-                // Nothing to do
-            }
-        }
     }
 
     override fun onDetach() {

@@ -37,6 +37,7 @@ public class VisiteInProgressActivity extends AppCompatActivity
     public static final int STEP_2_FRAGMENT_INDEX = 1;
     public static final int STEP_3_FRAGMENT_INDEX = 2;
     public static final int STEP_4_FRAGMENT_INDEX = 3;
+    public static final String EXTRA_PROSPECT_TYPE = "prospectType";
     private static final String TAG = "VisiteInProgressActivity";
 
     private FragmentManager fragmentManager = getSupportFragmentManager();
@@ -46,6 +47,7 @@ public class VisiteInProgressActivity extends AppCompatActivity
     private ViewPager mViewPager;
     private View mRootContainer;
     private Visite mVisite;
+    private String prospectType = "";
 
 
     @Override
@@ -56,16 +58,20 @@ public class VisiteInProgressActivity extends AppCompatActivity
         setUI();
 
         mContext = this;
+        mVisite = new Visite();
+        prospectType = getIntent().getStringExtra(VisiteInProgressActivity.EXTRA_PROSPECT_TYPE);
+
+        Log.i(getLocalClassName(), "Prospect type extra ==> " + prospectType);
 
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         // Creating an instance of the fragment and its bundle
         firstFragment = new VisiteInProgressFragment();
-        Bundle args = new Bundle();
 
         // Populating arguments bundle
-        args.putString(VisiteInProgressFragment.ARGS_PROSPECT_TYPE,
-                getIntent().getStringExtra(VisiteInProgressFragment.ARGS_PROSPECT_TYPE));
+        Bundle args = new Bundle();
+
+        args.putString(VisiteInProgressFragment.ARGS_PROSPECT_TYPE, prospectType);
         args.putString(VisiteInProgressFragment.ARGS_CLIENT_ID_KEY,
                 getIntent().getStringExtra(Constants.CLIENT_ID_KEY));
         args.putString(VisiteInProgressFragment.ARGS_CLIENT_FIRSTNAME_KEY,
@@ -82,6 +88,8 @@ public class VisiteInProgressActivity extends AppCompatActivity
         // Passing arguments to the fragment
         firstFragment.setArguments(args);
 
+        Log.i(TAG, "First fragment arguments ==> " + args);
+
         // Adding the fragment to the activity
         fragmentTransaction.add(mRootContainer.getId(), firstFragment);
         fragmentTransaction.commit();
@@ -90,7 +98,7 @@ public class VisiteInProgressActivity extends AppCompatActivity
     private void setUI() {
         /**
          * The view pager should be invisible
-         * until the onVisiteFinished() method is executed
+         * until the onVisiteFinished() method is not executed
          * When it will be executed, we make the view pager visible
          */
         mRootContainer = findViewById(R.id.fragment_container_visite_in_progress);
@@ -112,12 +120,12 @@ public class VisiteInProgressActivity extends AppCompatActivity
 
     @Override
     public void onVisiteFinished(Visite v) {
-
         // TODO: Go to edit rapport activity and pass the client ID to it
 
         mVisite = v;
 
-        Log.e(getLocalClassName(), v.toString());
+        setTitle(mVisite.getClient().getFullName());
+        Log.i(getLocalClassName(), v.toString());
 
         showViewPager();
     }
@@ -230,7 +238,6 @@ public class VisiteInProgressActivity extends AppCompatActivity
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Intent i = new Intent(mContext, EditMedicalTeamActivity.class);
-
                 i.putExtra(EditMedicalTeamActivity.MEDICAL_ID_KEY, mVisite.getClient().getId());
                 i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 

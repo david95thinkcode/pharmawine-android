@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,8 +13,9 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Spinner
-
 import com.jmaplus.pharmawine.R
+import com.jmaplus.pharmawine.models.Country
+import com.jmaplus.pharmawine.utils.Utils
 
 /**
  * A simple [Fragment] subclass.
@@ -22,7 +24,7 @@ import com.jmaplus.pharmawine.R
  * to handle interaction events.
  *
  */
-class Step1MedicalTeamClientFragment : Fragment(), AdapterView.OnItemSelectedListener {
+class Step1MedicalTeamClientFragment : Fragment() {
     private var listener: OnFragmentInteractionListener? = null
 
     private lateinit var mDay: EditText
@@ -32,6 +34,7 @@ class Step1MedicalTeamClientFragment : Fragment(), AdapterView.OnItemSelectedLis
     private lateinit var mMaritalStatusSpinner: Spinner
 
     private var mMonth: String = ""
+    private var mCountriesList: MutableList<Country> = ArrayList()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -43,17 +46,31 @@ class Step1MedicalTeamClientFragment : Fragment(), AdapterView.OnItemSelectedLis
         mNationalitySpinner = rootView.findViewById(R.id.spinner_nationality)
         mMaritalStatusSpinner = rootView.findViewById(R.id.spinner_marital_status)
 
+
+        initialiseViews()
+
+        return rootView
+    }
+
+    private fun initialiseViews() {
+
+        // Start Populating nationality spinner
+        for (c in Utils.getCountries()) {
+            mCountriesList.add(c)
+        }
+
+        val countriesAdapter = ArrayAdapter<Country>(requireContext(), android.R.layout.simple_spinner_item, mCountriesList)
+                .also { adapter ->
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    mNationalitySpinner.adapter = adapter
+                }
+        // End populating nationality spinner
+
         // Spinner setting up for month
         ArrayAdapter.createFromResource(requireContext(), R.array.months_array_fr, android.R.layout.simple_spinner_item)
                 .also { adapter ->
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                     mMonthSpinner.adapter = adapter
-                }
-
-        ArrayAdapter.createFromResource(requireContext(), R.array.nationality_fake_array_fr, android.R.layout.simple_spinner_item)
-                .also { adapter ->
-                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                    mNationalitySpinner.adapter = adapter
                 }
 
         // marital status spinner
@@ -63,16 +80,44 @@ class Step1MedicalTeamClientFragment : Fragment(), AdapterView.OnItemSelectedLis
                     mMaritalStatusSpinner.adapter = adapter
                 }
 
-        setViewEvents()
 
-        return rootView
+        // Events listenner ----------------
+        mMonthSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                mMonth = (position + 1).toString()
+                updateBirthday()
+            }
+        }
+
+        mNationalitySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                val item: Country = countriesAdapter.getItem(position)
+                listener?.onNationalityUpdated(item.name)
+            }
+        }
+
+        mMaritalStatusSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                listener?.onMartialStatusUpdated(parent?.getItemAtPosition(position).toString())
+            }
+        }
+
+        setViewEvents()
     }
 
     private fun setViewEvents() {
         val birthdayInputListenner = object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                // call the listenner method with full birthday string
-                listener?.onBithdayFullyUpdated(getFullBirthday())
+                updateBirthday()
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -100,34 +145,20 @@ class Step1MedicalTeamClientFragment : Fragment(), AdapterView.OnItemSelectedLis
         listener = null
     }
 
-    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        when (view?.id) {
-            mMonthSpinner.id -> {
-                mMonth = parent?.getItemAtPosition(position).toString()
-                listener?.onBirthDayPartiallyUpdated(getFullBirthday())
-            }
-            mNationalitySpinner.id -> listener?.onNationalityUpdated(parent?.getItemAtPosition(position).toString())
-            mMaritalStatusSpinner.id -> listener?.onMartialStatusUpdated(parent?.getItemAtPosition(position).toString())
-            else -> {
-            }
-        }
-    }
-
-    override fun onNothingSelected(parent: AdapterView<*>?) {
-    }
-
     /**
-     * Return full birthday string
+     * Update the bithday and call the listenner if necessary
      */
-    private fun getFullBirthday(): String {
+    private fun updateBirthday() {
 
         var b = ""
         if (!mDay.text.isEmpty() && !mMonth.isNullOrEmpty() && !mYear.text.isNullOrEmpty()) {
             b = "${mDay.text}/$mMonth/${mYear.text}"
-            listener?.onBithdayFullyUpdated(b)
+            Log.i("STEP1", "Birthday updated ==> $b ")
+        } else {
+            Log.i("STEP1", "Birthday is not complete")
         }
 
-        return b
+        listener?.onBithdayFullyUpdated(b)
     }
 
     /**
