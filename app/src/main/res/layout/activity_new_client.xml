@@ -95,7 +95,6 @@
     <Button
         android:id="@+id/btn_connu_cm"
         style="@style/btn_rounded_new_prospect_choice"
-
         android:drawableLeft="@drawable/ic_corps_medicaux_symbol"
         android:text="@string/corps_medical"
         android:textColor="@color/green"

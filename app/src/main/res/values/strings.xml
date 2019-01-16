@@ -201,4 +201,18 @@
     <string name="action_pharma">Actions pharmacies</string>
     <string name="parcours_fidel">Parcours Fidélisation</string>
     <string name="zone_profonde">Zone Profonde</string>
+    <string name="couverture">Couverture</string>
+    <string name="fdc">FDC</string>
+    <string name="pdd">PDD</string>
+    <string name="p">P</string>
+    <string name="total">Total</string>
+    <string name="vu">Vu</string>
+    <string name="total_prevu">Total prévu</string>
+    <string name="real">Réal</string>
+    <string name="r_over_p">R/P</string>
+    <string name="nom_specialite">Nom de la spécialité</string>
+    <string name="specialite">Spécialités</string>
+    <string name="prospection">Prospections</string>
+    <string name="pig">PIG</string>
+    <string name="pim">PIM</string>
 </resources>

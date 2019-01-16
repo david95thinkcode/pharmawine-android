@@ -31,11 +31,11 @@ public class RapportHebdoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rapport_hebdo);
-        getWindow().setLayout(ActionBar.LayoutParams.MATCH_PARENT, 1400);
+        //getWindow().setLayout(ActionBar.LayoutParams.MATCH_PARENT, 1400);
 
         LayoutInflater mInflater = LayoutInflater.from(this);
         View mCustomView = mInflater.inflate(R.layout.custom_action_bar_rapport_hebdo, null);
-        mCustomView.setLayoutParams(new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT, 200, Gravity.NO_GRAVITY));
+        mCustomView.setLayoutParams(new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT, 150, Gravity.NO_GRAVITY));
 
         mContext = this;
         VuStat = getResources().getString(R.string.statistique_medicale_week);
