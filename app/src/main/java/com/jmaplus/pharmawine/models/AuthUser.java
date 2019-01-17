@@ -268,7 +268,7 @@ public class AuthUser {
      * @param context
      * @return
      */
-    public Boolean storeInSharedPreferences(Context context) {
+    public Boolean storeInSharedPreferences(Context context, String token) {
 
         Integer DEFAULT_DELEGUE_ROLE_ID = 3;
         try {
@@ -277,6 +277,7 @@ public class AuthUser {
             SharedPreferences.Editor editor = sharedPref.edit();
 
             editor.putInt(Constants.SP_ID_KEY, this.id);
+            editor.putString(Constants.SP_TOKEN_KEY, token);
             editor.putString(Constants.SP_FIRSTNAME_KEY, this.firstname);
             editor.putString(Constants.SP_LASTNAME_KEY, this.lastname);
             editor.putString(Constants.SP_AVATAR_URL_KEY, this.avatar);

@@ -45,6 +45,8 @@ public class LoginActivity extends AppCompatActivity implements AuthCalls.Callba
     private final int MIN_PASSWORD_LENGTH = 6;
     private static final String TAG = "LoginActivity";
     private ProgressDialog dialog;
+    private String userToken = "";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,6 +114,7 @@ public class LoginActivity extends AppCompatActivity implements AuthCalls.Callba
     @Override
     public void onLoginResponse(@Nullable AuthUserResponse response) {
 //        Toast.makeText(this, "Authentication step 1 passed", Toast.LENGTH_SHORT).show();
+        userToken = response.getToken();
         getAuthenticatedUserInfos(response.getToken());
     }
 
@@ -151,7 +154,7 @@ public class LoginActivity extends AppCompatActivity implements AuthCalls.Callba
     }
 
     private boolean saveUserData(AuthUser user) {
-        return user.storeInSharedPreferences(this);
+        return user.storeInSharedPreferences(this, userToken);
     }
 
     private boolean validateForm() {
