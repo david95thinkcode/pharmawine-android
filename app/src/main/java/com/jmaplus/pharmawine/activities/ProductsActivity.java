@@ -105,6 +105,8 @@ public class ProductsActivity extends AppCompatActivity {
         });
     }
 
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -123,11 +125,12 @@ public class ProductsActivity extends AppCompatActivity {
                 break;
             case R.id.action_search:
                 SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
+
                 searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                     @Override
                     public boolean onQueryTextSubmit(String s) {
 
-                        if(mCurrentFragment.equals(mLaboratoriesFragment.getClass().getSimpleName())) {
+                        if (mCurrentFragment.equals(mLaboratoriesFragment.getClass().getSimpleName())) {
                             mLaboratoriesFragment.search(s);
                         } else if (mCurrentFragment.equals(mReferencesFragment.getClass().getSimpleName())) {
                             mReferencesFragment.search(s);

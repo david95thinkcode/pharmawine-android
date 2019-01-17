@@ -40,7 +40,7 @@ public class MoreFragment extends Fragment {
     private SharedPreferences sp;
 
     private LinearLayout mPlanningCv;
-    private LinearLayout mClientsCv;
+//    private LinearLayout mClientsCv;
     private LinearLayout mStatsCv;
     private LinearLayout mProductsCv;
     private LinearLayout mCalendarCv;
@@ -69,19 +69,18 @@ public class MoreFragment extends Fragment {
 
         mPlanningCv = rootView.findViewById(R.id.cv_menu_planning);
         mStatsCv = rootView.findViewById(R.id.cv_menu_stats);
-        mClientsCv = rootView.findViewById(R.id.cv_menu_clients);
         mProductsCv = rootView.findViewById(R.id.cv_menu_products);
         mNetworkCv = rootView.findViewById(R.id.cv_menu_network);
         mCalendarCv = rootView.findViewById(R.id.cv_menu_cal);
         mInfosCv = rootView.findViewById(R.id.cv_menu_infos);
         mLogoutCv = rootView.findViewById(R.id.cv_menu_logout);
+        //        mClientsCv = rootView.findViewById(R.id.cv_menu_clients);
 
         return rootView;
     }
 
     private void initViewsForDelegue() {
-        mStatsCv.setVisibility(View.GONE);
-        mCalendarCv.setVisibility(View.GONE);
+
     }
 
     private void initViewsForSupervisor() {
@@ -98,9 +97,9 @@ public class MoreFragment extends Fragment {
             case R.id.cv_menu_planning :
                 startActivity(new Intent(mContext, PlanningActivity.class));
                 break;
-            case R.id.cv_menu_clients :
-                startActivity(new Intent(mContext, ClientsActivity.class));
-                break;
+//            case R.id.cv_menu_clients :
+//                startActivity(new Intent(mContext, ClientsActivity.class));
+//                break;
             case R.id.cv_menu_stats :
                 startActivity(new Intent(mContext, StatsActivity.class));
                 break;

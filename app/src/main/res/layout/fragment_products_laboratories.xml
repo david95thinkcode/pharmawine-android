@@ -28,7 +28,8 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="50"
-                android:background="@color/light_grey"
+                android:background="@color/darker_grey"
+                android:textColor="@android:color/white"
                 android:gravity="center"
                 android:text="@string/menu_laboratories_title" />
         </LinearLayout>
