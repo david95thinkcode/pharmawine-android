@@ -4,32 +4,38 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.jmaplus.pharmawine.PharmaWine;
 import com.jmaplus.pharmawine.R;
 import com.jmaplus.pharmawine.models.AuthenticatedUser;
 import com.jmaplus.pharmawine.services.ApiClient;
 import com.jmaplus.pharmawine.services.ApiInterface;
 import com.jmaplus.pharmawine.services.responses.LoginResponse;
+import com.jmaplus.pharmawine.utils.ApiRoutes;
 import com.jmaplus.pharmawine.utils.PrefManager;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.regex.Pattern;
 
-import javax.annotation.Nullable;
-
 import okhttp3.FormBody;
-import okhttp3.MediaType;
 import okhttp3.RequestBody;
-import okio.BufferedSink;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -41,6 +47,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private PrefManager prefManager;
     private final int MIN_PASSWORD_LENGTH = 6;
+    private static final String TAG = "LoginActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,20 +61,27 @@ public class LoginActivity extends AppCompatActivity {
         btnConnexion = findViewById(R.id.btn_login_connexion);
 
 //        TODO removes this
-        etId.setText("gvoisin@example.org");
+        etId.setText("alcoy@gmail.com");
         etPassword.setText("secret");
 
 //        Avoid courrier font for passwords input
         etPassword.setTypeface(Typeface.DEFAULT);
         etPassword.setTransformationMethod(new PasswordTransformationMethod());
 
+//        btnConnexion.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if (validateForm()) {
+////                    Login with email and password
+//                    login(etId.getText().toString().trim(), etPassword.getText().toString().trim());
+//                }
+//            }
+//        });
+
         btnConnexion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (validateForm()) {
-//                    Login with email and password
-                    login(etId.getText().toString().trim(), etPassword.getText().toString().trim());
-                }
+                loginWithNewApi(etId.getText().toString().trim(), etPassword.getText().toString().trim());
             }
         });
     }
@@ -98,6 +112,73 @@ public class LoginActivity extends AppCompatActivity {
         etPassword.setText(etPassword.getText().toString().trim());
         return true;
     }
+
+    private void loginWithNewApi(String email, String password) {
+
+        try {
+            RequestQueue queue = Volley.newRequestQueue(this);
+
+            JSONObject requestBody = new JSONObject();
+
+            requestBody.put("email", email);
+            requestBody.put("password", password);
+
+            final ProgressDialog dialog = new ProgressDialog(this);
+            dialog.setCancelable(false);
+            dialog.setMessage(getResources().getString(R.string.loading));
+            dialog.show();
+
+            JsonObjectRequest request = new JsonObjectRequest(
+                    Request.Method.POST, ApiRoutes.login, requestBody,
+                    new com.android.volley.Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            // Request Succeed
+                            // ...
+                            dialog.dismiss();
+                            try {
+                                getAuthenticatedUserInfos(response.getString("token"));
+                                Log.i(getLocalClassName(), "Response : " + response);
+                                Toast.makeText(LoginActivity.this, "User data getted", Toast.LENGTH_SHORT).show();
+                            } catch (JSONException e) {
+                                Log.e(TAG, e.getMessage());
+                                e.printStackTrace();
+                            }
+
+                        }
+                    }, new com.android.volley.Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Toast.makeText(LoginActivity.this, getResources().getString(R.string.smthg_wrong_request), Toast.LENGTH_SHORT).show();
+                    Log.e(getLocalClassName(), "Request failed : " + error.getMessage());
+                    Log.e(TAG, error.toString());
+                    dialog.dismiss();
+
+                }
+
+            });
+
+            queue.add(request);
+        } catch (JSONException jsonError) {
+            Toast.makeText(this, "Probleme interne", Toast.LENGTH_SHORT).show();
+            Log.e(TAG, jsonError.getMessage());
+            jsonError.printStackTrace();
+        } catch (Exception e) {
+            Toast.makeText(this, "Une erreur s'est produite", Toast.LENGTH_SHORT).show();
+            Log.e(TAG, e.getMessage());
+            e.printStackTrace();
+        }
+
+    }
+
+    private void getAuthenticatedUserInfos(String token) {
+
+    }
+
+    private void storeAuthenticatedUserInfosInSharedPreferences() {
+
+    }
+
 
     private void login(String email, String password) {
 
