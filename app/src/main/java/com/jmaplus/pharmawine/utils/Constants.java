@@ -35,6 +35,10 @@ public class Constants {
     public static final String MENU_RESEAUX_KEY = "menu_reseaux";
     public static final String MENU_PRODUITS_KEY = "menu_produits";
 
+    // USERS ROLES ================================
+    public static final int ROLE_ADMIN_KEY = 1;
+    public static final int ROLE_SUPERVISEUR_KEY = 2;
+    public static final int ROLE_DELEGUE_KEY = 3;
 
     // CLIENT TYPES KEY
     public static String CLIENT_MEDICAL_TEAM_TYPE_KEY = "medical_team";

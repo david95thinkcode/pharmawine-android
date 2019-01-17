@@ -5,29 +5,28 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.jmaplus.pharmawine.PharmaWine;
 import com.jmaplus.pharmawine.R;
 import com.jmaplus.pharmawine.activities.CalendarActivity;
 import com.jmaplus.pharmawine.activities.ClientsActivity;
-import com.jmaplus.pharmawine.activities.GifsActivity;
 import com.jmaplus.pharmawine.activities.InfosActivity;
-import com.jmaplus.pharmawine.activities.LaboratoriesActivity;
 import com.jmaplus.pharmawine.activities.LoginActivity;
 import com.jmaplus.pharmawine.activities.NetworksActivity;
 import com.jmaplus.pharmawine.activities.PlanningActivity;
-import com.jmaplus.pharmawine.activities.PremiumsActivity;
 import com.jmaplus.pharmawine.activities.ProductsActivity;
 import com.jmaplus.pharmawine.activities.StatsActivity;
-import com.jmaplus.pharmawine.activities.WholesalersActivity;
 import com.jmaplus.pharmawine.models.AuthenticatedUser;
+import com.jmaplus.pharmawine.utils.Constants;
 import com.jmaplus.pharmawine.utils.PrefManager;
 
 /**
@@ -35,8 +34,19 @@ import com.jmaplus.pharmawine.utils.PrefManager;
  */
 public class MoreFragment extends Fragment {
 
+    private int userID;
     private Context mContext;
     private PrefManager prefManager;
+    private SharedPreferences sp;
+
+    private LinearLayout mPlanningCv;
+    private LinearLayout mClientsCv;
+    private LinearLayout mStatsCv;
+    private LinearLayout mProductsCv;
+    private LinearLayout mCalendarCv;
+    private LinearLayout mNetworkCv;
+    private LinearLayout mInfosCv;
+    private LinearLayout mLogoutCv;
 
     public MoreFragment() {
         // Required empty public constructor
@@ -49,11 +59,39 @@ public class MoreFragment extends Fragment {
         mContext = getActivity();
         prefManager = new PrefManager(mContext);
 
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_more, container, false);
+        sp = mContext.getSharedPreferences(Constants.F_PROFIL,
+                Context.MODE_PRIVATE);
+        userID = sp.getInt(Constants.SP_ID_KEY, -1);
 
-        return view;
+
+        // Inflate the layout for this fragment
+        View rootView = inflater.inflate(R.layout.fragment_more, container, false);
+
+        mPlanningCv = rootView.findViewById(R.id.cv_menu_planning);
+        mStatsCv = rootView.findViewById(R.id.cv_menu_stats);
+        mClientsCv = rootView.findViewById(R.id.cv_menu_clients);
+        mProductsCv = rootView.findViewById(R.id.cv_menu_products);
+        mNetworkCv = rootView.findViewById(R.id.cv_menu_network);
+        mCalendarCv = rootView.findViewById(R.id.cv_menu_cal);
+        mInfosCv = rootView.findViewById(R.id.cv_menu_infos);
+        mLogoutCv = rootView.findViewById(R.id.cv_menu_logout);
+
+        return rootView;
     }
+
+    private void initViewsForDelegue() {
+        mStatsCv.setVisibility(View.GONE);
+        mCalendarCv.setVisibility(View.GONE);
+    }
+
+    private void initViewsForSupervisor() {
+
+    }
+
+    private void initViewsForAdmin() {
+
+    }
+
 
     public void clicksHandler(View view) {
         switch (view.getId()) {
