@@ -2,6 +2,14 @@ package com.jmaplus.pharmawine.utils;
 
 public class Constants {
 
+    // SHARED PREFERENCES PRIVATE FILES
+    // ===================================
+    //
+    public static final String F_PROFIL = "f_profil";
+    public static final String F_MENU = "f_menu";
+    public static final String F_REPORTS = "f_reports";
+
+
     // SHARED PREFERENCES KEYS
     // ===================================
     //
@@ -17,7 +25,8 @@ public class Constants {
     public static final String SP_PHONE_2_KEY = "sp_phone2";
     public static final String SP_EMAIL_KEY = "sp_mail";
     public static final String SP_TYPE_KEY = "sp_type";
-    public static final String SP_STATUS_KEY = "sp_status";
+    public static final String SP_ROLE_KEY = "sp_role";
+    public static final String SP_ACCOUNT_STATUS_KEY = "sp_status";
     public static final String SP_AVATAR_URL_KEY = "sp_avatar";
 
     // MENU ITEMS ================================

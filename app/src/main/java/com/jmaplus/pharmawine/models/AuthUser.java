@@ -1,8 +1,12 @@
 package com.jmaplus.pharmawine.models;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
 import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.jmaplus.pharmawine.utils.Constants;
 
 import java.util.List;
 
@@ -37,7 +41,7 @@ public class AuthUser {
     private String birthday;
     @SerializedName("avatar")
     @Expose
-    private Object avatar;
+    private String avatar;
     @SerializedName("email")
     @Expose
     private String email;
@@ -147,11 +151,11 @@ public class AuthUser {
         this.birthday = birthday;
     }
 
-    public Object getAvatar() {
+    public String getAvatar() {
         return avatar;
     }
 
-    public void setAvatar(Object avatar) {
+    public void setAvatar(String avatar) {
         this.avatar = avatar;
     }
 
@@ -257,5 +261,48 @@ public class AuthUser {
 
         return gson.toJson(this);
     }
+
+    /**
+     * Write user data into shared Preferences
+     *
+     * @param context
+     * @return
+     */
+    public Boolean storeInSharedPreferences(Context context) {
+
+        Integer DEFAULT_DELEGUE_ROLE_ID = 3;
+        try {
+            SharedPreferences sharedPref = context.getSharedPreferences(
+                    Constants.F_PROFIL, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPref.edit();
+
+            editor.putInt(Constants.SP_ID_KEY, this.id);
+            editor.putString(Constants.SP_FIRSTNAME_KEY, this.firstname);
+            editor.putString(Constants.SP_LASTNAME_KEY, this.lastname);
+            editor.putString(Constants.SP_AVATAR_URL_KEY, this.avatar);
+            editor.putString(Constants.SP_EMAIL_KEY, this.email);
+            editor.putString(Constants.SP_BIRTHDAY_KEY, this.birthday);
+            editor.putString(Constants.SP_SEX_KEY, this.sex);
+            editor.putString(Constants.SP_NATIONALITY_KEY, this.nationalite);
+            editor.putString(Constants.SP_PHONE_1_KEY, this.telephone1);
+            editor.putString(Constants.SP_PHONE_2_KEY, this.telephone2);
+            editor.putString(Constants.SP_MARITAL_STATUS_KEY, this.maritalStatus);
+            editor.putInt(Constants.SP_TYPE_KEY, this.typeId);
+
+            // Un compte de user actif a pour status = 0 sinon 1
+            editor.putInt(Constants.SP_ACCOUNT_STATUS_KEY, this.status);
+
+            // TODO : replace the value by the real object role when the api will be updated
+            editor.putInt(Constants.SP_ROLE_KEY, DEFAULT_DELEGUE_ROLE_ID);
+
+            editor.commit();
+
+        } catch (Exception e) {
+            return false;
+        }
+
+        return true;
+    }
+
 
 }

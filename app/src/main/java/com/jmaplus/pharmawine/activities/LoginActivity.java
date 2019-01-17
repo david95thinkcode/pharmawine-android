@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.PasswordTransformationMethod;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
@@ -132,11 +131,10 @@ public class LoginActivity extends AppCompatActivity implements AuthCalls.Callba
     public void onFetchingDetailsResponse(@Nullable AuthUser response) {
 //        Toast.makeText(this, "Authentication step 2 passed", Toast.LENGTH_SHORT).show();
 
-        Boolean isStored = storeAuthenticatedUserInfosInSharedPreferences(response);
+        Boolean isStored = saveUserData(response);
 
         if (isStored) {
-//            Toast.makeText(this, "Authentication step 3 passed", Toast.LENGTH_SHORT).show();
-
+            Toast.makeText(this, "Authentication step 3 passed", Toast.LENGTH_SHORT).show();
             // open the app
             stopLoadingDialog();
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
@@ -152,12 +150,8 @@ public class LoginActivity extends AppCompatActivity implements AuthCalls.Callba
         stopLoadingDialog();
     }
 
-    private boolean storeAuthenticatedUserInfosInSharedPreferences(AuthUser user) {
-
-        Log.i(TAG, user.toString());
-
-        // TODO:
-        return true;
+    private boolean saveUserData(AuthUser user) {
+        return user.storeInSharedPreferences(this);
     }
 
     private boolean validateForm() {
