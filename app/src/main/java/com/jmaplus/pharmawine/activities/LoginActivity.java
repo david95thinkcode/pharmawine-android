@@ -4,10 +4,11 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.method.PasswordTransformationMethod;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
@@ -16,31 +17,35 @@ import android.widget.Toast;
 
 import com.jmaplus.pharmawine.PharmaWine;
 import com.jmaplus.pharmawine.R;
+import com.jmaplus.pharmawine.models.AuthUser;
+import com.jmaplus.pharmawine.models.AuthUserResponse;
 import com.jmaplus.pharmawine.models.AuthenticatedUser;
+import com.jmaplus.pharmawine.models.LoginCredentials;
 import com.jmaplus.pharmawine.services.ApiClient;
 import com.jmaplus.pharmawine.services.ApiInterface;
 import com.jmaplus.pharmawine.services.responses.LoginResponse;
 import com.jmaplus.pharmawine.utils.PrefManager;
+import com.jmaplus.pharmawine.utils.RetrofitCalls.AuthCalls;
 
 import java.util.regex.Pattern;
 
 import javax.annotation.Nullable;
 
 import okhttp3.FormBody;
-import okhttp3.MediaType;
 import okhttp3.RequestBody;
-import okio.BufferedSink;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements AuthCalls.Callbacks {
 
     private EditText etId, etPassword;
     private TextView btnConnexion;
 
     private PrefManager prefManager;
     private final int MIN_PASSWORD_LENGTH = 6;
+    private static final String TAG = "LoginActivity";
+    private ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,27 +54,110 @@ public class LoginActivity extends AppCompatActivity {
 
         prefManager = new PrefManager(this);
 
+        InitalizeUI();
+
+        btnConnexion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (validateForm()) loginWithNewApi();
+            }
+        });
+    }
+
+    private void InitalizeUI() {
+
+        // progress dialog
+        dialog = new ProgressDialog(this);
+        dialog.setCancelable(false);
+        dialog.setMessage(getResources().getString(R.string.loading));
+
         etId = findViewById(R.id.et_login_id);
         etPassword = findViewById(R.id.et_login_password);
         btnConnexion = findViewById(R.id.btn_login_connexion);
 
 //        TODO removes this
-        etId.setText("gvoisin@example.org");
+        etId.setText("alcoy@gmail.com");
         etPassword.setText("secret");
 
 //        Avoid courrier font for passwords input
         etPassword.setTypeface(Typeface.DEFAULT);
         etPassword.setTransformationMethod(new PasswordTransformationMethod());
+    }
 
-        btnConnexion.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (validateForm()) {
-//                    Login with email and password
-                    login(etId.getText().toString().trim(), etPassword.getText().toString().trim());
-                }
-            }
-        });
+    private void loginWithNewApi() {
+        startLoadingDialog();
+        try {
+            AuthCalls.startLoginRequest(this,
+                    etId.getText().toString().trim(),
+                    etPassword.getText().toString().trim()
+            );
+        } catch (Exception e) {
+            Toast.makeText(this, "Une erreur s'est produite", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+            stopLoadingDialog();
+        }
+
+    }
+
+    private void getAuthenticatedUserInfos(String token) {
+        try {
+            LoginCredentials credentials = new LoginCredentials(etId.getText().toString().trim(), etPassword.getText().toString().trim());
+            AuthCalls.getDetails(this, token);
+        } catch (Exception e) {
+            Toast.makeText(this, "Error pour recuperation des details du user", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+            stopLoadingDialog();
+        }
+    }
+
+    @Override
+    public void onLoginResponse(@Nullable AuthUserResponse response) {
+//        Toast.makeText(this, "Authentication step 1 passed", Toast.LENGTH_SHORT).show();
+        getAuthenticatedUserInfos(response.getToken());
+    }
+
+    @Override
+    public void onLoginWrongCredentialsResponse() {
+        stopLoadingDialog();
+        Toast.makeText(this, "Email ou mot de passe incorrect", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onLoginFailure() {
+        stopLoadingDialog();
+        Toast.makeText(LoginActivity.this, getResources().getString(R.string.smthg_wrong_request), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onFetchingDetailsResponse(@Nullable AuthUser response) {
+//        Toast.makeText(this, "Authentication step 2 passed", Toast.LENGTH_SHORT).show();
+
+        Boolean isStored = storeAuthenticatedUserInfosInSharedPreferences(response);
+
+        if (isStored) {
+//            Toast.makeText(this, "Authentication step 3 passed", Toast.LENGTH_SHORT).show();
+
+            // open the app
+            stopLoadingDialog();
+            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+            finish();
+        } else {
+            stopLoadingDialog();
+            Toast.makeText(this, "Retry please", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onFetchingDetailsFailure() {
+        stopLoadingDialog();
+    }
+
+    private boolean storeAuthenticatedUserInfosInSharedPreferences(AuthUser user) {
+
+        Log.i(TAG, user.toString());
+
+        // TODO:
+        return true;
     }
 
     private boolean validateForm() {
@@ -100,7 +188,6 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void login(String email, String password) {
-
 
         if (!PharmaWine.getInstance().isOnline()) {
             Toast.makeText(this, getResources().getString(R.string.not_connected), Toast.LENGTH_SHORT).show();
@@ -183,6 +270,14 @@ public class LoginActivity extends AppCompatActivity {
                 dialog.dismiss();
             }
         });
+    }
+
+    private void stopLoadingDialog() {
+        dialog.dismiss();
+    }
+
+    private void startLoadingDialog() {
+        dialog.show();
     }
 
     private boolean isValidEmail(String target) {

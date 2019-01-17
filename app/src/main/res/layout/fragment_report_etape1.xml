@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.ReportEtape1Fragment">
-
+    tools:context=".fragments.rapport.ReportEtape1Fragment">
 
 
     <LinearLayout
@@ -15,13 +14,24 @@
         android:orientation="vertical">
 
         <android.support.v7.widget.CardView
-            android:layout_width="300dp"
-            android:layout_height="57dp"
+            android:layout_width="320dp"
+            android:layout_height="45dp"
             android:layout_gravity="center"
             android:textAppearance="?android:attr/textAppearanceMedium"
             app:cardBackgroundColor="@color/grey"
             app:cardCornerRadius="30dp"
             app:contentPadding="2dp">
+
+            <ImageButton
+                android:id="@+id/imageButtoBackToEtape1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|start"
+                android:layout_marginStart="15dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/grey"
+                android:contentDescription="chevronBack"
+                android:src="@drawable/ic_rapport" />
 
             <TextView
                 android:id="@+id/textView"
@@ -66,11 +76,14 @@
             </LinearLayout>
 
 
+            <!-- TODO: Walis, il faudra supprimer le spinner-->
             <Spinner
-                android:id="@+id/choix_centre_pour_rapport"
+                android:id="@+id/sp_choix_centre_pour_rapport"
+                style="@style/edit_text_bordered_lg_style"
                 android:layout_width="350dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp" />
+                android:layout_height="50dp"
+                android:layout_marginTop="12dp"
+                android:visibility="invisible" />
         </LinearLayout>
 
 
@@ -85,5 +98,21 @@
         android:background="@color/colorAccent"
         android:text="@string/suivant"
         android:textColor="@android:color/white"
+        android:textAllCaps="false"
         android:textSize="13sp" />
+
+    <!--TODO: Wallis, veuille ameliorer le style ci apres si ce n'est pas bon-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="390dp"
+        android:layout_marginTop="160dp"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_centers"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp" />
+    </LinearLayout>
 </FrameLayout>

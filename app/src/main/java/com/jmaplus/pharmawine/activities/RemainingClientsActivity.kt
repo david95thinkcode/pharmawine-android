@@ -1,16 +1,18 @@
 package com.jmaplus.pharmawine.activities
 
-import android.support.v7.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.LinearLayout
 import com.jmaplus.pharmawine.R
 import com.jmaplus.pharmawine.adapters.RemainingClientsAdapter
 import com.jmaplus.pharmawine.models.Client
+import com.jmaplus.pharmawine.utils.Constants
+import com.jmaplus.pharmawine.utils.ItemClickSupport
 import com.jmaplus.pharmawine.utils.MockDatas
 
 class RemainingClientsActivity : AppCompatActivity() {
@@ -41,6 +43,22 @@ class RemainingClientsActivity : AppCompatActivity() {
         mAdapter = RemainingClientsAdapter(this, clientsList)
         mRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
         mRecyclerView.adapter = mAdapter
+
+        configureOnClickRecyclerView()
+    }
+
+    private fun configureOnClickRecyclerView() {
+        ItemClickSupport
+                .addTo(mRecyclerView, R.layout.client_row_without_progression)
+                .setOnItemClickListener { theRecyclerView, position, v ->
+                    var customer = mAdapter.getClient(position)
+
+                    // Open the details activity
+                    var i = Intent(this, ClientDetailsActivity::class.java)
+                    i.putExtra(ClientDetailsActivity.CLIENT_TYPE_KEY, Constants.CLIENT_MEDICAL_TEAM_TYPE_KEY)
+                    i.putExtra(ClientDetailsActivity.CLIENT_ID_KEY, customer.id)
+                    startActivity(i)
+                }
     }
 
 

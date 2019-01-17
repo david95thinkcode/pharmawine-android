@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:backgroundTint="@color/bpWhite"
+    android:orientation="vertical"
+    tools:context=".activities.RapportHebdoActivity"
+    tools:targetApi="o">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|top"
+        android:orientation="vertical"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="50dp"
+        android:paddingEnd="15dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="15dp">
+
+            <ImageView
+                android:id="@+id/iv_stat_week_check"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/bpWhite"
+                android:src="@drawable/notvalideicon" />
+
+
+            <TextView
+                android:id="@+id/tv_stat_week"
+                android:layout_width="225dp"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_margin="10dp"
+                android:layout_toEndOf="@id/iv_stat_week_check"
+                android:text="@string/statistique_medicale_week" />
+
+            <ImageView
+                android:id="@+id/iv_edit_statistique_medical_week"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@id/tv_stat_week"
+                android:src="@drawable/writingicon" />
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp">
+
+            <ImageView
+                android:id="@+id/iv_activite_mene_check"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:background="@color/bpWhite"
+                android:backgroundTint="@color/bpWhite"
+                android:src="@drawable/notvalideicon" />
+
+            <TextView
+                android:id="@+id/tv_activite_menee"
+                android:layout_width="225dp"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_margin="10dp"
+                android:layout_toEndOf="@+id/iv_activite_mene_check"
+                android:text="@string/activite_menee" />
+
+            <ImageView
+                android:id="@+id/iv_edit_activite_menee"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/tv_activite_menee"
+                android:src="@drawable/writingicon" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp">
+
+            <ImageView
+                android:id="@+id/iv_objection_check"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:background="@color/bpWhite"
+                android:backgroundTint="@color/bpWhite"
+                android:src="@drawable/notvalideicon" />
+
+            <TextView
+                android:id="@+id/tv_objection"
+                android:layout_width="225dp"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_margin="10dp"
+                android:layout_toEndOf="@id/iv_objection_check"
+                android:text="@string/objection" />
+
+            <ImageView
+                android:id="@+id/iv_edit_objection"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@id/tv_objection"
+                android:src="@drawable/writingicon" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="15dp">
+
+            <ImageView
+                android:id="@+id/iv_objectif_next_week_check"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_centerVertical="true"
+                android:layout_gravity="center"
+                android:background="@color/bpWhite"
+                android:backgroundTint="@color/bpWhite"
+                android:src="@drawable/notvalideicon" />
+
+            <TextView
+                android:id="@+id/tv_obj_nx_week"
+                android:layout_width="225dp"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_margin="10dp"
+                android:layout_toEndOf="@id/iv_objectif_next_week_check"
+                android:text="@string/objectif_next_week" />
+
+            <ImageView
+                android:id="@+id/iv_edit_objectif_next_week"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/tv_obj_nx_week"
+                android:src="@drawable/writingicon" />
+        </RelativeLayout>
+
+
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/btn_send_rappoert_hebdo"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_weight="0"
+        android:background="@color/colorAccent"
+        android:text="@string/send_my_report"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="13sp" />
+
+</android.support.design.widget.CoordinatorLayout>

@@ -30,9 +30,6 @@ public class ClientDetailsActivity extends AppCompatActivity implements
         MedicalTeamDetailsFragment.OnFragmentInteractionListener,
         PharmacyDetailsFragment.OnFragmentInteractionListener {
 
-//    public static final String CLIENT_MEDICAL_TEAM = "medical_team";
-//    public static final String CLIENT_PHARMACY = "pharmacy";
-
     public static final String CLIENT_ID_KEY = "com.jmaplus.pharmawine.activities.ClientDetailsActivity.clientId";
     public static final String CLIENT_TYPE_KEY = "com.jmaplus.pharmawine.activities.ClientDetailsActivity.clientType";
     public static final String TAG = "ClientDetailsActivity";
@@ -121,7 +118,7 @@ public class ClientDetailsActivity extends AppCompatActivity implements
                     i.putExtra(EditMedicalTeamActivity.MEDICAL_ID_KEY, clientId);
                     startActivity(i);
 
-                } else if (clientType == Constants.CLIENT_PHARMACY_TYPE_KEY) {
+                } else if (clientType.equals(Constants.CLIENT_PHARMACY_TYPE_KEY)) {
                     startActivity(new Intent(this, EditPharmacyActivity.class)
                             .putExtra(EditPharmacyActivity.PHARMACY_ID_KEY, clientId));
                 }
