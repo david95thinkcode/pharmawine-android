@@ -15,24 +15,21 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
 import com.jmaplus.pharmawine.PharmaWine;
 import com.jmaplus.pharmawine.R;
+import com.jmaplus.pharmawine.models.AuthUser;
+import com.jmaplus.pharmawine.models.AuthUserResponse;
 import com.jmaplus.pharmawine.models.AuthenticatedUser;
+import com.jmaplus.pharmawine.models.LoginCredentials;
 import com.jmaplus.pharmawine.services.ApiClient;
 import com.jmaplus.pharmawine.services.ApiInterface;
 import com.jmaplus.pharmawine.services.responses.LoginResponse;
-import com.jmaplus.pharmawine.utils.ApiRoutes;
 import com.jmaplus.pharmawine.utils.PrefManager;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.jmaplus.pharmawine.utils.RetrofitCalls.AuthCalls;
 
 import java.util.regex.Pattern;
+
+import javax.annotation.Nullable;
 
 import okhttp3.FormBody;
 import okhttp3.RequestBody;
@@ -40,7 +37,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements AuthCalls.Callbacks {
 
     private EditText etId, etPassword;
     private TextView btnConnexion;
@@ -48,6 +45,7 @@ public class LoginActivity extends AppCompatActivity {
     private PrefManager prefManager;
     private final int MIN_PASSWORD_LENGTH = 6;
     private static final String TAG = "LoginActivity";
+    private ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +53,23 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         prefManager = new PrefManager(this);
+
+        InitalizeUI();
+
+        btnConnexion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (validateForm()) loginWithNewApi();
+            }
+        });
+    }
+
+    private void InitalizeUI() {
+
+        // progress dialog
+        dialog = new ProgressDialog(this);
+        dialog.setCancelable(false);
+        dialog.setMessage(getResources().getString(R.string.loading));
 
         etId = findViewById(R.id.et_login_id);
         etPassword = findViewById(R.id.et_login_password);
@@ -67,23 +82,82 @@ public class LoginActivity extends AppCompatActivity {
 //        Avoid courrier font for passwords input
         etPassword.setTypeface(Typeface.DEFAULT);
         etPassword.setTransformationMethod(new PasswordTransformationMethod());
+    }
 
-//        btnConnexion.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if (validateForm()) {
-////                    Login with email and password
-//                    login(etId.getText().toString().trim(), etPassword.getText().toString().trim());
-//                }
-//            }
-//        });
+    private void loginWithNewApi() {
+        startLoadingDialog();
+        try {
+            AuthCalls.startLoginRequest(this,
+                    etId.getText().toString().trim(),
+                    etPassword.getText().toString().trim()
+            );
+        } catch (Exception e) {
+            Toast.makeText(this, "Une erreur s'est produite", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+            stopLoadingDialog();
+        }
 
-        btnConnexion.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                loginWithNewApi(etId.getText().toString().trim(), etPassword.getText().toString().trim());
-            }
-        });
+    }
+
+    private void getAuthenticatedUserInfos(String token) {
+        try {
+            LoginCredentials credentials = new LoginCredentials(etId.getText().toString().trim(), etPassword.getText().toString().trim());
+            AuthCalls.getDetails(this, token);
+        } catch (Exception e) {
+            Toast.makeText(this, "Error pour recuperation des details du user", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+            stopLoadingDialog();
+        }
+    }
+
+    @Override
+    public void onLoginResponse(@Nullable AuthUserResponse response) {
+//        Toast.makeText(this, "Authentication step 1 passed", Toast.LENGTH_SHORT).show();
+        getAuthenticatedUserInfos(response.getToken());
+    }
+
+    @Override
+    public void onLoginWrongCredentialsResponse() {
+        stopLoadingDialog();
+        Toast.makeText(this, "Email ou mot de passe incorrect", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onLoginFailure() {
+        stopLoadingDialog();
+        Toast.makeText(LoginActivity.this, getResources().getString(R.string.smthg_wrong_request), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onFetchingDetailsResponse(@Nullable AuthUser response) {
+//        Toast.makeText(this, "Authentication step 2 passed", Toast.LENGTH_SHORT).show();
+
+        Boolean isStored = storeAuthenticatedUserInfosInSharedPreferences(response);
+
+        if (isStored) {
+//            Toast.makeText(this, "Authentication step 3 passed", Toast.LENGTH_SHORT).show();
+
+            // open the app
+            stopLoadingDialog();
+            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+            finish();
+        } else {
+            stopLoadingDialog();
+            Toast.makeText(this, "Retry please", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onFetchingDetailsFailure() {
+        stopLoadingDialog();
+    }
+
+    private boolean storeAuthenticatedUserInfosInSharedPreferences(AuthUser user) {
+
+        Log.i(TAG, user.toString());
+
+        // TODO:
+        return true;
     }
 
     private boolean validateForm() {
@@ -113,75 +187,7 @@ public class LoginActivity extends AppCompatActivity {
         return true;
     }
 
-    private void loginWithNewApi(String email, String password) {
-
-        try {
-            RequestQueue queue = Volley.newRequestQueue(this);
-
-            JSONObject requestBody = new JSONObject();
-
-            requestBody.put("email", email);
-            requestBody.put("password", password);
-
-            final ProgressDialog dialog = new ProgressDialog(this);
-            dialog.setCancelable(false);
-            dialog.setMessage(getResources().getString(R.string.loading));
-            dialog.show();
-
-            JsonObjectRequest request = new JsonObjectRequest(
-                    Request.Method.POST, ApiRoutes.login, requestBody,
-                    new com.android.volley.Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            // Request Succeed
-                            // ...
-                            dialog.dismiss();
-                            try {
-                                getAuthenticatedUserInfos(response.getString("token"));
-                                Log.i(getLocalClassName(), "Response : " + response);
-                                Toast.makeText(LoginActivity.this, "User data getted", Toast.LENGTH_SHORT).show();
-                            } catch (JSONException e) {
-                                Log.e(TAG, e.getMessage());
-                                e.printStackTrace();
-                            }
-
-                        }
-                    }, new com.android.volley.Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(LoginActivity.this, getResources().getString(R.string.smthg_wrong_request), Toast.LENGTH_SHORT).show();
-                    Log.e(getLocalClassName(), "Request failed : " + error.getMessage());
-                    Log.e(TAG, error.toString());
-                    dialog.dismiss();
-
-                }
-
-            });
-
-            queue.add(request);
-        } catch (JSONException jsonError) {
-            Toast.makeText(this, "Probleme interne", Toast.LENGTH_SHORT).show();
-            Log.e(TAG, jsonError.getMessage());
-            jsonError.printStackTrace();
-        } catch (Exception e) {
-            Toast.makeText(this, "Une erreur s'est produite", Toast.LENGTH_SHORT).show();
-            Log.e(TAG, e.getMessage());
-            e.printStackTrace();
-        }
-
-    }
-
-    private void getAuthenticatedUserInfos(String token) {
-
-    }
-
-    private void storeAuthenticatedUserInfosInSharedPreferences() {
-
-    }
-
-
     private void login(String email, String password) {
-
 
         if (!PharmaWine.getInstance().isOnline()) {
             Toast.makeText(this, getResources().getString(R.string.not_connected), Toast.LENGTH_SHORT).show();
@@ -264,6 +270,14 @@ public class LoginActivity extends AppCompatActivity {
                 dialog.dismiss();
             }
         });
+    }
+
+    private void stopLoadingDialog() {
+        dialog.dismiss();
+    }
+
+    private void startLoadingDialog() {
+        dialog.show();
     }
 
     private boolean isValidEmail(String target) {
