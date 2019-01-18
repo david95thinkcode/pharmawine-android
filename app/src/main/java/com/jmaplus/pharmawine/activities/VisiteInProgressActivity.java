@@ -38,7 +38,7 @@ public class VisiteInProgressActivity extends AppCompatActivity
     public static final int STEP_3_FRAGMENT_INDEX = 2;
     public static final int STEP_4_FRAGMENT_INDEX = 3;
     public static final String EXTRA_PROSPECT_TYPE = "prospectType";
-    private static final String TAG = "VisiteInProgressActivity";
+    private static final String TAG = "VisiteInProgresActivity";
 
     private FragmentManager fragmentManager = getSupportFragmentManager();
     private VisiteInProgressFragment firstFragment;
@@ -288,7 +288,6 @@ public class VisiteInProgressActivity extends AppCompatActivity
 
             return f;
         }
-
 
 
         @Override

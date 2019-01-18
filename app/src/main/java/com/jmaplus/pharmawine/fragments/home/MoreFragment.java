@@ -40,7 +40,7 @@ public class MoreFragment extends Fragment {
     private SharedPreferences sp;
 
     private LinearLayout mPlanningCv;
-//    private LinearLayout mClientsCv;
+    //    private LinearLayout mClientsCv;
     private LinearLayout mStatsCv;
     private LinearLayout mProductsCv;
     private LinearLayout mCalendarCv;
