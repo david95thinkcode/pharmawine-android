@@ -305,5 +305,40 @@ public class AuthUser {
         return true;
     }
 
+    public static AuthUser getAuthenticatedUser(Context mContext) {
+        AuthUser u = new AuthUser();
+
+        SharedPreferences sharedPref = mContext.getSharedPreferences(
+                Constants.F_PROFIL, Context.MODE_PRIVATE);
+
+        u.setFirstname(sharedPref.getString(Constants.SP_FIRSTNAME_KEY, ""));
+        u.setLastname(sharedPref.getString(Constants.SP_LASTNAME_KEY, ""));
+        u.setAvatar(sharedPref.getString(Constants.SP_AVATAR_URL_KEY, ""));
+        u.setEmail(sharedPref.getString(Constants.SP_EMAIL_KEY, ""));
+        u.setBirthday(sharedPref.getString(Constants.SP_BIRTHDAY_KEY, ""));
+        u.setSex(sharedPref.getString(Constants.SP_SEX_KEY, ""));
+        u.setNationalite(sharedPref.getString(Constants.SP_NATIONALITY_KEY, ""));
+        u.setTelephone1(sharedPref.getString(Constants.SP_PHONE_1_KEY, ""));
+        u.setTelephone2(sharedPref.getString(Constants.SP_PHONE_2_KEY, ""));
+        u.setMaritalStatus(sharedPref.getString(Constants.SP_MARITAL_STATUS_KEY, ""));
+        u.setTypeId(sharedPref.getInt(Constants.SP_TYPE_KEY, -1));
+
+        return u;
+    }
+
+    /**
+     * Get authenticated user token
+     *
+     * @param mContext
+     * @return
+     */
+    public static String getToken(Context mContext) {
+        SharedPreferences sharedPref = mContext.getSharedPreferences(
+                Constants.F_PROFIL, Context.MODE_PRIVATE);
+
+        return sharedPref.getString(Constants.SP_TOKEN_KEY, "");
+
+    }
+
 
 }

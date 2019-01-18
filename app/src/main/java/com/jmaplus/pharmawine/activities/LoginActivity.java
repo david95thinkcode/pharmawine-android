@@ -19,7 +19,6 @@ import com.jmaplus.pharmawine.R;
 import com.jmaplus.pharmawine.models.AuthUser;
 import com.jmaplus.pharmawine.models.AuthUserResponse;
 import com.jmaplus.pharmawine.models.AuthenticatedUser;
-import com.jmaplus.pharmawine.models.LoginCredentials;
 import com.jmaplus.pharmawine.services.ApiClient;
 import com.jmaplus.pharmawine.services.ApiInterface;
 import com.jmaplus.pharmawine.services.responses.LoginResponse;
@@ -77,7 +76,8 @@ public class LoginActivity extends AppCompatActivity implements AuthCalls.Callba
         btnConnexion = findViewById(R.id.btn_login_connexion);
 
 //        TODO removes this
-        etId.setText("alcoy@gmail.com");
+//        etId.setText("alcoy@gmail.com");
+        etId.setText("wallis@gmail.com");
         etPassword.setText("secret");
 
 //        Avoid courrier font for passwords input
@@ -102,7 +102,7 @@ public class LoginActivity extends AppCompatActivity implements AuthCalls.Callba
 
     private void getAuthenticatedUserInfos(String token) {
         try {
-            LoginCredentials credentials = new LoginCredentials(etId.getText().toString().trim(), etPassword.getText().toString().trim());
+//            LoginCredentials credentials = new LoginCredentials(etId.getText().toString().trim(), etPassword.getText().toString().trim());
             AuthCalls.getDetails(this, token);
         } catch (Exception e) {
             Toast.makeText(this, "Error pour recuperation des details du user", Toast.LENGTH_SHORT).show();

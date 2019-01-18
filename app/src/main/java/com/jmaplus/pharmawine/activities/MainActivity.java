@@ -1,14 +1,10 @@
 package com.jmaplus.pharmawine.activities;
 
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -24,6 +20,7 @@ import com.jmaplus.pharmawine.fragments.home.HomeFragment;
 import com.jmaplus.pharmawine.fragments.home.MoreFragment;
 import com.jmaplus.pharmawine.fragments.home.NotificationsFragment;
 import com.jmaplus.pharmawine.fragments.home.ReportsFragment;
+import com.jmaplus.pharmawine.models.AuthUser;
 import com.jmaplus.pharmawine.models.AuthenticatedUser;
 
 public class MainActivity extends AppCompatActivity {
@@ -44,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private AuthenticatedUser authenticatedUser;
+    private AuthUser currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +64,9 @@ public class MainActivity extends AppCompatActivity {
 //
         authenticatedUser = AuthenticatedUser.getAuthenticatedUser(PharmaWine.mRealm);
 
-        Toast.makeText(this, "Content de vous revoir " + authenticatedUser.getLastName() + " !", Toast.LENGTH_LONG).show();
+        currentUser = AuthUser.getAuthenticatedUser(this);
+
+        Toast.makeText(this, "Content de vous revoir " + currentUser.getLastname() + " !", Toast.LENGTH_LONG).show();
 
     }
 

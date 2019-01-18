@@ -36,9 +36,9 @@ public class Splashscreen extends AppCompatActivity {
 
                 SharedPreferences sharedPref = mContext.getSharedPreferences(Constants.F_PROFIL,
                         Context.MODE_PRIVATE);
-                Integer userID = sharedPref.getInt(Constants.SP_ID_KEY, -1);
+                String userToken = sharedPref.getString(Constants.SP_TOKEN_KEY, "");
 
-                if (userID == -1) {
+                if (userToken.isEmpty()) {
                     startActivity(new Intent(Splashscreen.this, LoginActivity.class));
                     finish();
                 } else {
