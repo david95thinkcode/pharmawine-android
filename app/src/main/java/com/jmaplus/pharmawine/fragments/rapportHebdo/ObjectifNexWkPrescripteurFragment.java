@@ -51,12 +51,8 @@ public class ObjectifNexWkPrescripteurFragment extends Fragment {
             public void onClick(View v) {
                 prescripteurs = edPrecripteur.getText().toString();
                 Log.e(getClass().getName(), prescripteurs);
-                if (prescripteurs.isEmpty()) {
-                    Toast.makeText(getActivity(), "Vous devez entrer les prescripteurs", Toast.LENGTH_LONG).show();
-                } else {
-                    epPrescripteur = spPrecipteurs.edit();
-                    epPrescripteur.putString(Constants.REPORT_HEBDO_OBJECTIF_NEXT_WEEK_PRESCRIPTEUR, prescripteurs);
-                    epPrescripteur.apply();
+                if (!prescripteurs.isEmpty()) {
+                    spPrecipteurs.edit().putString(Constants.REPORT_HEBDO_OBJECTIF_NEXT_WEEK_PRESCRIPTEUR, prescripteurs).apply();
                     Log.e(getClass().getName(), prescripteurs);
                     ObjectifNexWkPharmaFragment objectifNexWkPharmaFragment = new ObjectifNexWkPharmaFragment();
                     getFragmentManager()
@@ -64,18 +60,12 @@ public class ObjectifNexWkPrescripteurFragment extends Fragment {
                             .replace(R.id.fragment_container_report_hebdo, objectifNexWkPharmaFragment)
                             .addToBackStack(Constants.REPORT_HEBDO_OBJECTIF_NEXT_WEEK_PRESCRIPTEUR)
                             .commit();
-
-
+                } else {
+                    Toast.makeText(getActivity(), "Vous devez entrer les prescripteurs", Toast.LENGTH_LONG).show();
                 }
             }
         });
 
         return viewPrescripteur;
     }
-
-
-    /*
-     *TODO: Return a string ObjectifNextWeekPrescipteur to Fragment ObjectifNexWkPharmaFragment
-     */
-
 }

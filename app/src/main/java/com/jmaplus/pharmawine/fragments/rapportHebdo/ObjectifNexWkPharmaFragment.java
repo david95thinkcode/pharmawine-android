@@ -20,8 +20,7 @@ import com.jmaplus.pharmawine.utils.Constants;
 
 public class ObjectifNexWkPharmaFragment extends Fragment {
 
-    SharedPreferences spObjPharma;
-    SharedPreferences.Editor epObjPharma;
+    private SharedPreferences spObjPharma;
     private Button btnGoBackPrescipteur, btnValiderpharma;
     private EditText edPharma;
     private String objectifPharmacie;
@@ -62,26 +61,17 @@ public class ObjectifNexWkPharmaFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 objectifPharmacie = edPharma.getText().toString();
-                if (objectifPharmacie.isEmpty()) {
-                    Toast.makeText(getActivity(), "Vous devez entrer les objectifs pharmacies", Toast.LENGTH_LONG).show();
-                } else {
-                    epObjPharma = spObjPharma.edit();
-                    epObjPharma.putString(Constants.REPORT_HEBDO_OBJECTIF_NEXT_WEEK_PHARMACY, objectifPharmacie);
-                    epObjPharma.apply();
+                if (!objectifPharmacie.isEmpty()) {
+                    spObjPharma.edit().putString(Constants.REPORT_HEBDO_OBJECTIF_NEXT_WEEK_PHARMACY, objectifPharmacie).apply();
                     Log.e(getClass().getName(), objectifPharmacie);
                     getActivity().finish();
+                } else {
+                    Toast.makeText(getActivity(), "Vous devez entrer les objectifs pharmacies", Toast.LENGTH_LONG).show();
+
                 }
             }
         });
 
         return viewPharma;
     }
-
-
-
-    /*
-     * TODO: get string from ObjectifNexWkPrescipteurFragment, get the string ObjectifNextWeekPharma and construct
-     * ObjectifNextWeek Object and return it to ReportHebdoManagerActivity
-     */
-
 }

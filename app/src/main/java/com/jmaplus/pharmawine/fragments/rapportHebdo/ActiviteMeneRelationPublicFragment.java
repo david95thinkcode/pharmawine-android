@@ -18,11 +18,10 @@ import com.jmaplus.pharmawine.utils.Constants;
 
 public class ActiviteMeneRelationPublicFragment extends Fragment {
 
-    EditText edAMRelaPubliq;
-    Button btnSaveAMRelaPublq, btnBackToReunion;
-    SharedPreferences spAMRelaPubliq;
-    SharedPreferences.Editor epAMRelaPubliq;
-    String amRelaPublic;
+    private EditText edAMRelaPubliq;
+    private Button btnSaveAMRelaPublq, btnBackToReunion;
+    private SharedPreferences spAMRelaPubliq;
+    private String amRelaPublic;
 
     public ActiviteMeneRelationPublicFragment() {
         // Required empty public constructor
@@ -49,9 +48,8 @@ public class ActiviteMeneRelationPublicFragment extends Fragment {
             public void onClick(View v) {
                 amRelaPublic = edAMRelaPubliq.getText().toString();
                 if (!amRelaPublic.isEmpty()) {
-                    epAMRelaPubliq = spAMRelaPubliq.edit();
-                    epAMRelaPubliq.putString(Constants.REPORT_HEBDO_AM_RELATION_PUBLIQ, amRelaPublic);
-                    epAMRelaPubliq.apply();
+                    spAMRelaPubliq.edit().putString(Constants.REPORT_HEBDO_AM_RELATION_PUBLIQ, amRelaPublic).apply();
+
                     ActiviteMeneActionPharmaFragment activiteMeneActionPharmaFragment = new ActiviteMeneActionPharmaFragment();
                     getFragmentManager()
                             .beginTransaction()
@@ -61,6 +59,7 @@ public class ActiviteMeneRelationPublicFragment extends Fragment {
                 }
             }
         });
+
         btnBackToReunion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

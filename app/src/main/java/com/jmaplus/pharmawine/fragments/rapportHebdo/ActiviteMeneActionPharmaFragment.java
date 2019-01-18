@@ -40,8 +40,7 @@ public class ActiviteMeneActionPharmaFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View vAMActionPharma = inflater.inflate(R.layout.fragment_activite_mene_action_pharma, container, false);
         edAMActionPharma = vAMActionPharma.findViewById(R.id.ed_action_pharmacie);

@@ -32,4 +32,5 @@ public class Constants {
     public static final String REPORT_HEBDO_AM_RELATION_PUBLIQ = "rham_relation_publiq";
     public static final String REPORT_HEBDO_AM_PARCOURS_FIDEL = "rham_parcours_fide";
     public static final String REPORT_HEBDO_AM_ZONE_PROFOND = "rham_zone_profond";
+    public static final String REPORT_HEBDO_SEE_STATISTIQUE = "rh_see_satistique";
 }

@@ -215,4 +215,12 @@
     <string name="prospection">Prospections</string>
     <string name="pig">PIG</string>
     <string name="pim">PIM</string>
+    <string name="cfg">CFG</string>
+    <string name="cfm">CFM</string>
+    <string name="fond_de_commerce">Fond de commerce</string>
+    <string name="potentiel_de_dev">Potentiel de développement</string>
+    <string name="cig">CIG</string>
+    <string name="cim">CIM</string>
+    <string name="pcg">PCG</string>
+    <string name="pcm">PCM</string>
 </resources>

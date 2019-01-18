@@ -20,7 +20,6 @@ public class ActiviteMeneParcoursFidelFragment extends Fragment {
     private EditText edAMParFidel;
     private Button btnSaveParcoursFidel, btnBackToActionPharma;
     private SharedPreferences spAMParFidel;
-    private SharedPreferences.Editor epAMParFidel;
     private String amParFidel;
 
 
@@ -53,9 +52,7 @@ public class ActiviteMeneParcoursFidelFragment extends Fragment {
             public void onClick(View v) {
                 amParFidel = edAMParFidel.getText().toString();
                 if (!amParFidel.isEmpty()) {
-                    epAMParFidel = spAMParFidel.edit();
-                    epAMParFidel.putString(Constants.REPORT_HEBDO_AM_PARCOURS_FIDEL, amParFidel);
-                    epAMParFidel.apply();
+                    spAMParFidel.edit().putString(Constants.REPORT_HEBDO_AM_PARCOURS_FIDEL, amParFidel).apply();
                     ActiviteMeneZoneProfondFragment activiteMeneZoneProfondFragment = new ActiviteMeneZoneProfondFragment();
                     getFragmentManager()
                             .beginTransaction()
@@ -75,9 +72,6 @@ public class ActiviteMeneParcoursFidelFragment extends Fragment {
             }
         });
 
-
         return vAMParFidel;
     }
-
-
 }

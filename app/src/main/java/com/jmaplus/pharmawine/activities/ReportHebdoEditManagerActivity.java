@@ -32,13 +32,7 @@ public class ReportHebdoEditManagerActivity extends AppCompatActivity {
     TextView titleOfStepReportHebdo;
     ImageButton backToReportHebdoActivity;
     Intent mIntent = null;
-    private Context mContext;
-    private Fragment mFrag = null;
-    int resultCode;
-    Intent resultIntent = new Intent();
     FragmentManager fragManager = getSupportFragmentManager();
-    private RapportHebdo rapportHebdo = null;
-    private ActiviteMene activiteMene = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +40,6 @@ public class ReportHebdoEditManagerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_report_hebdo_edit_manager);
 
         LayoutInflater mInflater = LayoutInflater.from(this);
-        mContext = this;
         mIntent = getIntent();
 
         View mView = mInflater.inflate(R.layout.custom_actionbar_step_hebdo_report, null);
@@ -97,6 +90,16 @@ public class ReportHebdoEditManagerActivity extends AppCompatActivity {
             //show fragment Objectif Next Week
         }
 
+
+    }
+
+    public void backBehavior(View v) {
+        v.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
     }
 }

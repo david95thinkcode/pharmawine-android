@@ -162,7 +162,7 @@
 
 
     <Button
-        android:id="@+id/btn_send_rappoert_hebdo"
+        android:id="@+id/btn_send_rapport_hebdo"
         style="?android:attr/buttonBarButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

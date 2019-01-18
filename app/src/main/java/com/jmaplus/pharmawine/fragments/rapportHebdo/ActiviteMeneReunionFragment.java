@@ -19,8 +19,7 @@ import com.jmaplus.pharmawine.utils.Constants;
 
 public class ActiviteMeneReunionFragment extends Fragment {
 
-    SharedPreferences spAMReunion;
-    SharedPreferences.Editor epAMReunion;
+    private SharedPreferences spAMReunion;
     private EditText edAMreunion;
     private Button btnsaveAMReunion, btnBackToGarde;
     private String amReunion;
@@ -53,9 +52,8 @@ public class ActiviteMeneReunionFragment extends Fragment {
             public void onClick(View v) {
                 amReunion = edAMreunion.getText().toString();
                 if (!amReunion.isEmpty()) {
-                    epAMReunion = spAMReunion.edit();
-                    epAMReunion.putString(Constants.REPORT_HEBDO_AM_REUNIONS, amReunion);
-                    epAMReunion.apply();
+                    spAMReunion.edit().putString(Constants.REPORT_HEBDO_AM_REUNIONS, amReunion).apply();
+
                     ActiviteMeneRelationPublicFragment activiteMeneRelationPublicFragment = new ActiviteMeneRelationPublicFragment();
                     getFragmentManager()
                             .beginTransaction()

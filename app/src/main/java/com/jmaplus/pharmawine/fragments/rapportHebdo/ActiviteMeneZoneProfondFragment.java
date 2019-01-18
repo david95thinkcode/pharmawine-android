@@ -17,8 +17,7 @@ import com.jmaplus.pharmawine.utils.Constants;
 
 public class ActiviteMeneZoneProfondFragment extends Fragment {
 
-    SharedPreferences spAMZoneProfond;
-    SharedPreferences.Editor epAMZoneProfond;
+    private SharedPreferences spAMZoneProfond;
     private EditText edAMZoneProfond;
     private Button btnSaveZoneProfond;
     private String amZoneProfond;
@@ -50,9 +49,7 @@ public class ActiviteMeneZoneProfondFragment extends Fragment {
             public void onClick(View v) {
                 amZoneProfond = edAMZoneProfond.getText().toString();
                 if (!amZoneProfond.isEmpty()) {
-                    epAMZoneProfond = spAMZoneProfond.edit();
-                    epAMZoneProfond.putString(Constants.REPORT_HEBDO_AM_ZONE_PROFOND, amZoneProfond);
-                    epAMZoneProfond.apply();
+                    spAMZoneProfond.edit().putString(Constants.REPORT_HEBDO_AM_ZONE_PROFOND, amZoneProfond).apply();
                     getActivity().finish();
                 } else {
                     Toast.makeText(getActivity(), "Vous devez entrer les zones profondes", Toast.LENGTH_LONG).show();

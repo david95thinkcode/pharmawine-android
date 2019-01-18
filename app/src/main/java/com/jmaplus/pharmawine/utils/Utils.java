@@ -1,5 +1,6 @@
 package com.jmaplus.pharmawine.utils;
 
+
 import android.content.Context;
 import android.widget.Toast;
 
@@ -14,4 +15,6 @@ public class Utils {
             Toast.makeText(mContext, message, Toast.LENGTH_SHORT).show();
         }
     }
+
+
 }

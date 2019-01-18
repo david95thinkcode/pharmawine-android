@@ -20,8 +20,7 @@ import com.jmaplus.pharmawine.utils.Constants;
 
 public class ObjectionFragment extends Fragment {
 
-    SharedPreferences spObjection;
-    SharedPreferences.Editor epObjection;
+    private SharedPreferences spObjection;
     private Button btnSaveObjection;
     private EditText edObjection;
     private String objections;
@@ -51,9 +50,7 @@ public class ObjectionFragment extends Fragment {
             public void onClick(View v) {
                 objections = edObjection.getText().toString();
                 if (!objections.isEmpty()) {
-                    epObjection = spObjection.edit();
-                    epObjection.putString(Constants.REPORT_HEBDO_OBJECTION, objections);
-                    epObjection.apply();
+                    spObjection.edit().putString(Constants.REPORT_HEBDO_OBJECTION, objections).apply();
                     Log.e(getClass().getName(), "Objection ReportH" + objections);
                     getActivity().onBackPressed();
                 } else {
