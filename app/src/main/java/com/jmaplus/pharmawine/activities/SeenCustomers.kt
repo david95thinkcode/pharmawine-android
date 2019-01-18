@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -131,8 +130,6 @@ class SeenCustomers : AppCompatActivity() {
                 .addTo(mRecyclerView, R.layout.client_row_without_progression)
                 .setOnItemClickListener { theRecyclerView, position, v ->
                     var customer = mAdapter.getClient(position)
-
-                    Log.i(TAG, "ITEM $position clicked : $customer")
 
                     // Open the details activity
                     var i = Intent(this, ClientDetailsActivity::class.java)

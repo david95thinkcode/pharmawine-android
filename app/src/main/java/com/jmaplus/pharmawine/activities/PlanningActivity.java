@@ -1,5 +1,8 @@
 package com.jmaplus.pharmawine.activities;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -7,8 +10,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -17,15 +18,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
 import com.jmaplus.pharmawine.R;
 import com.jmaplus.pharmawine.fragments.planning.ActivitiesAreaFragment;
 import com.jmaplus.pharmawine.fragments.planning.SalesGoalsFragment;
 import com.jmaplus.pharmawine.fragments.planning.VisitFragment;
-
-import org.w3c.dom.Text;
+import com.jmaplus.pharmawine.utils.Constants;
 
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
@@ -47,6 +46,8 @@ public class PlanningActivity extends AppCompatActivity {
     public static String ACTIVITY_AREA = "com.jmaplus.pharmawine.activities.activity_area";
 
     private String mCurrentFragment;
+    private int userRole;
+    private SharedPreferences sharedPref;
 
     public VisitFragment mVisitFragment = new VisitFragment();
     public SalesGoalsFragment mSalesGoalsFragment = new SalesGoalsFragment();
@@ -56,6 +57,11 @@ public class PlanningActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_planning);
+
+        // Get user role from shared preferences
+        sharedPref = this.getSharedPreferences(Constants.F_PROFIL,
+                Context.MODE_PRIVATE);
+        userRole = sharedPref.getInt(Constants.SP_ID_KEY, -1);
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -126,6 +132,11 @@ public class PlanningActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+
+        // Adding argument to Visite fragment
+        Bundle visiteArgs = new Bundle();
+        visiteArgs.putInt(VisitFragment.USER_ROLE_KEY, userRole);
+        mVisitFragment.setArguments(visiteArgs);
 
         adapter.addFragment(mVisitFragment, "Visites");
         adapter.addFragment(mSalesGoalsFragment, "Obj. de ventes");

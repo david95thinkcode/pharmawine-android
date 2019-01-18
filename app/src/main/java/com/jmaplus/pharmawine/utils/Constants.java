@@ -2,6 +2,45 @@ package com.jmaplus.pharmawine.utils;
 
 public class Constants {
 
+    // SHARED PREFERENCES PRIVATE FILES
+    // ===================================
+    //
+    public static final String F_PROFIL = "f_profil";
+    public static final String F_MENU = "f_menu";
+    public static final String F_REPORTS = "f_reports";
+
+
+    // SHARED PREFERENCES KEYS
+    // ===================================
+    //
+    public static final String SP_ID_KEY = "sp_id";
+    public static final String SP_SEX_KEY = "sp_sex";
+    public static final String SP_FIRSTNAME_KEY = "sp_username";
+    public static final String SP_LASTNAME_KEY = "sp_lastname";
+    public static final String SP_SPECIALITY_KEY = "sp_speciality";
+    public static final String SP_MARITAL_STATUS_KEY = "sp_ms";
+    public static final String SP_NATIONALITY_KEY = "sp_nationality";
+    public static final String SP_BIRTHDAY_KEY = "sp_birthday";
+    public static final String SP_PHONE_1_KEY = "sp_phone1";
+    public static final String SP_PHONE_2_KEY = "sp_phone2";
+    public static final String SP_EMAIL_KEY = "sp_mail";
+    public static final String SP_TYPE_KEY = "sp_type";
+    public static final String SP_ROLE_KEY = "sp_role";
+    public static final String SP_ACCOUNT_STATUS_KEY = "sp_status";
+    public static final String SP_AVATAR_URL_KEY = "sp_avatar";
+    public static final String SP_TOKEN_KEY = "sp_avatar";
+
+    // MENU ITEMS ================================
+    public static final String MENU_PLANNING_KEY = "menu_planning";
+    public static final String MENU_CLIENTS_KEY = "menu_clients";
+    public static final String MENU_RESEAUX_KEY = "menu_reseaux";
+    public static final String MENU_PRODUITS_KEY = "menu_produits";
+
+    // USERS ROLES ================================
+    public static final int ROLE_ADMIN_KEY = 1;
+    public static final int ROLE_SUPERVISEUR_KEY = 2;
+    public static final int ROLE_DELEGUE_KEY = 3;
+
     // CLIENT TYPES KEY
     public static String CLIENT_MEDICAL_TEAM_TYPE_KEY = "medical_team";
     public static String CLIENT_PHARMACY_TYPE_KEY = "pharmacy";

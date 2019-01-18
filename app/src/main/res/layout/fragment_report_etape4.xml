@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.rapport.ReportEtape4Fragment">
+    tools:context=".fragments.rapport.ReportEtape3Fragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -58,7 +58,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="64dp"
                 android:fontFamily="@font/roboto_black"
-                android:text="@string/objectif_de_la_visite"
+                android:text="@string/promesses_obtenues"
                 android:textColor="@color/black_variant"
                 android:textSize="16sp" />
 

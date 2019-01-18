@@ -19,6 +19,7 @@ class NewProspectInconnuActivity : AppCompatActivity(), VisiteInProgressFragment
         setContentView(R.layout.activity_new_prospect_inconnu)
 
         clientType = intent.getStringExtra(TranslucentNewClientActivity.CLIENT_TYPE_EXTRA_KEY)
+
         Log.i(localClassName, "clientType ==> $clientType")
 
         var arguments = Bundle()

@@ -20,7 +20,6 @@ import com.jmaplus.pharmawine.PharmaWine;
 import com.jmaplus.pharmawine.R;
 import com.jmaplus.pharmawine.activities.NetworksActivity;
 import com.jmaplus.pharmawine.activities.ProspectionActivity;
-import com.jmaplus.pharmawine.activities.RapportHebdoActivity;
 import com.jmaplus.pharmawine.activities.RemainingClientsActivity;
 import com.jmaplus.pharmawine.activities.SeenCustomers;
 import com.jmaplus.pharmawine.models.AuthenticatedUser;
@@ -136,9 +135,8 @@ public class HomeFragment extends Fragment {
         fabProspection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(mContext, RapportHebdoActivity.class));
-                //               startActivity(new Intent(mContext, ProspectionActivity.class));
-//                startActivity(new Intent(mContext, VisiteInProgressActivity.class));
+                startActivity(new Intent(mContext, ProspectionActivity.class));
+//                startActivity(new Intent(mContext, RapportHebdoActivity.class));
             }
         });
     }

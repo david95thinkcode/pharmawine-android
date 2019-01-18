@@ -164,4 +164,12 @@
         <item name="android:textAllCaps">false</item>
     </style>
 
+    <style name="textarea_bordered_style" parent="edit_text_bordered_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">184dp</item>
+        <item name="android:ems">10</item>
+        <item name="android:inputType">text|textMultiLine</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
 </resources>

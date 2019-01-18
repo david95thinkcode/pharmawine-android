@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.rapport.ReportEtape2Fragment">
+    tools:context=".fragments.rapport.ReportEtape2ObsoleteFragment">
 
 
     <LinearLayout
@@ -78,9 +78,9 @@
 
             <Spinner
                 android:id="@+id/choix_zone_pour_rapport"
-                android:layout_width="350dp"
                 style="@style/edit_text_bordered_lg_style"
-                android:layout_height="wrap_content"
+                android:layout_width="350dp"
+                android:layout_height="42dp"
                 android:layout_marginTop="12dp" />
         </LinearLayout>
 

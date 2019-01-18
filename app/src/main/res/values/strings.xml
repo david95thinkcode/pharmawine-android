@@ -152,6 +152,17 @@
         <item>Decembre</item>
     </string-array>
 
+    <string-array name="centres_array">
+        <item>Centre 1</item>
+        <item>Centre 2</item>
+        <item>Centre 3</item>
+    </string-array>
+
+    <string-array name="zones_array">
+        <item>Zone 1</item>
+        <item>Zone 2</item>
+        <item>Zone 3</item>
+    </string-array>
 
     <string name="title_activity_visite_in_progress">Visite en cours &#8230;</string>
     <string name="msg_cancel_visite">Êtes vous sûr de vouloir annuler la visite?</string>
@@ -170,14 +181,22 @@
     <string name="hint_objectif_visit">Entrer les objectifs de la visite</string>
     <string name="hint_promesse_obtenue">Entrer les promesses obtenues</string>
     <string name="terminer_mon_rapport">Terminer mon rapport</string>
+    <string name="terminer">Terminer</string>
     <string name="prescriptions_constat">Prescriptions constatées</string>
     <string name="visite_terminee">Visite terminée</string>
     <string name="precedent">Précedent</string>
 
+    <string name="visite_terminée">Visite terminée</string>
     <string name="prospect_inconnu">Prospect inconnu</string>
     <string name="prospect_connu">Prospect connu</string>
     <string name="corps_medical">Corps médical</string>
     <string name="pharmacie">Pharmacie</string>
+
+    <string name="informations_maquantes">Informations manquantes</string>
+    <string name="rapport_termine">Rapport terminé</string>
+    <string name="voulez_vous_terminer_le_profilage_de_ce_client">Voulez-vous terminer le profilage de ce client ?</string>
+    <string name="certaines_informations_sont_maquantes">Certraines informations sont manquantes</string>
+
     <string name="nom_prospect">Nom du prospect</string>
     <string name="ou_num_prospect">Ou numéro</string>
     <string name="num_prospect">Numéro du prospect</string>
@@ -223,4 +242,6 @@
     <string name="cim">CIM</string>
     <string name="pcg">PCG</string>
     <string name="pcm">PCM</string>
+    <string name="promesses_obtenues">Promesses obtenues</string>
+    <string name="etes_vous_sur_d_avoir_termine">Êtes-vous sur d\'avoir terminé ?</string>
 </resources>

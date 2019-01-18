@@ -14,7 +14,6 @@ import android.widget.LinearLayout;
 
 import com.jmaplus.pharmawine.R;
 import com.jmaplus.pharmawine.adapters.RemainingClientsAdapter;
-import com.jmaplus.pharmawine.fragments.rapport.VisiteInProgressFragment;
 import com.jmaplus.pharmawine.models.Client;
 import com.jmaplus.pharmawine.utils.Constants;
 import com.jmaplus.pharmawine.utils.FakeData;
@@ -109,11 +108,12 @@ public class ProspectionActivity extends AppCompatActivity implements View.OnCli
             public void onClick(DialogInterface dialog, int which) {
                 Intent i = new Intent(mContext, VisiteInProgressActivity.class);
 
-                // TODO: Important thing to considere after implentation of Pharmacy model
+                // TODO: Important thing to consider after implentation of Pharmacy model
                 // IF customer is instance of pharmacy class, so use the following line instead
                 // .putExtra(VisiteInProgressFragment.ARGS_PROSPECT_TYPE, Constants.PROSPECT_KNOWN_PHARMACY_TYPE_KEY);
 
-                i.putExtra(VisiteInProgressFragment.ARGS_PROSPECT_TYPE, Constants.PROSPECT_KNOWN_MEDICAL_TEAM_TYPE_KEY);
+                i.putExtra(VisiteInProgressActivity.EXTRA_PROSPECT_TYPE,
+                        Constants.PROSPECT_KNOWN_MEDICAL_TEAM_TYPE_KEY);
 
                 i.putExtra(Constants.CLIENT_ID_KEY, customer.getId());
                 i.putExtra(Constants.CLIENT_FIRSTNAME_KEY, customer.getFirstName());
@@ -121,6 +121,7 @@ public class ProspectionActivity extends AppCompatActivity implements View.OnCli
                 i.putExtra(Constants.CLIENT_SPECIALITY_KEY, customer.getSpeciality());
                 i.putExtra(Constants.CLIENT_STATUS_KEY, customer.getStatus());
                 i.putExtra(Constants.CLIENT_AVATAR_URL_KEY, customer.getAvatarUrl());
+
                 startActivity(i);
             }
         });

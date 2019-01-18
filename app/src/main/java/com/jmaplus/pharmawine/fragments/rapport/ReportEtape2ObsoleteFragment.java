@@ -3,25 +3,30 @@ package com.jmaplus.pharmawine.fragments.rapport;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.Spinner;
 
 import com.jmaplus.pharmawine.R;
 
-public class ReportEtape2Fragment extends Fragment implements View.OnClickListener {
+/**
+ * Ce fragment est desormais inutile
+ */
+public class ReportEtape2ObsoleteFragment extends Fragment implements
+        View.OnClickListener {
 
     private OnFragmentInteractionListener mListener;
+    private Spinner zoneSpinner;
     private Button nextBtn;
     private Button prevBtn;
-    private EditText objectifEditText;
-    private String mObjectif = new String();
+    private String mZone = new String();
+    private Context mParentContext;
 
-    public ReportEtape2Fragment() {
+    public ReportEtape2ObsoleteFragment() {
         // Required empty public constructor
     }
 
@@ -38,37 +43,38 @@ public class ReportEtape2Fragment extends Fragment implements View.OnClickListen
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_report_etape3,
+        View rootView = inflater.inflate(R.layout.fragment_report_etape2,
                 container, false);
 
-        objectifEditText = rootView.findViewById(R.id.ed_objectif_visit);
-        prevBtn = rootView.findViewById(R.id.btn_precedent_etape_3_to_2);
-        nextBtn = rootView.findViewById(R.id.btn_suivant_etape_3_to_4);
+        mParentContext = requireContext();
+
+        zoneSpinner = rootView.findViewById(R.id.choix_zone_pour_rapport);
+        nextBtn = rootView.findViewById(R.id.btn_suivant_etape_2_to_3);
+        prevBtn = rootView.findViewById(R.id.btn_precedent_etape_2_to_1);
 
         setUpEvents();
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(mParentContext,
+                R.array.zones_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        zoneSpinner.setAdapter(adapter);
 
         return rootView;
     }
 
-    private void setUpEvents() {
+    public void setUpEvents() {
         nextBtn.setOnClickListener(this);
         prevBtn.setOnClickListener(this);
 
-
-        objectifEditText.addTextChangedListener(new TextWatcher() {
+        zoneSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                mZone = parent.getItemAtPosition(position).toString();
             }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mObjectif = s.toString();
-                mListener.onPurposeUpdated(mObjectif);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
+            public void onNothingSelected(AdapterView<?> parent) {
 
             }
         });
@@ -79,8 +85,7 @@ public class ReportEtape2Fragment extends Fragment implements View.OnClickListen
         if (v.getId() == prevBtn.getId()) {
             mListener.onReturnToStep1();
         } else if (v.getId() == nextBtn.getId()) {
-            mObjectif = objectifEditText.getText().toString();
-            mListener.onStep2Finished(mObjectif);
+            mListener.onStep2Finished(mZone);
         }
     }
 
@@ -101,11 +106,8 @@ public class ReportEtape2Fragment extends Fragment implements View.OnClickListen
         mListener = null;
     }
 
-
     public interface OnFragmentInteractionListener {
-        void onStep2Finished(String purposeOfTheVisit);
-
-        void onPurposeUpdated(String updatedPurposeOfTheVisit);
+        void onStep2Finished(String zone);
 
         void onReturnToStep1();
     }
