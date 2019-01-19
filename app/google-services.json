@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "237754537808",
+    "firebase_url": "https://pharmawine-v1.firebaseio.com",
+    "project_id": "pharmawine-v1",
+    "storage_bucket": "pharmawine-v1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:237754537808:android:6fb4d57f02330e10",
+        "android_client_info": {
+          "package_name": "com.jmaplus.pharmawine"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "237754537808-o9licaa3g3rpmoqs3m91lu8c6h11bdn8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCIsWqk3J56Tp7W1vEkfres6bdctASAgDs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
