@@ -31,7 +31,7 @@ public class ReportHebdoEditManagerActivity extends AppCompatActivity {
     ImageView fillChecker;
     TextView titleOfStepReportHebdo;
     ImageButton backToReportHebdoActivity;
-    Intent mIntent = null;
+    Intent mIntent = null;  
     FragmentManager fragManager = getSupportFragmentManager();
 
     @Override

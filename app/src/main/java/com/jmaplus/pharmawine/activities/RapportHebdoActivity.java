@@ -157,8 +157,8 @@ public class RapportHebdoActivity extends AppCompatActivity {
         }
 
         if (!(filledObjection && filledAmGarde && filledAmPharma && filledAmReunion && filledAmZoneProfond && filledAmParcoursFidel && filledAmRelationPubliq && filledObNxWkPharma && filledObNxWkPrescripteurs)) {
-            btnSendReportHebdo.setBackgroundColor(getResources().getColor(R.color.colorAccent));
 
+            btnSendReportHebdo.setBackgroundColor(getResources().getColor(R.color.colorAccent));
 
             btnSendReportHebdo.setOnClickListener(new View.OnClickListener() {
                 ActiviteMene activiteMene = new ActiviteMene(contentAmGarde, contentAmReunion, contentAmRelationPubliq, contentAmPharma, contentAmParcoursFidel, contentAmZoneProfond);
@@ -170,7 +170,7 @@ public class RapportHebdoActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     /*
-                     * Send the JSON string to Server
+                     * TODO: Send the JSON string to Server
                      * May be Save it to local database too
                      */
                     Log.e(getClass().getName(), RapportHebdoInJSON);
@@ -188,6 +188,8 @@ public class RapportHebdoActivity extends AppCompatActivity {
 
                 }
             });
+        } else {
+            btnSendReportHebdo.setBackgroundColor(getResources().getColor(R.color.white_gray));
         }
 
 
