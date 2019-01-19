@@ -341,5 +341,19 @@ public class AuthUser {
 
     }
 
+    /**
+     * Get authenticated user role
+     *
+     * @param mContext
+     * @return
+     */
+    public static final int getPrincipalRole(Context mContext) {
+        SharedPreferences sharedPref = mContext.getSharedPreferences(
+                Constants.F_PROFIL, Context.MODE_PRIVATE);
+
+        return sharedPref.getInt(Constants.SP_ROLE_KEY, -1);
+
+    }
+
 
 }

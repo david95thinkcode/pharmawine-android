@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
+import com.google.firebase.database.FirebaseDatabase;
 import com.jmaplus.pharmawine.PharmaWine;
 import com.jmaplus.pharmawine.R;
 import com.jmaplus.pharmawine.fragments.home.HomeFragment;
@@ -48,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // This few 3 lines allow firebase offline capabilities
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
 
         bottomNavigation = findViewById(R.id.bottom_navigation);
         setupBottomNavigation();

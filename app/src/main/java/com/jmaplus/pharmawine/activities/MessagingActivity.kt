@@ -19,8 +19,7 @@ import com.jmaplus.pharmawine.models.Messaging.FireUser
 import com.jmaplus.pharmawine.models.Messaging.MessagingRoom
 import com.jmaplus.pharmawine.utils.FirebaseConstants.*
 import com.jmaplus.pharmawine.utils.ItemClickSupport
-
-import java.util.ArrayList
+import java.util.*
 
 class MessagingActivity : AppCompatActivity() {
     val TAG = "MessagingActivity"
@@ -49,6 +48,7 @@ class MessagingActivity : AppCompatActivity() {
 
         InitialiseUI()
         MessagingInitialisation()
+        UpdateProcess()
     }
 
     private fun InitialiseUI() {
@@ -67,6 +67,7 @@ class MessagingActivity : AppCompatActivity() {
 
         // 1- Initialisation de la db et des references
         database = FirebaseDatabase.getInstance().reference
+        database.keepSynced(true) // Sync even offline
         userReference = database.child(USERS_COLLECTION).child(authenticatedUser.getId()!!.toString())
         userRoomsReference = database.child(USERS_CHANNEL_COLLECTION).child(authenticatedUser.getId()!!.toString())
 
@@ -83,7 +84,7 @@ class MessagingActivity : AppCompatActivity() {
                                             "User was added to firebase", Toast.LENGTH_SHORT).show()
                                 }
                     } else {
-                        Toast.makeText(mContext, "onDataChange: User exists on Firebase", Toast.LENGTH_SHORT).show()
+//                        Toast.makeText(mContext, "onDataChange: User exists on Firebase", Toast.LENGTH_SHORT).show()
                     }
                 }
 
@@ -201,15 +202,79 @@ class MessagingActivity : AppCompatActivity() {
     private fun openDiscussion(room: MessagingRoom) {
 
         var intent = Intent(mContext, DiscussionActivity::class.java)
-        intent.putExtra(DiscussionActivity.FROMUSER, authenticatedUser.id)
-        intent.putExtra(DiscussionActivity.TOUSERID, room.userId)
-        intent.putExtra(DiscussionActivity.TOUSERFULLNAME, room.username)
-        intent.putExtra(DiscussionActivity.ROOM, room.roomId)
-        intent.putExtra(DiscussionActivity.TOUSERROLE, room.role)
-
-        // TODO: SEND USER ROLE (superviseur / groupe non superviseé)
+        intent.putExtra(DiscussionActivity.FROMUSER_EXTRA, authenticatedUser.id)
+        intent.putExtra(DiscussionActivity.TOUSERID_EXTRA, room.userId)
+        intent.putExtra(DiscussionActivity.TOUSERFULLNAME_EXTRA, room.username)
+        intent.putExtra(DiscussionActivity.TOUSERAVATARURL_EXTRA, room.avatarUrl)
+        intent.putExtra(DiscussionActivity.ROOM_EXTRA, room.roomId)
+        intent.putExtra(DiscussionActivity.TOUSERROLE_EXTRA, room.role)
+        intent.putExtra(DiscussionActivity.LASTMESSAGETIME_EXTRA, room.lastMessage.createdAt)
 
         startActivity(intent)
+    }
+
+    /**
+     * Get Network users
+     * Add them to firebase if not exists / If they exists, update their fields
+     * Create a channel for them if not exists
+     *
+     */
+    private fun UpdateProcess() {
+        getNetworkUsers()
+
+    }
+
+    private fun getNetworkUsers() {
+        // TODO: Get network users
+
+        // TODO: Add user to firebase if not exists
+
+        // TODO: Create Channel for each new added user
+
+        // TODO: ========== CODE TEMPLATES =================
+
+        // ADD USER TO FIREBASE
+//        database.child(USERS_COLLECTION).addListenerForSingleValueEvent(object : ValueEventListener {
+//            override fun onDataChange(dataSnapshot: DataSnapshot) {
+//
+//                // Save the FROMUSER object if not exists on Database
+//                if (!dataSnapshot.child(THEUSER.id).exists()) {
+//                    val fireUser = FireUser(THEUSER.id, THEUSER.firstname,
+//                            THEUSER.lastName, THEUSER.avatarUrl, THEUSER.role
+//                    )
+//                    database.child(USERS_COLLECTION).child(THEUSER.id).setValue(fireUser)
+//                            .addOnSuccessListener {
+//                                // We Create channel
+//                                createANewChannel(THEUSER.id, authenticatedUser.id.toString())
+//                            }
+//                }
+//                else {
+//                    // Update users details when already exists
+//                    // ....
+//                }
+//            }
+//
+//            override fun onCancelled(databaseError: DatabaseError) {
+//                // Getting Post failed, log a message
+//                Log.w(TAG, "$USERS_COLLECTION:onCancelled", databaseError.toException())
+//            }
+//        })
+    }
+
+    /**
+     * Create a channel for the two side of the user
+     */
+    private fun createANewChannel(first: String, second: String) {
+
+        if (!first.isNullOrEmpty() && !second.isNullOrEmpty()) {
+
+            // TODO: Create channelsCollection/newChannelKey and get the key
+
+            // TODO: create on usersChannelCollection/first ==> { second: newChannelKey }
+
+            // TODO: create on usersChannelCollection/second ==> { first: newChannelKey }
+
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
