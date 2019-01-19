@@ -311,6 +311,7 @@ public class AuthUser {
         SharedPreferences sharedPref = mContext.getSharedPreferences(
                 Constants.F_PROFIL, Context.MODE_PRIVATE);
 
+        u.setId(sharedPref.getInt(Constants.SP_ID_KEY, -1));
         u.setFirstname(sharedPref.getString(Constants.SP_FIRSTNAME_KEY, ""));
         u.setLastname(sharedPref.getString(Constants.SP_LASTNAME_KEY, ""));
         u.setAvatar(sharedPref.getString(Constants.SP_AVATAR_URL_KEY, ""));

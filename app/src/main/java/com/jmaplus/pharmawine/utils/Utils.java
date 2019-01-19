@@ -41,5 +41,23 @@ public class Utils {
         return countries;
     }
 
+    /**
+     * Retourne la description d'un role d'utilisateur en fonction de son ID recu
+     * @param roleID
+     * @return
+     */
+    public static String getRoleLabel(int roleID) {
+        String role = "";
+
+        switch (roleID) {
+            case 1: role = "Admin"; break;
+            case 2: role = "Superviseur"; break;
+            case 3: role = "Visiteur"; break;
+            default : role = "Utilisateur quelconque"; break;
+        }
+
+        return role;
+    }
+
 
 }

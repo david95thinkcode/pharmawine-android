@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.menu_messenger :
-                startActivity(new Intent(MainActivity.this, MessengerActivity.class));
+                startActivity(new Intent(MainActivity.this, MessagingActivity.class));
                 break;
             case R.id.menu_settings :
                 startActivity(new Intent(MainActivity.this, SettingsActivity.class));
