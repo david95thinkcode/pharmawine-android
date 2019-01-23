@@ -3,6 +3,7 @@ package com.jmaplus.pharmawine.fragments.rapport;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -12,11 +13,19 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.jmaplus.pharmawine.R;
+import com.jmaplus.pharmawine.models.AuthUser;
+import com.jmaplus.pharmawine.models.DailyReportEnd;
+import com.jmaplus.pharmawine.models.DailyReportEndResponse;
+import com.jmaplus.pharmawine.models.DailyReportStart;
+import com.jmaplus.pharmawine.models.DailyReportStartResponse;
 import com.jmaplus.pharmawine.models.Visite;
 import com.jmaplus.pharmawine.utils.Constants;
+import com.jmaplus.pharmawine.utils.RetrofitCalls.DailyReportCalls;
+import com.jmaplus.pharmawine.utils.Utils;
 
 import java.util.Calendar;
 
@@ -28,15 +37,17 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * If the argument is not passed to the fragment, an
  * Runtime  exception will be thrown
  */
-public class VisiteInProgressFragment extends Fragment {
+public class VisiteInProgressFragment extends Fragment
+implements DailyReportCalls.Callbacks {
 
     public static final String ARGS_PROSPECT_TYPE = "ARGS_PROSPECT_TYPE";
-    public static final String ARGS_CLIENT_ID_KEY = "ARGS_PROSPECT_TYPE";
-    public static final String ARGS_CLIENT_FIRSTNAME_KEY = "ARGS_PROSPECT_TYPE";
-    public static final String ARGS_CLIENT_LASTNAME_KEY = "ARGS_PROSPECT_TYPE";
-    public static final String ARGS_CLIENT_SPECIALITY_KEY = "client_spec";
-    public static final String ARGS_CLIENT_STATUS_KEY = "client_stat";
-    public static final String ARGS_CLIENT_AVATAR_UTL_KEY = "ARGS_PROSPECT_TYPE";
+    public static final String ARGS_CLIENT_ID_KEY = "ARGS_CLIENT_ID_KEY";
+    public static final String ARGS_CLIENT_FIRSTNAME_KEY = "ARGS_CLIENT_FIRSTNAME_KEY";
+    public static final String ARGS_CLIENT_LASTNAME_KEY = "ARGS_CLIENT_LASTNAME_KEY";
+    public static final String ARGS_CLIENT_SPECIALITY_KEY = "ARGS_CLIENT_SPECIALITY_KEY";
+    public static final String ARGS_CLIENT_CUSTOMER_STATUS_KEY = "ARGS_CLIENT_CUSTOMER_STATUS_KEY";
+    public static final String ARGS_CLIENT_CUSTOMER_TYPE_KEY = "ARGS_CLIENT_CUSTOMER_TYPE_KEY";
+    public static final String ARGS_CLIENT_AVATAR_URL_KEY = "ARGS_CLIENT_AVATAR_URL_KEY";
 
     public static final String TAG = "VisInProgressFragment";
 
@@ -45,6 +56,9 @@ public class VisiteInProgressFragment extends Fragment {
     private ImageView mImageViewProspectInconnu;
     private TextView tvNomPrenom, tvTypeClient, tvCategoryClient;
     private Button btnVisiteEnd;
+
+    private DailyReportStart mDailyReportStart = new DailyReportStart();
+    private Integer reportID = -1;
 
     private Visite mVisite = new Visite();
 
@@ -58,8 +72,6 @@ public class VisiteInProgressFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
     }
 
     @Override
@@ -91,14 +103,16 @@ public class VisiteInProgressFragment extends Fragment {
             mProspectType = getArguments().getString(ARGS_PROSPECT_TYPE);
             Log.i(getClass().getName(), "mProspectType ==> : " + mProspectType);
 
+            // Obligatoire
+            mDailyReportStart.setCustomerId(getArguments().getInt(ARGS_CLIENT_ID_KEY, -1));
+
             switch (mProspectType) {
                 case Constants.PROSPECT_KNOWN_MEDICAL_TEAM_TYPE_KEY: {
-                    mVisite.getClient().setId(getArguments().getString(ARGS_CLIENT_ID_KEY));
                     mVisite.getClient().setFirstname(getArguments().getString(ARGS_CLIENT_FIRSTNAME_KEY));
                     mVisite.getClient().setLastname(getArguments().getString(ARGS_CLIENT_LASTNAME_KEY));
-                    mVisite.getClient().setAvatar(getArguments().getString(ARGS_CLIENT_AVATAR_UTL_KEY));
-                    mVisite.getClient().setStatus(getArguments().getString(ARGS_CLIENT_STATUS_KEY));
-                    mVisite.getClient().setSpeciality(getArguments().getString(ARGS_CLIENT_SPECIALITY_KEY));
+                    mVisite.getClient().setAvatar(getArguments().getString(ARGS_CLIENT_AVATAR_URL_KEY));
+//                    mVisite.getClient().getCustomerStatus().setName(getArguments().getString(ARGS_CLIENT_CUSTOMER_STATUS_KEY));
+//                    mVisite.getClient().getSpeciality().setName(getArguments().getString(ARGS_CLIENT_SPECIALITY_KEY));
                 }
                 break;
                 case Constants.PROSPECT_KNOWN_CLIENT_PHARMACY_TYPE_KEY: {
@@ -131,7 +145,54 @@ public class VisiteInProgressFragment extends Fragment {
 
         updateViewsContent();
 
+        notifyServerAboutReportStarted();
+
         return rootView;
+    }
+
+    private void notifyServerAboutReportStarted() {
+        try {
+
+            mDailyReportStart.setUserId(AuthUser.getAuthenticatedUser(requireContext()).getId());
+            mDailyReportStart.setStartTime(Utils.getCurrentTime());
+
+            if (mDailyReportStart.getCustomerId() != -1 && mDailyReportStart.getCustomerId() != null
+                    && !mDailyReportStart.getStartTime().isEmpty()
+                    && !mDailyReportStart.getUserId().toString().isEmpty()) {
+                DailyReportCalls.postDailyReportStart(
+                        AuthUser.getToken(requireContext()), this, mDailyReportStart);
+            }
+            else {
+                Toast.makeText(requireContext(), "Donnees incompletes pour signaler le debut de visite", Toast.LENGTH_SHORT).show();
+                Log.w(TAG, "notifyServerAboutReportStarted: Objet incomplet => " + mDailyReportStart.toString());
+            }
+
+        } catch (Exception e) {
+            Toast.makeText(requireContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            Log.e(TAG, "notifyServerAboutReportStarted: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onStartDailyReportResponse(@Nullable DailyReportStartResponse response) {
+        reportID = response.getId();
+        Toast.makeText(requireContext(), "Vos superieurs savent que vous commencez une visite", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onStartDailyReportFailure() {
+        Log.e(TAG, "onStartDailyReportFailure"  );
+    }
+
+    @Override
+    public void onEndDailyReportResponse(@Nullable DailyReportEndResponse response) {
+
+    }
+
+    @Override
+    public void onEndDailyReportFailure() {
+
     }
 
     private void updateViewsContent() {
@@ -141,12 +202,15 @@ public class VisiteInProgressFragment extends Fragment {
                 showCorrespondingViewForProfileImage(false);
 
                 tvNomPrenom.setText(mVisite.getClient().getFullName());
-                tvTypeClient.setText(mVisite.getClient().getSpeciality());
-                tvCategoryClient.setText(mVisite.getClient().getStatus());
+//                tvTypeClient.setText(mVisite.getClient().getSpeciality().getName());
+//                tvCategoryClient.setText(mVisite.getClient().getCustomerStatus().getName());
 
-                if (!mVisite.getClient().getAvatar().isEmpty()) {
-                    Glide.with(this).load(mVisite.getClient().getAvatar()).into(profileImage);
-                }
+                /**
+                 * TODO: Desactiver le comment si dessous lorsque nous gererons les erreurs d'url d'image avec Picasso
+                 * if (!mVisite.getClient().getAvatar().isEmpty()) {
+                 *      Glide.with(this).load(mVisite.getClient().getAvatar()).into(profileImage);
+                 * }
+                 */
             }
             break;
             case Constants.PROSPECT_KNOWN_CLIENT_PHARMACY_TYPE_KEY: {
@@ -201,7 +265,10 @@ public class VisiteInProgressFragment extends Fragment {
             public void onClick(DialogInterface dialog, int which) {
                 // update mVisite endTime before call the listenner method
                 mVisite.setEndTime(Calendar.getInstance().getTime().toString());
-                mListener.onVisiteFinished(mVisite);
+
+                mListener.onVisiteEnded(reportID, Utils.getCurrentTime());
+
+//                mListener.onVisiteFinished(mVisite);
             }
         });
 
@@ -235,6 +302,6 @@ public class VisiteInProgressFragment extends Fragment {
 
     public interface OnFragmentInteractionListener {
 
-        void onVisiteFinished(Visite visiteEnCours);
+        void onVisiteEnded(Integer reportID, String EndTime);
     }
 }

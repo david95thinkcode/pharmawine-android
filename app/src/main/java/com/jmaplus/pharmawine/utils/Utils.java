@@ -67,7 +67,7 @@ public class Utils {
 
     public static final String getCurrentDate() {
         Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat mdformat = new SimpleDateFormat("yyyy-MM-dd ");
+        SimpleDateFormat mdformat = new SimpleDateFormat("yyyy-MM-dd");
         String strDate = mdformat.format(calendar.getTime());
 
         return strDate;
@@ -75,7 +75,7 @@ public class Utils {
 
     public static final String getCurrentTime() {
         Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat mdformat = new SimpleDateFormat("HH:mm:ss ");
+        SimpleDateFormat mdformat = new SimpleDateFormat("HH:mm:ss");
         String strTime = mdformat.format(calendar.getTime());
 
         return strTime;

@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import com.jmaplus.pharmawine.R
 import com.jmaplus.pharmawine.fragments.rapport.VisiteInProgressFragment
+import com.jmaplus.pharmawine.models.DailyReportEnd
 import com.jmaplus.pharmawine.models.Visite
 
 
@@ -33,7 +34,7 @@ class NewProspectInconnuActivity : AppCompatActivity(), VisiteInProgressFragment
         fragmentTransaction.commit()
     }
 
-    override fun onVisiteFinished(visiteEnCours: Visite?) {
-        Log.i(localClassName, "Visite received ==> $visiteEnCours")
+    override fun onVisiteEnded(reportID: Int?, EndTime: String?) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

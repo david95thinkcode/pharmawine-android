@@ -75,7 +75,7 @@ public class Customer {
     private List<Area> areas = null;
     @SerializedName("centers")
     @Expose
-    private List<MedicalCenter> centers = null;
+    private List<Center> centers = null;
     @SerializedName("customer_type")
     @Expose
     private CustomerType customerType;
@@ -344,11 +344,11 @@ public class Customer {
         this.areas = areas;
     }
 
-    public List<MedicalCenter> getCenters() {
+    public List<Center> getCenters() {
         return centers;
     }
 
-    public void setCenters(List<MedicalCenter> centers) {
+    public void setCenters(List<Center> centers) {
         this.centers = centers;
     }
 

@@ -9,12 +9,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.EditText
-import android.widget.Spinner
+import android.widget.*
 import com.jmaplus.pharmawine.R
+import com.jmaplus.pharmawine.models.Center
+import com.jmaplus.pharmawine.models.Customer
 import com.jmaplus.pharmawine.models.TestCountry
+import com.jmaplus.pharmawine.utils.CustomerCalls
 import com.jmaplus.pharmawine.utils.Utils
 
 /**

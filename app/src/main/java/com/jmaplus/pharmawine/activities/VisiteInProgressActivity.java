@@ -1,9 +1,11 @@
 package com.jmaplus.pharmawine.activities;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -14,6 +16,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.jmaplus.pharmawine.R;
 import com.jmaplus.pharmawine.fragments.rapport.ReportEtape1Fragment;
@@ -21,16 +24,30 @@ import com.jmaplus.pharmawine.fragments.rapport.ReportEtape2Fragment;
 import com.jmaplus.pharmawine.fragments.rapport.ReportEtape3Fragment;
 import com.jmaplus.pharmawine.fragments.rapport.ReportEtape4Fragment;
 import com.jmaplus.pharmawine.fragments.rapport.VisiteInProgressFragment;
+import com.jmaplus.pharmawine.models.AuthUser;
+import com.jmaplus.pharmawine.models.Center;
+import com.jmaplus.pharmawine.models.Customer;
+import com.jmaplus.pharmawine.models.DailyReportEnd;
+import com.jmaplus.pharmawine.models.DailyReportEndResponse;
+import com.jmaplus.pharmawine.models.DailyReportStartResponse;
 import com.jmaplus.pharmawine.models.Visite;
 import com.jmaplus.pharmawine.utils.Constants;
+import com.jmaplus.pharmawine.utils.CustomerCalls;
+import com.jmaplus.pharmawine.utils.RetrofitCalls.DailyReportCalls;
 import com.jmaplus.pharmawine.utils.Utils;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Nullable;
 
 public class VisiteInProgressActivity extends AppCompatActivity
         implements VisiteInProgressFragment.OnFragmentInteractionListener,
         ReportEtape1Fragment.OnFragmentInteractionListener,
         ReportEtape2Fragment.OnFragmentInteractionListener,
         ReportEtape3Fragment.OnFragmentInteractionListener,
-        ReportEtape4Fragment.OnFragmentInteractionListener {
+        ReportEtape4Fragment.OnFragmentInteractionListener,
+        CustomerCalls.Callbacks, DailyReportCalls.Callbacks {
 
     public static final Integer NUM_PAGES = 4;
     public static final int STEP_1_FRAGMENT_INDEX = 0;
@@ -38,7 +55,8 @@ public class VisiteInProgressActivity extends AppCompatActivity
     public static final int STEP_3_FRAGMENT_INDEX = 2;
     public static final int STEP_4_FRAGMENT_INDEX = 3;
     public static final String EXTRA_PROSPECT_TYPE = "prospectType";
-    private static final String TAG = "VisiteInProgressActivity";
+    private static final String TAG = "VisiteActivity";
+    private ProgressDialog dialog;
 
     private FragmentManager fragmentManager = getSupportFragmentManager();
     private VisiteInProgressFragment firstFragment;
@@ -46,8 +64,19 @@ public class VisiteInProgressActivity extends AppCompatActivity
     private Context mContext;
     private ViewPager mViewPager;
     private View mRootContainer;
-    private Visite mVisite;
     private String prospectType = "";
+
+    private Integer customerID = -1;
+    private String customerName = "";
+
+    private Integer currentReportID = -1;
+    private DailyReportEnd mDailyReportEnd = new DailyReportEnd();
+    private Customer mCustomer = new Customer();
+    private List<Center> mCentersList = new ArrayList();
+    private ReportEtape1Fragment mReportEtape1Fragment = new ReportEtape1Fragment();
+    private ReportEtape2Fragment mReportEtape2Fragment = new ReportEtape2Fragment();
+    private ReportEtape3Fragment mReportEtape3Fragment = new ReportEtape3Fragment();
+    private ReportEtape4Fragment mReportEtape4Fragment = new ReportEtape4Fragment();
 
 
     @Override
@@ -58,30 +87,30 @@ public class VisiteInProgressActivity extends AppCompatActivity
         setUI();
 
         mContext = this;
-        mVisite = new Visite();
         prospectType = getIntent().getStringExtra(VisiteInProgressActivity.EXTRA_PROSPECT_TYPE);
-
-        Log.i(getLocalClassName(), "Prospect type extra ==> " + prospectType);
 
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 
         // Creating an instance of the fragment and its bundle
         firstFragment = new VisiteInProgressFragment();
 
+        // Important
+        customerID = getIntent().getIntExtra(Constants.CLIENT_ID_KEY, -1);
+        customerName = getIntent().getStringExtra(Constants.CLIENT_FULLNAME_KEY);
+
         // Populating arguments bundle
         Bundle args = new Bundle();
 
         args.putString(VisiteInProgressFragment.ARGS_PROSPECT_TYPE, prospectType);
-        args.putString(VisiteInProgressFragment.ARGS_CLIENT_ID_KEY,
-                getIntent().getStringExtra(Constants.CLIENT_ID_KEY));
+        args.putInt(VisiteInProgressFragment.ARGS_CLIENT_ID_KEY, customerID);
         args.putString(VisiteInProgressFragment.ARGS_CLIENT_FIRSTNAME_KEY,
                 getIntent().getStringExtra(Constants.CLIENT_FIRSTNAME_KEY));
         args.putString(VisiteInProgressFragment.ARGS_CLIENT_LASTNAME_KEY,
                 getIntent().getStringExtra(Constants.CLIENT_LASTNAME_KEY));
-        args.putString(VisiteInProgressFragment.ARGS_CLIENT_AVATAR_UTL_KEY,
+        args.putString(VisiteInProgressFragment.ARGS_CLIENT_AVATAR_URL_KEY,
                 getIntent().getStringExtra(Constants.CLIENT_AVATAR_URL_KEY));
-        args.putString(VisiteInProgressFragment.ARGS_CLIENT_STATUS_KEY,
-                getIntent().getStringExtra(Constants.CLIENT_STATUS_KEY));
+        args.putString(VisiteInProgressFragment.ARGS_CLIENT_CUSTOMER_STATUS_KEY,
+                getIntent().getStringExtra(Constants.CLIENT_CUSTOMER_STATUS_KEY));
         args.putString(VisiteInProgressFragment.ARGS_CLIENT_SPECIALITY_KEY,
                 getIntent().getStringExtra(Constants.CLIENT_SPECIALITY_KEY));
 
@@ -93,6 +122,15 @@ public class VisiteInProgressActivity extends AppCompatActivity
         // Adding the fragment to the activity
         fragmentTransaction.add(mRootContainer.getId(), firstFragment);
         fragmentTransaction.commit();
+
+        // Fetching customer details again
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                fetchCustomerDetails();
+            }
+        }, 1000);
+
     }
 
     private void setUI() {
@@ -104,6 +142,56 @@ public class VisiteInProgressActivity extends AppCompatActivity
         mRootContainer = findViewById(R.id.fragment_container_visite_in_progress);
         mViewPager = findViewById(R.id.view_pager_rapport_fragments_container);
         mViewPager.setVisibility(View.GONE);
+
+        dialog = new ProgressDialog(this);
+        dialog.setCancelable(false);
+        dialog.setMessage("Envoie du rapport en cours....");
+
+    }
+
+    private void fetchCustomerDetails() {
+        CustomerCalls.getDetails(AuthUser.getToken(this), this, customerID);
+    }
+
+    @Override
+    public void onCustomerDetailsResponse(@Nullable Customer customer) {
+
+//        Toast.makeText(this, "Details fetched", Toast.LENGTH_LONG).show();
+        Log.i(TAG, "onCustomerDetailsResponse: Customer details fetched");
+
+        mCustomer = customer;
+
+        if (mCustomer.getCenters().size() > 0) {
+            for (Center c: mCustomer.getCenters()) {
+                mCentersList.add(c);
+            }
+
+            Log.i(TAG, "onCustomerDetailsResponse: Centers populated successfully");
+        }
+
+    }
+
+    @Override
+    public void onCustomerDetailsFailure() {
+        Toast.makeText(this, "Failed to get customer centers", Toast.LENGTH_LONG).show();
+
+    }
+
+
+    @Override
+    public void onEndDailyReportResponse(@Nullable DailyReportEndResponse response) {
+
+        Toast.makeText(mContext, "Rapport envoyé", Toast.LENGTH_SHORT).show();
+
+        confirmationDialogToEditProfile();
+
+        dialog.cancel();
+    }
+
+    @Override
+    public void onEndDailyReportFailure() {
+        dialog.cancel();
+        Toast.makeText(mContext, "Echec d'envoie du rapport. Reessayez !", Toast.LENGTH_SHORT).show();
     }
 
     private void showViewPager() {
@@ -119,81 +207,91 @@ public class VisiteInProgressActivity extends AppCompatActivity
     }
 
     @Override
-    public void onVisiteFinished(Visite v) {
-        // TODO: Go to edit rapport activity and pass the client ID to it
+    public void onVisiteEnded(Integer reportID, String EndTime) {
+        currentReportID = reportID;
+        mDailyReportEnd.setEndTime(EndTime);
 
-        mVisite = v;
-
-        setTitle(mVisite.getClient().getFullName());
-        Log.i(getLocalClassName(), v.toString());
+        setTitle(customerName);
+        Log.i(TAG, "onVisiteEnded: mDailyEnd ==> " + mDailyReportEnd);
 
         showViewPager();
     }
 
     @Override
-    public void onCenterUpdated(String updatedCenter) {
-        mVisite.setCenter(updatedCenter);
+    public void onRequestGetCenters() {
+        if (mCentersList.isEmpty()) {
+            CustomerCalls.getDetails(AuthUser.getToken(this), this, customerID);
+        } else {
+            mReportEtape1Fragment.populateCenters(mCentersList);
+        }
     }
 
     @Override
     public void onPromeseUpdated(String updatedPromes) {
-        mVisite.setPromesesHeld(updatedPromes);
+        mDailyReportEnd.setPromise(updatedPromes);
     }
 
     @Override
     public void onPurposeUpdated(String updatedPurposeOfTheVisit) {
-        mVisite.setPurposeOfVisit(updatedPurposeOfTheVisit);
+        mDailyReportEnd.setGoal(updatedPurposeOfTheVisit);
     }
 
     @Override
     public void onPrescriptionUpdated(String updatedPrescription) {
-        mVisite.setPrescribedRequirements(updatedPrescription);
+        mDailyReportEnd.setPrescription(updatedPrescription);
     }
 
     @Override
-    public void onStep1Finished(String center) {
-        mVisite.setCenter(center);
+    public void onStep1Finished(Center center) {
+        mDailyReportEnd.setCenterId(center.getId());
         goToFragment(STEP_2_FRAGMENT_INDEX);
     }
 
     @Override
     public void onStep2Finished(String purposeOfTheVisit) {
-        // TODO: Get zone from center ID from API
-        // Here am using an mock data for zone
-        mVisite.setZone("Une zone contenue dans les donnees recue de l'API");
-
-        mVisite.setPurposeOfVisit(purposeOfTheVisit);
+        mDailyReportEnd.setGoal(purposeOfTheVisit);
         goToFragment(STEP_3_FRAGMENT_INDEX);
     }
 
     @Override
     public void onStep3Finished(String promesesHeld) {
-        mVisite.setPromesesHeld(promesesHeld);
+        mDailyReportEnd.setPromise(promesesHeld);
         goToFragment(STEP_4_FRAGMENT_INDEX);
     }
 
     @Override
     public void onStep4Finished(String prescribedRequirements) {
-        mVisite.setPrescribedRequirements(prescribedRequirements);
+        mDailyReportEnd.setPrescription(prescribedRequirements);
 
-        if (mVisite.isCompleted()) {
+        Log.i(TAG, "onStep4Finished: ==> " + mDailyReportEnd);
+
+        if (mDailyReportEnd.isCompleted()) {
             /**
-             * Here we have to :
-             * - TODO: Send rapport to the server using AsyncTask
-             * - Shows confirmation to edit client profile
+             * Here we have to send rapport to the server
              */
+
+            sendReportTOTheServer();
 
             Utils.presentToast(this, "Sending report to server...", false);
 
-            logVisiteObject();
-
-            confirmationDialogToEditProfile();
         } else {
-            logVisiteObject();
 
             Utils.presentToast(this,
                     getResources().getString(R.string.certaines_informations_sont_maquantes),
                     true);
+        }
+    }
+
+    private void sendReportTOTheServer() {
+        dialog.show();
+
+        try {
+            DailyReportCalls.postDailyReportEnd(AuthUser.getToken(this), this, mDailyReportEnd, currentReportID);
+        }
+        catch (Exception e) {
+            Log.e(TAG, "sendReportTOTheServer: " + e.getMessage() );
+            e.printStackTrace();
+            dialog.cancel();
         }
     }
 
@@ -213,18 +311,12 @@ public class VisiteInProgressActivity extends AppCompatActivity
      * @param fragmentIndex
      */
     private void goToFragment(Integer fragmentIndex) {
-        logVisiteObject();
         try {
             mViewPager.setCurrentItem(fragmentIndex);
         } catch (Exception e) {
             Log.i(getLocalClassName(), "Error switching to fragment " + fragmentIndex);
             Log.e(getLocalClassName(), "Error message : " + e.getMessage());
         }
-    }
-
-    private void logVisiteObject() {
-        Log.i(getLocalClassName(), "================");
-        Log.i(getLocalClassName(), mVisite.toString());
     }
 
     private void confirmationDialogToEditProfile() {
@@ -238,7 +330,7 @@ public class VisiteInProgressActivity extends AppCompatActivity
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Intent i = new Intent(mContext, EditMedicalTeamActivity.class);
-                i.putExtra(EditMedicalTeamActivity.MEDICAL_ID_KEY, mVisite.getClient().getId());
+                i.putExtra(EditMedicalTeamActivity.MEDICAL_ID_KEY, mCustomer.getId().toString());
                 i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
                 startActivity(i);
@@ -257,6 +349,17 @@ public class VisiteInProgressActivity extends AppCompatActivity
         builder.show();
     }
 
+    @Override
+    public void onStartDailyReportResponse(@Nullable DailyReportStartResponse response) {
+
+    }
+
+    @Override
+    public void onStartDailyReportFailure() {
+
+    }
+
+
 
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
         public ScreenSlidePagerAdapter(FragmentManager fm) {
@@ -269,19 +372,19 @@ public class VisiteInProgressActivity extends AppCompatActivity
             Fragment f;
             switch (position) {
                 case STEP_1_FRAGMENT_INDEX:
-                    f = new ReportEtape1Fragment();
+                    f = mReportEtape1Fragment;
                     break;
                 case STEP_2_FRAGMENT_INDEX:
-                    f = new ReportEtape2Fragment();
+                    f = mReportEtape2Fragment;
                     break;
                 case STEP_3_FRAGMENT_INDEX:
-                    f = new ReportEtape3Fragment();
+                    f = mReportEtape3Fragment;
                     break;
                 case STEP_4_FRAGMENT_INDEX:
-                    f = new ReportEtape4Fragment();
+                    f = mReportEtape4Fragment;
                     break;
                 default:
-                    f = new ReportEtape1Fragment();
+                    f = mReportEtape1Fragment;
                     break;
             }
             // TODO: Update title
