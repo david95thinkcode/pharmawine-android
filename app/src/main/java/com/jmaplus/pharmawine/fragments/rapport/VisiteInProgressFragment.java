@@ -15,10 +15,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.jmaplus.pharmawine.R;
 import com.jmaplus.pharmawine.models.AuthUser;
-import com.jmaplus.pharmawine.models.DailyReportEnd;
 import com.jmaplus.pharmawine.models.DailyReportEndResponse;
 import com.jmaplus.pharmawine.models.DailyReportStart;
 import com.jmaplus.pharmawine.models.DailyReportStartResponse;
@@ -252,7 +250,6 @@ implements DailyReportCalls.Callbacks {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
 
-        LayoutInflater inflater = getActivity().getLayoutInflater();
         builder.setTitle("Visite terminée ?");
 
         // TODO :
@@ -263,12 +260,7 @@ implements DailyReportCalls.Callbacks {
         builder.setPositiveButton(R.string.oui, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // update mVisite endTime before call the listenner method
-                mVisite.setEndTime(Calendar.getInstance().getTime().toString());
-
                 mListener.onVisiteEnded(reportID, Utils.getCurrentTime());
-
-//                mListener.onVisiteFinished(mVisite);
             }
         });
 

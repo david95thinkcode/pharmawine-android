@@ -1,10 +1,6 @@
 package com.jmaplus.pharmawine.utils.RetrofitCalls;
 
 import com.jmaplus.pharmawine.models.Customer;
-import com.jmaplus.pharmawine.models.DailyReportEnd;
-import com.jmaplus.pharmawine.models.DailyReportEndResponse;
-import com.jmaplus.pharmawine.models.DailyReportStart;
-import com.jmaplus.pharmawine.models.DailyReportStartResponse;
 import com.jmaplus.pharmawine.utils.ApiService;
 import com.jmaplus.pharmawine.utils.Utils;
 
@@ -42,8 +38,14 @@ public class DelegueCalls {
         call.enqueue(new Callback<List<Customer>>() {
             @Override
             public void onResponse(Call<List<Customer>> call, Response<List<Customer>> response) {
-                if (callbacksWeakReference.get() != null)
-                    callbacks.onPlanningResponse(response.body());
+                if (callbacksWeakReference.get() != null) {
+                    if (response.code() == 200) {
+                        callbacks.onPlanningResponse(response.body());
+                    } else {
+                        callbacks.onPlanningFailure();
+                    }
+                }
+
             }
 
             @Override

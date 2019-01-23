@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -36,7 +37,8 @@ public class ProspectionActivity extends AppCompatActivity implements View.OnCli
 
     private Context mContext;
     private ProgressBar mProgressBar;
-    private LinearLayout mNewClient;
+    private LinearLayout mNewClient, mRetryLayout;
+    private Button mRetryBtn;
     private RecyclerView mRecyclerView;
     private RemainingCustomersAdapter mAdapter;
     private List<Customer> mCustomerList;
@@ -56,19 +58,20 @@ public class ProspectionActivity extends AppCompatActivity implements View.OnCli
             public void run() {
                 fetchRemainingClients();
             }
-        }, 1000);
+        }, 800);
 
         configureOnClickRecyclerView();
     }
 
     private void bindViewsAndInitilise() {
         mContext = this;
+        mRetryBtn = findViewById(R.id.retry_btn);
         mProgressBar = findViewById(R.id.progressBar_remaining_customers);
         mNewClient = findViewById(R.id.lay_new_client);
+        mRetryLayout = findViewById(R.id.retry_layout);
         mRecyclerView = findViewById(R.id.rv_remaining_customers_prospection);
         mNewClient.setOnClickListener(this);
-
-        mProgressBar.setVisibility(View.GONE);
+        mRetryBtn.setOnClickListener(this);
 
         // Initializations
         mCustomerList = new ArrayList();
@@ -84,6 +87,8 @@ public class ProspectionActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void fetchRemainingClients() {
+        updateUIViewForFetching();
+
         String currentDate = Utils.getCurrentDate();
         String token = AuthUser.getToken(mContext);
 
@@ -96,6 +101,23 @@ public class ProspectionActivity extends AppCompatActivity implements View.OnCli
             mProgressBar.setVisibility(View.VISIBLE);
         }
 
+    }
+
+    private void updateUIViewForFetching() {
+        mProgressBar.setVisibility(View.VISIBLE);
+        mRetryLayout.setVisibility(View.GONE);
+    }
+
+    private void updateUIViewForFetchingSuccess() {
+        mProgressBar.setVisibility(View.GONE);
+        mRetryLayout.setVisibility(View.GONE);
+        mRecyclerView.setVisibility(View.VISIBLE);
+    }
+
+    private void updateUIViewForFetchingError() {
+        mProgressBar.setVisibility(View.VISIBLE);
+        mRetryLayout.setVisibility(View.GONE);
+        mRecyclerView.setVisibility(View.GONE);
     }
 
     private void configureOnClickRecyclerView() {
@@ -171,7 +193,7 @@ public class ProspectionActivity extends AppCompatActivity implements View.OnCli
 
     @Override
     public void onPlanningResponse(@Nullable List<Customer> customers) {
-        mProgressBar.setVisibility(View.GONE);
+        updateUIViewForFetchingSuccess();
 
         if (customers.isEmpty())
             Toast.makeText(mContext, "Aucun client trouvé", Toast.LENGTH_SHORT).show();
@@ -185,14 +207,16 @@ public class ProspectionActivity extends AppCompatActivity implements View.OnCli
 
     @Override
     public void onPlanningFailure() {
-        mProgressBar.setVisibility(View.GONE);
-        Toast.makeText(mContext, "Fetch to get planning", Toast.LENGTH_SHORT).show();
+        updateUIViewForFetchingError();
+        Toast.makeText(mContext, "Une erreur s'est produite", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onClick(View v) {
         if (v.getId() == mNewClient.getId()) {
             showNewClientView();
+        } else if (v.getId() == mRetryBtn.getId()) {
+            fetchRemainingClients();
         }
     }
 }

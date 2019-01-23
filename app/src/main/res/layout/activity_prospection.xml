@@ -83,4 +83,38 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/linearLayout" />
 
+    <LinearLayout
+        android:id="@+id/retry_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:orientation="vertical"
+        android:padding="30dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/retry_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
+            android:text="@string/une_erreur_s_est_produite"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/retry_btn"
+            style="@style/btn_primary_rounded_margin_tb_3_style"
+            android:layout_width="145dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/reessayez" />
+    </LinearLayout>
+
 </android.support.constraint.ConstraintLayout>

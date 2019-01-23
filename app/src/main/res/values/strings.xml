@@ -219,5 +219,7 @@
     <string name="message_that_ive_sent_to_user">Message that I\'m sending to another user</string>
     <string name="fake_date">21/12/2018</string>
     <string name="votre_message">Votre message</string>
+    <string name="une_erreur_s_est_produite">Une erreur s\'est produite</string>
+    <string name="reessayez">Réessayer</string>
 
 </resources>

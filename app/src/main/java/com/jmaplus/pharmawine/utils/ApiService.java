@@ -44,5 +44,7 @@ public interface ApiService {
             @Header("Authorization") String authorization);
 
     @GET("customer/{id}")
-    Call<List<Customer>> getCustomerDetails(@Path("id") Integer id, @Header("Authorization") String authorization);
+    Call<List<Customer>> getCustomerDetails(
+            @Path("id") Integer id,
+            @Header("Authorization") String authorization);
 }

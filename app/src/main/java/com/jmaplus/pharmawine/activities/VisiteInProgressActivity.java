@@ -30,7 +30,6 @@ import com.jmaplus.pharmawine.models.Customer;
 import com.jmaplus.pharmawine.models.DailyReportEnd;
 import com.jmaplus.pharmawine.models.DailyReportEndResponse;
 import com.jmaplus.pharmawine.models.DailyReportStartResponse;
-import com.jmaplus.pharmawine.models.Visite;
 import com.jmaplus.pharmawine.utils.Constants;
 import com.jmaplus.pharmawine.utils.CustomerCalls;
 import com.jmaplus.pharmawine.utils.RetrofitCalls.DailyReportCalls;
@@ -208,13 +207,18 @@ public class VisiteInProgressActivity extends AppCompatActivity
 
     @Override
     public void onVisiteEnded(Integer reportID, String EndTime) {
+        /**
+         * Lorsque l'utlisateur finit la visite
+         * depuis VisiteInProgressFragment
+         */
         currentReportID = reportID;
         mDailyReportEnd.setEndTime(EndTime);
 
         setTitle(customerName);
-        Log.i(TAG, "onVisiteEnded: mDailyEnd ==> " + mDailyReportEnd);
 
         showViewPager();
+
+        Log.i(TAG, "onVisiteEnded: mDailyEnd ==> " + mDailyReportEnd);
     }
 
     @Override
@@ -261,21 +265,23 @@ public class VisiteInProgressActivity extends AppCompatActivity
 
     @Override
     public void onStep4Finished(String prescribedRequirements) {
+        /**
+         * Se produit juste avant d'envoyer le
+         * Rapport de fin de visite au server
+         */
+
         mDailyReportEnd.setPrescription(prescribedRequirements);
+        mDailyReportEnd.setCustomerId(customerID);
 
         Log.i(TAG, "onStep4Finished: ==> " + mDailyReportEnd);
 
         if (mDailyReportEnd.isCompleted()) {
-            /**
-             * Here we have to send rapport to the server
-             */
 
             sendReportTOTheServer();
 
             Utils.presentToast(this, "Sending report to server...", false);
 
         } else {
-
             Utils.presentToast(this,
                     getResources().getString(R.string.certaines_informations_sont_maquantes),
                     true);
