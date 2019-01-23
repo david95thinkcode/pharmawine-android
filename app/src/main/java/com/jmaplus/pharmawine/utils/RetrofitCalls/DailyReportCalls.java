@@ -20,14 +20,6 @@ public class DailyReportCalls {
     // Retrofit instance
     public static ApiService mApiService = ApiService.retrofit.create(ApiService.class);
 
-    public interface Callbacks {
-        void onStartDailyReportResponse(@Nullable DailyReportStartResponse response);
-        void onStartDailyReportFailure();
-
-        void onEndDailyReportResponse(@Nullable DailyReportEndResponse response);
-        void onEndDailyReportFailure();
-    }
-
     public static void postDailyReportStart(String token, final Callbacks callbacks, DailyReportStart reportStart) {
 
         final WeakReference<Callbacks> callbacksWeakReference = new WeakReference<Callbacks>(callbacks);
@@ -38,7 +30,11 @@ public class DailyReportCalls {
             @Override
             public void onResponse(Call<DailyReportStartResponse> call, Response<DailyReportStartResponse> response) {
                 if (callbacksWeakReference.get() != null)
-                    callbacks.onStartDailyReportResponse(response.body());
+                    if (response.code() == 200)
+                        callbacks.onStartDailyReportResponse(response.body());
+                    else
+                        callbacks.onStartDailyReportFailure();
+
             }
 
             @Override
@@ -58,8 +54,13 @@ public class DailyReportCalls {
         call.enqueue(new Callback<DailyReportEndResponse>() {
             @Override
             public void onResponse(Call<DailyReportEndResponse> call, Response<DailyReportEndResponse> response) {
+
                 if (callbacksWeakReference.get() != null)
-                    callbacks.onEndDailyReportResponse(response.body());
+                    if (response.code() == 200)
+                        callbacks.onEndDailyReportResponse(response.body());
+                    else
+                        callbacks.onEndDailyReportFailure();
+
             }
 
             @Override
@@ -68,6 +69,16 @@ public class DailyReportCalls {
                     callbacks.onEndDailyReportFailure();
             }
         });
+    }
+
+    public interface Callbacks {
+        void onStartDailyReportResponse(@Nullable DailyReportStartResponse response);
+
+        void onStartDailyReportFailure();
+
+        void onEndDailyReportResponse(@Nullable DailyReportEndResponse response);
+
+        void onEndDailyReportFailure();
     }
 
 }

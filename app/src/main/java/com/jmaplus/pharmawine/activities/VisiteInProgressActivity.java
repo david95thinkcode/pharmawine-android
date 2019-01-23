@@ -159,13 +159,12 @@ public class VisiteInProgressActivity extends AppCompatActivity
         Log.i(TAG, "onCustomerDetailsResponse: Customer details fetched");
 
         mCustomer = customer;
+        firstFragment.updateViewsWithSource(customer);
 
         if (mCustomer.getCenters().size() > 0) {
             for (Center c: mCustomer.getCenters()) {
                 mCentersList.add(c);
             }
-
-            Log.i(TAG, "onCustomerDetailsResponse: Centers populated successfully");
         }
 
     }

@@ -115,8 +115,8 @@ public class ProspectionActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void updateUIViewForFetchingError() {
-        mProgressBar.setVisibility(View.VISIBLE);
-        mRetryLayout.setVisibility(View.GONE);
+        mProgressBar.setVisibility(View.GONE);
+        mRetryLayout.setVisibility(View.VISIBLE);
         mRecyclerView.setVisibility(View.GONE);
     }
 

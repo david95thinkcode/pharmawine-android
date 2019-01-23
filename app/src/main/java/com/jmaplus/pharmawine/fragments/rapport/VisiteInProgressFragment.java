@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.jmaplus.pharmawine.R;
 import com.jmaplus.pharmawine.models.AuthUser;
+import com.jmaplus.pharmawine.models.Customer;
 import com.jmaplus.pharmawine.models.DailyReportEndResponse;
 import com.jmaplus.pharmawine.models.DailyReportStart;
 import com.jmaplus.pharmawine.models.DailyReportStartResponse;
@@ -52,7 +53,7 @@ implements DailyReportCalls.Callbacks {
     private OnFragmentInteractionListener mListener;
     private CircleImageView profileImage;
     private ImageView mImageViewProspectInconnu;
-    private TextView tvNomPrenom, tvTypeClient, tvCategoryClient;
+    private TextView tvNomPrenom, tvCustomerSpeciality, tvCustomerStatus;
     private Button btnVisiteEnd;
 
     private DailyReportStart mDailyReportStart = new DailyReportStart();
@@ -81,8 +82,8 @@ implements DailyReportCalls.Callbacks {
         mImageViewProspectInconnu = rootView.findViewById(R.id.iv_unknown_prospect);
         profileImage = rootView.findViewById(R.id.img_profil_client);
         tvNomPrenom = rootView.findViewById(R.id.tv_nom_client);
-        tvTypeClient = rootView.findViewById(R.id.tv_type_client);
-        tvCategoryClient = rootView.findViewById(R.id.tv_category_client);
+        tvCustomerSpeciality = rootView.findViewById(R.id.tv_type_client);
+        tvCustomerStatus = rootView.findViewById(R.id.tv_category_client);
         btnVisiteEnd = rootView.findViewById(R.id.btn_visit_fini);
 
         btnVisiteEnd.setOnClickListener(new View.OnClickListener() {
@@ -193,6 +194,21 @@ implements DailyReportCalls.Callbacks {
 
     }
 
+    /**
+     * Update views UI with source data
+     *
+     * @param customer
+     */
+    public void updateViewsWithSource(Customer customer) {
+        if (customer.getCustomerStatus() != null && !customer.getCustomerStatus().getName().isEmpty()) {
+            tvCustomerStatus.setText(customer.getCustomerStatus().getName());
+        }
+
+        if (customer.getSpeciality() != null && !customer.getSpeciality().getName().isEmpty()) {
+            tvCustomerSpeciality.setText(customer.getSpeciality().getName());
+        }
+    }
+
     private void updateViewsContent() {
 
         switch (mProspectType) {
@@ -200,8 +216,8 @@ implements DailyReportCalls.Callbacks {
                 showCorrespondingViewForProfileImage(false);
 
                 tvNomPrenom.setText(mVisite.getClient().getFullName());
-//                tvTypeClient.setText(mVisite.getClient().getSpeciality().getName());
-//                tvCategoryClient.setText(mVisite.getClient().getCustomerStatus().getName());
+//                tvCustomerSpeciality.setText(mVisite.getClient().getSpeciality().getName());
+//                tvCustomerStatus.setText(mVisite.getClient().getCustomerStatus().getName());
 
                 /**
                  * TODO: Desactiver le comment si dessous lorsque nous gererons les erreurs d'url d'image avec Picasso
@@ -237,8 +253,8 @@ implements DailyReportCalls.Callbacks {
 
             // Textview
             tvNomPrenom.setText(getResources().getString(R.string.prospect_inconnu));
-            tvCategoryClient.setVisibility(View.GONE);
-            tvTypeClient.setVisibility(View.GONE);
+            tvCustomerStatus.setVisibility(View.GONE);
+            tvCustomerSpeciality.setVisibility(View.GONE);
         } else {
             // Pour les prospects connus
             profileImage.setVisibility(View.VISIBLE);
