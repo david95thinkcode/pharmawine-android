@@ -94,9 +94,9 @@ public class VisiteInProgressFragment extends Fragment {
             switch (mProspectType) {
                 case Constants.PROSPECT_KNOWN_MEDICAL_TEAM_TYPE_KEY: {
                     mVisite.getClient().setId(getArguments().getString(ARGS_CLIENT_ID_KEY));
-                    mVisite.getClient().setFirstName(getArguments().getString(ARGS_CLIENT_FIRSTNAME_KEY));
-                    mVisite.getClient().setLastName(getArguments().getString(ARGS_CLIENT_LASTNAME_KEY));
-                    mVisite.getClient().setAvatarUrl(getArguments().getString(ARGS_CLIENT_AVATAR_UTL_KEY));
+                    mVisite.getClient().setFirstname(getArguments().getString(ARGS_CLIENT_FIRSTNAME_KEY));
+                    mVisite.getClient().setLastname(getArguments().getString(ARGS_CLIENT_LASTNAME_KEY));
+                    mVisite.getClient().setAvatar(getArguments().getString(ARGS_CLIENT_AVATAR_UTL_KEY));
                     mVisite.getClient().setStatus(getArguments().getString(ARGS_CLIENT_STATUS_KEY));
                     mVisite.getClient().setSpeciality(getArguments().getString(ARGS_CLIENT_SPECIALITY_KEY));
                 }
@@ -144,8 +144,8 @@ public class VisiteInProgressFragment extends Fragment {
                 tvTypeClient.setText(mVisite.getClient().getSpeciality());
                 tvCategoryClient.setText(mVisite.getClient().getStatus());
 
-                if (!mVisite.getClient().getAvatarUrl().isEmpty()) {
-                    Glide.with(this).load(mVisite.getClient().getAvatarUrl()).into(profileImage);
+                if (!mVisite.getClient().getAvatar().isEmpty()) {
+                    Glide.with(this).load(mVisite.getClient().getAvatar()).into(profileImage);
                 }
             }
             break;

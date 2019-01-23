@@ -87,7 +87,7 @@ public class Customer {
     private Speciality speciality;
 
     public String getFullName() {
-        return "$firstname $lastname";
+        return getFirstname() + " " + getLastname();
     }
 
     public Integer getDefaultAvatarUrl() {
@@ -99,6 +99,19 @@ public class Customer {
 
     public String getRedabledate() {
         return getBirthday();
+    }
+
+    /**
+     * Retourne true s'il s'agit d'un client connu et false sinon
+     *
+     * @return
+     */
+    public Boolean isKnown() {
+        if (this.customerStatus.getName() == "pim" || this.customerStatus.getName() == "PIM"
+                || this.customerStatus.getName() == "pig" || this.customerStatus.getName() == "PIG")
+            return false;
+        else
+            return true;
     }
 
     public Integer getFillingLevel() {

@@ -240,7 +240,7 @@ class MessagingActivity : AppCompatActivity() {
 //                // Save the FROMUSER object if not exists on Database
 //                if (!dataSnapshot.child(THEUSER.id).exists()) {
 //                    val fireUser = FireUser(THEUSER.id, THEUSER.firstname,
-//                            THEUSER.lastName, THEUSER.avatarUrl, THEUSER.role
+//                            THEUSER.lastname, THEUSER.avatar, THEUSER.role
 //                    )
 //                    database.child(USERS_COLLECTION).child(THEUSER.id).setValue(fireUser)
 //                            .addOnSuccessListener {

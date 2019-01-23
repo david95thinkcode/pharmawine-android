@@ -15,7 +15,6 @@ import android.widget.Toast;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.google.firebase.database.FirebaseDatabase;
-import com.jmaplus.pharmawine.PharmaWine;
 import com.jmaplus.pharmawine.R;
 import com.jmaplus.pharmawine.fragments.home.HomeFragment;
 import com.jmaplus.pharmawine.fragments.home.MoreFragment;
@@ -65,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setLogo(R.drawable.logo);
 
 //
-        authenticatedUser = AuthenticatedUser.getAuthenticatedUser(PharmaWine.mRealm);
+//        authenticatedUser = AuthenticatedUser.getAuthenticatedUser(PharmaWine.mRealm);
 
         currentUser = AuthUser.getAuthenticatedUser(this);
 

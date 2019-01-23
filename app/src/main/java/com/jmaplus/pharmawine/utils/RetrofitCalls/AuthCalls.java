@@ -21,7 +21,7 @@ public class AuthCalls {
         // creating a weak reference to callback to avoid memory leak
         final WeakReference<Callbacks> callbacksWeakReference = new WeakReference<Callbacks>(callbacks);
 
-        // CREATIN RETROFIT INSTANCE AND REALTED ENDPOINTS
+        // CREATING RETROFIT INSTANCE AND REALTED ENDPOINTS
         AuthService authService = AuthService.retrofit.create(AuthService.class);
 
         // Creating call to the api

@@ -154,10 +154,10 @@ public class MessengerActivity extends AppCompatActivity {
 
                 if (secondUserDetails != null) {
 //                    MessagingRoom messagingRoom = new MessagingRoom(
-//                            secondUserDetails.getLastName(),
+//                            secondUserDetails.getLastname(),
 //                            fireRoom.getLastMessage(),
 //                            secondUserDetails.getId(),
-//                            roomKey, secondUserDetails.getAvatarUrl()
+//                            roomKey, secondUserDetails.getAvatar()
 //                    );
 
                     if (!roomsList.contains(roomKey)) {

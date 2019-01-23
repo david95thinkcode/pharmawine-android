@@ -6,9 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.jmaplus.pharmawine.R
-import com.jmaplus.pharmawine.models.Center
+import com.jmaplus.pharmawine.models.MedicalCenter
 
-class MedicalTeamCenterSelectionAdapter(var centersList: MutableList<Center>) :
+class MedicalTeamCenterSelectionAdapter(var centersList: MutableList<MedicalCenter>) :
         RecyclerView.Adapter<MedicalTeamCenterSelectionAdapter.MedicalTeamCenterSelectionViewHolder>() {
 
     class MedicalTeamCenterSelectionViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -31,7 +31,7 @@ class MedicalTeamCenterSelectionAdapter(var centersList: MutableList<Center>) :
         holder?.zone.text = centersList[position].zone
     }
 
-    fun getCenter(position: Int): Center = centersList[position]
+    fun getCenter(position: Int): MedicalCenter = centersList[position]
 
 
     companion object {

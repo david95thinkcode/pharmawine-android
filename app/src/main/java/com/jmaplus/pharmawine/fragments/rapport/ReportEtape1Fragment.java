@@ -15,7 +15,7 @@ import android.widget.Spinner;
 
 import com.jmaplus.pharmawine.R;
 import com.jmaplus.pharmawine.adapters.MedicalTeamCenterSelectionAdapter;
-import com.jmaplus.pharmawine.models.Center;
+import com.jmaplus.pharmawine.models.MedicalCenter;
 import com.jmaplus.pharmawine.utils.FakeData;
 import com.jmaplus.pharmawine.utils.ItemClickSupport;
 import com.jmaplus.pharmawine.utils.Utils;
@@ -34,7 +34,7 @@ public class ReportEtape1Fragment extends Fragment {
     private Context mParentContext;
     private MedicalTeamCenterSelectionAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private List<Center> mCentersList;
+    private List<MedicalCenter> mCentersList;
 
     private String mCentre = "";
 
@@ -103,7 +103,7 @@ public class ReportEtape1Fragment extends Fragment {
         // TODO: use api call
 
         // Using fake data below
-        for (Center c : FakeData.getCenters()) {
+        for (MedicalCenter c : FakeData.getCenters()) {
             mCentersList.add(c);
             mAdapter.notifyItemInserted(mCentersList.size() - 1);
         }

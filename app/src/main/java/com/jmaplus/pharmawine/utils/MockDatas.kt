@@ -11,8 +11,8 @@ class MockDatas {
             var client = Client()
 
             client.id = 2.toString()
-            client.firstName = "Baba"
-            client.lastName = "Pauline"
+            client.firstname = "Baba"
+            client.lastname = "Pauline"
             client.sex = "F"
             client.speciality = "Dermatologue"
             client.status = "CFG"
@@ -29,8 +29,8 @@ class MockDatas {
 
             var c1 = Client()
             c1.id = 1.toString()
-            c1.firstName = "Bounou"
-            c1.lastName = "Honorat"
+            c1.firstname = "Bounou"
+            c1.lastname = "Honorat"
             c1.sex = "M"
             c1.speciality = "Médecin généraliste"
             c1.status = "PCM"
@@ -39,8 +39,8 @@ class MockDatas {
 
             var c2 = Client()
             c2.id = 2.toString()
-            c2.firstName = "Baba"
-            c2.lastName = "Pauline"
+            c2.firstname = "Baba"
+            c2.lastname = "Pauline"
             c2.sex = "F"
             c2.speciality = "Dermatologue"
             c2.status = "CFG"
@@ -50,8 +50,8 @@ class MockDatas {
 
             var c3 = Client()
             c3.id = 3.toString()
-            c3.firstName = "Afon"
-            c3.lastName = "Gaston"
+            c3.firstname = "Afon"
+            c3.lastname = "Gaston"
             c3.sex = "M"
             c3.speciality = "Ophtamologue"
             c3.status = "CFM"
@@ -61,8 +61,8 @@ class MockDatas {
 
             var c4 = Client()
             c4.id = 4.toString()
-            c4.firstName = "Bignon"
-            c4.lastName = "Patricia"
+            c4.firstname = "Bignon"
+            c4.lastname = "Patricia"
             c4.sex = "F"
             c4.speciality = "Pédiatre"
             c4.status = "PCM"
