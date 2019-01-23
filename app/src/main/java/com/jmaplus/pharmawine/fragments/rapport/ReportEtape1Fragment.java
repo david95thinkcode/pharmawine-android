@@ -8,16 +8,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.Spinner;
 
 import com.jmaplus.pharmawine.R;
-import com.jmaplus.pharmawine.adapters.MedicalTeamCenterSelectionAdapter;
+import com.jmaplus.pharmawine.adapters.CenterSelectionAdapter;
 import com.jmaplus.pharmawine.models.Center;
-import com.jmaplus.pharmawine.models.MedicalCenter;
-import com.jmaplus.pharmawine.utils.FakeData;
 import com.jmaplus.pharmawine.utils.ItemClickSupport;
 import com.jmaplus.pharmawine.utils.Utils;
 
@@ -32,7 +27,7 @@ public class ReportEtape1Fragment extends Fragment {
     private RecyclerView centersRecyclerView;
     private Button nextBtn;
     private Context mParentContext;
-    private MedicalTeamCenterSelectionAdapter mAdapter;
+    private CenterSelectionAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private List<Center> mCentersList;
 
@@ -75,7 +70,7 @@ public class ReportEtape1Fragment extends Fragment {
         mCentersList = new ArrayList();
 
         // Setting required thins for recycler view
-        mAdapter = new MedicalTeamCenterSelectionAdapter(mCentersList);
+        mAdapter = new CenterSelectionAdapter(mCentersList);
         mLayoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);
         centersRecyclerView.setLayoutManager(mLayoutManager);
         centersRecyclerView.setAdapter(mAdapter);
@@ -95,16 +90,7 @@ public class ReportEtape1Fragment extends Fragment {
     }
 
     private void fetchCenters() {
-
-        // TODO: use api call
         mListener.onRequestGetCenters();
-
-
-//        // Using fake data below
-//        for (MedicalCenter c : FakeData.getCenters()) {
-//            mCentersList.add(c);
-//            mAdapter.notifyItemInserted(mCentersList.size() - 1);
-//        }
     }
 
     public void populateCenters(List<Center> centers) {

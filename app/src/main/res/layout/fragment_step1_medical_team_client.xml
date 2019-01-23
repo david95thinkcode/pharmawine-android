@@ -4,7 +4,6 @@
     style="@style/profilage_medicalTeam_nestedLayout_step_fragment_style"
     tools:context=".fragments.profilage.Step1MedicalTeamClientFragment">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -164,6 +164,12 @@
         <item>Zone 3</item>
     </string-array>
 
+    <!-- Please, you should never change the position of items in the string array below-->
+    <string-array name="sex_array">
+        <item>Homme</item>
+        <item>Femme</item>
+    </string-array>
+
     <string name="title_activity_visite_in_progress">Visite en cours &#8230;</string>
     <string name="msg_cancel_visite">Êtes vous sûr de vouloir annuler la visite?</string>
     <string name="msg_end_visite">La visite est-t-elle terminée ?</string>
@@ -221,5 +227,15 @@
     <string name="votre_message">Votre message</string>
     <string name="une_erreur_s_est_produite">Une erreur s\'est produite</string>
     <string name="reessayez">Réessayer</string>
+    <string name="prenoms_du_prospect">Prénom du prospect</string>
+    <string name="nom_du_prospect">Nom du prospect</string>
+    <string name="contact">Contact</string>
+    <string name="numero">Numero</string>
+    <string name="entrez_adress_du_prospect">Entrer l\'adresse du prospect</string>
+    <string name="adresse_du_prospect">Adresse du prospect</string>
+    <string name="nouveau_client">Nouveau client</string>
+    <string name="specialite">Spécialité</string>
+    <string name="categorie">Catégorie</string>
+
 
 </resources>
