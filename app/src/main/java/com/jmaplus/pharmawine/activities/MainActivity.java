@@ -21,7 +21,6 @@ import com.jmaplus.pharmawine.fragments.home.MoreFragment;
 import com.jmaplus.pharmawine.fragments.home.NotificationsFragment;
 import com.jmaplus.pharmawine.fragments.home.ReportsFragment;
 import com.jmaplus.pharmawine.models.AuthUser;
-import com.jmaplus.pharmawine.models.AuthenticatedUser;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -39,8 +38,6 @@ public class MainActivity extends AppCompatActivity {
     private final int IND_NAV_CLIENT = 3;
     private final int IND_NAV_MORE = 4;
 
-
-    private AuthenticatedUser authenticatedUser;
     private AuthUser currentUser;
 
     @Override

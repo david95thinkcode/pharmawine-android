@@ -78,6 +78,9 @@ public class AuthUser {
     @SerializedName("goals")
     @Expose
     private List<Object> goals = null;
+    @SerializedName("roles")
+    @Expose
+    private List<AuthUserRole> roles = null;
 
     public Integer getId() {
         return id;
@@ -255,11 +258,33 @@ public class AuthUser {
         this.goals = goals;
     }
 
+    /**
+     * Get authenticated user roles
+     *
+     * @param mContext
+     * @return
+     */
+    public static final int getRoleFromSharedPreferences(Context mContext) {
+        SharedPreferences sharedPref = mContext.getSharedPreferences(
+                Constants.F_PROFIL, Context.MODE_PRIVATE);
+
+        return sharedPref.getInt(Constants.SP_ROLE_KEY, -1);
+
+    }
+
+    public List<AuthUserRole> getRoles() {
+        return roles;
+    }
+
     @Override
     public String toString() {
         Gson gson = new Gson();
 
         return gson.toJson(this);
+    }
+
+    public void setRoles(List<AuthUserRole> roles) {
+        this.roles = roles;
     }
 
     /**
@@ -289,12 +314,10 @@ public class AuthUser {
             editor.putString(Constants.SP_PHONE_2_KEY, this.telephone2);
             editor.putString(Constants.SP_MARITAL_STATUS_KEY, this.maritalStatus);
             editor.putInt(Constants.SP_TYPE_KEY, this.typeId);
+            editor.putInt(Constants.SP_ROLE_KEY, getFirstRole().getId());
 
             // Un compte de user actif a pour status = 0 sinon 1
             editor.putInt(Constants.SP_ACCOUNT_STATUS_KEY, this.status);
-
-            // TODO : replace the value by the real object role when the api will be updated
-            editor.putInt(Constants.SP_ROLE_KEY, DEFAULT_DELEGUE_ROLE_ID);
 
             editor.commit();
 
@@ -342,17 +365,14 @@ public class AuthUser {
     }
 
     /**
-     * Get authenticated user role
-     *
-     * @param mContext
+     * Recupere le vrai roles de l'utilisatuer
      * @return
      */
-    public static final int getPrincipalRole(Context mContext) {
-        SharedPreferences sharedPref = mContext.getSharedPreferences(
-                Constants.F_PROFIL, Context.MODE_PRIVATE);
-
-        return sharedPref.getInt(Constants.SP_ROLE_KEY, -1);
-
+    public AuthUserRole getFirstRole() {
+        if (this.roles != null && !getRoles().isEmpty())
+            return getRoles().get(0);
+        else
+            return null;
     }
 
 

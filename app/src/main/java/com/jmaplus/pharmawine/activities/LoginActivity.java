@@ -77,7 +77,7 @@ public class LoginActivity extends AppCompatActivity implements AuthCalls.Callba
 
 //        TODO removes this
 //        etId.setText("alcoy@gmail.com");
-        etId.setText("norval.price@example.net");
+        etId.setText("rita09@example.com");
         etPassword.setText("secret");
 
 //        Avoid courrier font for passwords input
