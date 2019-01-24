@@ -278,8 +278,6 @@ public class VisiteInProgressActivity extends AppCompatActivity
 
             sendReportTOTheServer();
 
-            Utils.presentToast(this, "Sending report to server...", false);
-
         } else {
             Utils.presentToast(this,
                     getResources().getString(R.string.certaines_informations_sont_maquantes),

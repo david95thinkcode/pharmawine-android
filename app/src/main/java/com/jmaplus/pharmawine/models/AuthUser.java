@@ -62,7 +62,7 @@ public class AuthUser {
     private Integer typeId;
     @SerializedName("network_id")
     @Expose
-    private Object networkId;
+    private Integer networkId;
     @SerializedName("areas")
     @Expose
     private List<Object> areas = null;
@@ -210,12 +210,31 @@ public class AuthUser {
         this.typeId = typeId;
     }
 
-    public Object getNetworkId() {
-        return networkId;
+    public static AuthUser getAuthenticatedUser(Context mContext) {
+        AuthUser u = new AuthUser();
+
+        SharedPreferences sharedPref = mContext.getSharedPreferences(
+                Constants.F_PROFIL, Context.MODE_PRIVATE);
+
+        u.setId(sharedPref.getInt(Constants.SP_ID_KEY, -1));
+        u.setFirstname(sharedPref.getString(Constants.SP_FIRSTNAME_KEY, ""));
+        u.setLastname(sharedPref.getString(Constants.SP_LASTNAME_KEY, ""));
+        u.setAvatar(sharedPref.getString(Constants.SP_AVATAR_URL_KEY, ""));
+        u.setEmail(sharedPref.getString(Constants.SP_EMAIL_KEY, ""));
+        u.setBirthday(sharedPref.getString(Constants.SP_BIRTHDAY_KEY, ""));
+        u.setSex(sharedPref.getString(Constants.SP_SEX_KEY, ""));
+        u.setNationalite(sharedPref.getString(Constants.SP_NATIONALITY_KEY, ""));
+        u.setTelephone1(sharedPref.getString(Constants.SP_PHONE_1_KEY, ""));
+        u.setTelephone2(sharedPref.getString(Constants.SP_PHONE_2_KEY, ""));
+        u.setMaritalStatus(sharedPref.getString(Constants.SP_MARITAL_STATUS_KEY, ""));
+        u.setTypeId(sharedPref.getInt(Constants.SP_TYPE_KEY, -1));
+        u.setNetworkId(sharedPref.getInt(Constants.SP_NETWORK_KEY, -1));
+
+        return u;
     }
 
-    public void setNetworkId(Object networkId) {
-        this.networkId = networkId;
+    public Integer getNetworkId() {
+        return networkId;
     }
 
     public List<Object> getAreas() {
@@ -287,6 +306,10 @@ public class AuthUser {
         this.roles = roles;
     }
 
+    public void setNetworkId(Integer networkId) {
+        this.networkId = networkId;
+    }
+
     /**
      * Write user data into shared Preferences
      *
@@ -296,6 +319,7 @@ public class AuthUser {
     public Boolean storeInSharedPreferences(Context context, String token) {
 
         Integer DEFAULT_DELEGUE_ROLE_ID = 3;
+
         try {
             SharedPreferences sharedPref = context.getSharedPreferences(
                     Constants.F_PROFIL, Context.MODE_PRIVATE);
@@ -315,6 +339,7 @@ public class AuthUser {
             editor.putString(Constants.SP_MARITAL_STATUS_KEY, this.maritalStatus);
             editor.putInt(Constants.SP_TYPE_KEY, this.typeId);
             editor.putInt(Constants.SP_ROLE_KEY, getFirstRole().getId());
+            editor.putInt(Constants.SP_NETWORK_KEY, getNetworkId());
 
             // Un compte de user actif a pour status = 0 sinon 1
             editor.putInt(Constants.SP_ACCOUNT_STATUS_KEY, this.status);
@@ -326,28 +351,6 @@ public class AuthUser {
         }
 
         return true;
-    }
-
-    public static AuthUser getAuthenticatedUser(Context mContext) {
-        AuthUser u = new AuthUser();
-
-        SharedPreferences sharedPref = mContext.getSharedPreferences(
-                Constants.F_PROFIL, Context.MODE_PRIVATE);
-
-        u.setId(sharedPref.getInt(Constants.SP_ID_KEY, -1));
-        u.setFirstname(sharedPref.getString(Constants.SP_FIRSTNAME_KEY, ""));
-        u.setLastname(sharedPref.getString(Constants.SP_LASTNAME_KEY, ""));
-        u.setAvatar(sharedPref.getString(Constants.SP_AVATAR_URL_KEY, ""));
-        u.setEmail(sharedPref.getString(Constants.SP_EMAIL_KEY, ""));
-        u.setBirthday(sharedPref.getString(Constants.SP_BIRTHDAY_KEY, ""));
-        u.setSex(sharedPref.getString(Constants.SP_SEX_KEY, ""));
-        u.setNationalite(sharedPref.getString(Constants.SP_NATIONALITY_KEY, ""));
-        u.setTelephone1(sharedPref.getString(Constants.SP_PHONE_1_KEY, ""));
-        u.setTelephone2(sharedPref.getString(Constants.SP_PHONE_2_KEY, ""));
-        u.setMaritalStatus(sharedPref.getString(Constants.SP_MARITAL_STATUS_KEY, ""));
-        u.setTypeId(sharedPref.getInt(Constants.SP_TYPE_KEY, -1));
-
-        return u;
     }
 
     /**

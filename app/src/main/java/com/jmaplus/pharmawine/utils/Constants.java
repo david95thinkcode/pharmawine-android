@@ -26,6 +26,7 @@ public class Constants {
     public static final String SP_EMAIL_KEY = "sp_mail";
     public static final String SP_TYPE_KEY = "sp_type";
     public static final String SP_ROLE_KEY = "sp_role";
+    public static final String SP_NETWORK_KEY = "sp_network_id";
     public static final String SP_ACCOUNT_STATUS_KEY = "sp_status";
     public static final String SP_AVATAR_URL_KEY = "sp_avatar";
     public static final String SP_TOKEN_KEY = "sp_token";

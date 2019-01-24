@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -64,6 +65,8 @@ public class MainActivity extends AppCompatActivity {
 //        authenticatedUser = AuthenticatedUser.getAuthenticatedUser(PharmaWine.mRealm);
 
         currentUser = AuthUser.getAuthenticatedUser(this);
+
+        Log.i(getLocalClassName(), "onCreate: authUser ==> " + currentUser);
 
         Toast.makeText(this, "Content de vous revoir " + currentUser.getLastname() + " !", Toast.LENGTH_LONG).show();
 
