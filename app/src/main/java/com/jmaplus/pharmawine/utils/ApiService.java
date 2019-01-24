@@ -5,6 +5,8 @@ import com.jmaplus.pharmawine.models.DailyReportEnd;
 import com.jmaplus.pharmawine.models.DailyReportEndResponse;
 import com.jmaplus.pharmawine.models.DailyReportStart;
 import com.jmaplus.pharmawine.models.DailyReportStartResponse;
+import com.jmaplus.pharmawine.models.Network;
+import com.jmaplus.pharmawine.models.SimpleUser;
 
 import java.util.List;
 
@@ -46,5 +48,19 @@ public interface ApiService {
     @GET("customer/{id}")
     Call<List<Customer>> getCustomerDetails(
             @Path("id") Integer id,
+            @Header("Authorization") String authorization);
+
+    // ======================================= NETWORKS =======================================
+    @GET("network")
+    Call<List<Network>> getAllNetworks(@Header("Authorization") String authorization);
+
+    @GET("network/{network_id}")
+    Call<Network> getNetworkDetails(
+            @Path("network_id") Integer networkID,
+            @Header("Authorization") String authorization);
+
+    @GET("network/{network_id}/users")
+    Call<List<SimpleUser>> getNetworkUsers(
+            @Path("network_id") Integer networkID,
             @Header("Authorization") String authorization);
 }

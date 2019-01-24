@@ -1,14 +1,15 @@
 package com.jmaplus.pharmawine.activities;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -21,21 +22,27 @@ import com.bumptech.glide.Glide;
 import com.jmaplus.pharmawine.PharmaWine;
 import com.jmaplus.pharmawine.R;
 import com.jmaplus.pharmawine.adapters.NetworkMemberAdapter;
+import com.jmaplus.pharmawine.models.AuthUser;
 import com.jmaplus.pharmawine.models.AuthenticatedUser;
+import com.jmaplus.pharmawine.models.Network;
 import com.jmaplus.pharmawine.models.NetworkMember;
-import com.jmaplus.pharmawine.models.Pharmacy;
+import com.jmaplus.pharmawine.models.SimpleUser;
 import com.jmaplus.pharmawine.services.ApiClient;
 import com.jmaplus.pharmawine.services.ApiInterface;
 import com.jmaplus.pharmawine.services.responses.NetworkMembersResponse;
 import com.jmaplus.pharmawine.utils.PrefManager;
+import com.jmaplus.pharmawine.utils.RetrofitCalls.NetworkCalls;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Nullable;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class NetworksActivity extends AppCompatActivity {
+public class NetworksActivity extends AppCompatActivity implements NetworkCalls.Callbacks {
 
     private LinearLayout layGoToMe, layGoToSupervisor;
     private TextView tvName, tvNetworkLabel, tvProgress;
@@ -44,6 +51,9 @@ public class NetworksActivity extends AppCompatActivity {
     private FloatingActionButton fabPersonalGoals;
 
     private AuthenticatedUser me;
+
+    private AuthUser mAuthUser;
+    private List<SimpleUser> mNetworkMembers;
 
 
     private RecyclerView recyclerView;
@@ -78,17 +88,33 @@ public class NetworksActivity extends AppCompatActivity {
 
         fabPersonalGoals = findViewById(R.id.fab_personal_goals);
 
-        me = AuthenticatedUser.getAuthenticatedUser(PharmaWine.mRealm);
+        recyclerView = findViewById(R.id.rv_network_members);
+        mSwipeRefreshLayout = findViewById(R.id.swipe_network_members);
+
+//        me = AuthenticatedUser.getAuthenticatedUser(PharmaWine.mRealm);
+        prefManager = new PrefManager(this);
+
+        mAuthUser = AuthUser.getAuthenticatedUser(this);
+        mNetworkMembers = new ArrayList();
 
         initViews();
 
         networkMemberList = new ArrayList<>();
-        recyclerView = findViewById(R.id.rv_network_members);
-        mSwipeRefreshLayout = findViewById(R.id.swipe_network_members);
 
-        prefManager = new PrefManager(this);
+        getMembers();
 
         initList();
+    }
+
+    public void getMembers() {
+        try {
+            NetworkCalls.getNetworkMembers(
+                    this, AuthUser.getToken(this), mAuthUser.getNetworkId());
+        } catch (Exception e) {
+            Log.e(TAG, "getMembers: " + e.getMessage());
+            Toast.makeText(this, R.string.une_erreur_s_est_produite, Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -101,7 +127,7 @@ public class NetworksActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-        goToMe();
+//        goToMe();
         imgGoToMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -175,7 +201,7 @@ public class NetworksActivity extends AppCompatActivity {
         recyclerView.setAdapter(networkMemberAdapter);
 
 //        Get the member's list
-        getNetworkMembers();
+//        getNetworkMembers();
 
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -265,5 +291,39 @@ public class NetworksActivity extends AppCompatActivity {
     private void notifyChanges() {
         if (mSwipeRefreshLayout.isRefreshing()) mSwipeRefreshLayout.setRefreshing(false);
         networkMemberAdapter.notifyDataSetChanged();
+    }
+
+    // ======================================= CALLBACKS =======================================
+
+
+    @Override
+    public void onNetworkMembersResponse(@Nullable List<SimpleUser> networkMembers) {
+        Log.i(TAG, "onNetworkMembersResponse: Members fetched");
+        Toast.makeText(this, "Membres recuperes avec succes", Toast.LENGTH_SHORT).show();
+        if (networkMembers.isEmpty()) {
+            Toast.makeText(this, "Aucun membre trouvé dans votre reseau", Toast.LENGTH_SHORT).show();
+        }
+
+        for (SimpleUser s : networkMembers) {
+            mNetworkMembers.add(s);
+
+            // todo: notify adapter
+        }
+
+    }
+
+    @Override
+    public void onNetworkMembersFailure() {
+        Toast.makeText(this, "Echec de la requete", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onNetworkDetailsResponse(@Nullable Network network) {
+
+    }
+
+    @Override
+    public void onNetworkDetailsFailure() {
+        Toast.makeText(this, "Echec de la requete", Toast.LENGTH_SHORT).show();
     }
 }
