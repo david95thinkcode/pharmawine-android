@@ -1,35 +1,66 @@
 package com.jmaplus.pharmawine.fragments.planning;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jmaplus.pharmawine.R;
+import com.jmaplus.pharmawine.adapters.PlanningAdapter;
+import com.jmaplus.pharmawine.models.Customer;
 import com.jmaplus.pharmawine.utils.Constants;
+import com.jmaplus.pharmawine.utils.Utils;
+import com.jmaplus.pharmawine.utils.WeekDays;
 
-/**
- * A simple {@link Fragment} subclass.
- *
+import java.util.ArrayList;
+import java.util.List;
+
+/*
  * Le contenu de ce fragment depends du role de l'utilisateur qui y accède
- * Le role de l'utilisateur est recu en argument de ce fragment
- * Si aucun argument n'est passé au fragment une RunTimeException est declenchée
  *
- * Quand l'utilisateur est :
- * - Delegue : Liste de son planning
- * - Superviseur: Liste de ces delegué. Le clic sur l'un affiche son planning de la semaine
- * - Admin : Todo
+ * - On demande a l'initialisation le role de l'utilisateur actuel
+ * - Lorsque l'activite parente reponds, on enregistre le role
+ * - Ensuite on demande a l'activite parente de nous envoyer le planning de la semaine
+ * - Lorsque l'activite parente nous renvoie des donnees non vides, on mets a jour la recycler view
+ *
+ * NB: L'utilisateur, depuis l'activite parente peut modifier la date du fragment
+ * Des que la date du fragment est modifiée, on lance une requete vers l'activite
+ * pour nous retourner le planning
+ *
  */
 public class VisitFragment extends Fragment {
 
     public static final String TAG = "VisitFragment";
     public static final String USER_ROLE_KEY = "USER_ROLE_KEY";
 
-    private int userRole = -1;
+    public List<Customer> mCustomerList = new ArrayList();
+    public Context mContext;
+    /**
+     * Date du fragment
+     */
+    public String mDateString;
+    private OnFragmentInteractionListener mListener;
+    private PlanningAdapter mAdapter;
+    /**
+     * Role de l'utilisateur
+     */
+    private int mUserRoleID = 0;
+
+    private LinearLayout cvSelectDate;
+    private TextView tvMonthLabel;
+    private TextView mWeekTextView;
+    private ProgressBar mProgressBar;
+    private RecyclerView mPlanningRv;
     private RecyclerView mSupervisorRv;
     private RecyclerView mDelegueRv;
 
@@ -37,38 +68,39 @@ public class VisitFragment extends Fragment {
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_visit, container, false);
 
-        if (getArguments() != null) {
-            userRole = getArguments().getInt(USER_ROLE_KEY);
-            initialiseViews();
-            initialiseContent();
-            initalizeListenners();
-        } else {
-            throw new RuntimeException(requireContext().toString()
-                    + " must get at least USER_ROLE_KEY argument");
-        }
+        mContext = requireContext();
+        tvMonthLabel = rootView.findViewById(R.id.tv_planning_date);
+        cvSelectDate = rootView.findViewById(R.id.cv_planning_visit_date);
+        mWeekTextView = rootView.findViewById(R.id.tv_datesInterval);
+        mProgressBar = rootView.findViewById(R.id.progressBar);
+        mPlanningRv = rootView.findViewById(R.id.rv_planning);
+        mProgressBar.setVisibility(View.GONE);
+
+        init();
 
         return rootView;
     }
 
-    private void initalizeListenners() {
-        configureOnClickRecyclerView();
+    private void init() {
+        mAdapter = new PlanningAdapter(mContext, mCustomerList);
+        mPlanningRv.setLayoutManager(new LinearLayoutManager(mContext, LinearLayout.VERTICAL, false));
+        mPlanningRv.setAdapter(mAdapter);
 
+        // Let's request parent activity to send us user role ID
+        mDateString = Utils.getCurrentDate(); // important
+        mListener.onRequestUserRoleID();
     }
 
-    private void initialiseViews() {
-        // Initialise la recycler view pour le delegue
-        // Initialise la recycler view pour le superviseur
+    public void setUserRoleIDFromSource(Integer userRoleID) {
+        // Here we get user role ID
+        mUserRoleID = userRoleID;
 
-    }
-
-    private void initialiseContent() {
-        switch (userRole) {
+        switch (mUserRoleID) {
             case (Constants.ROLE_DELEGUE_KEY): {
                 fetchDeleguePlanning();
             }
@@ -82,62 +114,113 @@ public class VisitFragment extends Fragment {
             }
             break;
             default: {
-                Log.i(TAG, "onCreateView: Unknown user role ID ==> " + userRole);
+                Log.i(TAG, "onCreateView: Unknown user role ID ==> " + mUserRoleID);
             }
             break;
 
         }
     }
 
-    private void configureOnClickRecyclerView() {
+    /**
+     * That method get the selected date from the parent activity.
+     * Get end day of the week and finally
+     * send a request to the parent activity to fetch Customers
+     * in the planning
+     *
+     * @param date
+     */
+    public void setDateString(String date) {
+        /**
+         * 1- Get all days in the same week as the received date
+         * 2- Filter the previous list and get only the dates withing the same month
+         * 3- Get the first and the last day of the week as string inf format YYYY-MM-DD
+         * 4- Call retrofit and send these two dates to the server
+         */
 
-        switch (userRole) {
-            case (Constants.ROLE_DELEGUE_KEY): {
-                // TODO:
+        if (!date.isEmpty() && date != null) {
 
-            }
-            break;
-            case (Constants.ROLE_SUPERVISEUR_KEY): {
-                // TODO:
+            mDateString = date;
+            WeekDays dates = Utils.getDaysOfTheWeek(mDateString, true);
 
-            }
-            break;
-            case (Constants.ROLE_ADMIN_KEY): {
-                // Nothing yet
-            }
-            break;
-            default: {
-                Log.i(TAG, "configureOnClickRecyclerView: Unknown user role ID ==> " + userRole);
-            }
-            break;
+            mListener.onRequestPlanning(dates.getStartDate(), dates.getEndDate());
         }
+    }
 
-//        ItemClickSupport
-//                .addTo(mRecyclerView, R.layout.client_row_without_progression)
-//                .setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
-//                    @Override
-//                    public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-//                        ShowConfirmationToProgressPage(clientsList.get(position));
-//                    }
-//                });
+    /**
+     * The only method used to populate the customers list
+     *
+     * @param customers
+     */
+    public void populateCustomerListFromSource(List<Customer> customers) {
+        // Here we get the customers list
+        if (!customers.isEmpty()) {
+            mCustomerList.clear();
+            mAdapter.notifyItemRangeRemoved(0, mCustomerList.size() - 1);
+
+            for (Customer c : customers) {
+                mCustomerList.add(c);
+                mAdapter.notifyItemInserted(mCustomerList.size() - 1);
+            }
+
+        } else {
+            Toast.makeText(mContext, "Planning vide", Toast.LENGTH_SHORT).show();
+        }
+        updateUIWhenDataFetched();
     }
 
     private void fetchDeleguePlanning() {
-        // TODO: Complete when the api will be ready
         Log.i(TAG, "fetchDeleguePlanning: Fetching datas...");
 
+        WeekDays dates = Utils.getDaysOfTheWeek(mDateString, true);
+        mListener.onRequestPlanning(dates.getStartDate(), dates.getEndDate());
+
+        updateUIDuringFetching();
     }
 
     private void fetchPlanningForSupervisor() {
         // TODO: Complete when the api will be ready
         Log.i(TAG, "fetchPlanningForSupervisor: Fetching datas...");
 
+        updateUIDuringFetching();
     }
 
     private void fetchPlanningForAdmin() {
         // TODO: Complete when the api will be ready
         Log.i(TAG, "fetchPlanningForAdmin: Fetching datas...");
 
+        updateUIDuringFetching();
+    }
+
+    private void updateUIDuringFetching() {
+        mProgressBar.setVisibility(View.VISIBLE);
+    }
+
+    private void updateUIWhenDataFetched() {
+        mProgressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+    public interface OnFragmentInteractionListener {
+
+        void onRequestUserRoleID();
+
+        void onRequestPlanning(String startDate, String EndDate);
     }
 
 }

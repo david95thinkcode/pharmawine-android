@@ -24,4 +24,5 @@
     <color name="project_blue">#0091ea</color>
     <color name="sometxtcol">#616161</color>
     <color name="colorMessageFromMeBackgrounnd">#FFC000</color>
+    <color name="project_light_grey">#BDBDBD</color>
 </resources>

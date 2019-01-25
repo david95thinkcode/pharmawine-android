@@ -24,6 +24,7 @@ import com.jmaplus.pharmawine.fragments.home.ReportsFragment;
 import com.jmaplus.pharmawine.models.AuthUser;
 
 public class MainActivity extends AppCompatActivity {
+    public static final String TAG = "MainActivity";
 
     private AHBottomNavigation bottomNavigation;
     private FrameLayout mFrameContainer;
@@ -56,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
 
         showFragment(mHomeFragment);
 
-
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.logo);
         getSupportActionBar().setIcon(R.drawable.logo);
         getSupportActionBar().setLogo(R.drawable.logo);
@@ -69,6 +69,29 @@ public class MainActivity extends AppCompatActivity {
         Log.i(getLocalClassName(), "onCreate: authUser ==> " + currentUser);
 
         Toast.makeText(this, "Content de vous revoir " + currentUser.getLastname() + " !", Toast.LENGTH_LONG).show();
+
+//        try {
+//            DateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+//            Calendar calendar = Calendar.getInstance();
+//            calendar.setFirstDayOfWeek(Calendar.MONDAY);
+//            calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+//
+//            String[] days = new String[7];
+//            for (int i = 0; i < 7; i++)
+//            {
+//                days[i] = format.format(calendar.getTime());
+//                calendar.add(Calendar.DAY_OF_MONTH, 1);
+//            }
+//
+//            Log.i(TAG, "onCreate: days ==> " + days);
+//
+//        } catch(Exception e) {
+//            Log.e(TAG, "onCreate: " + e.getMessage() );
+//            e.printStackTrace();
+//            Toast.makeText(this, "Probleme recuperation jours de la semaine", Toast.LENGTH_SHORT).show();
+//        }
+
+        Log.i(TAG, "onCreate: token ==> " + AuthUser.getToken(this));
 
     }
 

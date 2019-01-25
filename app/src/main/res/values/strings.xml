@@ -226,6 +226,7 @@
     <string name="fake_date">21/12/2018</string>
     <string name="votre_message">Votre message</string>
     <string name="une_erreur_s_est_produite">Une erreur s\'est produite</string>
+    <string name="erreur_de_recuperation_du_planning">Echec de recuperation du planning</string>
     <string name="reessayez">Réessayer</string>
     <string name="prenoms_du_prospect">Prénom du prospect</string>
     <string name="nom_du_prospect">Nom du prospect</string>
@@ -236,6 +237,7 @@
     <string name="nouveau_client">Nouveau client</string>
     <string name="specialite">Spécialité</string>
     <string name="categorie">Catégorie</string>
+    <string name="random_dates_in_week">Lun 3 au Ven 7</string>
 
 
 </resources>

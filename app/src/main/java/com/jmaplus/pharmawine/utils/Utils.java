@@ -81,6 +81,39 @@ public class Utils {
         return strTime;
     }
 
+    /**
+     * Retourne la liste des jours de la meme semaine que @startDate
+     *
+     * @param startDate
+     * @param onlyDaysOfSameMonth
+     */
+    public static WeekDays getDaysOfTheWeek(String startDate, Boolean onlyDaysOfSameMonth) {
+
+        WeekDays w = new WeekDays();
+
+        if (!startDate.isEmpty()) {
+            // TODO TODO TODO : Finish it
+
+            w.setSameMonth(onlyDaysOfSameMonth);
+            w.setStartDate(startDate);
+            // todo: pour l'instant mais c'est a changer
+            w.setEndDate(startDate);
+
+            if (onlyDaysOfSameMonth) {
+                // todo: get only days that got the same month with start date
+                // ...
+            } else {
+                // todo: return all days of the week
+                // ...
+            }
+
+            return w;
+        }
+
+        return null;
+
+    }
+
 
 
 }
