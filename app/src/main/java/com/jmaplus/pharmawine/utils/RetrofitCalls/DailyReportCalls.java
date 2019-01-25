@@ -71,6 +71,9 @@ public class DailyReportCalls {
         });
     }
 
+    // Liste des rapports envoyes entre deux periodes
+
+
     public interface Callbacks {
         void onStartDailyReportResponse(@Nullable DailyReportStartResponse response);
 

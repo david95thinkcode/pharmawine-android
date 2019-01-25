@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.jmaplus.pharmawine.R;
 import com.jmaplus.pharmawine.models.AuthUser;
 import com.jmaplus.pharmawine.models.Customer;
@@ -207,6 +208,12 @@ implements DailyReportCalls.Callbacks {
         if (customer.getSpeciality() != null && !customer.getSpeciality().getName().isEmpty()) {
             tvCustomerSpeciality.setText(customer.getSpeciality().getName());
         }
+
+        // Picture
+        if (customer.getAvatar() != null && !customer.getAvatar().isEmpty()) {
+            Glide.with(this).load(customer.getAvatar()).into(profileImage);
+        }
+
     }
 
     private void updateViewsContent() {
@@ -216,15 +223,7 @@ implements DailyReportCalls.Callbacks {
                 showCorrespondingViewForProfileImage(false);
 
                 tvNomPrenom.setText(mVisite.getClient().getFullName());
-//                tvCustomerSpeciality.setText(mVisite.getClient().getSpeciality().getName());
-//                tvCustomerStatus.setText(mVisite.getClient().getCustomerStatus().getName());
 
-                /**
-                 * TODO: Desactiver le comment si dessous lorsque nous gererons les erreurs d'url d'image avec Picasso
-                 * if (!mVisite.getClient().getAvatar().isEmpty()) {
-                 *      Glide.with(this).load(mVisite.getClient().getAvatar()).into(profileImage);
-                 * }
-                 */
             }
             break;
             case Constants.PROSPECT_KNOWN_CLIENT_PHARMACY_TYPE_KEY: {

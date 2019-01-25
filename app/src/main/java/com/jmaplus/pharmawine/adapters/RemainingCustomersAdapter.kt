@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.jmaplus.pharmawine.R
-import com.jmaplus.pharmawine.models.Client
 import com.jmaplus.pharmawine.models.Customer
 import de.hdodenhof.circleimageview.CircleImageView
 
@@ -48,25 +47,16 @@ class RemainingCustomersAdapter(val context: Context, var remainingClientsList: 
             holder.status.text = remainingClientsList[position].customerStatus.name
 
         // profile picture setter
-        // TODO: Gerer les erreurs d'url des avatar en utilisant picasso au lieu de glide
-
-//        if (!remainingClientsList[position].avatar.isNullOrEmpty()) {
-//            Glide.with(context).load(remainingClientsList[position].avatar).into(holder?.picture)
-//        } else {
-//            // Avatar url is empty
-//            if (remainingClientsList[position].sex == "M" || remainingClientsList[position].sex == "m") {
-//                Glide.with(context).load(R.drawable.ic_ast_man).into(holder?.picture)
-//            } else {
-//                // woman case
-//                Glide.with(context).load(R.drawable.ic_ast_woman).into(holder?.picture)
-//            }
-//        }
-
-        if (remainingClientsList[position].sex == "M" || remainingClientsList[position].sex == "m") {
-            Glide.with(context).load(R.drawable.ic_ast_man).into(holder?.picture)
+        if (!remainingClientsList[position].avatar.isNullOrEmpty()) {
+            Glide.with(context).load(remainingClientsList[position].avatar).into(holder?.picture)
         } else {
-            // woman case
-            Glide.with(context).load(R.drawable.ic_ast_woman).into(holder?.picture)
+            // Avatar url is empty
+            if (remainingClientsList[position].sex == "M" || remainingClientsList[position].sex == "m") {
+                Glide.with(context).load(R.drawable.ic_ast_man).into(holder?.picture)
+            } else {
+                // woman case
+                Glide.with(context).load(R.drawable.ic_ast_woman).into(holder?.picture)
+            }
         }
     }
 
