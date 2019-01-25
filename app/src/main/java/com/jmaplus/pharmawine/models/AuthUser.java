@@ -277,6 +277,10 @@ public class AuthUser {
         this.goals = goals;
     }
 
+    public String getFullName() {
+        return getFirstname() + " " + getLastname();
+    }
+
     /**
      * Get authenticated user roles
      *

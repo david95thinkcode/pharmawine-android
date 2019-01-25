@@ -27,12 +27,23 @@ public interface ApiService {
             .addConverterFactory(GsonConverterFactory.create())
             .build();
 
+    // ======================================= USERS =======================================
+
+    @GET("users/{user_id}")
+    Call<SimpleUser> getUserDetails(
+            @Path("user_id") Integer userID,
+            @Header("Authorization") String authorization);
+
+    // ======================================= PLANNING =======================================
+
     @GET("planning/{delegate_id}/clients/{StartDate}/{EndDate}")
     Call<List<Customer>> getDelegatePlanning(
             @Path("delegate_id") String delegateId,
             @Path("StartDate") String startDate,
             @Path("EndDate") String endDate,
             @Header("Authorization") String authorization);
+
+    // ======================================= REPORTS =======================================
 
     @POST("report/daily")
     Call<DailyReportStartResponse> startDaylyReport(
@@ -45,12 +56,15 @@ public interface ApiService {
             @Body DailyReportEnd endObject,
             @Header("Authorization") String authorization);
 
+    // ======================================= CUSTOMERS =======================================
+
     @GET("customer/{id}")
     Call<List<Customer>> getCustomerDetails(
             @Path("id") Integer id,
             @Header("Authorization") String authorization);
 
     // ======================================= NETWORKS =======================================
+
     @GET("network")
     Call<List<Network>> getAllNetworks(@Header("Authorization") String authorization);
 

@@ -204,4 +204,7 @@ public class SimpleUser {
         this.networkId = networkId;
     }
 
+    public String getFullName() {
+        return getFirstname() + " " + getLastname();
+    }
 }
