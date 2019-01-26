@@ -75,7 +75,7 @@ public class DailyReportEnd {
 
     public Boolean isCompleted() {
 //        if (getCenterId() != null && getCustomerId() != null && !getEndTime().isEmpty() && getEndTime() != null) {
-            return true;
+        return true;
 //        }
 //        else {
 //            return false;

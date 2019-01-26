@@ -291,7 +291,6 @@ class NewProspectInconnuActivity : AppCompatActivity(),
     // ==================== End Retrofit Callbacks ====================
 
 
-
     // ==================== Pager adapter class ====================
 
     private inner class ScreenSlidePagerAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {

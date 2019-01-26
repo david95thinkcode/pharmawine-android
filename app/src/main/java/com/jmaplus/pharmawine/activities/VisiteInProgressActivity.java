@@ -165,7 +165,7 @@ public class VisiteInProgressActivity extends AppCompatActivity
         firstFragment.updateViewsWithSource(customer);
 
         if (mCustomer.getCenters().size() > 0) {
-            for (Center c: mCustomer.getCenters()) {
+            for (Center c : mCustomer.getCenters()) {
                 mCentersList.add(c);
             }
         }
@@ -293,9 +293,8 @@ public class VisiteInProgressActivity extends AppCompatActivity
 
         try {
             DailyReportCalls.postDailyReportEnd(AuthUser.getToken(this), this, mDailyReportEnd, currentReportID);
-        }
-        catch (Exception e) {
-            Log.e(TAG, "sendReportTOTheServer: " + e.getMessage() );
+        } catch (Exception e) {
+            Log.e(TAG, "sendReportTOTheServer: " + e.getMessage());
             e.printStackTrace();
             dialog.cancel();
         }

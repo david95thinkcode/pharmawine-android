@@ -17,13 +17,14 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.google.firebase.database.FirebaseDatabase;
 import com.jmaplus.pharmawine.R;
+import com.jmaplus.pharmawine.fragments.clients.MedicalTeamFragment;
 import com.jmaplus.pharmawine.fragments.home.HomeFragment;
 import com.jmaplus.pharmawine.fragments.home.MoreFragment;
 import com.jmaplus.pharmawine.fragments.home.NotificationsFragment;
 import com.jmaplus.pharmawine.fragments.home.ReportsFragment;
 import com.jmaplus.pharmawine.models.AuthUser;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MedicalTeamFragment.OnFragmentInteractionListener {
     public static final String TAG = "MainActivity";
 
     private AHBottomNavigation bottomNavigation;
@@ -32,7 +33,9 @@ public class MainActivity extends AppCompatActivity {
     private ReportsFragment mReportsFragment = new ReportsFragment();
     private NotificationsFragment mNotificationsFragment = new NotificationsFragment();
     private MoreFragment mMoreFragment = new MoreFragment();
+    public boolean isMedicalTeamsLoaded = false;
     private Fragment mFragment = null;
+    private MedicalTeamFragment mMedicalTeamFragment = new MedicalTeamFragment();
 
     private final int IND_NAV_HOME = 0;
     private final int IND_NAV_REPORTS = 1;
@@ -46,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         // This few 3 lines allow firebase offline capabilities
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
@@ -149,7 +153,9 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case IND_NAV_CLIENT:
                         bottomNavigation.setBehaviorTranslationEnabled(true);
-                        startActivity(new Intent(MainActivity.this, ClientsActivity.class));
+                        //startActivity(new Intent(MainActivity.this, ClientsActivity.class));
+                        getSupportActionBar().setTitle("Corps Méd.");
+                        showFragment(mMedicalTeamFragment);
                         break;
                     case IND_NAV_MORE :
                         bottomNavigation.setBehaviorTranslationEnabled(true);
@@ -162,7 +168,8 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void showFragment(Fragment fragment) {
+    @Override
+    public void showFragment(Fragment fragment) {
         FragmentTransaction mFragmentTransaction = getSupportFragmentManager().beginTransaction();
         mFragmentTransaction.replace(R.id.frame_container, fragment);
         mFragmentTransaction.commit();

@@ -233,8 +233,18 @@ public class AuthUser {
         return u;
     }
 
-    public Integer getNetworkId() {
-        return networkId;
+    /**
+     * Get authenticated user roles
+     *
+     * @param mContext
+     * @return
+     */
+    public static final int getRoleFromSharedPreferences(Context mContext) {
+        SharedPreferences sharedPref = mContext.getSharedPreferences(
+                Constants.F_PROFIL, Context.MODE_PRIVATE);
+
+        return sharedPref.getInt(Constants.SP_ROLE_KEY, -1);
+
     }
 
     public List<Object> getAreas() {
@@ -277,26 +287,26 @@ public class AuthUser {
         this.goals = goals;
     }
 
-    public String getFullName() {
-        return getFirstname() + " " + getLastname();
-    }
-
     /**
-     * Get authenticated user roles
+     * Get authenticated user token
      *
      * @param mContext
      * @return
      */
-    public static final int getRoleFromSharedPreferences(Context mContext) {
+    public static String getToken(Context mContext) {
         SharedPreferences sharedPref = mContext.getSharedPreferences(
                 Constants.F_PROFIL, Context.MODE_PRIVATE);
 
-        return sharedPref.getInt(Constants.SP_ROLE_KEY, -1);
+        return sharedPref.getString(Constants.SP_TOKEN_KEY, "");
 
     }
 
-    public List<AuthUserRole> getRoles() {
-        return roles;
+    public Integer getNetworkId() {
+        return networkId;
+    }
+
+    public void setNetworkId(Integer networkId) {
+        this.networkId = networkId;
     }
 
     @Override
@@ -306,12 +316,16 @@ public class AuthUser {
         return gson.toJson(this);
     }
 
-    public void setRoles(List<AuthUserRole> roles) {
-        this.roles = roles;
+    public String getFullName() {
+        return getFirstname() + " " + getLastname();
     }
 
-    public void setNetworkId(Integer networkId) {
-        this.networkId = networkId;
+    public List<AuthUserRole> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<AuthUserRole> roles) {
+        this.roles = roles;
     }
 
     /**
@@ -358,21 +372,8 @@ public class AuthUser {
     }
 
     /**
-     * Get authenticated user token
-     *
-     * @param mContext
-     * @return
-     */
-    public static String getToken(Context mContext) {
-        SharedPreferences sharedPref = mContext.getSharedPreferences(
-                Constants.F_PROFIL, Context.MODE_PRIVATE);
-
-        return sharedPref.getString(Constants.SP_TOKEN_KEY, "");
-
-    }
-
-    /**
      * Recupere le vrai roles de l'utilisatuer
+     *
      * @return
      */
     public AuthUserRole getFirstRole() {

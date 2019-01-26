@@ -38,7 +38,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * Runtime  exception will be thrown
  */
 public class VisiteInProgressFragment extends Fragment
-implements DailyReportCalls.Callbacks {
+        implements DailyReportCalls.Callbacks {
 
     public static final String ARGS_PROSPECT_TYPE = "ARGS_PROSPECT_TYPE";
     public static final String ARGS_CLIENT_ID_KEY = "ARGS_CLIENT_ID_KEY";
@@ -161,8 +161,7 @@ implements DailyReportCalls.Callbacks {
                     && !mDailyReportStart.getUserId().toString().isEmpty()) {
                 DailyReportCalls.postDailyReportStart(
                         AuthUser.getToken(requireContext()), this, mDailyReportStart);
-            }
-            else {
+            } else {
                 Toast.makeText(requireContext(), "Donnees incompletes pour signaler le debut de visite", Toast.LENGTH_SHORT).show();
                 Log.w(TAG, "notifyServerAboutReportStarted: Objet incomplet => " + mDailyReportStart.toString());
             }
@@ -182,7 +181,7 @@ implements DailyReportCalls.Callbacks {
 
     @Override
     public void onStartDailyReportFailure() {
-        Log.e(TAG, "onStartDailyReportFailure"  );
+        Log.e(TAG, "onStartDailyReportFailure");
     }
 
     @Override

@@ -15,13 +15,6 @@ public class CustomerCalls {
     // Retrofit instance
     public static ApiService mApiService = ApiService.retrofit.create(ApiService.class);
 
-    // 1 - Interface
-    public interface Callbacks {
-
-        void onCustomerDetailsResponse(@Nullable Customer customer);
-        void onCustomerDetailsFailure();
-    }
-
     public static void getDetails(String token, final Callbacks callbacks, Integer customerID) {
 
         final WeakReference<Callbacks> callbacksWeakReference = new WeakReference<Callbacks>(callbacks);
@@ -42,6 +35,14 @@ public class CustomerCalls {
                     callbacks.onCustomerDetailsFailure();
             }
         });
+    }
+
+    // 1 - Interface
+    public interface Callbacks {
+
+        void onCustomerDetailsResponse(@Nullable Customer customer);
+
+        void onCustomerDetailsFailure();
     }
 
 

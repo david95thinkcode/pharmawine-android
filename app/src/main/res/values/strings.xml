@@ -266,11 +266,13 @@
     <string name="entrez_adress_du_prospect">Entrer l\'adresse du prospect</string>
     <string name="adresse_du_prospect">Adresse du prospect</string>
     <string name="nouveau_client">Nouveau client</string>
-    <string name="specialite">Spécialité</string>
+    <string name="specialites">Spécialité</string>
     <string name="categorie">Catégorie</string>
     <string name="random_dates_in_week">Lun 3 au Ven 7</string>
 
 
     <string name="classes">Classes</string>
     <string name="select_centre_de_visite">(Sélectionner le centre de la visite)</string>
+    <string name="network_error">Erreur de Chargement</string>
+    <string name="try_again">Ressayez</string>
 </resources>
