@@ -4,26 +4,25 @@ import android.app.Dialog;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.jmaplus.pharmawine.PharmaWine;
 import com.jmaplus.pharmawine.R;
-import com.jmaplus.pharmawine.models.Laboratory;
-import com.jmaplus.pharmawine.models.Product;
+import com.jmaplus.pharmawine.models.ApiProduct;
 
 import java.util.ArrayList;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> {
 
-    private final ArrayList<Product> productList;
+    private final ArrayList<ApiProduct> productList;
     private Context mContext;
     public static final Integer LABORATORY = 1, REFERENCE = 2;
     private Integer listType;
 
-    public ProductAdapter(ArrayList<Product> products, Context context, @NonNull Integer listType) {
+    public ProductAdapter(ArrayList<ApiProduct> products, Context context, @NonNull Integer listType) {
         super();
         this.mContext = context;
         this.productList = products;
@@ -41,18 +40,19 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull final ProductAdapter.ViewHolder holder, final int position) {
-        final Product product = productList.get(position);
-        product.load();
+        final ApiProduct product = productList.get(position);
 
-        if(product.isValid()) {
+        try {
             holder.tvLeft.setText(product.getName());
 
             if (this.listType.equals(LABORATORY)) {
-                holder.tvRight.setText(product.getLaboratory());
+                holder.tvRight.setText(product.getLaboratory().getName());
 
             } else if (this.listType.equals(REFERENCE)) {
                 holder.tvRight.setText(product.getReference());
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -76,8 +76,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
                     if(listType.equals(LABORATORY)) {
                         int position = getAdapterPosition();
-                        Product p = productList.get(position);
-                        p.load();
+                        ApiProduct p = productList.get(position);
 
                         final Dialog dialog = new Dialog(v.getContext());
                         dialog.setContentView(R.layout.product_info_dialog);
@@ -93,15 +92,18 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
                         tvPc = dialog.findViewById(R.id.tv_pc_price);
                         tvPp = dialog.findViewById(R.id.tv_pp_price);
 
-                        if(p.isLoaded() && p.isValid()) {
+                        try {
                             tvName.setText(p.getName());
-                            tvCategory.setText(p.getCategory());
-                            tvLaboratory.setText(p.getLaboratory());
-                            tvGlobalPrice.setText(String.valueOf(p.getPrice()));
-                            tvPc.setText(String.valueOf(p.getPriceM()));
-                            tvPp.setText(String.valueOf(p.getPriceP()));
+//                            tvCategory.setText(p.getCategory());
+                            tvLaboratory.setText(p.getLaboratory().getName());
+                            tvGlobalPrice.setText(String.valueOf(p.getPrixGht()));
+                            tvPc.setText(String.valueOf(p.getPrixCession()));
+                            tvPp.setText(String.valueOf(p.getPrixPublic()));
 
                             dialog.show();
+                        } catch (Exception e) {
+                            Log.e(getClass().getName(), "onClick: " + e.getMessage());
+                            e.printStackTrace();
                         }
                     }
                 }

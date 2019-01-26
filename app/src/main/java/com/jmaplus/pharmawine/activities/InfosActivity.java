@@ -12,10 +12,13 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.jmaplus.pharmawine.R;
+import com.jmaplus.pharmawine.models.ApiProduct;
 import com.jmaplus.pharmawine.models.AuthUser;
 import com.jmaplus.pharmawine.models.AuthUserResponse;
 import com.jmaplus.pharmawine.utils.Constants;
 import com.jmaplus.pharmawine.utils.RetrofitCalls.AuthCalls;
+
+import java.util.List;
 
 import javax.annotation.Nullable;
 
@@ -178,5 +181,15 @@ public class InfosActivity extends AppCompatActivity implements AuthCalls.Callba
     @Override
     public void onFetchingDetailsFailure() {
         fetchUserDataFromSharedPreferences();
+    }
+
+    @Override
+    public void onAuthProductsResponse(@Nullable List<ApiProduct> products) {
+
+    }
+
+    @Override
+    public void onAuthProductFailure() {
+
     }
 }
