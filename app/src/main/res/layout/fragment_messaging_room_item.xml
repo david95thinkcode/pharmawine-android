@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:background="?android:attr/selectableItemBackground"
+	android:orientation="vertical">
+
+	<android.support.constraint.ConstraintLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent">
+
+		<de.hdodenhof.circleimageview.CircleImageView
+			android:id="@+id/fragment_messaging_room_item_picture"
+			style="@style/profile_sm_circle_image_view"
+			android:src="@drawable/ast_contacts"
+			app:civ_border_color="#bebebe"
+			app:civ_border_width="0dp"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toTopOf="parent" />
+
+		<TextView
+			android:id="@+id/fragment_messaging_room_item_title"
+			android:layout_width="0dp"
+			android:layout_height="30dp"
+			android:layout_marginStart="8dp"
+			android:layout_marginTop="12dp"
+			android:layout_marginEnd="8dp"
+			android:layout_weight="1"
+			android:ellipsize="end"
+			android:gravity="center_vertical"
+			android:maxLines="1"
+			android:text="MyRoom"
+			android:textColor="@color/darker_grey"
+			android:textSize="16sp"
+			android:textStyle="bold"
+			app:layout_constraintEnd_toStartOf="@+id/fragment_messaging_room_item_hour"
+			app:layout_constraintStart_toEndOf="@+id/fragment_messaging_room_item_picture"
+			app:layout_constraintTop_toTopOf="parent" />
+
+		<TextView
+			android:id="@+id/fragment_messaging_room_item_subtitle"
+			android:layout_width="0dp"
+			android:layout_height="20dp"
+			android:layout_marginStart="8dp"
+			android:layout_marginEnd="16dp"
+			android:layout_weight="1"
+			android:ellipsize="end"
+			android:maxLines="1"
+			android:text="@string/the_subtitle_should_always_be_the_latest_message_of_the_room"
+			android:textAlignment="viewStart"
+			android:textColor="@color/project_grey"
+			android:textSize="14sp"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintStart_toEndOf="@+id/fragment_messaging_room_item_picture"
+			app:layout_constraintTop_toBottomOf="@+id/fragment_messaging_room_item_title" />
+
+		<View
+			android:id="@+id/divider2"
+			android:layout_width="0dp"
+			android:layout_height="0.5dp"
+			android:layout_marginStart="8dp"
+			android:layout_marginEnd="16dp"
+			android:background="@color/grey"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintStart_toEndOf="@+id/fragment_messaging_room_item_picture" />
+
+		<Button
+			android:id="@+id/new_message_image_btn"
+			android:layout_width="17dp"
+			android:layout_height="17dp"
+			android:layout_marginTop="8dp"
+			android:layout_marginEnd="2dp"
+			android:layout_marginBottom="8dp"
+			android:background="@drawable/ast_new_message"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintEnd_toEndOf="@+id/fragment_messaging_room_item_picture"
+			app:layout_constraintTop_toTopOf="parent" />
+
+		<TextView
+			android:id="@+id/fragment_messaging_room_item_hour"
+			android:layout_width="0dp"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="8dp"
+			android:layout_marginEnd="16dp"
+			android:layout_marginBottom="8dp"
+			android:gravity="right"
+			android:text="@string/fake_date"
+			android:textSize="10sp"
+			app:layout_constraintBottom_toTopOf="@+id/fragment_messaging_room_item_subtitle"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintTop_toTopOf="parent" />
+
+	</android.support.constraint.ConstraintLayout>
+
+</LinearLayout>

@@ -1,49 +1,53 @@
 package com.jmaplus.pharmawine.activities;
 
 import android.content.Intent;
-import android.os.Handler;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
 import com.bumptech.glide.Glide;
-import com.jmaplus.pharmawine.PharmaWine;
 import com.jmaplus.pharmawine.R;
 import com.jmaplus.pharmawine.adapters.NetworkMemberAdapter;
-import com.jmaplus.pharmawine.models.AuthenticatedUser;
+import com.jmaplus.pharmawine.models.AuthUser;
+import com.jmaplus.pharmawine.models.Network;
 import com.jmaplus.pharmawine.models.NetworkMember;
-import com.jmaplus.pharmawine.models.Pharmacy;
-import com.jmaplus.pharmawine.services.ApiClient;
-import com.jmaplus.pharmawine.services.ApiInterface;
-import com.jmaplus.pharmawine.services.responses.NetworkMembersResponse;
+import com.jmaplus.pharmawine.models.SimpleUser;
 import com.jmaplus.pharmawine.utils.PrefManager;
+import com.jmaplus.pharmawine.utils.RetrofitCalls.NetworkCalls;
+import com.jmaplus.pharmawine.utils.RetrofitCalls.UserCalls;
 
 import java.util.ArrayList;
+import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import javax.annotation.Nullable;
 
-public class NetworksActivity extends AppCompatActivity {
+public class NetworksActivity extends AppCompatActivity implements
+        NetworkCalls.Callbacks,
+        UserCalls.Callbacks {
 
     private LinearLayout layGoToMe, layGoToSupervisor;
     private TextView tvName, tvNetworkLabel, tvProgress;
     private ImageView imgProfil, imgGoToMe, imgGoToSuperviseur;
     private RoundCornerProgressBar progressBar;
     private FloatingActionButton fabPersonalGoals;
+    private ProgressBar mProgressBarOfMembers;
 
-    private AuthenticatedUser me;
+    private AuthUser mAuthUser;
+    private List<SimpleUser> mNetworkMembers;
+    private Network mNetwork = new Network();
+    private SimpleUser mSupervisor = new SimpleUser();
 
 
     private RecyclerView recyclerView;
@@ -65,30 +69,48 @@ public class NetworksActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        layGoToMe = findViewById(R.id.lay_goto_me);
-        layGoToSupervisor = findViewById(R.id.lay_goto_supervisor);
-        imgGoToMe = findViewById(R.id.img_goto_me);
-        imgGoToSuperviseur = findViewById(R.id.img_goto_supervisor);
+        prefManager = new PrefManager(this);
 
-        imgProfil = findViewById(R.id.img_profil);
-        tvName = findViewById(R.id.tv_name);
-        tvNetworkLabel = findViewById(R.id.tv_network_label);
-        tvProgress = findViewById(R.id.tv_progress);
-        progressBar = findViewById(R.id.progress_network);
-
-        fabPersonalGoals = findViewById(R.id.fab_personal_goals);
-
-        me = AuthenticatedUser.getAuthenticatedUser(PharmaWine.mRealm);
+        mAuthUser = AuthUser.getAuthenticatedUser(this);
+        mNetworkMembers = new ArrayList();
 
         initViews();
 
-        networkMemberList = new ArrayList<>();
-        recyclerView = findViewById(R.id.rv_network_members);
-        mSwipeRefreshLayout = findViewById(R.id.swipe_network_members);
+        getMembers();
 
-        prefManager = new PrefManager(this);
+        getNetworkDetails();
 
         initList();
+    }
+
+    public void getMembers() {
+        try {
+            mProgressBarOfMembers.setVisibility(View.VISIBLE);
+            NetworkCalls.getNetworkMembers(
+                    this, AuthUser.getToken(this), mAuthUser.getNetworkId());
+        } catch (Exception e) {
+            Log.e(TAG, "getMembers: " + e.getMessage());
+            Toast.makeText(this, R.string.une_erreur_s_est_produite, Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
+    }
+
+    public void getNetworkDetails() {
+        try {
+            NetworkCalls.getDetails(this, AuthUser.getToken(this), mAuthUser.getNetworkId());
+        } catch (Exception e) {
+            Log.e(TAG, "getNetworkDetails: " + e.getMessage());
+            Toast.makeText(this, R.string.une_erreur_s_est_produite, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void getSupervisorDetails() {
+        try {
+            UserCalls.getDetails(mNetwork.getId(), this, AuthUser.getToken(this));
+        } catch (Exception e) {
+            Toast.makeText(this, R.string.une_erreur_s_est_produite, Toast.LENGTH_SHORT).show();
+            Log.e(TAG, "getSupervisorDetails: " + e.getMessage());
+        }
     }
 
     @Override
@@ -101,7 +123,32 @@ public class NetworksActivity extends AppCompatActivity {
     }
 
     private void initViews() {
+
+        // Binding views
+        layGoToMe = findViewById(R.id.lay_goto_me);
+        layGoToSupervisor = findViewById(R.id.lay_goto_supervisor);
+        imgGoToMe = findViewById(R.id.img_goto_me);
+        imgGoToSuperviseur = findViewById(R.id.img_goto_supervisor);
+
+        imgProfil = findViewById(R.id.img_profil);
+        tvName = findViewById(R.id.tv_name);
+        tvNetworkLabel = findViewById(R.id.tv_network_label);
+        tvProgress = findViewById(R.id.tv_progress);
+        progressBar = findViewById(R.id.progress_network);
+        mProgressBarOfMembers = findViewById(R.id.progressBar_members);
+
+        fabPersonalGoals = findViewById(R.id.fab_personal_goals);
+
+        recyclerView = findViewById(R.id.rv_network_members);
+        mSwipeRefreshLayout = findViewById(R.id.swipe_network_members);
+
+        // Initial states
+        mProgressBarOfMembers.setVisibility(View.GONE);
+
+
         goToMe();
+
+        // Listenners
         imgGoToMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -128,142 +175,196 @@ public class NetworksActivity extends AppCompatActivity {
         layGoToSupervisor.setVisibility(View.VISIBLE);
         layGoToMe.setVisibility(View.GONE);
 
-        if (me.getProfilePicture() != null) {
-            if (!me.getProfilePicture().isEmpty())
-                Glide.with(this).load(me.getProfilePicture()).into(imgProfil);
-        }
-        tvName.setText(me.getName().concat(" ").concat(me.getLastName()));
-        tvNetworkLabel.setText("Réseau - " + me.getNetworkName());
+        tvName.setText(mAuthUser.getFullName());
+        tvNetworkLabel.setText("Réseau - " + mNetwork.getName());
         progressBar.setProgress(85);
         tvProgress.setText(String.valueOf(85).concat(" %"));
+
+        if (mAuthUser.getAvatar() != null && !mAuthUser.getAvatar().isEmpty()) {
+            Glide.with(this).load(mAuthUser.getAvatar()).into(imgProfil);
+        }
     }
 
     public void goToSupervisor() {
 
-        NetworkMember superviseur = NetworkMember.getSupervisor(PharmaWine.mRealm);
-        superviseur.load();
-
-        if (superviseur != null) {
-            if (superviseur.isValid()) {
+        if (mSupervisor != null && mSupervisor.getFullName() != null && !mSupervisor.getFullName().isEmpty()) {
+            try {
                 layGoToMe.setVisibility(View.VISIBLE);
                 layGoToSupervisor.setVisibility(View.GONE);
 
                 imgProfil.setImageResource(R.drawable.profil_sup);
-                tvName.setText(superviseur.getName().concat(" ").concat(superviseur.getLastName()));
-                tvNetworkLabel.setText(String.valueOf("Superviseur réseau - ").concat(superviseur.getNetworkName()));
+                tvName.setText(mSupervisor.getFullName());
+                tvNetworkLabel.setText(String.valueOf("Superviseur réseau - ").concat(mNetwork.getName()));
+
                 progressBar.setProgress(50);
                 tvProgress.setText(String.valueOf(50).concat(" %"));
-                if (superviseur.getProfilePicture() != null) {
-                    if (!superviseur.getProfilePicture().isEmpty())
-                        Glide.with(this).load(superviseur.getProfilePicture()).into(imgProfil);
+
+                if (mSupervisor.getAvatar() != null && !mSupervisor.getAvatar().isEmpty()) {
+                    Glide.with(this).load(mSupervisor.getAvatar()).into(imgProfil);
                 }
-                return;
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+                Toast.makeText(this, "Impossible d'afficher les donnees du superviseur", Toast.LENGTH_SHORT).show();
             }
         }
-
-        Toast.makeText(this, "Aucun superviseur retrouvé !", Toast.LENGTH_SHORT).show();
     }
 
     private void initList() {
 
 //        Init the adapter
-        networkMemberAdapter = new NetworkMemberAdapter(this, networkMemberList);
-
-//        Set the adapter to recycler
+        networkMemberAdapter = new NetworkMemberAdapter(this, mNetworkMembers);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(networkMemberAdapter);
 
-//        Get the member's list
-        getNetworkMembers();
-
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                getNetworkMembers();
+                getMembers();
             }
         });
     }
 
-    private void getNetworkMembers() {
-        networkMemberList.clear();
-        networkMemberList.addAll(NetworkMember.getAll(PharmaWine.mRealm));
-        notifyChanges();
-
-//        Get the fresh member's list if not loaded & connected
-
-        if (!isMembersLoaded) {
-
-            if (PharmaWine.getInstance().isOnline()) {
-
-                ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-
-                Call<NetworkMembersResponse> call = apiService.getNetworkMembers(me.getNetworkId(), ApiClient.TOKEN_TYPE + prefManager.getToken());
-
-                mSwipeRefreshLayout.setRefreshing(true);
-                mSwipeRefreshLayout.setColorSchemeResources(R.color.orange);
-                call.enqueue(new Callback<NetworkMembersResponse>() {
-                    @Override
-                    public void onResponse(Call<NetworkMembersResponse> call, Response<NetworkMembersResponse> response) {
-
-                        if (!response.isSuccessful() || response.body() == null) {
-                            notifyChanges();
-                            Toast.makeText(NetworksActivity.this, getResources().getString(R.string.smthg_wrong_request), Toast.LENGTH_SHORT).show();
-                        } else {
-
-                            try {
-
-                                if (response.body().getStatusCode() == 200 || response.body().getStatusCode() == 404) {
-
-                                    if (response.body().getNetworkMembers() == null || response.body().getStatusCode() == 404) {
-                                        Snackbar.make(mSwipeRefreshLayout, getResources().getString(R.string.no_data_returned), Snackbar.LENGTH_LONG).show();
-                                    } else {
-
-                                        NetworkMember.saveAll(PharmaWine.mRealm, response.body().getNetworkMembers());
-                                        networkMemberList.clear();
-                                        networkMemberList.addAll(response.body().getNetworkMembers());
-                                        isMembersLoaded = true;
-
-                                        //        Notify changes after 3 seconds
-                                        mSwipeRefreshLayout.setColorSchemeResources(R.color.green);
-                                        new Handler().postDelayed(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                notifyChanges();
-                                            }
-                                        }, 3000);
-                                    }
-                                } else {
-//                                Toast.makeText(NetworksActivity.this, getResources().getString(R.string.smthg_wrong_request), Toast.LENGTH_SHORT).show();
-                                    Snackbar.make(mSwipeRefreshLayout, getResources().getString(R.string.no_data_returned), Snackbar.LENGTH_LONG).show();
-                                    notifyChanges();
-                                }
-
-                            } catch (NullPointerException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<NetworkMembersResponse> call, Throwable t) {
-//                    Toast.makeText(mContext,"Echec de la requete", Toast.LENGTH_SHORT).show();
-                        notifyChanges();
-                        Toast.makeText(NetworksActivity.this, getResources().getString(R.string.smthg_wrong_request), Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-            } else {
-                Toast.makeText(this, getResources().getString(R.string.not_connected), Toast.LENGTH_SHORT).show();
-            }
-        } else {
-//            Toast.makeText(mContext, "Liste à jour !", Toast.LENGTH_SHORT).show();
-            if (mSwipeRefreshLayout.isRefreshing()) mSwipeRefreshLayout.setRefreshing(false);
-        }
-    }
+//    private void getNetworkMembers() {
+//        networkMemberList.clear();
+//        networkMemberList.addAll(NetworkMember.getAll(PharmaWine.mRealm));
+//        notifyChanges();
+//
+////        Get the fresh member's list if not loaded & connected
+//
+//        if (!isMembersLoaded) {
+//
+//            if (PharmaWine.getInstance().isOnline()) {
+//
+//                ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
+//
+//                Call<NetworkMembersResponse> call = apiService.getNetworkMembers(me.getNetworkId(), ApiClient.TOKEN_TYPE + prefManager.getToken());
+//
+//                mSwipeRefreshLayout.setRefreshing(true);
+//                mSwipeRefreshLayout.setColorSchemeResources(R.color.orange);
+//                call.enqueue(new Callback<NetworkMembersResponse>() {
+//                    @Override
+//                    public void onResponse(Call<NetworkMembersResponse> call, Response<NetworkMembersResponse> response) {
+//
+//                        if (!response.isSuccessful() || response.body() == null) {
+//                            notifyChanges();
+//                            Toast.makeText(NetworksActivity.this, getResources().getString(R.string.smthg_wrong_request), Toast.LENGTH_SHORT).show();
+//                        } else {
+//
+//                            try {
+//
+//                                if (response.body().getStatusCode() == 200 || response.body().getStatusCode() == 404) {
+//
+//                                    if (response.body().getNetworkMembers() == null || response.body().getStatusCode() == 404) {
+//                                        Snackbar.make(mSwipeRefreshLayout, getResources().getString(R.string.no_data_returned), Snackbar.LENGTH_LONG).show();
+//                                    } else {
+//
+//                                        NetworkMember.saveAll(PharmaWine.mRealm, response.body().getNetworkMembers());
+//                                        networkMemberList.clear();
+//                                        networkMemberList.addAll(response.body().getNetworkMembers());
+//                                        isMembersLoaded = true;
+//
+//                                        //        Notify changes after 3 seconds
+//                                        mSwipeRefreshLayout.setColorSchemeResources(R.color.green);
+//                                        new Handler().postDelayed(new Runnable() {
+//                                            @Override
+//                                            public void run() {
+//                                                notifyChanges();
+//                                            }
+//                                        }, 3000);
+//                                    }
+//                                } else {
+////                                Toast.makeText(NetworksActivity.this, getResources().getString(R.string.smthg_wrong_request), Toast.LENGTH_SHORT).show();
+//                                    Snackbar.make(mSwipeRefreshLayout, getResources().getString(R.string.no_data_returned), Snackbar.LENGTH_LONG).show();
+//                                    notifyChanges();
+//                                }
+//
+//                            } catch (NullPointerException e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<NetworkMembersResponse> call, Throwable t) {
+////                    Toast.makeText(mContext,"Echec de la requete", Toast.LENGTH_SHORT).show();
+//                        notifyChanges();
+//                        Toast.makeText(NetworksActivity.this, getResources().getString(R.string.smthg_wrong_request), Toast.LENGTH_SHORT).show();
+//                    }
+//                });
+//
+//            } else {
+//                Toast.makeText(this, getResources().getString(R.string.not_connected), Toast.LENGTH_SHORT).show();
+//            }
+//        } else {
+////            Toast.makeText(mContext, "Liste à jour !", Toast.LENGTH_SHORT).show();
+//            if (mSwipeRefreshLayout.isRefreshing()) mSwipeRefreshLayout.setRefreshing(false);
+//        }
+//    }
 
     private void notifyChanges() {
         if (mSwipeRefreshLayout.isRefreshing()) mSwipeRefreshLayout.setRefreshing(false);
         networkMemberAdapter.notifyDataSetChanged();
+    }
+
+    // ======================================= CALLBACKS =======================================
+
+
+    @Override
+    public void onNetworkMembersResponse(@Nullable List<SimpleUser> networkMembers) {
+        Log.i(TAG, "onNetworkMembersResponse: Members fetched");
+        Toast.makeText(this, "Membres recuperes avec succes", Toast.LENGTH_SHORT).show();
+        mProgressBarOfMembers.setVisibility(View.GONE);
+        mSwipeRefreshLayout.setRefreshing(false);
+
+        if (networkMembers.isEmpty()) {
+            Toast.makeText(this, "Aucun membre trouvé dans votre reseau", Toast.LENGTH_SHORT).show();
+        } else {
+            mNetworkMembers.clear();
+            networkMemberAdapter.notifyDataSetChanged();
+
+            for (SimpleUser s : networkMembers) {
+                mNetworkMembers.add(s);
+                networkMemberAdapter.notifyItemInserted(mNetworkMembers.size() - 1);
+            }
+        }
+    }
+
+    private void updateUIForNetworkDetails() {
+        tvName.setText(mAuthUser.getFullName());
+        tvNetworkLabel.setText("Réseau - " + mNetwork.getName());
+
+        // Todo: set correct value for the goal progress bar
+        progressBar.setProgress(25);
+        tvProgress.setText(String.valueOf(25).concat(" %"));
+    }
+
+    @Override
+    public void onNetworkMembersFailure() {
+        Toast.makeText(this, "Echec de la requete", Toast.LENGTH_SHORT).show();
+        mProgressBarOfMembers.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onNetworkDetailsResponse(@Nullable Network network) {
+        mNetwork = network;
+        updateUIForNetworkDetails();
+        Toast.makeText(this, "Network details fetched", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onNetworkDetailsFailure() {
+        Toast.makeText(this, "Echec de la requete", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onUserDetailsResponse(@android.support.annotation.Nullable SimpleUser response) {
+        mSupervisor = response;
+        Toast.makeText(this, "Supervisor details fetched", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onUserDetailsFailure() {
+
     }
 }

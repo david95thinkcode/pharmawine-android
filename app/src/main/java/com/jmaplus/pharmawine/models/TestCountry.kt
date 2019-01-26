@@ -1,6 +1,6 @@
 package com.jmaplus.pharmawine.models
 
-class Country {
+class TestCountry {
     var name: String = ""
 
     var code: String = ""

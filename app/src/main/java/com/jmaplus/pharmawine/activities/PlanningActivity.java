@@ -1,7 +1,5 @@
 package com.jmaplus.pharmawine.activities;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -12,26 +10,35 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
 import com.jmaplus.pharmawine.R;
 import com.jmaplus.pharmawine.fragments.planning.ActivitiesAreaFragment;
 import com.jmaplus.pharmawine.fragments.planning.SalesGoalsFragment;
 import com.jmaplus.pharmawine.fragments.planning.VisitFragment;
-import com.jmaplus.pharmawine.utils.Constants;
+import com.jmaplus.pharmawine.models.AuthUser;
+import com.jmaplus.pharmawine.models.Customer;
+import com.jmaplus.pharmawine.utils.RetrofitCalls.DelegueCalls;
 
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class PlanningActivity extends AppCompatActivity {
+import javax.annotation.Nullable;
+
+public class PlanningActivity extends AppCompatActivity
+        implements View.OnClickListener,
+        DelegueCalls.Callbacks,
+        VisitFragment.OnFragmentInteractionListener {
 
     private Toolbar toolbar;
     private TabLayout tabLayout;
@@ -40,15 +47,16 @@ public class PlanningActivity extends AppCompatActivity {
     private LinearLayout cvSelectDate;
     private TextView tvDateLabel;
 
-
     public static String VISIT = "com.jmaplus.pharmawine.activities.visites";
     public static String SALES_GOALS = "com.jmaplus.pharmawine.activities.sales_goals";
     public static String ACTIVITY_AREA = "com.jmaplus.pharmawine.activities.activity_area";
-
+    public List<Customer> mCustomerList = new ArrayList();
+    private String TAG = "PlanningActivity";
     private String mCurrentFragment;
     private int userRole;
-    private SharedPreferences sharedPref;
-
+    private AuthUser mAuthUser;
+    private String mDate;
+    private ViewPagerAdapter mPagerAdapter;
     public VisitFragment mVisitFragment = new VisitFragment();
     public SalesGoalsFragment mSalesGoalsFragment = new SalesGoalsFragment();
     public ActivitiesAreaFragment mActAreaFragment = new ActivitiesAreaFragment();
@@ -58,24 +66,27 @@ public class PlanningActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_planning);
 
-        // Get user role from shared preferences
-        sharedPref = this.getSharedPreferences(Constants.F_PROFIL,
-                Context.MODE_PRIVATE);
-        userRole = sharedPref.getInt(Constants.SP_ID_KEY, -1);
-
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        mAuthUser = AuthUser.getAuthenticatedUser(this);
         mCurrentFragment = mVisitFragment.getClass().getSimpleName();
+
+        initViews();
+    }
+
+    private void initViews() {
+
+        // Binding views
+        toolbar = findViewById(R.id.toolbar);
         viewPager = findViewById(R.id.viewpager);
-        setupViewPager(viewPager);
-
         tabLayout = findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(viewPager);
-
         tvDateLabel = findViewById(R.id.tv_planning_date);
         cvSelectDate = findViewById(R.id.cv_planning_visit_date);
+
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setupViewPager(viewPager);
+        tabLayout.setupWithViewPager(viewPager);
+
+        // Set listenners
         cvSelectDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -84,14 +95,59 @@ public class PlanningActivity extends AppCompatActivity {
                         .setOnDateSetListener(new CalendarDatePickerDialogFragment.OnDateSetListener() {
                             @Override
                             public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int month, int dayOfMonth) {
+
+                                int realMonthIndex = month + 1;
+                                String date;
+                                if (realMonthIndex < 10)
+                                    date = year + "-0" + realMonthIndex + "-" + dayOfMonth;
+                                else
+                                    date = year + "-" + realMonthIndex + "-" + dayOfMonth;
+
                                 String[] frenchMonths = new DateFormatSymbols(Locale.FRENCH).getMonths();
-                                tvDateLabel.setText(frenchMonths[month].concat(" ").
-                                                concat(String.valueOf(year)));
+
+                                tvDateLabel.setText(frenchMonths[month].toUpperCase().concat(" ").
+                                        concat(String.valueOf(year)));
+
+                                Toast.makeText(PlanningActivity.this, "Date : " + date, Toast.LENGTH_SHORT).show();
+
+                                // Very important
+                                // We should inform visitefragment that date have changed
+                                mVisitFragment.setDateString(date);
                             }
                         });
                 datePickerDialog.show(getSupportFragmentManager(), "DatePicker");
             }
         });
+    }
+
+    // ================ CALLBACKS =============
+
+    @Override
+    public void onRequestUserRoleID() {
+        int userRole = AuthUser.getRoleFromSharedPreferences(this);
+
+        if (userRole != -1 && userRole > 0)
+            mVisitFragment.setUserRoleIDFromSource(userRole);
+        else
+            Log.i(TAG, "onRequestUserRoleID: Le role de ce user n'est pas clair");
+    }
+
+    @Override
+    public void onRequestPlanning(String startDate, String endDate) {
+        DelegueCalls.getPlanning(AuthUser.getToken(this), this,
+                mAuthUser.getId().toString(), startDate, endDate);
+    }
+
+    @Override
+    public void onPlanningResponse(@Nullable List<Customer> customers) {
+        mCustomerList = customers;
+        mVisitFragment.populateCustomerListFromSource(mCustomerList);
+    }
+
+    @Override
+    public void onPlanningFailure() {
+        mVisitFragment.populateCustomerListFromSource(mCustomerList);
+        Toast.makeText(this, R.string.erreur_de_recuperation_du_planning, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -101,6 +157,11 @@ public class PlanningActivity extends AppCompatActivity {
 
         itemSearch = menu.getItem(0);
         return true;
+    }
+
+    @Override
+    public void onClick(View v) {
+
     }
 
     @Override
@@ -131,17 +192,12 @@ public class PlanningActivity extends AppCompatActivity {
     }
 
     private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        mPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-        // Adding argument to Visite fragment
-        Bundle visiteArgs = new Bundle();
-        visiteArgs.putInt(VisitFragment.USER_ROLE_KEY, userRole);
-        mVisitFragment.setArguments(visiteArgs);
-
-        adapter.addFragment(mVisitFragment, "Visites");
-        adapter.addFragment(mSalesGoalsFragment, "Obj. de ventes");
-        adapter.addFragment(mActAreaFragment, "Zones d'act.");
-        viewPager.setAdapter(adapter);
+        mPagerAdapter.addFragment(mVisitFragment, "Visites");
+        mPagerAdapter.addFragment(mSalesGoalsFragment, "Obj. de ventes");
+        mPagerAdapter.addFragment(mActAreaFragment, "Zones d'act.");
+        viewPager.setAdapter(mPagerAdapter);
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
@@ -176,6 +232,5 @@ public class PlanningActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             return mFragmentTitleList.get(position);
         }
-
     }
 }

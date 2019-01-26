@@ -16,13 +16,13 @@ import android.widget.TextView;
 
 import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
 import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
-import com.jmaplus.pharmawine.PharmaWine;
 import com.jmaplus.pharmawine.R;
 import com.jmaplus.pharmawine.activities.NetworksActivity;
 import com.jmaplus.pharmawine.activities.ProspectionActivity;
 import com.jmaplus.pharmawine.activities.RapportHebdoActivity;
 import com.jmaplus.pharmawine.activities.RemainingClientsActivity;
 import com.jmaplus.pharmawine.activities.SeenCustomers;
+import com.jmaplus.pharmawine.models.AuthUser;
 import com.jmaplus.pharmawine.models.AuthenticatedUser;
 
 import java.text.DateFormatSymbols;
@@ -42,6 +42,7 @@ public class HomeFragment extends Fragment {
     private FloatingActionButton fabNetwork, fabProspection;
 
     private AuthenticatedUser authenticatedUser;
+    private AuthUser currentUser;
 
     private RelativeLayout layBottomFabs;
     private LinearLayout clientSeen, clientRemaining;
@@ -72,20 +73,21 @@ public class HomeFragment extends Fragment {
         fabProspection = view.findViewById(R.id.fab_see_more);
 
         initViews();
+
         return view;
     }
 
     private void initViews() {
 
-        authenticatedUser = AuthenticatedUser.getAuthenticatedUser(PharmaWine.mRealm);
-
-
-        try {
-            tvNetworkLabel.setText((authenticatedUser.getNetworkName() == null) ? "Aucun réseau" : "Réseau " + authenticatedUser.getNetworkName());
-        } catch (NullPointerException e) {
-            tvNetworkLabel.setText("Aucun réseau");
-            e.printStackTrace();
-        }
+        currentUser = AuthUser.getAuthenticatedUser(requireContext());
+        tvNetworkLabel.setText("Aucun réseau");
+//        try {
+//            authenticatedUser = AuthenticatedUser.getAuthenticatedUser(PharmaWine.mRealm);
+//            tvNetworkLabel.setText((authenticatedUser.getNetworkName() == null) ? "Aucun réseau" : "Réseau " + authenticatedUser.getNetworkName());
+//        } catch (NullPointerException e) {
+//            tvNetworkLabel.setText("Aucun réseau");
+//            e.printStackTrace();
+//        }
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.FRENCH);
         tvDate.setText(dateFormat.format(new Date()));
 

@@ -17,6 +17,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="icon">
+        <activity android:name=".activities.DiscussionActivity"></activity>
+        <activity
+            android:name=".activities.MessagingActivity"
+            android:label="@string/title_activity_messging" />
         <activity android:name=".activities.MainActivity" />
         <activity
             android:name=".activities.Splashscreen"
@@ -118,7 +122,7 @@
         <activity android:name=".activities.NewProspectInconnuActivity" />
         <activity android:name=".activities.NewProspectConnuActivity" />
         <activity android:name=".activities.RapportHebdoActivity" />
-        <activity android:name=".activities.ReportHebdoEditManagerActivity"></activity>
+        <activity android:name=".activities.ReportHebdoEditManagerActivity" />
     </application>
 
 </manifest>

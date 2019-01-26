@@ -26,9 +26,10 @@ public class Constants {
     public static final String SP_EMAIL_KEY = "sp_mail";
     public static final String SP_TYPE_KEY = "sp_type";
     public static final String SP_ROLE_KEY = "sp_role";
+    public static final String SP_NETWORK_KEY = "sp_network_id";
     public static final String SP_ACCOUNT_STATUS_KEY = "sp_status";
     public static final String SP_AVATAR_URL_KEY = "sp_avatar";
-    public static final String SP_TOKEN_KEY = "sp_avatar";
+    public static final String SP_TOKEN_KEY = "sp_token";
 
     // MENU ITEMS ================================
     public static final String MENU_PLANNING_KEY = "menu_planning";
@@ -50,7 +51,8 @@ public class Constants {
     public static String CLIENT_LASTNAME_KEY = "client_ln";
     public static String CLIENT_FULLNAME_KEY = "client_fullname";
     public static String CLIENT_SPECIALITY_KEY = "client_spec";
-    public static String CLIENT_STATUS_KEY = "client_stat";
+    public static String CLIENT_CUSTOMER_STATUS_KEY = "client_stat";
+    public static String CLIENT_CUSTOMER_TYPE_KEY = "client_type";
     public static String CLIENT_AVATAR_URL_KEY = "client_av_url";
 
 

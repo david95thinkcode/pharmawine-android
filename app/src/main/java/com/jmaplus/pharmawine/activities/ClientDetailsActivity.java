@@ -89,7 +89,7 @@ public class ClientDetailsActivity extends AppCompatActivity implements
         // update UI Views With Client Details
         getSupportActionBar().setTitle(clientDetails.getFullName());
 
-        if (!clientDetails.getAvatarUrl().isEmpty()) {
+        if (!clientDetails.getAvatar().isEmpty()) {
             //TODO: find a way to set icon with user avatar url
             getSupportActionBar().setIcon(clientDetails.getDefaultAvatarUrl());
         } else {

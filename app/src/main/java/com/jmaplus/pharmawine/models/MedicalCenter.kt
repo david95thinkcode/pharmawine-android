@@ -3,7 +3,7 @@ package com.jmaplus.pharmawine.models
 /**
  * Represente le centre d'un medecin
  */
-class Center {
+class MedicalCenter {
     var id: String = ""
 
     var name: String = ""

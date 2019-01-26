@@ -9,12 +9,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.EditText
-import android.widget.Spinner
+import android.widget.*
 import com.jmaplus.pharmawine.R
-import com.jmaplus.pharmawine.models.Country
+import com.jmaplus.pharmawine.models.Center
+import com.jmaplus.pharmawine.models.Customer
+import com.jmaplus.pharmawine.models.TestCountry
+import com.jmaplus.pharmawine.utils.CustomerCalls
 import com.jmaplus.pharmawine.utils.Utils
 
 /**
@@ -34,7 +34,7 @@ class Step1MedicalTeamClientFragment : Fragment() {
     private lateinit var mMaritalStatusSpinner: Spinner
 
     private var mMonth: String = ""
-    private var mCountriesList: MutableList<Country> = ArrayList()
+    private var mCountriesList: MutableList<TestCountry> = ArrayList()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -59,7 +59,7 @@ class Step1MedicalTeamClientFragment : Fragment() {
             mCountriesList.add(c)
         }
 
-        val countriesAdapter = ArrayAdapter<Country>(requireContext(), android.R.layout.simple_spinner_item, mCountriesList)
+        val countriesAdapter = ArrayAdapter<TestCountry>(requireContext(), android.R.layout.simple_spinner_item, mCountriesList)
                 .also { adapter ->
                     adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
                     mNationalitySpinner.adapter = adapter
@@ -97,7 +97,7 @@ class Step1MedicalTeamClientFragment : Fragment() {
             }
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                val item: Country = countriesAdapter.getItem(position)
+                val item: TestCountry = countriesAdapter.getItem(position)
                 listener?.onNationalityUpdated(item.name)
             }
         }

@@ -141,8 +141,8 @@ class MedicalTeamDetailsFragment : Fragment(), View.OnClickListener {
         val client = Client()
 
         client.id = "2"
-        client.firstName = "Ablonon"
-        client.lastName = "Veronique"
+        client.firstname = "Ablonon"
+        client.lastname = "Veronique"
         client.sex = "F"
         client.speciality = "Medecin generaliste"
         client.status = "CFG"

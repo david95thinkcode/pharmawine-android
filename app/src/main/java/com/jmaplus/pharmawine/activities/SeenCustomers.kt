@@ -12,11 +12,10 @@ import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import com.jmaplus.pharmawine.R
-import com.jmaplus.pharmawine.adapters.RemainingClientsAdapter
-import com.jmaplus.pharmawine.models.Client
+import com.jmaplus.pharmawine.adapters.RemainingCustomersAdapter
+import com.jmaplus.pharmawine.models.Customer
 import com.jmaplus.pharmawine.utils.Constants
 import com.jmaplus.pharmawine.utils.ItemClickSupport
-import com.jmaplus.pharmawine.utils.MockDatas
 
 class SeenCustomers : AppCompatActivity() {
 
@@ -24,9 +23,9 @@ class SeenCustomers : AppCompatActivity() {
     private lateinit var mEmptyClientsLayout: LinearLayout
     private lateinit var mRecyclerView: RecyclerView
     private lateinit var mProgressBar: ProgressBar
-    private lateinit var safeCustomersList: MutableList<Client>
-    private lateinit var customersList: MutableList<Client>
-    private lateinit var mAdapter: RemainingClientsAdapter
+    private lateinit var safeCustomersList: MutableList<Customer>
+    private lateinit var customersList: MutableList<Customer>
+    private lateinit var mAdapter: RemainingCustomersAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,7 +52,7 @@ class SeenCustomers : AppCompatActivity() {
         customersList = ArrayList()
         safeCustomersList = ArrayList()
 
-        mAdapter = RemainingClientsAdapter(this, customersList)
+        mAdapter = RemainingCustomersAdapter(this, customersList)
         mRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
         mRecyclerView.adapter = mAdapter
 
@@ -70,12 +69,12 @@ class SeenCustomers : AppCompatActivity() {
             // todo: replace with api call
 
 
-            customersList.clear()
-            for (customer in MockDatas.getFakeClients()) {
-                // populating list for the adapter of recycler view
-                customersList.add(customer)
-                mAdapter.notifyItemInserted(customersList.size - 1)
-            }
+//            customersList.clear()
+//            for (customer in MockDatas.getFakeClients()) {
+//                // populating list for the adapter of recycler view
+//                customersList.add(customer)
+//                mAdapter.notifyItemInserted(customersList.size - 1)
+//            }
 
             // Saving the original list of customers
             safeCustomersList.addAll(customersList)
@@ -108,7 +107,7 @@ class SeenCustomers : AppCompatActivity() {
         }
     }
 
-    private fun refreshRecyclerViewListWith(list: List<Client>, knownCostumers: Boolean) {
+    private fun refreshRecyclerViewListWith(list: List<Customer>, knownCostumers: Boolean) {
 
         if (list.isNotEmpty()) {
             mRecyclerView.visibility = View.VISIBLE

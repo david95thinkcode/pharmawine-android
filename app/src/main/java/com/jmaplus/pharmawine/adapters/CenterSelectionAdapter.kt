@@ -8,33 +8,33 @@ import android.widget.TextView
 import com.jmaplus.pharmawine.R
 import com.jmaplus.pharmawine.models.Center
 
-class MedicalTeamCenterSelectionAdapter(var centersList: MutableList<Center>) :
-        RecyclerView.Adapter<MedicalTeamCenterSelectionAdapter.MedicalTeamCenterSelectionViewHolder>() {
+class CenterSelectionAdapter(var centersList: MutableList<Center>) :
+        RecyclerView.Adapter<CenterSelectionAdapter.CenterSelectionViewHolder>() {
 
-    class MedicalTeamCenterSelectionViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class CenterSelectionViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         val center = itemView.findViewById<TextView>(R.id.tv_centre_name)
         val zone = itemView.findViewById<TextView>(R.id.tv_zone_name)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, position: Int): MedicalTeamCenterSelectionViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, position: Int): CenterSelectionViewHolder {
         val inflater = LayoutInflater.from(parent.context)
                 .inflate(R.layout.centre_item, parent, false)
 
-        return MedicalTeamCenterSelectionViewHolder(inflater)
+        return CenterSelectionViewHolder(inflater)
     }
 
     override fun getItemCount(): Int = centersList.size
 
-    override fun onBindViewHolder(holder: MedicalTeamCenterSelectionViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: CenterSelectionViewHolder, position: Int) {
         holder?.center.text = centersList[position].name
-        holder?.zone.text = centersList[position].zone
+//        holder?.zone.text = centersList[position].zone
     }
 
     fun getCenter(position: Int): Center = centersList[position]
 
 
     companion object {
-        const val TAG = "MedicalTeamCenterSelectionAdapter"
+        const val TAG = "CenterSelectionAdapter"
     }
 }

@@ -133,6 +133,7 @@
         <item name="android:paddingLeft">25dp</item>
         <item name="android:paddingRight">25dp</item>
     </style>
+
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -170,6 +171,28 @@
         <item name="android:ems">10</item>
         <item name="android:inputType">text|textMultiLine</item>
         <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="message_buble_style">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">62dp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginEnd">8dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+        <item name="android:elevation">5dp</item>
+        <item name="android:paddingStart">15dp</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingEnd">15dp</item>
+        <item name="android:paddingBottom">25dp</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="profile_sm_circle_image_view">
+        <item name="android:layout_width">82dp</item>
+        <item name="android:layout_height">74dp</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
     </style>
 
 </resources>

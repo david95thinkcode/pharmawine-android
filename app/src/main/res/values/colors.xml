@@ -30,4 +30,6 @@
     <color name="stat_frag_bg">#FAFAFA</color>
     <color name="stat_title_txt_color">#82B1FF</color>
     <color name="sigle_color">#607D8B</color>
+    <color name="colorMessageFromMeBackgrounnd">#FFC000</color>
+    <color name="project_light_grey">#BDBDBD</color>
 </resources>

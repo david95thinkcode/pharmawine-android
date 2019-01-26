@@ -9,18 +9,17 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.LinearLayout
 import com.jmaplus.pharmawine.R
-import com.jmaplus.pharmawine.adapters.RemainingClientsAdapter
-import com.jmaplus.pharmawine.models.Client
+import com.jmaplus.pharmawine.adapters.RemainingCustomersAdapter
+import com.jmaplus.pharmawine.models.Customer
 import com.jmaplus.pharmawine.utils.Constants
 import com.jmaplus.pharmawine.utils.ItemClickSupport
-import com.jmaplus.pharmawine.utils.MockDatas
 
 class RemainingClientsActivity : AppCompatActivity() {
 
     private lateinit var mRecyclerView: RecyclerView
 
-    private lateinit var clientsList: MutableList<Client>
-    private lateinit var mAdapter: RemainingClientsAdapter
+    private lateinit var clientsList: MutableList<Customer>
+    private lateinit var mAdapter: RemainingCustomersAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +39,7 @@ class RemainingClientsActivity : AppCompatActivity() {
 
         // Initializations
         clientsList = ArrayList()
-        mAdapter = RemainingClientsAdapter(this, clientsList)
+        mAdapter = RemainingCustomersAdapter(this, clientsList)
         mRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
         mRecyclerView.adapter = mAdapter
 
@@ -74,10 +73,10 @@ class RemainingClientsActivity : AppCompatActivity() {
         }
         else {
             // Fetching datas from fake data
-            for (c in MockDatas.getFakeClients()) {
-                clientsList.add(c)
-                mAdapter.notifyItemInserted(clientsList.size - 1)
-            }
+//            for (c in MockDatas.getFakeClients()) {
+//                clientsList.add(c)
+//                mAdapter.notifyItemInserted(clientsList.size - 1)
+//            }
         }
     }
 

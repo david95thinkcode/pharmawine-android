@@ -164,6 +164,12 @@
         <item>Zone 3</item>
     </string-array>
 
+    <!-- Please, you should never change the position of items in the string array below-->
+    <string-array name="sex_array">
+        <item>Homme</item>
+        <item>Femme</item>
+    </string-array>
+
     <string name="title_activity_visite_in_progress">Visite en cours &#8230;</string>
     <string name="msg_cancel_visite">Êtes vous sûr de vouloir annuler la visite?</string>
     <string name="msg_end_visite">La visite est-t-elle terminée ?</string>
@@ -244,6 +250,27 @@
     <string name="pcm">PCM</string>
     <string name="promesses_obtenues">Promesses obtenues</string>
     <string name="etes_vous_sur_d_avoir_termine">Êtes-vous sur d\'avoir terminé ?</string>
+    <string name="title_activity_messging">Messages</string>
+
+    <string name="the_subtitle_should_always_be_the_latest_message_of_the_room">The subtitle should be the last message of the room</string>
+    <string name="message_that_ive_sent_to_user">Message that I\'m sending to another user</string>
+    <string name="fake_date">21/12/2018</string>
+    <string name="votre_message">Votre message</string>
+    <string name="une_erreur_s_est_produite">Une erreur s\'est produite</string>
+    <string name="erreur_de_recuperation_du_planning">Echec de recuperation du planning</string>
+    <string name="reessayez">Réessayer</string>
+    <string name="prenoms_du_prospect">Prénom du prospect</string>
+    <string name="nom_du_prospect">Nom du prospect</string>
+    <string name="contact">Contact</string>
+    <string name="numero">Numero</string>
+    <string name="entrez_adress_du_prospect">Entrer l\'adresse du prospect</string>
+    <string name="adresse_du_prospect">Adresse du prospect</string>
+    <string name="nouveau_client">Nouveau client</string>
+    <string name="specialite">Spécialité</string>
+    <string name="categorie">Catégorie</string>
+    <string name="random_dates_in_week">Lun 3 au Ven 7</string>
+
+
     <string name="classes">Classes</string>
     <string name="select_centre_de_visite">(Sélectionner le centre de la visite)</string>
 </resources>

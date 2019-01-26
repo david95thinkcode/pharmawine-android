@@ -1,35 +1,30 @@
 package com.jmaplus.pharmawine.activities;
 
-import android.app.ActionBar;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
-import com.jmaplus.pharmawine.PharmaWine;
+import com.google.firebase.database.FirebaseDatabase;
 import com.jmaplus.pharmawine.R;
 import com.jmaplus.pharmawine.fragments.home.HomeFragment;
 import com.jmaplus.pharmawine.fragments.home.MoreFragment;
 import com.jmaplus.pharmawine.fragments.home.NotificationsFragment;
 import com.jmaplus.pharmawine.fragments.home.ReportsFragment;
-import com.jmaplus.pharmawine.models.AuthenticatedUser;
+import com.jmaplus.pharmawine.models.AuthUser;
 
 public class MainActivity extends AppCompatActivity {
+    public static final String TAG = "MainActivity";
 
     private AHBottomNavigation bottomNavigation;
     private FrameLayout mFrameContainer;
@@ -45,14 +40,15 @@ public class MainActivity extends AppCompatActivity {
     private final int IND_NAV_CLIENT = 3;
     private final int IND_NAV_MORE = 4;
 
-
-    private AuthenticatedUser authenticatedUser;
+    private AuthUser currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // This few 3 lines allow firebase offline capabilities
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
 
         bottomNavigation = findViewById(R.id.bottom_navigation);
         setupBottomNavigation();
@@ -61,16 +57,41 @@ public class MainActivity extends AppCompatActivity {
 
         showFragment(mHomeFragment);
 
-
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.logo);
         getSupportActionBar().setIcon(R.drawable.logo);
         getSupportActionBar().setLogo(R.drawable.logo);
 
 //
-        authenticatedUser = AuthenticatedUser.getAuthenticatedUser(PharmaWine.mRealm);
+//        authenticatedUser = AuthenticatedUser.getAuthenticatedUser(PharmaWine.mRealm);
 
-        Toast.makeText(this, "Content de vous revoir " + authenticatedUser.getLastName() + " !", Toast.LENGTH_LONG).show();
+        currentUser = AuthUser.getAuthenticatedUser(this);
 
+        Log.i(getLocalClassName(), "onCreate: authUser ==> " + currentUser);
+
+        Toast.makeText(this, "Content de vous revoir " + currentUser.getLastname() + " !", Toast.LENGTH_LONG).show();
+
+//        try {
+//            DateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+//            Calendar calendar = Calendar.getInstance();
+//            calendar.setFirstDayOfWeek(Calendar.MONDAY);
+//            calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+//
+//            String[] days = new String[7];
+//            for (int i = 0; i < 7; i++)
+//            {
+//                days[i] = format.format(calendar.getTime());
+//                calendar.add(Calendar.DAY_OF_MONTH, 1);
+//            }
+//
+//            Log.i(TAG, "onCreate: days ==> " + days);
+//
+//        } catch(Exception e) {
+//            Log.e(TAG, "onCreate: " + e.getMessage() );
+//            e.printStackTrace();
+//            Toast.makeText(this, "Probleme recuperation jours de la semaine", Toast.LENGTH_SHORT).show();
+//        }
+
+        Log.i(TAG, "onCreate: token ==> " + AuthUser.getToken(this));
 
     }
 
@@ -86,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.menu_messenger :
-                startActivity(new Intent(MainActivity.this, MessengerActivity.class));
+                startActivity(new Intent(MainActivity.this, MessagingActivity.class));
                 break;
             case R.id.menu_settings :
                 startActivity(new Intent(MainActivity.this, SettingsActivity.class));
@@ -105,7 +126,6 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigation.addItem(new AHBottomNavigationItem(R.string.empty_string, R.drawable.ic_client, R.color.nav_item_state_list));
         bottomNavigation.addItem(new AHBottomNavigationItem(R.string.empty_string, R.drawable.view_dashboard, R.color.nav_item_state_list));
         bottomNavigation.setTitleState(AHBottomNavigation.TitleState.ALWAYS_HIDE);
-        //bottomNavigation.setLayoutParams(new ActionBar.LayoutParams(CoordinatorLayout.LayoutParams.MATCH_PARENT, 65));
         bottomNavigation.setAccentColor(getResources().getColor(R.color.colorPrimary));
         bottomNavigation.setOnTabSelectedListener(new AHBottomNavigation.OnTabSelectedListener() {
             @Override
@@ -130,7 +150,6 @@ public class MainActivity extends AppCompatActivity {
                     case IND_NAV_CLIENT:
                         bottomNavigation.setBehaviorTranslationEnabled(true);
                         startActivity(new Intent(MainActivity.this, ClientsActivity.class));
-
                         break;
                     case IND_NAV_MORE :
                         bottomNavigation.setBehaviorTranslationEnabled(true);
@@ -152,13 +171,5 @@ public class MainActivity extends AppCompatActivity {
 
     public void clicksHandler(View view) {
         mMoreFragment.clicksHandler(view);
-    }
-
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-
     }
 }

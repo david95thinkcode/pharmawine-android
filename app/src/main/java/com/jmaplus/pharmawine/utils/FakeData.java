@@ -2,9 +2,9 @@ package com.jmaplus.pharmawine.utils;
 
 import com.jmaplus.pharmawine.models.AuthenticatedUser;
 import com.jmaplus.pharmawine.models.Bonus;
-import com.jmaplus.pharmawine.models.Center;
 import com.jmaplus.pharmawine.models.Client;
 import com.jmaplus.pharmawine.models.Gift;
+import com.jmaplus.pharmawine.models.MedicalCenter;
 import com.jmaplus.pharmawine.models.User;
 import com.jmaplus.pharmawine.models.Wholesaler;
 
@@ -59,8 +59,8 @@ public class FakeData {
             Client client = new Client();
 
             client.setId(i.toString());
-            client.setFirstName(mFaker.name.firstName());
-            client.setLastName(mFaker.name.lastName());
+            client.setFirstname(mFaker.name.firstName());
+            client.setLastname(mFaker.name.lastName());
             client.setSex("m");
             client.setSpeciality(mFaker.lorem.characters(8) + "" + mFaker.lorem.characters(12));
             client.setStatus(mFaker.lorem.characters(3).toUpperCase());
@@ -79,19 +79,19 @@ public class FakeData {
         return customers;
     }
 
-    public static ArrayList<Center> getCenters() {
-        ArrayList<Center> centers = new ArrayList<>();
+    public static ArrayList<MedicalCenter> getCenters() {
+        ArrayList<MedicalCenter> medicalCenters = new ArrayList<>();
 
         for (Integer i = 1; i <= 5; i++) {
-            Center c = new Center();
+            MedicalCenter c = new MedicalCenter();
 
             c.setId(i.toString());
             c.setName(mFaker.company.name());
             c.setZone(mFaker.address.city());
-            centers.add(c);
+            medicalCenters.add(c);
         }
 
-        return centers;
+        return medicalCenters;
 
     }
 
