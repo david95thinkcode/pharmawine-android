@@ -3,8 +3,10 @@ package com.jmaplus.pharmawine.utils;
 import com.jmaplus.pharmawine.models.AuthenticatedUser;
 import com.jmaplus.pharmawine.models.Bonus;
 import com.jmaplus.pharmawine.models.Client;
+import com.jmaplus.pharmawine.models.Customer;
 import com.jmaplus.pharmawine.models.Gift;
 import com.jmaplus.pharmawine.models.MedicalCenter;
+import com.jmaplus.pharmawine.models.Speciality;
 import com.jmaplus.pharmawine.models.User;
 import com.jmaplus.pharmawine.models.Wholesaler;
 
@@ -74,6 +76,40 @@ public class FakeData {
             client.setType(Constants.CLIENT_MEDICAL_TEAM_TYPE_KEY);
 
             customers.add(client);
+        }
+
+        return customers;
+    }
+
+    public static ArrayList<Customer> getCustomers() {
+
+        ArrayList<Customer> customers = new ArrayList<>();
+
+        for (Integer i = 1; i <= 10; i++) {
+            Customer customer = new Customer();
+
+            customer.setId(i);
+            customer.setFirstname(mFaker.name.firstName());
+            customer.setLastname(mFaker.name.lastName());
+            customer.setSex("m");
+//            customer.setStatus(mFaker.lorem.characters(3).toUpperCase());
+            customer.setEmail(mFaker.name.name().concat("@").concat(mFaker.lorem.characters(5)).concat(mFaker.lorem.characters(2)));
+            customer.setBirthday(mFaker.date.birthday().toString());
+            customer.setTel(mFaker.phoneNumber.phoneNumber());
+            customer.setPhoneNumber2(mFaker.phoneNumber.phoneNumber());
+            customer.setMaritalStatus("Marié");
+            customer.setNationality("Béninoise");
+            customer.setCustomerStatusId(mFaker.number.between(1, 3));
+//            customer.setType(Constants.CLIENT_MEDICAL_TEAM_TYPE_KEY);
+
+            // object data
+            Speciality s = new Speciality();
+            s.setName(mFaker.company.profession());
+            s.setId(mFaker.number.between(1, 45));
+
+
+            customer.setSpeciality(s);
+            customers.add(customer);
         }
 
         return customers;

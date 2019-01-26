@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,7 +31,7 @@ private const val ARG_PARAM2 = "param2"
 class MedicalTeamDetailsFragment : Fragment(), View.OnClickListener {
 
     companion object {
-        private const val TAG = "MedicalTeamDetailsFragment"
+        private const val TAG = "MedicalTeamDetailsFrag"
     }
 
     private var listener: OnFragmentInteractionListener? = null
@@ -56,6 +57,7 @@ class MedicalTeamDetailsFragment : Fragment(), View.OnClickListener {
                               savedInstanceState: Bundle?): View? {
 
         val rootView = inflater.inflate(R.layout.fragment_medical_team_details, container, false)
+
         imgProfile = rootView.findViewById(R.id.img_profile_picture)
         tvClientName = rootView.findViewById(R.id.tv_i_client_name)
         tvClientCategory = rootView.findViewById(R.id.tv_i_client_category)
@@ -159,12 +161,19 @@ class MedicalTeamDetailsFragment : Fragment(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
+
+
+        val DEFAULT_PHONE_NUMBER = "+22966843445"
+
         when (v?.id) {
             btnCall1.id -> {
-                listener?.onPhoneNumberCallInteraction(client.phoneNumber.trim { it <= ' ' })
+                Log.i(TAG, "Sending ==> ${client.phoneNumber}")
+                // todo: make sur the phone number is note empty and send the real phone number
+                listener?.onPhoneNumberCallInteraction(DEFAULT_PHONE_NUMBER)
             }
             btnCall2.id -> {
-                listener?.onPhoneNumberCallInteraction(client.phoneNumber2.trim { it <= ' ' })
+                // todo: make sur the phone number is note empty
+                listener?.onPhoneNumberCallInteraction(DEFAULT_PHONE_NUMBER)
             }
             else -> { // Nothing to do}
             }

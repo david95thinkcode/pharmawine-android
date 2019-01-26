@@ -12,6 +12,7 @@ import com.jmaplus.pharmawine.R
 import com.jmaplus.pharmawine.adapters.RemainingCustomersAdapter
 import com.jmaplus.pharmawine.models.Customer
 import com.jmaplus.pharmawine.utils.Constants
+import com.jmaplus.pharmawine.utils.FakeData
 import com.jmaplus.pharmawine.utils.ItemClickSupport
 
 class RemainingClientsActivity : AppCompatActivity() {
@@ -72,11 +73,11 @@ class RemainingClientsActivity : AppCompatActivity() {
 
         }
         else {
-            // Fetching datas from fake data
-//            for (c in MockDatas.getFakeClients()) {
-//                clientsList.add(c)
-//                mAdapter.notifyItemInserted(clientsList.size - 1)
-//            }
+//             Fetching datas from fake data
+            for (c in FakeData.getCustomers()) {
+                clientsList.add(c)
+                mAdapter.notifyItemInserted(clientsList.size - 1)
+            }
         }
     }
 

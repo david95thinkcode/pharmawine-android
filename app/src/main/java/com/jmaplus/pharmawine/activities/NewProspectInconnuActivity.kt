@@ -1,6 +1,5 @@
 package com.jmaplus.pharmawine.activities
 
-import android.opengl.Visibility
 import android.os.Bundle
 import android.os.Handler
 import android.support.v4.app.Fragment
@@ -145,11 +144,13 @@ class NewProspectInconnuActivity : AppCompatActivity(),
     private fun fetchCenters() {
         Log.i(TAG, "Fetching centers...")
         // todo: implements corresponding retrofit call
+
     }
 
     private fun fetchAreas() {
         Log.i(TAG, "Fetching areas...")
         // todo: implements corresponding retrofit call
+
     }
 
     private fun fetchSpeciaities() {
@@ -160,6 +161,7 @@ class NewProspectInconnuActivity : AppCompatActivity(),
     private fun fetchCustomerStatues() {
         Log.i(TAG, "Fetching customer statues...")
         // todo: implements corresponding retrofit call
+
     }
 
     // First Fragment callbacks ====================

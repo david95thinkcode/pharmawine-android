@@ -61,9 +61,6 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setIcon(R.drawable.logo);
         getSupportActionBar().setLogo(R.drawable.logo);
 
-//
-//        authenticatedUser = AuthenticatedUser.getAuthenticatedUser(PharmaWine.mRealm);
-
         currentUser = AuthUser.getAuthenticatedUser(this);
 
         Log.i(getLocalClassName(), "onCreate: authUser ==> " + currentUser);

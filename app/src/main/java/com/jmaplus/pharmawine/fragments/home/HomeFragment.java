@@ -89,13 +89,6 @@ public class HomeFragment extends Fragment {
             e.printStackTrace();
         }
 
-//        try {
-//            authenticatedUser = AuthenticatedUser.getAuthenticatedUser(PharmaWine.mRealm);
-//            tvNetworkLabel.setText((authenticatedUser.getNetworkName() == null) ? "Aucun réseau" : "Réseau " + authenticatedUser.getNetworkName());
-//        } catch (NullPointerException e) {
-//            tvNetworkLabel.setText("Aucun réseau");
-//            e.printStackTrace();
-//        }
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.FRENCH);
         tvDate.setText(dateFormat.format(new Date()));
 
