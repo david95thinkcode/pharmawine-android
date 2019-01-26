@@ -13,13 +13,13 @@ class MedicalTeamCenterSelectionAdapter(var centersList: MutableList<Center>) :
 
     class MedicalTeamCenterSelectionViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        val center = itemView.findViewById<TextView>(R.id.tv_center_label)
-        val zone = itemView.findViewById<TextView>(R.id.tv_zone_label)
+        val center = itemView.findViewById<TextView>(R.id.tv_centre_name)
+        val zone = itemView.findViewById<TextView>(R.id.tv_zone_name)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, position: Int): MedicalTeamCenterSelectionViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-                .inflate(R.layout.mt_center_row, parent, false)
+                .inflate(R.layout.centre_item, parent, false)
 
         return MedicalTeamCenterSelectionViewHolder(inflater)
     }

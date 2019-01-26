@@ -14,6 +14,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import com.jmaplus.pharmawine.R;
 import com.jmaplus.pharmawine.fragments.rapport.ReportEtape1Fragment;
@@ -48,6 +49,7 @@ public class VisiteInProgressActivity extends AppCompatActivity
     private View mRootContainer;
     private Visite mVisite;
     private String prospectType = "";
+    private LinearLayout headerReport;
 
 
     @Override
@@ -294,5 +296,15 @@ public class VisiteInProgressActivity extends AppCompatActivity
         public int getCount() {
             return NUM_PAGES;
         }
+    }
+
+
+    public void headerVisibility(boolean hv) {
+        if (hv) {
+            headerReport.setVisibility(View.GONE);
+        } else {
+            headerReport.setVisibility(View.VISIBLE);
+        }
+
     }
 }

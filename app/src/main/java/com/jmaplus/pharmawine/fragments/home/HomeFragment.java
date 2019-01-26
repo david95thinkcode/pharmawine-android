@@ -136,8 +136,8 @@ public class HomeFragment extends Fragment {
         fabProspection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //  startActivity(new Intent(mContext, ProspectionActivity.class));
-                startActivity(new Intent(mContext, RapportHebdoActivity.class));
+                startActivity(new Intent(mContext, ProspectionActivity.class));
+                // startActivity(new Intent(mContext, RapportHebdoActivity.class));
             }
         });
     }

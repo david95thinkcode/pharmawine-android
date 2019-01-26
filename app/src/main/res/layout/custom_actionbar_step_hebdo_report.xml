@@ -35,7 +35,7 @@
 
         <TextView
             android:id="@+id/title_of_champ_hebdo_report"
-            android:layout_width="234dp"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_marginBottom="8dp"
@@ -43,7 +43,8 @@
             android:fontFamily="@font/roboto_regular"
             android:text="@string/statistique_medicale_week"
             android:textColor="@color/sometxtcol"
-            android:textSize="18sp"
+            android:lines="1"
+            android:textSize="15sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:layout_editor_absoluteX="91dp" />

@@ -1,7 +1,9 @@
 package com.jmaplus.pharmawine.activities;
 
+import android.app.ActionBar;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -13,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
@@ -68,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
         Toast.makeText(this, "Content de vous revoir " + authenticatedUser.getLastName() + " !", Toast.LENGTH_LONG).show();
 
+
     }
 
     @Override
@@ -101,6 +105,7 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigation.addItem(new AHBottomNavigationItem(R.string.empty_string, R.drawable.ic_client, R.color.nav_item_state_list));
         bottomNavigation.addItem(new AHBottomNavigationItem(R.string.empty_string, R.drawable.view_dashboard, R.color.nav_item_state_list));
         bottomNavigation.setTitleState(AHBottomNavigation.TitleState.ALWAYS_HIDE);
+        //bottomNavigation.setLayoutParams(new ActionBar.LayoutParams(CoordinatorLayout.LayoutParams.MATCH_PARENT, 65));
         bottomNavigation.setAccentColor(getResources().getColor(R.color.colorPrimary));
         bottomNavigation.setOnTabSelectedListener(new AHBottomNavigation.OnTabSelectedListener() {
             @Override
@@ -125,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
                     case IND_NAV_CLIENT:
                         bottomNavigation.setBehaviorTranslationEnabled(true);
                         startActivity(new Intent(MainActivity.this, ClientsActivity.class));
+
                         break;
                     case IND_NAV_MORE :
                         bottomNavigation.setBehaviorTranslationEnabled(true);
@@ -146,5 +152,13 @@ public class MainActivity extends AppCompatActivity {
 
     public void clicksHandler(View view) {
         mMoreFragment.clicksHandler(view);
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+
     }
 }

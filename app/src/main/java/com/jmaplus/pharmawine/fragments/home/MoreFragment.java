@@ -70,7 +70,7 @@ public class MoreFragment extends Fragment {
         mPlanningCv = rootView.findViewById(R.id.cv_menu_planning);
         mStatsCv = rootView.findViewById(R.id.cv_menu_stats);
         mProductsCv = rootView.findViewById(R.id.cv_menu_products);
-        mNetworkCv = rootView.findViewById(R.id.cv_menu_network);
+        //mNetworkCv = rootView.findViewById(R.id.cv_menu_network);
         mCalendarCv = rootView.findViewById(R.id.cv_menu_cal);
         mInfosCv = rootView.findViewById(R.id.cv_menu_infos);
         mLogoutCv = rootView.findViewById(R.id.cv_menu_logout);
@@ -109,9 +109,9 @@ public class MoreFragment extends Fragment {
             case R.id.cv_menu_cal :
                 startActivity(new Intent(mContext, CalendarActivity.class));
                 break;
-            case R.id.cv_menu_network :
-                startActivity(new Intent(mContext, NetworksActivity.class));
-                break;
+//            case R.id.cv_menu_network :
+//                startActivity(new Intent(mContext, NetworksActivity.class));
+//                break;
             case R.id.cv_menu_infos :
                 startActivity(new Intent(mContext, InfosActivity.class));
                 break;

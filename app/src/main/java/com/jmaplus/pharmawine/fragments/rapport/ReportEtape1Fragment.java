@@ -29,7 +29,7 @@ public class ReportEtape1Fragment extends Fragment {
     private static final String TAG = "ReportEtape1Fragment";
     private OnFragmentInteractionListener mListener;
     private RecyclerView centersRecyclerView;
-    private Spinner centreSpinner;
+    // private Spinner centreSpinner;
     private Button nextBtn;
     private Context mParentContext;
     private MedicalTeamCenterSelectionAdapter mAdapter;
@@ -54,7 +54,7 @@ public class ReportEtape1Fragment extends Fragment {
 
         // binding views
         centersRecyclerView = rootView.findViewById(R.id.rv_centers);
-        centreSpinner = rootView.findViewById(R.id.sp_choix_centre_pour_rapport);
+        //centreSpinner = rootView.findViewById(R.id.sp_choix_centre_pour_rapport);
         nextBtn = rootView.findViewById(R.id.btn_suivant_etape_1);
 
         Initialise();
@@ -80,15 +80,15 @@ public class ReportEtape1Fragment extends Fragment {
         centersRecyclerView.setAdapter(mAdapter);
 
         // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(mParentContext,
-                R.array.centres_array, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        centreSpinner.setAdapter(adapter);
+//        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(mParentContext,
+//                R.array.centres_array, android.R.layout.simple_spinner_item);
+//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        centreSpinner.setAdapter(adapter);
     }
 
     private void configureOnClickRecyclerView() {
         ItemClickSupport
-                .addTo(centersRecyclerView, R.layout.client_row_without_progression)
+                .addTo(centersRecyclerView, R.layout.centre_item)
                 .setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
                     @Override
                     public void onItemClicked(RecyclerView recyclerView, int position, View v) {
@@ -112,16 +112,16 @@ public class ReportEtape1Fragment extends Fragment {
     public void setUpEvents() {
 
         // events
-        centreSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                mCentre = parent.getItemAtPosition(position).toString();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
+//       centreSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                mCentre = parent.getItemAtPosition(position).toString();
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//            }
+//        });
 
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
