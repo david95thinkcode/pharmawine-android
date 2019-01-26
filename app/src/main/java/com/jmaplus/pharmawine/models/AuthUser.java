@@ -357,6 +357,7 @@ public class AuthUser {
         return true;
     }
 
+
     /**
      * Get authenticated user token
      *
@@ -372,7 +373,29 @@ public class AuthUser {
     }
 
     /**
+     * Clearing all datas from shared prefrences file used for user profile
+     */
+    public static Boolean deleteUserDatas(Context mContext) {
+
+        try {
+            SharedPreferences sharedPref = mContext.getSharedPreferences(
+                    Constants.F_PROFIL, Context.MODE_PRIVATE);
+
+            SharedPreferences.Editor editor = sharedPref.edit();
+
+            editor.clear();
+
+            editor.commit();
+
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    /**
      * Recupere le vrai roles de l'utilisatuer
+     *
      * @return
      */
     public AuthUserRole getFirstRole() {
