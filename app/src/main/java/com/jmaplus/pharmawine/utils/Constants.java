@@ -43,6 +43,10 @@ public class Constants {
     public static final int ROLE_SUPERVISEUR_KEY = 2;
     public static final int ROLE_DELEGUE_KEY = 3;
 
+    // CUSTOMER TYPES ========================
+    public static final int TYPE_PHARMACEUTICAL_KEY = 1;
+    public static final int TYPE_MEDICAL_KEY = 2;
+
     // CLIENT TYPES KEY
     public static String CLIENT_MEDICAL_TEAM_TYPE_KEY = "medical_team";
     public static String CLIENT_PHARMACY_TYPE_KEY = "pharmacy";

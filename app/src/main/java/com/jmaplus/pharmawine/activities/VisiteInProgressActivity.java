@@ -362,7 +362,15 @@ public class VisiteInProgressActivity extends AppCompatActivity
 
     }
 
+    @Override
+    public void onKnownProspectResponse(@Nullable List<Customer> customers) {
 
+    }
+
+    @Override
+    public void onKnownProspectFailure() {
+
+    }
 
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
         public ScreenSlidePagerAdapter(FragmentManager fm) {

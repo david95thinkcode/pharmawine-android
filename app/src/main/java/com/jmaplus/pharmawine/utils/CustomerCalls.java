@@ -15,11 +15,34 @@ public class CustomerCalls {
     // Retrofit instance
     public static ApiService mApiService = ApiService.retrofit.create(ApiService.class);
 
-    // 1 - Interface
-    public interface Callbacks {
+    /**
+     * Recupere la liste de tous les prospects connus
+     *
+     * @param token
+     */
+    public static void getAllKnownProspects(String token, final Callbacks callbacks) {
+        final WeakReference<Callbacks> callbacksWeakReference = new WeakReference<Callbacks>(callbacks);
 
-        void onCustomerDetailsResponse(@Nullable Customer customer);
-        void onCustomerDetailsFailure();
+        Call<List<Customer>> call = mApiService.getKnownProspects(Utils.getBarearTokenString(token));
+
+        call.enqueue(new Callback<List<Customer>>() {
+            @Override
+            public void onResponse(Call<List<Customer>> call, Response<List<Customer>> response) {
+                if (callbacksWeakReference.get() != null)
+                    if (response.code() == 200) {
+                        callbacks.onKnownProspectResponse(response.body());
+                    } else {
+                        callbacks.onKnownProspectFailure();
+                    }
+            }
+
+            @Override
+            public void onFailure(Call<List<Customer>> call, Throwable t) {
+                if (callbacksWeakReference.get() != null)
+                    callbacks.onKnownProspectFailure();
+
+            }
+        });
     }
 
     public static void getDetails(String token, final Callbacks callbacks, Integer customerID) {
@@ -42,6 +65,18 @@ public class CustomerCalls {
                     callbacks.onCustomerDetailsFailure();
             }
         });
+    }
+
+    // 1 - Interface
+    public interface Callbacks {
+
+        void onCustomerDetailsResponse(@Nullable Customer customer);
+
+        void onCustomerDetailsFailure();
+
+        void onKnownProspectResponse(@Nullable List<Customer> customers);
+
+        void onKnownProspectFailure();
     }
 
 

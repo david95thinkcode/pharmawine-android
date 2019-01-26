@@ -73,7 +73,7 @@ public class TranslucentNewClientActivity extends AppCompatActivity implements V
         isProspectConnuButtonsVisible = enablePCButtons;
     }
 
-    private void startActivityForPC(String clientType) {
+    private void startActivityForPC(Integer clientType) {
         Intent i = new Intent(this, NewProspectConnuActivity.class);
         i.putExtra(CLIENT_TYPE_EXTRA_KEY, clientType);
         startActivity(i);
@@ -105,11 +105,11 @@ public class TranslucentNewClientActivity extends AppCompatActivity implements V
             }
             break;
             case R.id.btn_connu_cm: {
-                startActivityForPC(Constants.PROSPECT_KNOWN_MEDICAL_TEAM_TYPE_KEY);
+                startActivityForPC(Constants.TYPE_MEDICAL_KEY);
             }
             break;
             case R.id.btn_connu_pharmacie: {
-                startActivityForPC(Constants.PROSPECT_KNOWN_CLIENT_PHARMACY_TYPE_KEY);
+                startActivityForPC(Constants.TYPE_PHARMACEUTICAL_KEY);
             }
             break;
             default: {
