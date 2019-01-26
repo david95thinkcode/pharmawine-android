@@ -109,7 +109,8 @@ public class InfosActivity extends AppCompatActivity implements AuthCalls.Callba
         mProgressBarInfo.setVisibility(GONE);
         Toast.makeText(this, "Infos locales", Toast.LENGTH_SHORT).show();
 
-        mAuthUser.getAuthenticatedUser(this);
+        mAuthUser = AuthUser.getAuthenticatedUser(this);
+        updateUIWithUserDatas();
     }
 
     private void updateUIWithUserDatas() {
