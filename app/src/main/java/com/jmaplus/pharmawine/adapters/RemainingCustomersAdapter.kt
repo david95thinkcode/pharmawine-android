@@ -34,6 +34,10 @@ class RemainingCustomersAdapter(val context: Context, var remainingClientsList: 
     override fun onBindViewHolder(holder: RemainingCustomersViewHolder, position: Int) {
         holder.fullname.text = remainingClientsList[position].fullName
 
+        Glide.with(context)
+                .load(remainingClientsList[position].defaultAvatar)
+                .into(holder?.picture)
+
         // Speciality
         if (remainingClientsList[position].speciality == null)
             holder.speciality.text = remainingClientsList[position].specialityId.toString()
@@ -46,18 +50,6 @@ class RemainingCustomersAdapter(val context: Context, var remainingClientsList: 
         else
             holder.status.text = remainingClientsList[position].customerStatus.name
 
-        // profile picture setter
-        if (!remainingClientsList[position].avatar.isNullOrEmpty()) {
-            Glide.with(context).load(remainingClientsList[position].avatar).into(holder?.picture)
-        } else {
-            // Avatar url is empty
-            if (remainingClientsList[position].sex == "M" || remainingClientsList[position].sex == "m") {
-                Glide.with(context).load(R.drawable.ic_ast_man).into(holder?.picture)
-            } else {
-                // woman case
-                Glide.with(context).load(R.drawable.ic_ast_woman).into(holder?.picture)
-            }
-        }
     }
 
     fun getClient(position: Int): Customer = remainingClientsList[position]

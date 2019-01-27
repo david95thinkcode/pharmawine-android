@@ -90,13 +90,6 @@ public class Customer {
         return getFirstname() + " " + getLastname();
     }
 
-    public Integer getDefaultAvatarUrl() {
-        if (this.sex == "m" || this.sex == "M")
-            return R.drawable.ic_ast_man;
-        else
-            return R.drawable.ic_ast_woman;
-    }
-
     public String getRedabledate() {
         return getBirthday();
     }
@@ -374,5 +367,15 @@ public class Customer {
 
     public void setSpeciality(Speciality speciality) {
         this.speciality = speciality;
+    }
+
+    public int getDefaultAvatar() {
+        int ic_doctor_man = R.drawable.ic_doctor_man;
+        int ic_doctor_woman = R.drawable.ic_doctor_woman;
+
+        if (getSex().toUpperCase().equals("F"))
+            return ic_doctor_woman;
+        else
+            return ic_doctor_man;
     }
 }

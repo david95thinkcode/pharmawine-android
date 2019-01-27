@@ -48,18 +48,7 @@ class PlanningAdapter(val context: Context, var customersList: MutableList<Custo
         else
             holder.status.text = customersList[position].customerStatus.name
 
-        // profile picture setter
-        if (!customersList[position].avatar.isNullOrEmpty()) {
-            Glide.with(context).load(customersList[position].avatar).into(holder?.picture)
-        } else {
-            // Avatar url is empty
-            if (customersList[position].sex == "M" || customersList[position].sex == "m") {
-                Glide.with(context).load(R.drawable.ic_ast_man).into(holder?.picture)
-            } else {
-                // woman case
-                Glide.with(context).load(R.drawable.ic_ast_woman).into(holder?.picture)
-            }
-        }
+        Glide.with(context).load(customersList[position].defaultAvatar).into(holder?.picture)
     }
 
     fun getClient(position: Int): Customer = customersList[position]
