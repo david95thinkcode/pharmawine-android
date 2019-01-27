@@ -300,6 +300,7 @@ public class VisiteInProgressActivity extends AppCompatActivity
         }
     }
 
+
     @Override
     public void onReturnToStep1() {
         goToFragment(STEP_1_FRAGMENT_INDEX);

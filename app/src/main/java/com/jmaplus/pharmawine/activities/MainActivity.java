@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements MedicalTeamFragme
         /*
          *TODO: Load adequate fragment for type of user connected
          */
-        showFragment(mHomeAdminFragment);
+        showFragment(mHomeFragment);
 
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.logo);
         getSupportActionBar().setIcon(R.drawable.logo);
