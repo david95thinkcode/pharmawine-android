@@ -60,17 +60,12 @@ public class LaboratoriesFragment extends Fragment {
 
         mContext = (ProductCategoryActivity) getActivity();
         prefManager = new PrefManager(mContext);
-
-//        Set the adapter
         productAdapter = new ProductAdapter(productList, mContext, ProductAdapter.LABORATORY);
 
-
-//        Set the adapter to recycler
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         recyclerView.setAdapter(productAdapter);
 
-//        Get the product's list
         getProductList();
 
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -129,8 +124,6 @@ public class LaboratoriesFragment extends Fragment {
         }
         productAdapter = new ProductAdapter(filteredModelList, mContext, ProductAdapter.LABORATORY);
         recyclerView.setAdapter(productAdapter);
-
-//        Mettre à jour le nombre de produits total
-        mContext.updateBottomView(R.drawable.pill, mContext.getResources().getString(R.string.products_number).replace("%", String.valueOf(filteredModelList.size())));
+        // todo: call the root to udate number of products
     }
 }

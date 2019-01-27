@@ -1,20 +1,17 @@
 package com.jmaplus.pharmawine.activities;
 
-import android.support.design.widget.TabLayout;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -24,12 +21,10 @@ import com.jmaplus.pharmawine.fragments.products.ClassesFragment;
 import com.jmaplus.pharmawine.fragments.products.LaboratoriesFragment;
 import com.jmaplus.pharmawine.fragments.products.ReferencesFragment;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class ProductsActivity extends AppCompatActivity {
+public class ProductsActivity extends AppCompatActivity implements LaboratoriesFragment.OnFragmentInteractionListener {
 
     private Toolbar toolbar;
+    public final String TAG = "ProductsActivity";
 
     private ViewPager viewPager;
     private MenuItem itemSearch, itemLabo, itemRef, itemClass;
@@ -44,6 +39,7 @@ public class ProductsActivity extends AppCompatActivity {
     public boolean isProdClassesLoaded = false;
 
     private LinearLayout bottomLay;
+    private LinearLayout mFragmentContainerLayout;
     private ImageView bottomIcon;
     private TextView bottomText;
 
@@ -64,16 +60,36 @@ public class ProductsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mCurrentFragment = mLaboratoriesFragment.getClass().getSimpleName();
+        mFragmentContainerLayout = findViewById(R.id.ly_prods_fragments_container);
         viewPager = findViewById(R.id.viewpager);
-
-
-        showFragment(laboratoriesFragment);
-
         bottomLay = findViewById(R.id.lay_bottom_lay);
         bottomIcon = findViewById(R.id.img_bottom_icon);
         bottomText = findViewById(R.id.tv_bottom_text);
 
+        showFragment(laboratoriesFragment);
+    }
 
+    @Override
+    public void onProductNumberUpdated(Integer productsNumber) {
+
+        String text = productsNumber + " produit(s)";
+
+        updateBottomView(R.drawable.pill, text);
+    }
+
+    public void updateBottomView(int iconId, String text) {
+        bottomIcon.setImageResource(iconId);
+        bottomText.setText(text);
+    }
+
+
+    private void showFragment(Fragment fragment) {
+        FragmentTransaction mFragmentTransaction = getSupportFragmentManager().beginTransaction();
+        mFragmentTransaction.add(mFragmentContainerLayout.getId(), fragment);
+        mFragmentTransaction.commit();
+        mFragment = fragment;
+
+        Log.i(TAG, "showFragment: Fragment replaced by ==> " + fragment.getClass().getName());
     }
 
 
@@ -184,16 +200,6 @@ public class ProductsActivity extends AppCompatActivity {
 //
 //    }
 
-    public void updateBottomView(int iconId, String text) {
-        bottomIcon.setImageResource(iconId);
-        bottomText.setText(text);
-    }
 
 
-    private void showFragment(Fragment fragment) {
-        FragmentTransaction mFragmentTransaction = getSupportFragmentManager().beginTransaction();
-        mFragmentTransaction.replace(R.id.viewpager, fragment);
-        mFragmentTransaction.commit();
-        mFragment = fragment;
-    }
 }

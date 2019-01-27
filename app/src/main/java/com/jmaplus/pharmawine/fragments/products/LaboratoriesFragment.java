@@ -1,6 +1,7 @@
 package com.jmaplus.pharmawine.fragments.products;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.jmaplus.pharmawine.R;
-import com.jmaplus.pharmawine.activities.ProductsActivity;
 import com.jmaplus.pharmawine.adapters.ProductAdapter;
 import com.jmaplus.pharmawine.models.ApiProduct;
 import com.jmaplus.pharmawine.models.AuthUser;
@@ -31,20 +31,21 @@ public class LaboratoriesFragment extends Fragment implements AuthCalls.Callback
 
     private RecyclerView recyclerView;
     private final String TAG = this.getClass().getSimpleName();
+    private OnFragmentInteractionListener mListener;
+
     private static final String KEY_LAYOUT_POSITION = "layoutPosition";
     private int mRecyclerViewPosition = 0;
     private AuthUser mAuthUser;
 
     private List<ApiProduct> mProductsList;
     private ArrayList<ApiProduct> productList;
-    private ProductsActivity mContext;
+    private Context mContext;
     private ProductAdapter productAdapter;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private PrefManager prefManager;
 
     public LaboratoriesFragment() {
         // Required empty public constructor
-        productList = new ArrayList<>();
     }
 
 
@@ -53,39 +54,34 @@ public class LaboratoriesFragment extends Fragment implements AuthCalls.Callback
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_products_laboratories, container, false);
 
+        mContext = requireContext();
+        prefManager = new PrefManager(mContext);
         mProductsList = new ArrayList();
+        productList = new ArrayList();
+        productAdapter = new ProductAdapter(mProductsList, mContext, ProductAdapter.LABORATORY);
 
         recyclerView = view.findViewById(R.id.rv_products_lab);
         mSwipeRefreshLayout = view.findViewById(R.id.swipe_products_lab);
-
-        getProductList();
-        return view;
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-        mContext = (ProductsActivity) getActivity();
-        prefManager = new PrefManager(mContext);
-
-//        Set the adapter
-//        productAdapter = new ProductAdapter(mProductsList, mContext, ProductAdapter.LABORATORY);
-
-
-//        Set the adapter to recycler
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
-        recyclerView.setAdapter(productAdapter);
-
-//        Get the product's list
-//        getProductList();
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 getProductList();
             }
         });
+
+//        Set the adapter to recycler
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        recyclerView.setAdapter(productAdapter);
+
+        getProductList();
+
+        return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
     }
 
     @Override
@@ -95,6 +91,8 @@ public class LaboratoriesFragment extends Fragment implements AuthCalls.Callback
     }
 
     private void getProductList() {
+        mSwipeRefreshLayout.setRefreshing(true);
+
         AuthCalls.getAuthedUserProduct(this, AuthUser.getToken(requireContext()));
 
 //        productList.clear();
@@ -168,7 +166,8 @@ public class LaboratoriesFragment extends Fragment implements AuthCalls.Callback
         if (mSwipeRefreshLayout.isRefreshing()) mSwipeRefreshLayout.setRefreshing(false);
         productAdapter.notifyDataSetChanged();
 
-        mContext.updateBottomView(R.drawable.pill, mContext.getResources().getString(R.string.products_number).replace("%", String.valueOf(productList.size())));
+
+//        mContext.updateBottomView(R.drawable.pill, mContext.getResources().getString(R.string.products_number).replace("%", String.valueOf(productList.size())));
     }
 
     public void search(String query) {
@@ -191,8 +190,8 @@ public class LaboratoriesFragment extends Fragment implements AuthCalls.Callback
         recyclerView.setAdapter(productAdapter);
 
 //        Mettre à jour le nombre de produits total
-        mContext.updateBottomView(
-                R.drawable.pill, mContext.getResources().getString(R.string.products_number).replace("%", String.valueOf(filteredModelList.size())));
+//        requireActivity().updateBottomView(
+//                R.drawable.pill, mContext.getResources().getString(R.string.products_number).replace("%", String.valueOf(filteredModelList.size())));
     }
 
     @Override
@@ -222,15 +221,50 @@ public class LaboratoriesFragment extends Fragment implements AuthCalls.Callback
 
     @Override
     public void onAuthProductsResponse(@javax.annotation.Nullable List<ApiProduct> products) {
-        Toast.makeText(mContext, "Products fetched", Toast.LENGTH_SHORT).show();
 
-        for (ApiProduct p : products) {
-            mProductsList.add(p);
+        if (!products.isEmpty()) {
+            mProductsList.clear();
+            productAdapter.notifyDataSetChanged();
+
+            for (ApiProduct p : products) {
+                mProductsList.add(p);
+                productAdapter.notifyItemInserted(mProductsList.size() - 1);
+                mListener.onProductNumberUpdated(mProductsList.size());
+            }
+        } else {
+            Toast.makeText(mContext, "Auncun produit", Toast.LENGTH_SHORT).show();
         }
+
+        mSwipeRefreshLayout.setRefreshing(false);
+
     }
 
     @Override
     public void onAuthProductFailure() {
-        Toast.makeText(mContext, "Productt fetching failed", Toast.LENGTH_SHORT).show();
+        Toast.makeText(mContext, R.string.une_erreur_s_est_produite, Toast.LENGTH_SHORT).show();
+        mSwipeRefreshLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+    public interface OnFragmentInteractionListener {
+
+        void onProductNumberUpdated(Integer productsNumber);
+
     }
 }
