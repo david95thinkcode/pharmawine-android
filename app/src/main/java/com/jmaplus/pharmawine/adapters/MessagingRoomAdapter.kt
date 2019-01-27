@@ -15,13 +15,13 @@ import com.jmaplus.pharmawine.models.Messaging.MessagingRoom
 import java.util.*
 
 class MessagingRoomAdapter(val roomList: MutableList<MessagingRoom>, val mContext: Context,
-        val currentUserID: String
+                           val currentUserID: String
 ) :
-    RecyclerView.Adapter<MessagingRoomViewHolder>() {
+        RecyclerView.Adapter<MessagingRoomViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessagingRoomViewHolder {
         val v = LayoutInflater.from(parent?.context)
-            .inflate(R.layout.fragment_messaging_room_item, parent, false)
+                .inflate(R.layout.fragment_messaging_room_item, parent, false)
 
         return MessagingRoomViewHolder(v)
     }
@@ -70,7 +70,6 @@ class MessagingRoomAdapter(val roomList: MutableList<MessagingRoom>, val mContex
     fun getRoom(position: Int): MessagingRoom = roomList[position]
 
     override fun getItemCount(): Int = roomList.size
-
 
 
 }

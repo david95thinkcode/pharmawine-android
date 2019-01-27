@@ -97,7 +97,7 @@ public class ReportEtape1Fragment extends Fragment {
         mCentersList.clear();
         mAdapter.notifyDataSetChanged();
 
-        for (Center i: centers) {
+        for (Center i : centers) {
             mCentersList.add(i);
             mAdapter.notifyItemInserted(mCentersList.size() - 1);
         }

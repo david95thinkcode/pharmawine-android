@@ -32,7 +32,7 @@ class Step1UnknownMedicalProspect : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        var rootView =  inflater.inflate(R.layout.fragment_step1_unknown_medical_prospect, container, false)
+        var rootView = inflater.inflate(R.layout.fragment_step1_unknown_medical_prospect, container, false)
 
         mFirstname = rootView.findViewById(R.id.ed_client_nom)
         mLastname = rootView.findViewById(R.id.ed_client_prenom)

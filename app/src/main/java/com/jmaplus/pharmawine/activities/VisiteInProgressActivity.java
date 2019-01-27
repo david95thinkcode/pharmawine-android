@@ -17,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
+import android.widget.LinearLayout;
 
 import com.jmaplus.pharmawine.R;
 import com.jmaplus.pharmawine.fragments.rapport.ReportEtape1Fragment;
@@ -57,6 +58,7 @@ public class VisiteInProgressActivity extends AppCompatActivity
     private static final String TAG = "VisiteActivity";
     private ProgressDialog dialog;
 
+
     private FragmentManager fragmentManager = getSupportFragmentManager();
     private VisiteInProgressFragment firstFragment;
     private PagerAdapter mPagerAdapter;
@@ -64,6 +66,7 @@ public class VisiteInProgressActivity extends AppCompatActivity
     private ViewPager mViewPager;
     private View mRootContainer;
     private String prospectType = "";
+    private LinearLayout headerReport;
 
     private Integer customerID = -1;
     private String customerName = "";
@@ -162,7 +165,7 @@ public class VisiteInProgressActivity extends AppCompatActivity
         firstFragment.updateViewsWithSource(customer);
 
         if (mCustomer.getCenters().size() > 0) {
-            for (Center c: mCustomer.getCenters()) {
+            for (Center c : mCustomer.getCenters()) {
                 mCentersList.add(c);
             }
         }
@@ -290,9 +293,8 @@ public class VisiteInProgressActivity extends AppCompatActivity
 
         try {
             DailyReportCalls.postDailyReportEnd(AuthUser.getToken(this), this, mDailyReportEnd, currentReportID);
-        }
-        catch (Exception e) {
-            Log.e(TAG, "sendReportTOTheServer: " + e.getMessage() );
+        } catch (Exception e) {
+            Log.e(TAG, "sendReportTOTheServer: " + e.getMessage());
             e.printStackTrace();
             dialog.cancel();
         }
@@ -404,10 +406,19 @@ public class VisiteInProgressActivity extends AppCompatActivity
         }
 
 
-
         @Override
         public int getCount() {
             return NUM_PAGES;
         }
+    }
+
+
+    public void headerVisibility(boolean hv) {
+        if (hv) {
+            headerReport.setVisibility(View.GONE);
+        } else {
+            headerReport.setVisibility(View.VISIBLE);
+        }
+
     }
 }

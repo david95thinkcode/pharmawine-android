@@ -95,7 +95,7 @@ class Step2UnknownMedicalProspect : Fragment() {
         // todo: gerer les country flag avec une librairies de phone numbers
     }
 
-    private fun getPhoneNumberWithFlag() : String {
+    private fun getPhoneNumberWithFlag(): String {
         // check if flag is not null before building full phone number and call listener
 
         return if (!mPhoneNumberFlag.text.isNullOrEmpty() && !mPhoneNumber.text.isNullOrEmpty()) {

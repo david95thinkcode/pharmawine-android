@@ -18,13 +18,6 @@ public class DelegueCalls {
     // Retrofit instance
     public static ApiService mApiService = ApiService.retrofit.create(ApiService.class);
 
-    // 1 - Interface
-    public interface Callbacks {
-
-        void onPlanningResponse(@Nullable List<Customer> customers);
-        void onPlanningFailure();
-    }
-
     // Public method to fetch pllanning
     public static void getPlanning(String token, final Callbacks callbacks,
                                    String delegueID, String startDate, String endDate) {
@@ -54,6 +47,14 @@ public class DelegueCalls {
                     callbacks.onPlanningFailure();
             }
         });
+    }
+
+    // 1 - Interface
+    public interface Callbacks {
+
+        void onPlanningResponse(@Nullable List<Customer> customers);
+
+        void onPlanningFailure();
     }
 
 }
