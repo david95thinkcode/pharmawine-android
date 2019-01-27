@@ -8,6 +8,7 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -58,6 +59,7 @@ public class MedicalTeamFragment extends Fragment implements
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_clients_medical_team, container, false);
+        setHasOptionsMenu(true);
 
         mContext = requireContext();
         mAuthUser = AuthUser.getAuthenticatedUser(mContext);
@@ -107,9 +109,11 @@ public class MedicalTeamFragment extends Fragment implements
                 });
             }
             break;
-            case R.id.action_pharma:
+            case R.id.action_pharma: {
+                Log.i(TAG, "onOptionsItemSelected: Pharmacye clicked");
                 filteredCustomerListByCustomerType(Constants.TYPE_PHARMACEUTICAL_KEY);
-                break;
+            }
+            break;
             case R.id.action_favori:
                 Toast.makeText(mContext, "Option non disponible", Toast.LENGTH_LONG);
 //                mListener.showFragment(mFavoritesFragment);
@@ -147,6 +151,7 @@ public class MedicalTeamFragment extends Fragment implements
     }
 
     private void refreshRecyclerViewWithNewList(List<Customer> newCustomerList) {
+        Log.i(TAG, "refreshRecyclerViewWithNewList: ==> " + newCustomerList);
         if (!newCustomerList.isEmpty()) {
             mProgressBar.setVisibility(View.GONE);
 
