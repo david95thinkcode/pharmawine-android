@@ -198,7 +198,7 @@ public class VisiteInProgressFragment extends Fragment
             tvCustomerSpeciality.setText(customer.getSpeciality().getName());
         }
 
-        Glide.with(this).load(customer.getDefaultAvatar()).into(profileImage);
+        Glide.with(this).load(customer.getBigDefaultAvatar()).into(profileImage);
     }
 
     private void updateViewsContent() {
