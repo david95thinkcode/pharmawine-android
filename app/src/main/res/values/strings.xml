@@ -73,6 +73,7 @@
     <string name="birthday">Date de naissance</string>
     <string name="believes">Croyances religieuses</string>
     <string name="email">E-mail</string>
+    <string name="adresse_emaile">Adresse email</string>
     <string name="address">Adresse</string>
 
     <string name="reprensentative">Représentant</string>
@@ -261,12 +262,16 @@
     <string name="reessayez">Réessayer</string>
     <string name="prenoms_du_prospect">Prénom du prospect</string>
     <string name="nom_du_prospect">Nom du prospect</string>
+    <string name="nom">Nom</string>
+    <string name="prenom">Prénom</string>
     <string name="contact">Contact</string>
     <string name="numero">Numero</string>
     <string name="entrez_adress_du_prospect">Entrer l\'adresse du prospect</string>
     <string name="adresse_du_prospect">Adresse du prospect</string>
     <string name="nouveau_client">Nouveau client</string>
     <string name="specialites">Spécialité</string>
+    <string name="telephone_1">Telephone 1</string>
+    <string name="telephone_2">Telephone 2</string>
     <string name="categorie">Catégorie</string>
     <string name="random_dates_in_week">Lun 3 au Ven 7</string>
 

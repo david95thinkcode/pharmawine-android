@@ -1,5 +1,6 @@
 package com.jmaplus.pharmawine.utils;
 
+import com.jmaplus.pharmawine.models.ApiProduct;
 import com.jmaplus.pharmawine.models.AuthUser;
 import com.jmaplus.pharmawine.models.AuthUserResponse;
 import com.jmaplus.pharmawine.models.LoginCredentials;
@@ -25,4 +26,9 @@ public interface AuthService {
 
     @GET("user")
     Call<List<AuthUser>> getAuthUserDetails(@Header("Authorization") String authorization);
+
+    @GET("user/products")
+    Call<List<ApiProduct>> getAuthUserProducts(@Header("Authorization") String authorization);
+
+
 }

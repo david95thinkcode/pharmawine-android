@@ -1,23 +1,20 @@
 package com.jmaplus.pharmawine.fragments.products;
 
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.jmaplus.pharmawine.PharmaWine;
 import com.jmaplus.pharmawine.R;
 import com.jmaplus.pharmawine.activities.ProductsActivity;
 import com.jmaplus.pharmawine.adapters.ProductAdapter;
-import com.jmaplus.pharmawine.models.Product;
+import com.jmaplus.pharmawine.models.ApiProduct;
 
 import java.util.ArrayList;
 
@@ -32,7 +29,7 @@ public class ReferencesFragment extends Fragment {
     private static final String KEY_LAYOUT_POSITION = "layoutPosition";
     private int mRecyclerViewPosition = 0;
 
-    private ArrayList<Product> productList;
+    private ArrayList<ApiProduct> productList;
     private ProductsActivity mContext;
     private ProductAdapter productAdapter;
     private SwipeRefreshLayout mSwipeRefreshLayout;
@@ -92,20 +89,20 @@ public class ReferencesFragment extends Fragment {
 
         mSwipeRefreshLayout.setRefreshing(true);
         productList.clear();
-
-        productList.addAll(Product.getAll(PharmaWine.mRealm));
-        if(mSwipeRefreshLayout.isRefreshing()) mSwipeRefreshLayout.setRefreshing(false);
-
-        productAdapter.notifyDataSetChanged();
+//
+//        productList.addAll(Product.getAll(PharmaWine.mRealm));
+//        if(mSwipeRefreshLayout.isRefreshing()) mSwipeRefreshLayout.setRefreshing(false);
+//
+//        productAdapter.notifyDataSetChanged();
     }
 
     public void search(String query) {
-        ArrayList<Product> models = productList;
-        ArrayList<Product> filteredModelList = new ArrayList<>();
+        ArrayList<ApiProduct> models = productList;
+        ArrayList<ApiProduct> filteredModelList = new ArrayList<>();
 
         if (!query.isEmpty()) {
             query = query.toLowerCase();
-            for (Product model : models) {
+            for (ApiProduct model : models) {
                 final String text = model.getName().toLowerCase();
                 final String text2 = model.getReference().toLowerCase();
                 if (text.contains(query) || text2.contains(query)) {

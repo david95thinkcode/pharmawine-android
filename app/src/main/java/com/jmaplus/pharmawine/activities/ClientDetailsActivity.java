@@ -34,9 +34,8 @@ public class ClientDetailsActivity extends AppCompatActivity implements
     public static final String CLIENT_TYPE_KEY = "com.jmaplus.pharmawine.activities.ClientDetailsActivity.clientType";
     public static final String TAG = "ClientDetailsActivity";
 
-    private String clientId;
+    private Integer clientId;
     private String clientType;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,12 +44,12 @@ public class ClientDetailsActivity extends AppCompatActivity implements
 
         setUI();
 
-        clientId = getIntent().getStringExtra(CLIENT_ID_KEY);
+        clientId = getIntent().getIntExtra(CLIENT_ID_KEY, -1);
         clientType = getIntent().getStringExtra(CLIENT_TYPE_KEY);
-        Log.e(getClass().getSimpleName(), clientId);
-        Log.e(getClass().getSimpleName(), clientType);
+        Log.e(TAG, "Client id ==> " + clientId.toString());
+        Log.e(TAG, "Client type ==> " + clientType);
 
-        if (clientId.isEmpty() || clientType.isEmpty()) { // If values passed by intent are not correct
+        if ((clientId == -1) || (clientType.isEmpty())) { // If values passed by intent are not correct
             finish();
         } else {
             FragmentManager fragmentManager = getSupportFragmentManager();
@@ -134,6 +133,8 @@ public class ClientDetailsActivity extends AppCompatActivity implements
 
     private void makeCall(final String phoneNumber) {
 
+        final String tel = phoneNumber.trim();
+
         // TODO
         Dexter.withActivity(this)
                 .withPermission(Manifest.permission.CALL_PHONE)
@@ -142,9 +143,17 @@ public class ClientDetailsActivity extends AppCompatActivity implements
                     public void onPermissionGranted(PermissionGrantedResponse response) {
 
                         try {
-                            startActivity(new Intent(Intent.ACTION_CALL, Uri.parse("phoneNumber:" + ((!phoneNumber.startsWith("+")) ? String.valueOf("+").concat(phoneNumber) : phoneNumber))));
+                            Intent intent = new Intent(Intent.ACTION_CALL);
+                            intent.setData(Uri.parse("tel:" + tel));
+
+                            if (intent.resolveActivity(getPackageManager()) != null) {
+                                startActivity(intent);
+                            }
                         } catch (SecurityException e) {
                             e.printStackTrace();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Toast.makeText(ClientDetailsActivity.this, "Une erreur empeche le lancement de l'appel", Toast.LENGTH_SHORT).show();
                         }
                     }
 
@@ -154,9 +163,12 @@ public class ClientDetailsActivity extends AppCompatActivity implements
                     }
 
                     @Override
-                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+                    public void onPermissionRationaleShouldBeShown(PermissionRequest
+                                                                           permission, PermissionToken token) {
                         Toast.makeText(ClientDetailsActivity.this, "Accédez à PharmaWine dans Paramètres pour accorder la permission requise", Toast.LENGTH_LONG).show();
                     }
-                }).check();
+                }).
+
+                check();
     }
 }

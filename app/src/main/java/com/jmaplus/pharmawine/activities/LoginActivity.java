@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.jmaplus.pharmawine.PharmaWine;
 import com.jmaplus.pharmawine.R;
+import com.jmaplus.pharmawine.models.ApiProduct;
 import com.jmaplus.pharmawine.models.AuthUser;
 import com.jmaplus.pharmawine.models.AuthUserResponse;
 import com.jmaplus.pharmawine.models.AuthenticatedUser;
@@ -25,6 +26,7 @@ import com.jmaplus.pharmawine.services.responses.LoginResponse;
 import com.jmaplus.pharmawine.utils.PrefManager;
 import com.jmaplus.pharmawine.utils.RetrofitCalls.AuthCalls;
 
+import java.util.List;
 import java.util.regex.Pattern;
 
 import javax.annotation.Nullable;
@@ -116,6 +118,16 @@ public class LoginActivity extends AppCompatActivity implements AuthCalls.Callba
 //        Toast.makeText(this, "Authentication step 1 passed", Toast.LENGTH_SHORT).show();
         userToken = response.getToken();
         getAuthenticatedUserInfos(response.getToken());
+    }
+
+    @Override
+    public void onAuthProductsResponse(@Nullable List<ApiProduct> products) {
+
+    }
+
+    @Override
+    public void onAuthProductFailure() {
+
     }
 
     @Override

@@ -63,6 +63,10 @@ public interface ApiService {
             @Path("id") Integer id,
             @Header("Authorization") String authorization);
 
+
+    @GET("customers/prospect/connu")
+    Call<List<Customer>> getKnownProspects(@Header("Authorization") String authorization);
+
     // ======================================= NETWORKS =======================================
 
     @GET("network")
@@ -77,6 +81,9 @@ public interface ApiService {
     Call<List<SimpleUser>> getNetworkUsers(
             @Path("network_id") Integer networkID,
             @Header("Authorization") String authorization);
+
+    // ======================================= PRODUCTS =======================================
+
 
     // ======================================= WORKS =======================================
 

@@ -72,6 +72,9 @@ public class AuthUser {
     @SerializedName("products")
     @Expose
     private List<Object> products = null;
+    @SerializedName("network")
+    @Expose
+    private Network network;
     @SerializedName("networks")
     @Expose
     private Object networks;
@@ -210,41 +213,8 @@ public class AuthUser {
         this.typeId = typeId;
     }
 
-    public static AuthUser getAuthenticatedUser(Context mContext) {
-        AuthUser u = new AuthUser();
-
-        SharedPreferences sharedPref = mContext.getSharedPreferences(
-                Constants.F_PROFIL, Context.MODE_PRIVATE);
-
-        u.setId(sharedPref.getInt(Constants.SP_ID_KEY, -1));
-        u.setFirstname(sharedPref.getString(Constants.SP_FIRSTNAME_KEY, ""));
-        u.setLastname(sharedPref.getString(Constants.SP_LASTNAME_KEY, ""));
-        u.setAvatar(sharedPref.getString(Constants.SP_AVATAR_URL_KEY, ""));
-        u.setEmail(sharedPref.getString(Constants.SP_EMAIL_KEY, ""));
-        u.setBirthday(sharedPref.getString(Constants.SP_BIRTHDAY_KEY, ""));
-        u.setSex(sharedPref.getString(Constants.SP_SEX_KEY, ""));
-        u.setNationalite(sharedPref.getString(Constants.SP_NATIONALITY_KEY, ""));
-        u.setTelephone1(sharedPref.getString(Constants.SP_PHONE_1_KEY, ""));
-        u.setTelephone2(sharedPref.getString(Constants.SP_PHONE_2_KEY, ""));
-        u.setMaritalStatus(sharedPref.getString(Constants.SP_MARITAL_STATUS_KEY, ""));
-        u.setTypeId(sharedPref.getInt(Constants.SP_TYPE_KEY, -1));
-        u.setNetworkId(sharedPref.getInt(Constants.SP_NETWORK_KEY, -1));
-
-        return u;
-    }
-
-    /**
-     * Get authenticated user roles
-     *
-     * @param mContext
-     * @return
-     */
-    public static final int getRoleFromSharedPreferences(Context mContext) {
-        SharedPreferences sharedPref = mContext.getSharedPreferences(
-                Constants.F_PROFIL, Context.MODE_PRIVATE);
-
-        return sharedPref.getInt(Constants.SP_ROLE_KEY, -1);
-
+    public Integer getNetworkId() {
+        return networkId;
     }
 
     public List<Object> getAreas() {
@@ -287,6 +257,102 @@ public class AuthUser {
         this.goals = goals;
     }
 
+    public String getFullName() {
+        return getFirstname() + " " + getLastname();
+    }
+
+    public static AuthUser getAuthenticatedUser(Context mContext) {
+        AuthUser u = new AuthUser();
+
+        SharedPreferences sharedPref = mContext.getSharedPreferences(
+                Constants.F_PROFIL, Context.MODE_PRIVATE);
+
+        u.setId(sharedPref.getInt(Constants.SP_ID_KEY, -1));
+        u.setTypeId(sharedPref.getInt(Constants.SP_TYPE_KEY, -1));
+        u.setNetworkId(sharedPref.getInt(Constants.SP_NETWORK_KEY, -1));
+        u.setFirstname(sharedPref.getString(Constants.SP_FIRSTNAME_KEY, ""));
+        u.setLastname(sharedPref.getString(Constants.SP_LASTNAME_KEY, ""));
+        u.setAvatar(sharedPref.getString(Constants.SP_AVATAR_URL_KEY, ""));
+        u.setEmail(sharedPref.getString(Constants.SP_EMAIL_KEY, ""));
+        u.setBirthday(sharedPref.getString(Constants.SP_BIRTHDAY_KEY, ""));
+        u.setSex(sharedPref.getString(Constants.SP_SEX_KEY, ""));
+        u.setNationalite(sharedPref.getString(Constants.SP_NATIONALITY_KEY, ""));
+        u.setTelephone1(sharedPref.getString(Constants.SP_PHONE_1_KEY, ""));
+        u.setTelephone2(sharedPref.getString(Constants.SP_PHONE_2_KEY, ""));
+        u.setMaritalStatus(sharedPref.getString(Constants.SP_MARITAL_STATUS_KEY, ""));
+
+        // Objects
+        Gson gson = new Gson();
+
+        String NetworkObjectJson = sharedPref.getString(Constants.SP_NETWORK_OBJECT_KEY, "");
+        u.setNetwork(gson.fromJson(NetworkObjectJson, Network.class));
+
+        return u;
+    }
+
+    /**
+     * Clearing all datas from shared prefrences file used for user profile
+     */
+    public static Boolean deleteUserDatas(Context mContext) {
+
+        try {
+            SharedPreferences sharedPref = mContext.getSharedPreferences(
+                    Constants.F_PROFIL, Context.MODE_PRIVATE);
+
+            SharedPreferences.Editor editor = sharedPref.edit();
+
+            editor.clear();
+
+            editor.commit();
+
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public Network getNetwork() {
+        return network;
+    }
+
+    /**
+     * Get authenticated user roles
+     *
+     * @param mContext
+     * @return
+     */
+    public static final int getRoleFromSharedPreferences(Context mContext) {
+        SharedPreferences sharedPref = mContext.getSharedPreferences(
+                Constants.F_PROFIL, Context.MODE_PRIVATE);
+
+        return sharedPref.getInt(Constants.SP_ROLE_KEY, -1);
+
+    }
+
+    public List<AuthUserRole> getRoles() {
+        return roles;
+    }
+
+    @Override
+    public String toString() {
+        Gson gson = new Gson();
+
+        return gson.toJson(this);
+    }
+
+    public void setRoles(List<AuthUserRole> roles) {
+        this.roles = roles;
+    }
+
+    public void setNetworkId(Integer networkId) {
+        this.networkId = networkId;
+    }
+
+    public void setNetwork(Network network) {
+        this.network = network;
+    }
+
+
     /**
      * Get authenticated user token
      *
@@ -299,33 +365,6 @@ public class AuthUser {
 
         return sharedPref.getString(Constants.SP_TOKEN_KEY, "");
 
-    }
-
-    public Integer getNetworkId() {
-        return networkId;
-    }
-
-    public void setNetworkId(Integer networkId) {
-        this.networkId = networkId;
-    }
-
-    @Override
-    public String toString() {
-        Gson gson = new Gson();
-
-        return gson.toJson(this);
-    }
-
-    public String getFullName() {
-        return getFirstname() + " " + getLastname();
-    }
-
-    public List<AuthUserRole> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<AuthUserRole> roles) {
-        this.roles = roles;
     }
 
     /**
@@ -358,6 +397,11 @@ public class AuthUser {
             editor.putInt(Constants.SP_TYPE_KEY, this.typeId);
             editor.putInt(Constants.SP_ROLE_KEY, getFirstRole().getId());
             editor.putInt(Constants.SP_NETWORK_KEY, getNetworkId());
+
+            // Objects
+            Gson gson = new Gson();
+            String networkObjectToJsonString = gson.toJson(this.network);
+            editor.putString(Constants.SP_NETWORK_OBJECT_KEY, networkObjectToJsonString);
 
             // Un compte de user actif a pour status = 0 sinon 1
             editor.putInt(Constants.SP_ACCOUNT_STATUS_KEY, this.status);

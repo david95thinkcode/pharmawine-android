@@ -1,7 +1,6 @@
 package com.jmaplus.pharmawine.fragments.products;
 
 
-import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -13,7 +12,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jmaplus.pharmawine.PharmaWine;
@@ -21,17 +19,14 @@ import com.jmaplus.pharmawine.R;
 import com.jmaplus.pharmawine.activities.ProductsActivity;
 import com.jmaplus.pharmawine.adapters.ProductCategoryAdapter;
 import com.jmaplus.pharmawine.models.AuthenticatedUser;
-import com.jmaplus.pharmawine.models.Product;
 import com.jmaplus.pharmawine.models.ProductCategory;
 import com.jmaplus.pharmawine.services.ApiClient;
 import com.jmaplus.pharmawine.services.ApiInterface;
 import com.jmaplus.pharmawine.services.responses.ProductCategoriesResponse;
-import com.jmaplus.pharmawine.utils.FakeData;
 import com.jmaplus.pharmawine.utils.PrefManager;
 
 import java.util.ArrayList;
 
-import io.realm.Realm;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -89,14 +84,14 @@ public class ClassesFragment extends Fragment {
         recyclerView.setAdapter(productCategoryAdapter);
 
 //        Get the product's list
-        getProductList();
+//        getProductList();
 
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                getProductList();
-            }
-        });
+//        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                getProductList();
+//            }
+//        });
     }
 
     @Override

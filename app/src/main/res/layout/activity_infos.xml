@@ -15,18 +15,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#eee"
-            app:contentPadding="10dp"
-            app:cardElevation="2dp">
+            app:cardElevation="2dp"
+            app:contentPadding="10dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:orientation="vertical"
-                android:paddingBottom="5dp"
                 android:paddingLeft="20dp"
+                android:paddingTop="5dp"
                 android:paddingRight="20dp"
-                android:paddingTop="5dp">
+                android:paddingBottom="5dp">
 
 
                 <de.hdodenhof.circleimageview.CircleImageView
@@ -47,7 +47,7 @@
                     android:layout_marginTop="10dp"
                     android:text="Délégué médical à Promed"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="@color/darker_grey" />
+                    android:textColor="@color/project_grey" />
 
                 <TextView
                     android:id="@+id/tv_network_label"
@@ -57,249 +57,221 @@
                     android:layout_marginTop="3dp"
                     android:text="Réseau - Denk Pharma"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="@color/darker_grey" />
+                    android:textColor="@color/project_grey" />
+
+                <ProgressBar
+                    android:id="@+id/progressBar_Infos"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
             </LinearLayout>
         </android.support.v7.widget.CardView>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginBottom="40dp"
             android:orientation="vertical"
-            android:padding="16dp"
-            android:layout_marginBottom="40dp">
+            android:padding="16dp">
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:theme="@style/DarkTextLabel">
+            <LinearLayout
+                style="@style/margin_top_and_bottom_12_dp_style"
+                android:layout_height="77dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_nom"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/nom"
+                    android:textColor="@color/bpDark_gray" />
+
                 <EditText
                     android:id="@+id/et_first_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:hint="Nom"
-                    android:text="AÏDASSO"
-                    android:textColor="@color/darker_grey"
-                    android:enabled="false"
-                    android:focusable="false"/>
-            </android.support.design.widget.TextInputLayout>
+                    style="@style/edit_text_bordered_user_info_style" />
+            </LinearLayout>
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:theme="@style/DarkTextLabel">
+            <LinearLayout
+                style="@style/margin_top_and_bottom_12_dp_style"
+                android:layout_height="77dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/prenom"
+                    android:textColor="@color/bpDark_gray" />
+
                 <EditText
                     android:id="@+id/et_last_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:hint="Prénoms"
-                    android:text="Henri Joël"
-                    android:enabled="false"
-                    android:textColor="@color/darker_grey"
-                    android:focusable="false"/>
-            </android.support.design.widget.TextInputLayout>
+                    style="@style/edit_text_bordered_user_info_style" />
+            </LinearLayout>
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:theme="@style/DarkTextLabel">
+
+            <LinearLayout
+                style="@style/margin_top_and_bottom_12_dp_style"
+                android:layout_height="77dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/sex"
+                    android:textColor="@color/bpDark_gray" />
+
                 <EditText
                     android:id="@+id/et_sex"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:hint="Sexe"
-                    android:text="Homme"
-                    android:textColor="@color/darker_grey"
-                    android:enabled="false"
-                    android:focusable="false"/>
-            </android.support.design.widget.TextInputLayout>
+                    style="@style/edit_text_bordered_user_info_style" />
+            </LinearLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
+                style="@style/margin_top_and_bottom_12_dp_style"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="0dp"
+                <TextView
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="30"
-                    android:layout_marginTop="10dp"
-                    android:theme="@style/DarkTextLabel">
-                    <EditText
-                        android:id="@+id/et_day_birthday"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:hint="Date de naissance"
-                        android:text="13"
-                        android:textColor="@color/darker_grey"
-                        android:enabled="false"
-                        android:focusable="false"/>
-                </android.support.design.widget.TextInputLayout>
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/birthday"
+                    android:textColor="@color/bpDark_gray" />
 
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="40"
-                    android:layout_marginTop="10dp"
-                    android:theme="@style/DarkTextLabel">
-                    <EditText
-                        android:id="@+id/et_month_birthday"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:text="Juillet"
-                        android:textColor="@color/darker_grey"
-                        android:enabled="false"
-                        android:focusable="false"/>
-                </android.support.design.widget.TextInputLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
 
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="30"
-                    android:layout_marginTop="10dp"
-                    android:theme="@style/DarkTextLabel">
-                    <EditText
-                        android:id="@+id/et_year_birthday"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:text="1997"
-                        android:textColor="@color/darker_grey"
-                        android:enabled="false"
-                        android:focusable="false"/>
-                </android.support.design.widget.TextInputLayout>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="30">
+
+                        <EditText
+                            android:id="@+id/et_day_birthday"
+                            style="@style/edit_text_bordered_user_info_style"
+                            android:textAlignment="center" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="40">
+
+                        <EditText
+                            android:id="@+id/et_month_birthday"
+                            style="@style/edit_text_bordered_user_info_style"
+                            android:textAlignment="center"
+                            android:textColor="@color/black_variant" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="30">
+
+                        <EditText
+                            android:id="@+id/et_year_birthday"
+                            style="@style/edit_text_bordered_user_info_style"
+                            android:textAlignment="center" />
+                    </LinearLayout>
+                </LinearLayout>
+
 
             </LinearLayout>
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:theme="@style/DarkTextLabel">
+            <LinearLayout
+                style="@style/margin_top_and_bottom_12_dp_style"
+                android:layout_height="77dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/marital_status"
+                    android:textColor="@color/bpDark_gray" />
+
                 <EditText
                     android:id="@+id/et_marital_status"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:hint="Situation matrimoniale"
-                    android:text="Marié"
-                    android:textColor="@color/darker_grey"
-                    android:enabled="false"
-                    android:focusable="false"/>
-            </android.support.design.widget.TextInputLayout>
+                    style="@style/edit_text_bordered_user_info_style" />
+            </LinearLayout>
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:theme="@style/DarkTextLabel">
+            <LinearLayout
+                style="@style/margin_top_and_bottom_12_dp_style"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/address"
+                    android:textColor="@color/bpDark_gray" />
+
                 <EditText
                     android:id="@+id/et_address"
+                    style="@style/edit_text_bordered_user_info_style"
+                    android:lines="4" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/margin_top_and_bottom_12_dp_style"
+                android:layout_height="77dp"
+                android:orientation="vertical">
+
+                <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:hint="Adresse"
-                    android:text="Abomey-Calavi Benin, Quartier Tankpè, Rue Ecobank"
-                    android:lines="3"
-                    android:textColor="@color/darker_grey"
-                    android:enabled="false"
-                    android:focusable="false"/>
-            </android.support.design.widget.TextInputLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="25"
-                    android:layout_marginTop="10dp"
-                    android:theme="@style/DarkTextLabel">
-                    <EditText
-                        android:id="@+id/et_indicatif_tel1"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:hint="Téléphone 1"
-                        android:text="+229"
-                        android:enabled="false"
-                        android:textColor="@color/darker_grey"
-                        android:focusable="false"/>
-                </android.support.design.widget.TextInputLayout>
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/telephone_1"
+                    android:textColor="@color/bpDark_gray" />
 
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="75"
-                    android:layout_marginTop="10dp"
-                    android:theme="@style/DarkTextLabel">
-                    <EditText
-                        android:id="@+id/et_phone_number1"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:text="61 32 82 70"
-                        android:textColor="@color/darker_grey"
-                        android:enabled="false"
-                        android:focusable="false"/>
-                </android.support.design.widget.TextInputLayout>
-
+                <EditText
+                    android:id="@+id/et_phone_number1"
+                    style="@style/edit_text_bordered_user_info_style"
+                    android:textColor="@color/black_variant" />
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                style="@style/margin_top_and_bottom_12_dp_style"
+                android:layout_height="77dp"
+                android:orientation="vertical">
 
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="0dp"
+                <TextView
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="25"
-                    android:layout_marginTop="10dp"
-                    android:theme="@style/DarkTextLabel">
-                    <EditText
-                        android:id="@+id/et_indicatif_tel2"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:hint="Téléphone 2"
-                        android:text="+229"
-                        android:textColor="@color/darker_grey"
-                        android:enabled="false"
-                        android:focusable="false"/>
-                </android.support.design.widget.TextInputLayout>
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/telephone_2"
+                    android:textColor="@color/bpDark_gray" />
 
-                <android.support.design.widget.TextInputLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="75"
-                    android:layout_marginTop="10dp"
-                    android:theme="@style/DarkTextLabel">
-                    <EditText
-                        android:id="@+id/et_phone_number2"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:text="94 71 88 48"
-                        android:textColor="@color/darker_grey"
-                        android:enabled="false"
-                        android:focusable="false"/>
-                </android.support.design.widget.TextInputLayout>
-
+                <EditText
+                    android:id="@+id/et_phone_number2"
+                    style="@style/edit_text_bordered_user_info_style"
+                    android:textColor="@color/black_variant" />
             </LinearLayout>
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:theme="@style/DarkTextLabel">
+            <LinearLayout
+                style="@style/margin_top_and_bottom_12_dp_style"
+                android:layout_height="77dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/email"
+                    android:textColor="@color/bpDark_gray" />
+
                 <EditText
                     android:id="@+id/et_email"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:hint="Adresse e-mail"
-                    android:text="ahenrij@gmail.com"
-                    android:textColor="@color/darker_grey"
-                    android:enabled="false"
-                    android:focusable="false"/>
-            </android.support.design.widget.TextInputLayout>
+                    style="@style/edit_text_bordered_user_info_style" />
+            </LinearLayout>
 
         </LinearLayout>
 

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +36,7 @@ import java.util.Locale;
  */
 public class HomeFragment extends Fragment {
 
+    private String TAG = "HomeFragment";
     private TextView tvDate, tvNetworkLabel, tvProgress;
     private CardView cvDate;
     private RoundCornerProgressBar dailyProgressBar;
@@ -80,14 +82,14 @@ public class HomeFragment extends Fragment {
     private void initViews() {
 
         currentUser = AuthUser.getAuthenticatedUser(requireContext());
-        tvNetworkLabel.setText("Aucun réseau");
-//        try {
-//            authenticatedUser = AuthenticatedUser.getAuthenticatedUser(PharmaWine.mRealm);
-//            tvNetworkLabel.setText((authenticatedUser.getNetworkName() == null) ? "Aucun réseau" : "Réseau " + authenticatedUser.getNetworkName());
-//        } catch (NullPointerException e) {
-//            tvNetworkLabel.setText("Aucun réseau");
-//            e.printStackTrace();
-//        }
+        try {
+            tvNetworkLabel.setText(currentUser.getNetwork().getName());
+        } catch (Exception e) {
+            tvNetworkLabel.setText("Aucun réseau");
+            Log.e(TAG, "initViews: " + e.getMessage());
+            e.printStackTrace();
+        }
+
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.FRENCH);
         tvDate.setText(dateFormat.format(new Date()));
 

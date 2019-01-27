@@ -158,7 +158,6 @@ public class ProspectionActivity extends AppCompatActivity implements View.OnCli
                 // IF customer is instance of pharmacy class, so use the following line instead
                 // .putExtra(VisiteInProgressFragment.ARGS_PROSPECT_TYPE, Constants.PROSPECT_KNOWN_PHARMACY_TYPE_KEY);
 
-
                 i.putExtra(VisiteInProgressActivity.EXTRA_PROSPECT_TYPE,
                         Constants.PROSPECT_KNOWN_MEDICAL_TEAM_TYPE_KEY);
 
@@ -169,11 +168,17 @@ public class ProspectionActivity extends AppCompatActivity implements View.OnCli
                 i.putExtra(Constants.CLIENT_AVATAR_URL_KEY, customer.getAvatar());
 
                 // Preventing against null exception
-                if (customer.getCustomerStatus() != null && customer.getCustomerType() != null
-                        && customer.getSpeciality() != null) {
-                    i.putExtra(Constants.CLIENT_SPECIALITY_KEY, customer.getSpeciality().getName());
-                    i.putExtra(Constants.CLIENT_CUSTOMER_TYPE_KEY, customer.getCustomerType().getName());
-                    i.putExtra(Constants.CLIENT_CUSTOMER_STATUS_KEY, customer.getCustomerStatus().getName());
+                try {
+                    if (customer.getCustomerStatus() != null && customer.getCustomerType() != null
+                            && customer.getSpeciality() != null) {
+                        i.putExtra(Constants.CLIENT_SPECIALITY_KEY, customer.getSpeciality().getName());
+                        i.putExtra(Constants.CLIENT_CUSTOMER_TYPE_KEY, customer.getCustomerType().getName());
+                        i.putExtra(Constants.CLIENT_CUSTOMER_STATUS_KEY, customer.getCustomerStatus().getName());
+                    }
+                } catch (NullPointerException e) {
+
+                } catch (Exception e) {
+
                 }
 
                 startActivity(i);

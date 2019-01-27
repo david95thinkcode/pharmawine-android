@@ -127,6 +127,22 @@
         <item name="android:textAlignment">center</item>
     </style>
 
+    <style name="edit_text_bordered_user_info_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@drawable/edit_text_bordered_lg_background</item>
+        <item name="android:ems">10</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:layout_marginLeft">6dp</item>
+        <item name="android:layout_marginRight">6dp</item>
+        <item name="android:textAlignment">textStart</item>
+        <item name="android:color">@color/darker_grey</item>
+        <item name="android:focusable">false</item>
+        <item name="android:enabled">false</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
     <style name="profilage_medicalTeam_nestedLayout_step_fragment_style">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
