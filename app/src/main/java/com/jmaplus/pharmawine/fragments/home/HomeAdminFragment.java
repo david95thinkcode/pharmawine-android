@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
@@ -33,7 +34,7 @@ import java.util.Locale;
 public class HomeAdminFragment extends Fragment {
 
     private TextView tvDate, tvNetworkLabel, tvProgress;
-    private CardView cvDate;
+    private LinearLayout cvDate;
     private RoundCornerProgressBar dailyProgressBar;
     private Context mContext;
     private FloatingActionButton fabNetwork;
@@ -41,7 +42,7 @@ public class HomeAdminFragment extends Fragment {
     private AuthenticatedUser authenticatedUser;
     private AuthUser currentUser;
 
-    private RelativeLayout layBottomFabs;
+    private ConstraintLayout layBottomFabs;
     private LinearLayout clientSeen, clientRemaining;
 
 

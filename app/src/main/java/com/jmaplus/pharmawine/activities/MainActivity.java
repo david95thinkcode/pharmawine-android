@@ -18,6 +18,7 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.google.firebase.database.FirebaseDatabase;
 import com.jmaplus.pharmawine.R;
 import com.jmaplus.pharmawine.fragments.clients.MedicalTeamFragment;
+import com.jmaplus.pharmawine.fragments.home.HomeAdminFragment;
 import com.jmaplus.pharmawine.fragments.home.HomeFragment;
 import com.jmaplus.pharmawine.fragments.home.HomeSupervisorFragment;
 import com.jmaplus.pharmawine.fragments.home.MoreFragment;
@@ -32,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements MedicalTeamFragme
     private FrameLayout mFrameContainer;
     private HomeFragment mHomeFragment = new HomeFragment();
     private HomeSupervisorFragment mHomeSupervisorFragment = new HomeSupervisorFragment();
+    private HomeAdminFragment mHomeAdminFragment = new HomeAdminFragment();
     private ReportsFragment mReportsFragment = new ReportsFragment();
     private NotificationsFragment mNotificationsFragment = new NotificationsFragment();
     private MoreFragment mMoreFragment = new MoreFragment();
@@ -63,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements MedicalTeamFragme
         /*
          *TODO: Load adequate fragment for type of user connected
          */
-        showFragment(mHomeFragment);
+        showFragment(mHomeAdminFragment);
 
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.logo);
         getSupportActionBar().setIcon(R.drawable.logo);

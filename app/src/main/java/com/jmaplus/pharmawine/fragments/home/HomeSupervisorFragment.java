@@ -35,7 +35,7 @@ import java.util.Locale;
 public class HomeSupervisorFragment extends Fragment {
 
     private TextView tvDate, tvNetworkLabel, tvProgress;
-    private CardView cvDate;
+    private LinearLayout cvDate;
     private RoundCornerProgressBar dailyProgressBar;
     private Context mContext;
     private FloatingActionButton fabNetwork, fabProspection;
