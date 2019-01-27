@@ -149,7 +149,7 @@ public class LoginActivity extends AppCompatActivity implements AuthCalls.Callba
         Boolean isStored = saveUserData(response);
 
         if (isStored) {
-            Toast.makeText(this, "Authentication step 3 passed", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Authentication step 3 passed", Toast.LENGTH_SHORT).show();
             // open the app
             stopLoadingDialog();
             startActivity(new Intent(LoginActivity.this, MainActivity.class));

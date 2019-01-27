@@ -15,24 +15,29 @@ import android.widget.Toast;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
-import com.google.firebase.database.FirebaseDatabase;
 import com.jmaplus.pharmawine.R;
 import com.jmaplus.pharmawine.fragments.clients.MedicalTeamFragment;
+import com.jmaplus.pharmawine.fragments.home.HomeAdminFragment;
 import com.jmaplus.pharmawine.fragments.home.HomeFragment;
+import com.jmaplus.pharmawine.fragments.home.HomeSupervisorFragment;
 import com.jmaplus.pharmawine.fragments.home.MoreFragment;
 import com.jmaplus.pharmawine.fragments.home.NotificationsFragment;
 import com.jmaplus.pharmawine.fragments.home.ReportsFragment;
 import com.jmaplus.pharmawine.models.AuthUser;
+import com.jmaplus.pharmawine.utils.Constants;
 
 public class MainActivity extends AppCompatActivity implements MedicalTeamFragment.OnFragmentInteractionListener {
     public static final String TAG = "MainActivity";
 
     private AHBottomNavigation bottomNavigation;
     private FrameLayout mFrameContainer;
-    private HomeFragment mHomeFragment = new HomeFragment();
+
+    public Integer mUserRole = -1;
     private ReportsFragment mReportsFragment = new ReportsFragment();
     private NotificationsFragment mNotificationsFragment = new NotificationsFragment();
     private MoreFragment mMoreFragment = new MoreFragment();
+    private Fragment mHomeFragment = new Fragment();
+
     public boolean isMedicalTeamsLoaded = false;
     private Fragment mFragment = null;
     private MedicalTeamFragment mMedicalTeamFragment = new MedicalTeamFragment();
@@ -50,22 +55,36 @@ public class MainActivity extends AppCompatActivity implements MedicalTeamFragme
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-        // This few 3 lines allow firebase offline capabilities
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-
-        bottomNavigation = findViewById(R.id.bottom_navigation);
-        setupBottomNavigation();
-
-        mFrameContainer = findViewById(R.id.frame_container);
-
-        showFragment(mHomeFragment);
-
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.logo);
-        getSupportActionBar().setIcon(R.drawable.logo);
-        getSupportActionBar().setLogo(R.drawable.logo);
+        // This allow firebase offline capabilities
+        // FirebaseDatabase.getInstance().setPersistenceEnabled(true);
 
         currentUser = AuthUser.getAuthenticatedUser(this);
+        mUserRole = AuthUser.getRoleFromSharedPreferences(this);
+
+        initViews();
+
+        // Initialise view based oon user role
+        switch (mUserRole) {
+            case Constants.ROLE_ADMIN_KEY: {
+                mHomeFragment = new HomeAdminFragment();
+            }
+            break;
+            case Constants.ROLE_SUPERVISEUR_KEY: {
+                mHomeFragment = new HomeSupervisorFragment();
+            }
+            break;
+            case Constants.ROLE_DELEGUE_KEY: {
+                mHomeFragment = new HomeFragment();
+            }
+            break;
+            default: {
+                mHomeFragment = new HomeFragment();
+                Toast.makeText(this, "Attention ! Votre compte est suspect", Toast.LENGTH_SHORT).show();
+            }
+            break;
+        }
+
+        showFragment(mHomeFragment);
 
         Log.i(getLocalClassName(), "onCreate: authUser ==> " + currentUser);
 
@@ -96,6 +115,17 @@ public class MainActivity extends AppCompatActivity implements MedicalTeamFragme
 
     }
 
+    private void initViews() {
+        bottomNavigation = findViewById(R.id.bottom_navigation);
+        setupBottomNavigation();
+
+        mFrameContainer = findViewById(R.id.frame_container);
+
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.logo);
+        getSupportActionBar().setIcon(R.drawable.logo);
+        getSupportActionBar().setLogo(R.drawable.logo);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
@@ -107,13 +137,13 @@ public class MainActivity extends AppCompatActivity implements MedicalTeamFragme
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
-            case R.id.menu_messenger :
+            case R.id.menu_messenger:
                 startActivity(new Intent(MainActivity.this, MessagingActivity.class));
                 break;
-            case R.id.menu_settings :
+            case R.id.menu_settings:
                 startActivity(new Intent(MainActivity.this, SettingsActivity.class));
                 break;
-            case R.id.menu_about :
+            case R.id.menu_about:
                 startActivity(new Intent(MainActivity.this, AboutActivity.class));
                 break;
         }
@@ -133,17 +163,17 @@ public class MainActivity extends AppCompatActivity implements MedicalTeamFragme
             public boolean onTabSelected(int position, boolean wasSelected) {
 
                 switch (position) {
-                    case IND_NAV_HOME :
+                    case IND_NAV_HOME:
                         bottomNavigation.setBehaviorTranslationEnabled(false);
                         getSupportActionBar().setTitle(getResources().getString(R.string.nav_home_title));
                         showFragment(mHomeFragment);
                         break;
-                    case IND_NAV_REPORTS :
+                    case IND_NAV_REPORTS:
                         bottomNavigation.setBehaviorTranslationEnabled(true);
                         getSupportActionBar().setTitle(getResources().getString(R.string.nav_reports_title));
                         showFragment(mReportsFragment);
                         break;
-                    case IND_NAV_NOTIFS :
+                    case IND_NAV_NOTIFS:
                         bottomNavigation.setBehaviorTranslationEnabled(true);
                         getSupportActionBar().setTitle(getResources().getString(R.string.menu_option_notifications));
                         showFragment(mNotificationsFragment);
@@ -154,7 +184,7 @@ public class MainActivity extends AppCompatActivity implements MedicalTeamFragme
                         getSupportActionBar().setTitle("Corps Méd.");
                         showFragment(mMedicalTeamFragment);
                         break;
-                    case IND_NAV_MORE :
+                    case IND_NAV_MORE:
                         bottomNavigation.setBehaviorTranslationEnabled(true);
                         getSupportActionBar().setTitle(getResources().getString(R.string.nav_more_title));
                         showFragment(mMoreFragment);

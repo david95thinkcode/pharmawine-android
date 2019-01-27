@@ -20,7 +20,6 @@ import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialo
 import com.jmaplus.pharmawine.R;
 import com.jmaplus.pharmawine.activities.NetworksActivity;
 import com.jmaplus.pharmawine.activities.ProspectionActivity;
-import com.jmaplus.pharmawine.activities.RapportHebdoActivity;
 import com.jmaplus.pharmawine.activities.RemainingClientsActivity;
 import com.jmaplus.pharmawine.activities.SeenCustomers;
 import com.jmaplus.pharmawine.models.AuthUser;
@@ -83,7 +82,7 @@ public class HomeFragment extends Fragment {
 
         currentUser = AuthUser.getAuthenticatedUser(requireContext());
         try {
-            tvNetworkLabel.setText(currentUser.getNetwork().getName());
+            tvNetworkLabel.setText("Réseau " + currentUser.getNetwork().getName());
         } catch (Exception e) {
             tvNetworkLabel.setText("Aucun réseau");
             Log.e(TAG, "initViews: " + e.getMessage());
