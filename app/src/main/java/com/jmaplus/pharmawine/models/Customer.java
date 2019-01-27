@@ -2,6 +2,7 @@ package com.jmaplus.pharmawine.models;
 
 import android.util.Log;
 
+import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.jmaplus.pharmawine.R;
@@ -87,7 +88,12 @@ public class Customer {
     private Speciality speciality;
 
     public String getFullName() {
-        return getFirstname() + " " + getLastname();
+        try {
+            return getFirstname() + " " + getLastname();
+
+        } catch (NullPointerException e) {
+            return "Aucun non defini";
+        }
     }
 
     public String getRedabledate() {
@@ -373,9 +379,21 @@ public class Customer {
         int ic_doctor_man = R.drawable.ic_doctor_man;
         int ic_doctor_woman = R.drawable.ic_doctor_woman;
 
-        if (getSex().toUpperCase().equals("F"))
-            return ic_doctor_woman;
-        else
-            return ic_doctor_man;
+        if (getSex() != null) {
+            if (getSex().toUpperCase().equals("F"))
+                return ic_doctor_woman;
+            else
+                return ic_doctor_man;
+        } else {
+            return R.drawable.ic_pharmacy;
+        }
     }
+
+    @Override
+    public String toString() {
+        Gson gson = new Gson();
+
+        return gson.toJson(this);
+    }
+
 }

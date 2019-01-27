@@ -19,7 +19,6 @@ import com.bumptech.glide.Glide;
 import com.jmaplus.pharmawine.R;
 import com.jmaplus.pharmawine.models.AuthUser;
 import com.jmaplus.pharmawine.models.Customer;
-import com.jmaplus.pharmawine.models.DailyReportEndResponse;
 import com.jmaplus.pharmawine.models.DailyReportStart;
 import com.jmaplus.pharmawine.models.DailyReportStartResponse;
 import com.jmaplus.pharmawine.models.Visite;
@@ -184,22 +183,13 @@ public class VisiteInProgressFragment extends Fragment
         Log.e(TAG, "onStartDailyReportFailure");
     }
 
-    @Override
-    public void onEndDailyReportResponse(@Nullable DailyReportEndResponse response) {
-
-    }
-
-    @Override
-    public void onEndDailyReportFailure() {
-
-    }
-
     /**
      * Update views UI with source data
      *
      * @param customer
      */
     public void updateViewsWithSource(Customer customer) {
+
         if (customer.getCustomerStatus() != null && !customer.getCustomerStatus().getName().isEmpty()) {
             tvCustomerStatus.setText(customer.getCustomerStatus().getName());
         }
@@ -208,11 +198,7 @@ public class VisiteInProgressFragment extends Fragment
             tvCustomerSpeciality.setText(customer.getSpeciality().getName());
         }
 
-        // Picture
-        if (customer.getAvatar() != null && !customer.getAvatar().isEmpty()) {
-            Glide.with(this).load(customer.getAvatar()).into(profileImage);
-        }
-
+        Glide.with(this).load(customer.getDefaultAvatar()).into(profileImage);
     }
 
     private void updateViewsContent() {
@@ -222,7 +208,6 @@ public class VisiteInProgressFragment extends Fragment
                 showCorrespondingViewForProfileImage(false);
 
                 tvNomPrenom.setText(mVisite.getClient().getFullName());
-
             }
             break;
             case Constants.PROSPECT_KNOWN_CLIENT_PHARMACY_TYPE_KEY: {

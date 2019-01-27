@@ -2,6 +2,7 @@ package com.jmaplus.pharmawine.adapters
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,23 +33,35 @@ class RemainingCustomersAdapter(val context: Context, var remainingClientsList: 
     override fun getItemCount(): Int = remainingClientsList.size
 
     override fun onBindViewHolder(holder: RemainingCustomersViewHolder, position: Int) {
-        holder.fullname.text = remainingClientsList[position].fullName
 
-        Glide.with(context)
-                .load(remainingClientsList[position].defaultAvatar)
-                .into(holder?.picture)
+        try {
+            Glide.with(context)
+                    .load(remainingClientsList[position].defaultAvatar)
+                    .into(holder?.picture)
 
-        // Speciality
-        if (remainingClientsList[position].speciality == null)
-            holder.speciality.text = remainingClientsList[position].specialityId.toString()
-        else
-            holder.speciality.text = remainingClientsList[position].speciality.name
+            holder.fullname.text = remainingClientsList[position].fullName
 
-        // Customer status
-        if (remainingClientsList[position].customerStatus == null)
-            holder.status.text = remainingClientsList[position].customerStatusId.toString()
-        else
-            holder.status.text = remainingClientsList[position].customerStatus.name
+            // Speciality
+            if (remainingClientsList[position].speciality == null)
+                holder.speciality.text = remainingClientsList[position].specialityId.toString()
+            else
+                holder.speciality.text = remainingClientsList[position].speciality.name
+
+            // Customer status
+            if (remainingClientsList[position].customerStatus == null)
+                holder.status.text = remainingClientsList[position].customerStatusId.toString()
+            else
+                holder.status.text = remainingClientsList[position].customerStatus.name
+        } catch (e: NullPointerException) {
+            Log.w(TAG, "NullPointerException: at item on index ==> $position")
+            e.printStackTrace()
+        } catch (e: Exception) {
+            Log.w(TAG, "Exception: at item on index ==> $position")
+            e.printStackTrace()
+        }
+
+
+
 
     }
 
