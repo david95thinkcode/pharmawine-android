@@ -16,7 +16,6 @@ import com.jmaplus.pharmawine.R;
 import com.jmaplus.pharmawine.activities.ProductCategoryActivity;
 import com.jmaplus.pharmawine.adapters.ProductAdapter;
 import com.jmaplus.pharmawine.models.ApiProduct;
-import com.jmaplus.pharmawine.utils.PrefManager;
 
 import java.util.ArrayList;
 
@@ -34,7 +33,6 @@ public class LaboratoriesFragment extends Fragment {
     private ProductCategoryActivity mContext;
     private ProductAdapter productAdapter;
     private SwipeRefreshLayout mSwipeRefreshLayout;
-    private PrefManager prefManager;
 
     public LaboratoriesFragment() {
         // Required empty public constructor
@@ -59,7 +57,6 @@ public class LaboratoriesFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         mContext = (ProductCategoryActivity) getActivity();
-        prefManager = new PrefManager(mContext);
         productAdapter = new ProductAdapter(productList, mContext, ProductAdapter.LABORATORY);
 
         recyclerView.setHasFixedSize(true);

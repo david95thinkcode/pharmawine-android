@@ -15,6 +15,7 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jmaplus.pharmawine.R;
 import com.jmaplus.pharmawine.fragments.products.ClassesFragment;
@@ -84,12 +85,17 @@ public class ProductsActivity extends AppCompatActivity implements LaboratoriesF
 
 
     private void showFragment(Fragment fragment) {
-        FragmentTransaction mFragmentTransaction = getSupportFragmentManager().beginTransaction();
-        mFragmentTransaction.add(mFragmentContainerLayout.getId(), fragment);
-        mFragmentTransaction.commit();
-        mFragment = fragment;
+        // TODO: Il y a des exception a chaque fois qu'il s'agit d'un autre fragment
+        try {
+            FragmentTransaction mFragmentTransaction = getSupportFragmentManager().beginTransaction();
+            mFragmentTransaction.replace(mFragmentContainerLayout.getId(), fragment);
+            mFragmentTransaction.commit();
+            mFragment = fragment;
 
-        Log.i(TAG, "showFragment: Fragment replaced by ==> " + fragment.getClass().getName());
+            Log.i(TAG, "showFragment: Fragment replaced by ==> " + fragment.getClass().getName());
+        } catch (Exception e) {
+            Log.e(TAG, "showFragment: Erreur ==> " + e.getMessage());
+        }
     }
 
 
@@ -145,16 +151,24 @@ public class ProductsActivity extends AppCompatActivity implements LaboratoriesF
                 });
                 break;
             case R.id.action_reference:
-                showFragment(referencesFragment);
+                Toast.makeText(this, "Option indisponible", Toast.LENGTH_SHORT).show();
+
+//                showFragment(referencesFragment);
                 break;
             case R.id.action_class:
-                showFragment(classesFragment);
+                Toast.makeText(this, "Option indisponible", Toast.LENGTH_SHORT).show();
+
+//                showFragment(classesFragment);
+                break;
+            case android.R.id.home:
+                finish();
                 break;
             default:
                 return super.onOptionsItemSelected(item);
         }
         return super.onOptionsItemSelected(item);
     }
+
 
 //    private void setupViewPager(ViewPager viewPager) {
 //        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());

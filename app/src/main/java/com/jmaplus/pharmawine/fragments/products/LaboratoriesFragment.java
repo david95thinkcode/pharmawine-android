@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +19,6 @@ import com.jmaplus.pharmawine.adapters.ProductAdapter;
 import com.jmaplus.pharmawine.models.ApiProduct;
 import com.jmaplus.pharmawine.models.AuthUser;
 import com.jmaplus.pharmawine.models.AuthUserResponse;
-import com.jmaplus.pharmawine.utils.PrefManager;
 import com.jmaplus.pharmawine.utils.RetrofitCalls.AuthCalls;
 
 import java.util.ArrayList;
@@ -38,11 +38,9 @@ public class LaboratoriesFragment extends Fragment implements AuthCalls.Callback
     private AuthUser mAuthUser;
 
     private List<ApiProduct> mProductsList;
-    private ArrayList<ApiProduct> productList;
     private Context mContext;
     private ProductAdapter productAdapter;
     private SwipeRefreshLayout mSwipeRefreshLayout;
-    private PrefManager prefManager;
 
     public LaboratoriesFragment() {
         // Required empty public constructor
@@ -55,9 +53,7 @@ public class LaboratoriesFragment extends Fragment implements AuthCalls.Callback
         View view = inflater.inflate(R.layout.fragment_products_laboratories, container, false);
 
         mContext = requireContext();
-        prefManager = new PrefManager(mContext);
         mProductsList = new ArrayList();
-        productList = new ArrayList();
         productAdapter = new ProductAdapter(mProductsList, mContext, ProductAdapter.LABORATORY);
 
         recyclerView = view.findViewById(R.id.rv_products_lab);
@@ -93,105 +89,40 @@ public class LaboratoriesFragment extends Fragment implements AuthCalls.Callback
     private void getProductList() {
         mSwipeRefreshLayout.setRefreshing(true);
 
-        AuthCalls.getAuthedUserProduct(this, AuthUser.getToken(requireContext()));
-
-//        productList.clear();
-//        productList.addAll(Product.getAll(PharmaWine.mRealm));
-//        notifyChanges();
-//
-////        Get the fresh product's list if not loaded & connected
-//
-//        if (!mContext.isProductsLoaded) {
-//
-//            if (PharmaWine.getInstance().isOnline()) {
-//
-//                ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-//                Call<ProductsResponse> call = apiService.getDelegateProducts(AuthenticatedUser.getAuthenticatedUser(PharmaWine.mRealm).getId(), ApiClient.TOKEN_TYPE + prefManager.getToken());
-//
-//                mSwipeRefreshLayout.setRefreshing(true);
-//                mSwipeRefreshLayout.setColorSchemeResources(R.color.orange);
-//                call.enqueue(new Callback<ProductsResponse>() {
-//                    @Override
-//                    public void onResponse(Call<ProductsResponse> call, Response<ProductsResponse> response) {
-//
-//                        if (!response.isSuccessful() || response.body() == null) {
-//                            notifyChanges();
-//                            Toast.makeText(mContext, getResources().getString(R.string.smthg_wrong_request), Toast.LENGTH_SHORT).show();
-//                        } else {
-//                            if (response.body().getStatusCode() == 200 || response.body().getStatusCode() == 404) {
-//
-//                                if (response.body().getProducts() == null || response.body().getStatusCode() == 404) {
-//                                    Snackbar.make(mSwipeRefreshLayout, getResources().getString(R.string.no_data_returned), Snackbar.LENGTH_LONG).show();
-//                                } else {
-//                                    Product.saveAll(PharmaWine.mRealm, response.body().getProducts());
-//                                    productList.clear();
-//                                    productList.addAll(response.body().getProducts());
-//                                    mContext.isProductsLoaded = true;
-//
-//                                    //        Notify changes after 3 seconds
-//                                    mSwipeRefreshLayout.setColorSchemeResources(R.color.green);
-//                                    new Handler().postDelayed(new Runnable() {
-//                                        @Override
-//                                        public void run() {
-//                                           notifyChanges();
-//                                        }
-//                                    }, 3000);
-//                                }
-//                            } else {
-//                                Toast.makeText(mContext, getResources().getString(R.string.smthg_wrong_request), Toast.LENGTH_SHORT).show();
-//                                Snackbar.make(mSwipeRefreshLayout, getResources().getString(R.string.no_data_returned), Snackbar.LENGTH_LONG).show();
-//                                notifyChanges();
-//                            }
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Call<ProductsResponse> call, Throwable t) {
-////                    Toast.makeText(mContext,"Echec de la requete", Toast.LENGTH_SHORT).show();
-//                        notifyChanges();
-//                        Toast.makeText(mContext, getResources().getString(R.string.smthg_wrong_request), Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-//
-//            } else {
-//                Toast.makeText(mContext, mContext.getResources().getString(R.string.not_connected), Toast.LENGTH_SHORT).show();
-//            }
-//        } else {
-////            Toast.makeText(mContext, "Liste à jour !", Toast.LENGTH_SHORT).show();
-//            if (mSwipeRefreshLayout.isRefreshing()) mSwipeRefreshLayout.setRefreshing(false);
-//        }
-    }
-
-    private void notifyChanges() {
-        if (mSwipeRefreshLayout.isRefreshing()) mSwipeRefreshLayout.setRefreshing(false);
-        productAdapter.notifyDataSetChanged();
-
-
-//        mContext.updateBottomView(R.drawable.pill, mContext.getResources().getString(R.string.products_number).replace("%", String.valueOf(productList.size())));
+        AuthCalls.getAuthedUserProduct(this, AuthUser.getToken(mContext));
     }
 
     public void search(String query) {
-        ArrayList<ApiProduct> models = productList;
-        ArrayList<ApiProduct> filteredModelList = new ArrayList<>();
 
-        if (!query.isEmpty()) {
-            query = query.toLowerCase();
-            for (ApiProduct model : models) {
-                final String text = model.getName().toLowerCase();
-                final String text2 = model.getLaboratory().getName().toLowerCase();
-                if (text.contains(query) || text2.contains(query)) {
-                    filteredModelList.add(model);
+        try {
+            List<ApiProduct> models = mProductsList;
+            List<ApiProduct> filteredModelList = new ArrayList();
+
+            if (!query.isEmpty()) {
+                query = query.toLowerCase();
+                for (ApiProduct model : models) {
+                    final String text = model.getName().toLowerCase();
+                    final String text2 = model.getLaboratory().getName().toLowerCase();
+                    if (text.contains(query) || text2.contains(query)) {
+                        filteredModelList.add(model);
+                    }
                 }
+            } else {
+                filteredModelList = models;
+                productAdapter = new ProductAdapter(filteredModelList, mContext, ProductAdapter.LABORATORY);
+                recyclerView.setAdapter(productAdapter);
             }
-        } else {
-            filteredModelList = models;
+        } catch (NullPointerException e) {
+            // TODO: il y a null exception ici ==> recyclerView.setAdapter(productAdapter);
+//            Toast.makeText(requireContext(), "Non disponible", Toast.LENGTH_SHORT).show();
+            Log.e(TAG, "search: Il y a un probleme ==> " + e.getMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+//            Toast.makeText(mContext, "Non disponible", Toast.LENGTH_SHORT).show();
+            Log.e(TAG, "search: Il y a un probleme ==> " + e.getMessage());
+            e.printStackTrace();
         }
-        productAdapter = new ProductAdapter(filteredModelList, mContext, ProductAdapter.LABORATORY);
-        recyclerView.setAdapter(productAdapter);
 
-//        Mettre à jour le nombre de produits total
-//        requireActivity().updateBottomView(
-//                R.drawable.pill, mContext.getResources().getString(R.string.products_number).replace("%", String.valueOf(filteredModelList.size())));
     }
 
     @Override
@@ -229,14 +160,19 @@ public class LaboratoriesFragment extends Fragment implements AuthCalls.Callback
             for (ApiProduct p : products) {
                 mProductsList.add(p);
                 productAdapter.notifyItemInserted(mProductsList.size() - 1);
-                mListener.onProductNumberUpdated(mProductsList.size());
+                try {
+                    mListener.onProductNumberUpdated(mProductsList.size());
+                } catch (NullPointerException e) {
+                    // est declenchee quand l'activite parente est fermee avant l'execution du code du fragment
+                    Log.w(TAG, "onAuthProductsResponse: Activite parente fermee trop tot");
+                    e.printStackTrace();
+                }
             }
         } else {
             Toast.makeText(mContext, "Auncun produit", Toast.LENGTH_SHORT).show();
         }
 
         mSwipeRefreshLayout.setRefreshing(false);
-
     }
 
     @Override
