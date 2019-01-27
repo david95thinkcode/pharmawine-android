@@ -213,54 +213,6 @@ public class AuthUser {
         this.typeId = typeId;
     }
 
-    public Integer getNetworkId() {
-        return networkId;
-    }
-
-    public List<Object> getAreas() {
-        return areas;
-    }
-
-    public void setAreas(List<Object> areas) {
-        this.areas = areas;
-    }
-
-    public Object getTypes() {
-        return types;
-    }
-
-    public void setTypes(Object types) {
-        this.types = types;
-    }
-
-    public List<Object> getProducts() {
-        return products;
-    }
-
-    public void setProducts(List<Object> products) {
-        this.products = products;
-    }
-
-    public Object getNetworks() {
-        return networks;
-    }
-
-    public void setNetworks(Object networks) {
-        this.networks = networks;
-    }
-
-    public List<Object> getGoals() {
-        return goals;
-    }
-
-    public void setGoals(List<Object> goals) {
-        this.goals = goals;
-    }
-
-    public String getFullName() {
-        return getFirstname() + " " + getLastname();
-    }
-
     public static AuthUser getAuthenticatedUser(Context mContext) {
         AuthUser u = new AuthUser();
 
@@ -311,8 +263,56 @@ public class AuthUser {
         }
     }
 
-    public Network getNetwork() {
-        return network;
+    public Integer getNetworkId() {
+        return networkId;
+    }
+
+    public void setNetworkId(Integer networkId) {
+        this.networkId = networkId;
+    }
+
+    public List<Object> getAreas() {
+        return areas;
+    }
+
+    public void setAreas(List<Object> areas) {
+        this.areas = areas;
+    }
+
+    public Object getTypes() {
+        return types;
+    }
+
+    public void setTypes(Object types) {
+        this.types = types;
+    }
+
+    public List<Object> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Object> products) {
+        this.products = products;
+    }
+
+    public Object getNetworks() {
+        return networks;
+    }
+
+    public void setNetworks(Object networks) {
+        this.networks = networks;
+    }
+
+    public List<Object> getGoals() {
+        return goals;
+    }
+
+    public void setGoals(List<Object> goals) {
+        this.goals = goals;
+    }
+
+    public String getFullName() {
+        return getFirstname() + " " + getLastname();
     }
 
     /**
@@ -329,8 +329,20 @@ public class AuthUser {
 
     }
 
+    public Network getNetwork() {
+        return network;
+    }
+
+    public void setNetwork(Network network) {
+        this.network = network;
+    }
+
     public List<AuthUserRole> getRoles() {
         return roles;
+    }
+
+    public void setRoles(List<AuthUserRole> roles) {
+        this.roles = roles;
     }
 
     @Override
@@ -338,18 +350,6 @@ public class AuthUser {
         Gson gson = new Gson();
 
         return gson.toJson(this);
-    }
-
-    public void setRoles(List<AuthUserRole> roles) {
-        this.roles = roles;
-    }
-
-    public void setNetworkId(Integer networkId) {
-        this.networkId = networkId;
-    }
-
-    public void setNetwork(Network network) {
-        this.network = network;
     }
 
 

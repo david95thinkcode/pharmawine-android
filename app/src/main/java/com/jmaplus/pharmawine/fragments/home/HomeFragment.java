@@ -37,7 +37,7 @@ public class HomeFragment extends Fragment {
 
     private String TAG = "HomeFragment";
     private TextView tvDate, tvNetworkLabel, tvProgress;
-    private CardView cvDate;
+    private LinearLayout cvDate;
     private RoundCornerProgressBar dailyProgressBar;
     private Context mContext;
     private FloatingActionButton fabNetwork, fabProspection;

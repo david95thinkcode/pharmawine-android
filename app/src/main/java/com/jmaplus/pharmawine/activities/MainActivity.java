@@ -33,6 +33,8 @@ public class MainActivity extends AppCompatActivity implements MedicalTeamFragme
     private FrameLayout mFrameContainer;
 
     public Integer mUserRole = -1;
+    private HomeSupervisorFragment mHomeSupervisorFragment = new HomeSupervisorFragment();
+    private HomeAdminFragment mHomeAdminFragment = new HomeAdminFragment();
     private ReportsFragment mReportsFragment = new ReportsFragment();
     private NotificationsFragment mNotificationsFragment = new NotificationsFragment();
     private MoreFragment mMoreFragment = new MoreFragment();
@@ -57,6 +59,9 @@ public class MainActivity extends AppCompatActivity implements MedicalTeamFragme
 
         // This allow firebase offline capabilities
         // FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+
+//
+//        authenticatedUser = AuthenticatedUser.getAuthenticatedUser(PharmaWine.mRealm);
 
         currentUser = AuthUser.getAuthenticatedUser(this);
         mUserRole = AuthUser.getRoleFromSharedPreferences(this);
