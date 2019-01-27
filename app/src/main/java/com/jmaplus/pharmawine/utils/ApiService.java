@@ -16,8 +16,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Headers;
 import retrofit2.http.POST;
-import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface ApiService {
@@ -50,7 +50,8 @@ public interface ApiService {
             @Body DailyReportStart startObject,
             @Header("Authorization") String authorization);
 
-    @PUT("/report/daily/{daily_report_id}")
+    @Headers("X-HTTP-Method-Override: PUT")
+    @POST("report/daily/{daily_report_id}")
     Call<DailyReportEndResponse> endDailyReport(
             @Path("daily_report_id") Integer daily_report_id,
             @Body DailyReportEnd endObject,

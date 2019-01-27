@@ -16,8 +16,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.jmaplus.pharmawine.R;
 import com.jmaplus.pharmawine.fragments.rapport.ReportEtape1Fragment;
@@ -34,6 +34,7 @@ import com.jmaplus.pharmawine.models.DailyReportStartResponse;
 import com.jmaplus.pharmawine.utils.Constants;
 import com.jmaplus.pharmawine.utils.CustomerCalls;
 import com.jmaplus.pharmawine.utils.RetrofitCalls.DailyReportCalls;
+import com.jmaplus.pharmawine.utils.RetrofitCalls.DailyReportEndCall;
 import com.jmaplus.pharmawine.utils.Utils;
 
 import java.util.ArrayList;
@@ -47,7 +48,8 @@ public class VisiteInProgressActivity extends AppCompatActivity
         ReportEtape2Fragment.OnFragmentInteractionListener,
         ReportEtape3Fragment.OnFragmentInteractionListener,
         ReportEtape4Fragment.OnFragmentInteractionListener,
-        CustomerCalls.Callbacks, DailyReportCalls.Callbacks {
+        CustomerCalls.Callbacks, DailyReportCalls.Callbacks,
+        DailyReportEndCall.Callbacks {
 
     public static final Integer NUM_PAGES = 4;
     public static final int STEP_1_FRAGMENT_INDEX = 0;
@@ -291,13 +293,17 @@ public class VisiteInProgressActivity extends AppCompatActivity
     private void sendReportTOTheServer() {
         dialog.show();
 
-        try {
-            DailyReportCalls.postDailyReportEnd(AuthUser.getToken(this), this, mDailyReportEnd, currentReportID);
-        } catch (Exception e) {
-            Log.e(TAG, "sendReportTOTheServer: " + e.getMessage());
-            e.printStackTrace();
-            dialog.cancel();
-        }
+
+        DailyReportEndCall.postDailyReportEnd(
+                AuthUser.getToken(this),
+                this, mDailyReportEnd, currentReportID);
+//        try {
+//
+//        } catch (Exception e) {
+//            Log.e(TAG, "sendReportTOTheServer: " + e.getMessage());
+//            e.printStackTrace();
+//            dialog.cancel();
+//        }
     }
 
 

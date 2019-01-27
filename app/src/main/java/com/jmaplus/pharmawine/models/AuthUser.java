@@ -355,7 +355,7 @@ public class AuthUser {
 
     /**
      * Get authenticated user token
-     *
+     *  from shared preferences
      * @param mContext
      * @return
      */
@@ -374,8 +374,6 @@ public class AuthUser {
      * @return
      */
     public Boolean storeInSharedPreferences(Context context, String token) {
-
-        Integer DEFAULT_DELEGUE_ROLE_ID = 3;
 
         try {
             SharedPreferences sharedPref = context.getSharedPreferences(
@@ -420,7 +418,7 @@ public class AuthUser {
      *
      * @return
      */
-    public AuthUserRole getFirstRole() {
+    private AuthUserRole getFirstRole() {
         if (this.roles != null && !getRoles().isEmpty())
             return getRoles().get(0);
         else

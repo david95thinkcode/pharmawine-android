@@ -21,7 +21,6 @@ import com.jmaplus.pharmawine.R;
 import com.jmaplus.pharmawine.activities.CalendarActivity;
 import com.jmaplus.pharmawine.activities.InfosActivity;
 import com.jmaplus.pharmawine.activities.LoginActivity;
-import com.jmaplus.pharmawine.activities.NetworksActivity;
 import com.jmaplus.pharmawine.activities.PlanningActivity;
 import com.jmaplus.pharmawine.activities.ProductsActivity;
 import com.jmaplus.pharmawine.activities.StatsActivity;
@@ -78,7 +77,6 @@ public class MoreFragment extends Fragment {
         mCalendarCv = rootView.findViewById(R.id.cv_menu_cal);
         mInfosCv = rootView.findViewById(R.id.cv_menu_infos);
         mLogoutCv = rootView.findViewById(R.id.cv_menu_logout);
-        //        mClientsCv = rootView.findViewById(R.id.cv_menu_clients);
 
         return rootView;
     }

@@ -2,111 +2,73 @@ package com.jmaplus.pharmawine.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.support.constraint.ConstraintLayout
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.view.View
-import android.widget.LinearLayout
-import android.widget.ProgressBar
-import android.widget.Toast
 import com.jmaplus.pharmawine.R
-import com.jmaplus.pharmawine.adapters.RemainingCustomersAdapter
-import com.jmaplus.pharmawine.models.AuthUser
+import com.jmaplus.pharmawine.fragments.clients.CustomersListFragment
 import com.jmaplus.pharmawine.models.Customer
 import com.jmaplus.pharmawine.utils.Constants
-import com.jmaplus.pharmawine.utils.CustomerCalls
-import com.jmaplus.pharmawine.utils.ItemClickSupport
-import com.jmaplus.pharmawine.utils.Utils
-import com.jmaplus.pharmawine.utils.Utils.presentToast
 
-class NewProspectConnuActivity : AppCompatActivity(), CustomerCalls.Callbacks {
+class NewProspectConnuActivity : AppCompatActivity()
+        , CustomersListFragment.OnFragmentInteractionListener {
 
     private var clientType: Int = -1
-    private lateinit var clientsList: MutableList<Customer>
-    private lateinit var mProgress: ProgressBar
-    private lateinit var mRecyclerView: RecyclerView
-    private lateinit var mAdapter: RemainingCustomersAdapter
+    private lateinit var mCustomersListFragment: CustomersListFragment
+    private lateinit var mFragmentContainer: ConstraintLayout
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_prospect_connu)
 
-        initViews()
-
+        mCustomersListFragment = CustomersListFragment()
         clientType = intent.getIntExtra(TranslucentNewClientActivity.CLIENT_TYPE_EXTRA_KEY, -1)
 
-        if (clientType == Constants.TYPE_MEDICAL_KEY || clientType == Constants.TYPE_PHARMACEUTICAL_KEY) {
-            fetchCustomers()
-        } else {
-            presentToast(this, "Impossible de recuperer ce type de prospect", true);
-        }
-    }
-
-    private fun fetchCustomers() {
-        CustomerCalls.getAllKnownProspects(AuthUser.getToken(this), this)
+        initViews()
     }
 
     private fun initViews() {
-        mRecyclerView = findViewById(R.id.rv_unknown_prospects)
-        mProgress = findViewById(R.id.progressBar_unknown)
+        title = "Prospects connus"
+        mFragmentContainer = findViewById(R.id.ly_p_connu)
 
-        // Initializations
-        clientsList = ArrayList()
-        mAdapter = RemainingCustomersAdapter(this, clientsList)
-        mRecyclerView.layoutManager = LinearLayoutManager(this, LinearLayout.VERTICAL, false)
-        mRecyclerView.adapter = mAdapter
-
-        configureOnClickRecyclerView()
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.add(mFragmentContainer.id, mCustomersListFragment)
+        transaction.commit()
     }
 
-
-    private fun configureOnClickRecyclerView() {
-        ItemClickSupport
-                .addTo(mRecyclerView, R.layout.client_row_without_progression)
-                .setOnItemClickListener { theRecyclerView, position, v ->
-                    var customer = mAdapter.getClient(position)
-
-                    var i = Intent(this, VisiteInProgressActivity::class.java)
-                    i.putExtra(Constants.CLIENT_ID_KEY, customer.id)
-                    i.putExtra(Constants.CLIENT_FIRSTNAME_KEY, customer.firstname)
-                    i.putExtra(Constants.CLIENT_FULLNAME_KEY, customer.fullName)
-                    i.putExtra(Constants.CLIENT_LASTNAME_KEY, customer.lastname)
-                    startActivity(i)
-                }
+    override fun onRequestCustumerType() {
+        mCustomersListFragment.fetchCustomers(clientType, true)
     }
 
-    override fun onCustomerDetailsResponse(customer: Customer?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun onCustomerClicked(customer: Customer) {
+        var i = Intent(this, VisiteInProgressActivity::class.java)
 
-    override fun onCustomerDetailsFailure() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+        // Indispensable
+        i.putExtra(VisiteInProgressActivity.EXTRA_PROSPECT_TYPE,
+                Constants.PROSPECT_KNOWN_MEDICAL_TEAM_TYPE_KEY)
 
-    override fun onKnownProspectResponse(customers: MutableList<Customer>?) {
-        if (!customers.isNullOrEmpty()) {
+        i.putExtra(Constants.CLIENT_ID_KEY, customer.id)
+        i.putExtra(Constants.CLIENT_FIRSTNAME_KEY, customer.firstname)
+        i.putExtra(Constants.CLIENT_FULLNAME_KEY, customer.fullName)
+        i.putExtra(Constants.CLIENT_LASTNAME_KEY, customer.lastname)
 
-            for (c: Customer in customers) {
+        // Preventing against null exception
+        try {
 
-                if (c.customerTypeId == Constants.TYPE_MEDICAL_KEY) {
-                    clientsList.add(c)
-                    mAdapter.notifyItemInserted(clientsList.size - 1)
-                } else if (c.customerTypeId == Constants.TYPE_PHARMACEUTICAL_KEY) {
-                    clientsList.add(c)
-                    mAdapter.notifyItemInserted(clientsList.size - 1)
-                }
+            if (customer.customerStatus != null && customer.customerType != null
+                    && customer.speciality != null) {
+                i.putExtra(Constants.CLIENT_SPECIALITY_KEY, customer.speciality.name)
+                i.putExtra(Constants.CLIENT_CUSTOMER_TYPE_KEY, customer.customerType.name)
+                i.putExtra(Constants.CLIENT_CUSTOMER_STATUS_KEY, customer.customerStatus.name)
             }
-
-            mProgress.visibility = View.GONE
-
-        } else {
-            Toast.makeText(this, "Aucune prospect trouvé", Toast.LENGTH_LONG).show()
+        } catch (e: NullPointerException) {
+            e.printStackTrace()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        } finally {
+            startActivity(i)
         }
+
     }
 
-    override fun onKnownProspectFailure() {
-        Utils.presentToast(this, "Une erreur s'est produite", true)
-        mProgress.visibility = View.GONE
-    }
 }

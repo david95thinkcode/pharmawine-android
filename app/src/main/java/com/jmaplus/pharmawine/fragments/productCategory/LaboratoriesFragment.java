@@ -16,7 +16,6 @@ import com.jmaplus.pharmawine.R;
 import com.jmaplus.pharmawine.activities.ProductCategoryActivity;
 import com.jmaplus.pharmawine.adapters.ProductAdapter;
 import com.jmaplus.pharmawine.models.ApiProduct;
-import com.jmaplus.pharmawine.utils.PrefManager;
 
 import java.util.ArrayList;
 
@@ -34,7 +33,6 @@ public class LaboratoriesFragment extends Fragment {
     private ProductCategoryActivity mContext;
     private ProductAdapter productAdapter;
     private SwipeRefreshLayout mSwipeRefreshLayout;
-    private PrefManager prefManager;
 
     public LaboratoriesFragment() {
         // Required empty public constructor
@@ -59,18 +57,12 @@ public class LaboratoriesFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         mContext = (ProductCategoryActivity) getActivity();
-        prefManager = new PrefManager(mContext);
-
-//        Set the adapter
         productAdapter = new ProductAdapter(productList, mContext, ProductAdapter.LABORATORY);
 
-
-//        Set the adapter to recycler
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         recyclerView.setAdapter(productAdapter);
 
-//        Get the product's list
         getProductList();
 
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -129,8 +121,6 @@ public class LaboratoriesFragment extends Fragment {
         }
         productAdapter = new ProductAdapter(filteredModelList, mContext, ProductAdapter.LABORATORY);
         recyclerView.setAdapter(productAdapter);
-
-//        Mettre à jour le nombre de produits total
-        mContext.updateBottomView(R.drawable.pill, mContext.getResources().getString(R.string.products_number).replace("%", String.valueOf(filteredModelList.size())));
+        // todo: call the root to udate number of products
     }
 }

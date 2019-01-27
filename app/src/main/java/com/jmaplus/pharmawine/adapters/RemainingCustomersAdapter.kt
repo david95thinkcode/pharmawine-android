@@ -2,6 +2,7 @@ package com.jmaplus.pharmawine.adapters
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,32 +33,36 @@ class RemainingCustomersAdapter(val context: Context, var remainingClientsList: 
     override fun getItemCount(): Int = remainingClientsList.size
 
     override fun onBindViewHolder(holder: RemainingCustomersViewHolder, position: Int) {
-        holder.fullname.text = remainingClientsList[position].fullName
 
-        // Speciality
-        if (remainingClientsList[position].speciality == null)
-            holder.speciality.text = remainingClientsList[position].specialityId.toString()
-        else
-            holder.speciality.text = remainingClientsList[position].speciality.name
+        try {
+            Glide.with(context)
+                    .load(remainingClientsList[position].defaultAvatar)
+                    .into(holder?.picture)
 
-        // Customer status
-        if (remainingClientsList[position].customerStatus == null)
-            holder.status.text = remainingClientsList[position].customerStatusId.toString()
-        else
-            holder.status.text = remainingClientsList[position].customerStatus.name
+            holder.fullname.text = remainingClientsList[position].fullName
 
-        // profile picture setter
-        if (!remainingClientsList[position].avatar.isNullOrEmpty()) {
-            Glide.with(context).load(remainingClientsList[position].avatar).into(holder?.picture)
-        } else {
-            // Avatar url is empty
-            if (remainingClientsList[position].sex == "M" || remainingClientsList[position].sex == "m") {
-                Glide.with(context).load(R.drawable.ic_ast_man).into(holder?.picture)
-            } else {
-                // woman case
-                Glide.with(context).load(R.drawable.ic_ast_woman).into(holder?.picture)
-            }
+            // Speciality
+            if (remainingClientsList[position].speciality == null)
+                holder.speciality.text = remainingClientsList[position].specialityId.toString()
+            else
+                holder.speciality.text = remainingClientsList[position].speciality.name
+
+            // Customer status
+            if (remainingClientsList[position].customerStatus == null)
+                holder.status.text = remainingClientsList[position].customerStatusId.toString()
+            else
+                holder.status.text = remainingClientsList[position].customerStatus.name
+        } catch (e: NullPointerException) {
+            Log.w(TAG, "NullPointerException: at item on index ==> $position")
+            e.printStackTrace()
+        } catch (e: Exception) {
+            Log.w(TAG, "Exception: at item on index ==> $position")
+            e.printStackTrace()
         }
+
+
+
+
     }
 
     fun getClient(position: Int): Customer = remainingClientsList[position]
