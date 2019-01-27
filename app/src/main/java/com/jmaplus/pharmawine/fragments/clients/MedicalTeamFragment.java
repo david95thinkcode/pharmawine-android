@@ -1,14 +1,21 @@
 package com.jmaplus.pharmawine.fragments.clients;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -16,7 +23,9 @@ import android.widget.Toast;
 import com.jmaplus.pharmawine.PharmaWine;
 import com.jmaplus.pharmawine.R;
 import com.jmaplus.pharmawine.activities.ClientsActivity;
+import com.jmaplus.pharmawine.activities.MainActivity;
 import com.jmaplus.pharmawine.adapters.ClientAdapter;
+import com.jmaplus.pharmawine.fragments.rapport.ReportEtape4Fragment;
 import com.jmaplus.pharmawine.models.AuthenticatedUser;
 import com.jmaplus.pharmawine.models.MedicalTeam;
 import com.jmaplus.pharmawine.services.ApiClient;
@@ -39,25 +48,27 @@ public class MedicalTeamFragment extends Fragment {
     private final String TAG = this.getClass().getSimpleName();
     private static final String KEY_LAYOUT_POSITION = "layoutPosition";
     private int mRecyclerViewPosition = 0;
+    public PharmaciesFragment mPharmaciesFragment = new PharmaciesFragment();
 
     private ArrayList<MedicalTeam> medicalTeamList;
-    private ClientsActivity mContext;
+    public FavoritesFragment mFavoritesFragment = new FavoritesFragment();
     private ClientAdapter clientAdapter;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private PrefManager prefManager;
+    private OnFragmentInteractionListener mListener;
+    private MainActivity mContext;
 
     public MedicalTeamFragment() {
         // Required empty public constructor
         medicalTeamList = new ArrayList<>();
     }
 
-
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_clients_medical_team, container, false);
-
+        setHasOptionsMenu(true);
         recyclerView = view.findViewById(R.id.rv_medical_team);
         mSwipeRefreshLayout = view.findViewById(R.id.swipe_medical_team);
 
@@ -65,10 +76,51 @@ public class MedicalTeamFragment extends Fragment {
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
+        inflater.inflate(R.menu.clients_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.action_search: {
+                SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);
+                searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                    @Override
+                    public boolean onQueryTextSubmit(String s) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onQueryTextChange(String s) {
+                        return false;
+                    }
+                });
+            }
+            break;
+            case R.id.action_pharma:
+                mListener.showFragment(mPharmaciesFragment);
+                break;
+            case R.id.action_favori:
+                mListener.showFragment(mFavoritesFragment);
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        mContext = (ClientsActivity) getActivity();
+        mContext = (MainActivity) getActivity();
         prefManager = new PrefManager(mContext);
 
 //        Set the adapter
@@ -88,6 +140,30 @@ public class MedicalTeamFragment extends Fragment {
                 getMedicalTeamList();
             }
         });
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+
+    public interface OnFragmentInteractionListener {
+
+        void showFragment(Fragment f);
     }
 
     @Override
@@ -157,4 +233,6 @@ public class MedicalTeamFragment extends Fragment {
         if (mSwipeRefreshLayout.isRefreshing()) mSwipeRefreshLayout.setRefreshing(false);
         clientAdapter.notifyDataSetChanged();
     }
+
+
 }

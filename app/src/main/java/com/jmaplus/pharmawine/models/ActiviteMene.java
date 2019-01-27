@@ -3,7 +3,7 @@ package com.jmaplus.pharmawine.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-class ActiviteMene implements Parcelable {
+public class ActiviteMene implements Parcelable {
 
     @SuppressWarnings("unused")
     public static final Parcelable.Creator<ActiviteMene> CREATOR = new Parcelable.Creator<ActiviteMene>() {
@@ -18,13 +18,15 @@ class ActiviteMene implements Parcelable {
         }
     };
     private String gardes;
+    private String reunion;
     private String ralationPublique;
     private String actionPharmacy;
     private String parcoursFidelisation;
     private String zonesProfondes;
 
-    public ActiviteMene(String gardes, String ralationPublique, String actionPharmacy, String parcoursFidelisation, String zonesProfondes) {
+    public ActiviteMene(String gardes, String reunion, String ralationPublique, String actionPharmacy, String parcoursFidelisation, String zonesProfondes) {
         this.gardes = gardes;
+        this.reunion = reunion;
         this.ralationPublique = ralationPublique;
         this.actionPharmacy = actionPharmacy;
         this.parcoursFidelisation = parcoursFidelisation;
@@ -33,6 +35,7 @@ class ActiviteMene implements Parcelable {
 
     protected ActiviteMene(Parcel in) {
         gardes = in.readString();
+        reunion = in.readString();
         ralationPublique = in.readString();
         actionPharmacy = in.readString();
         parcoursFidelisation = in.readString();
@@ -43,9 +46,18 @@ class ActiviteMene implements Parcelable {
         return gardes;
     }
 
+    public String getReunion() {
+        return reunion;
+    }
+
+    public void setReunion(String reunion) {
+        this.reunion = reunion;
+    }
+
     public void setGardes(String gardes) {
         this.gardes = gardes;
     }
+
 
     public String getRalationPublique() {
         return ralationPublique;
@@ -87,6 +99,7 @@ class ActiviteMene implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(gardes);
+        dest.writeString(reunion);
         dest.writeString(ralationPublique);
         dest.writeString(actionPharmacy);
         dest.writeString(parcoursFidelisation);

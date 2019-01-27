@@ -7,9 +7,10 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
@@ -17,6 +18,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.jmaplus.pharmawine.R;
+import com.jmaplus.pharmawine.fragments.rapportHebdo.ActiviteMeneGardeFragment;
+import com.jmaplus.pharmawine.fragments.rapportHebdo.ObjectifNexWkPrescripteurFragment;
+import com.jmaplus.pharmawine.fragments.rapportHebdo.ObjectionFragment;
+import com.jmaplus.pharmawine.fragments.rapportHebdo.StatistiqueHebdoFragment;
+import com.jmaplus.pharmawine.models.RapportHebdo;
+import com.jmaplus.pharmawine.models.ActiviteMene;
 
 public class ReportHebdoEditManagerActivity extends AppCompatActivity {
 
@@ -24,9 +31,8 @@ public class ReportHebdoEditManagerActivity extends AppCompatActivity {
     ImageView fillChecker;
     TextView titleOfStepReportHebdo;
     ImageButton backToReportHebdoActivity;
-    Intent mIntent = null;
-    private Context mContext;
-    private Fragment mFrag = null;
+    Intent mIntent = null;  
+    FragmentManager fragManager = getSupportFragmentManager();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +40,6 @@ public class ReportHebdoEditManagerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_report_hebdo_edit_manager);
 
         LayoutInflater mInflater = LayoutInflater.from(this);
-        mContext = this;
         mIntent = getIntent();
 
         View mView = mInflater.inflate(R.layout.custom_actionbar_step_hebdo_report, null);
@@ -43,30 +48,58 @@ public class ReportHebdoEditManagerActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayShowCustomEnabled(true);
-        fillChecker = mView.findViewById(R.id.fab_actionbar_to_check_fill_of_report);
+        fillChecker = mView.findViewById(R.id.iv_actionbar_to_check_fill_of_report);
         titleOfStepReportHebdo = mView.findViewById(R.id.title_of_champ_hebdo_report);
         backToReportHebdoActivity = mView.findViewById(R.id.imageButtonBackToReportActivity);
 
+        FragmentTransaction fragTransaction = fragManager.beginTransaction();
+
         activityTitle = mIntent.getStringExtra("ActivityTitle");
         if (activityTitle.equals(getResources().getString(R.string.statistique_medicale_week))) {
-            fillChecker.setImageDrawable(getResources().getDrawable(R.drawable.check_green));
+            fillChecker.setImageDrawable(getResources().getDrawable(R.drawable.valideicon));
             titleOfStepReportHebdo.setText(getResources().getString(R.string.statistique_medicale_week));
+            StatistiqueHebdoFragment statistiqueHebdoFragment = new StatistiqueHebdoFragment();
+            fragTransaction.add(R.id.fragment_container_report_hebdo, statistiqueHebdoFragment);
+            fragTransaction.commit();
+
+
             // show statistique fragment
 
 
         } else if (activityTitle.equals(getResources().getString(R.string.activite_menee))) {
             titleOfStepReportHebdo.setText(getResources().getString(R.string.activite_menee));
+            ActiviteMeneGardeFragment activiteMeneGardeFragment = new ActiviteMeneGardeFragment();
+            fragTransaction.add(R.id.fragment_container_report_hebdo, activiteMeneGardeFragment);
+            fragTransaction.commit();
+
+
             //show activite mene fragment
 
         } else if (activityTitle.equals(getResources().getString(R.string.objection))) {
             titleOfStepReportHebdo.setText(getResources().getString(R.string.objection));
+            ObjectionFragment objectionFragment = new ObjectionFragment();
+            fragTransaction.add(R.id.fragment_container_report_hebdo, objectionFragment);
+            fragTransaction.commit();
             //show objection fragment
 
         } else if (activityTitle.equals(getResources().getString(R.string.objectif_next_week))) {
             titleOfStepReportHebdo.setText(getResources().getString(R.string.objectif_next_week));
+            ObjectifNexWkPrescripteurFragment objectifNexWkPrescripteurFragment = new ObjectifNexWkPrescripteurFragment();
+            fragTransaction.add(R.id.fragment_container_report_hebdo, objectifNexWkPrescripteurFragment);
+            fragTransaction.commit();
             //show fragment Objectif Next Week
         }
 
+
+    }
+
+    public void backBehavior(View v) {
+        v.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
     }
 }

@@ -13,13 +13,13 @@ class CenterSelectionAdapter(var centersList: MutableList<Center>) :
 
     class CenterSelectionViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        val center = itemView.findViewById<TextView>(R.id.tv_center_label)
-        val zone = itemView.findViewById<TextView>(R.id.tv_zone_label)
+        val center = itemView.findViewById<TextView>(R.id.tv_centre_name)
+        val zone = itemView.findViewById<TextView>(R.id.tv_zone_name)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, position: Int): CenterSelectionViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-                .inflate(R.layout.mt_center_row, parent, false)
+                .inflate(R.layout.centre_item, parent, false)
 
         return CenterSelectionViewHolder(inflater)
     }

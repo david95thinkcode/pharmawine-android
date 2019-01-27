@@ -88,44 +88,12 @@
 
         </LinearLayout>
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/menu_card_height"
             android:orientation="horizontal">
 
-            <!--<android.support.v7.widget.CardView-->
-                <!--android:layout_width="0dp"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:layout_weight="50"-->
-                <!--app:cardCornerRadius="3dp"-->
-                <!--android:layout_margin="@dimen/menu_card_margin"-->
-                <!--app:cardElevation="3dp">-->
-                <!--<LinearLayout-->
-                    <!--android:id="@+id/cv_menu_clients"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="match_parent"-->
-                    <!--android:orientation="vertical"-->
-                    <!--android:background="@drawable/ripple"-->
-                    <!--android:onClick="clicksHandler"-->
-                    <!--android:clickable="true">-->
-                    <!--<ImageView-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="0dp"-->
-                        <!--android:src="@drawable/ic_client"-->
-                        <!--android:padding="@dimen/menu_card_img_padding"-->
-                        <!--android:scaleType="fitCenter"-->
-                        <!--android:layout_marginTop="@dimen/menu_card_img_marginTop"-->
-                        <!--android:layout_weight="80"/>-->
-                    <!--<TextView-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_weight="20"-->
-                        <!--android:gravity="top|center_horizontal"-->
-                        <!--android:text="@string/menu_clients_title"-->
-                        <!--/>-->
-                <!--</LinearLayout>-->
-            <!--</android.support.v7.widget.CardView>-->
+
 
             <android.support.v7.widget.CardView
                 android:layout_width="0dp"
@@ -158,47 +126,6 @@
                         android:layout_weight="20"
                         android:gravity="top|center_horizontal"
                         android:text="@string/menu_products_title" />
-                </LinearLayout>
-            </android.support.v7.widget.CardView>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/menu_card_height"
-            android:orientation="horizontal">
-
-            <android.support.v7.widget.CardView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="50"
-                app:cardCornerRadius="3dp"
-                android:layout_margin="@dimen/menu_card_margin"
-                app:cardElevation="3dp">
-                <LinearLayout
-                    android:id="@+id/cv_menu_network"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:background="@drawable/ripple"
-                    android:clickable="true"
-                    android:onClick="clicksHandler">
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:src="@drawable/network"
-                        android:padding="@dimen/menu_card_img_padding"
-                        android:scaleType="fitCenter"
-                        android:tint="@color/darker_grey"
-                        android:layout_marginTop="@dimen/menu_card_img_marginTop"
-                        android:layout_weight="80"/>
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="20"
-                        android:gravity="top|center_horizontal"
-                        android:text="@string/menu_network_title"
-                        />
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 
@@ -237,7 +164,10 @@
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 
+
         </LinearLayout>
+
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/menu_card_height"
@@ -302,13 +232,13 @@
                         android:layout_weight="80"
                         android:padding="@dimen/menu_card_img_padding"
                         android:scaleType="fitCenter"
-                        android:src="@drawable/logout"
-                        android:tint="@color/darker_grey" />
+                        android:src="@drawable/logout" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="20"
+                        android:textColor="@color/red"
                         android:gravity="top|center_horizontal"
                         android:text="@string/menu_logout_title" />
                 </LinearLayout>

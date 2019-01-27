@@ -264,7 +264,7 @@ public class LoginActivity extends AppCompatActivity implements AuthCalls.Callba
                                         etId.requestFocus();
                                     }
                                 })
-                        .show();
+                                .show();
 
                     } else {
                         Toast.makeText(LoginActivity.this, getResources().getString(R.string.smthg_wrong_request), Toast.LENGTH_SHORT).show();

@@ -1,14 +1,124 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/frame_container_stat_hebdo"
     tools:context=".fragments.rapportHebdo.StatistiqueHebdoFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
+        android:id="@+id/linearLayout3"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-</FrameLayout>
+        <ImageView
+            android:id="@+id/iv_see_stat_icon"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/notvalideicon" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="10dp"
+            android:fontFamily="@font/roboto_regular"
+            android:gravity="center"
+            android:text="@string/couverture"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="273dp"
+        android:layout_height="37dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:padding="2dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
+
+        <Button
+            android:id="@+id/btn_stat_fdc"
+            style="@style/btn_primary_rounded_margin_tb_3_style"
+            android:layout_width="60dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="3dp"
+            android:layout_marginEnd="5dp"
+            android:backgroundTint="@color/mix_white_grey"
+            android:text="@string/fdc"
+            android:textColor="@color/project_grey" />
+
+        <Button
+            android:id="@+id/btn_stat_pdd"
+            style="@style/btn_primary_rounded_margin_tb_3_style"
+            android:layout_width="60dp"
+            android:layout_height="25dp"
+            android:layout_marginEnd="5dp"
+            android:backgroundTint="@color/mix_white_grey"
+            android:text="@string/pdd"
+            android:textColor="@color/project_grey" />
+
+        <Button
+            android:id="@+id/btn_stat_p"
+            style="@style/btn_primary_rounded_margin_tb_3_style"
+            android:layout_width="60dp"
+            android:layout_height="25dp"
+            android:layout_marginEnd="5dp"
+            android:backgroundTint="@color/mix_white_grey"
+            android:text="@string/p"
+            android:textColor="@color/project_grey" />
+
+        <Button
+            android:id="@+id/btn_stat_total"
+            style="@style/btn_primary_rounded_margin_tb_3_style"
+            android:layout_width="62dp"
+            android:layout_height="25dp"
+            android:backgroundTint="@color/mix_white_grey"
+            android:text="@string/total"
+            android:textColor="@color/project_grey" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/fragment_container_table_of_stat"
+        android:layout_width="405dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_constraintBottom_toTopOf="@+id/btn_vu_stat"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+
+
+
+
+    <Button
+        android:id="@+id/btn_vu_stat"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_weight="0"
+        android:background="@color/colorAccent"
+        android:text="@string/vu"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="13sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+</android.support.constraint.ConstraintLayout>

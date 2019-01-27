@@ -46,6 +46,8 @@ public class ClientDetailsActivity extends AppCompatActivity implements
 
         clientId = getIntent().getIntExtra(CLIENT_ID_KEY, -1);
         clientType = getIntent().getStringExtra(CLIENT_TYPE_KEY);
+        Log.e(TAG, "Client id ==> " + clientId.toString());
+        Log.e(TAG, "Client type ==> " + clientType);
 
         if ((clientId == -1) || (clientType.isEmpty())) { // If values passed by intent are not correct
             finish();

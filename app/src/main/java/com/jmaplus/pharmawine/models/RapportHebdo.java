@@ -20,23 +20,23 @@ public class RapportHebdo implements Parcelable {
         }
     };
     private boolean seeStat;
-    private ActiviteMene Am;
+    private ActiviteMene activiteMene;
     private String objections;
     private ObjectifNextWeek ObNW;
 
     public RapportHebdo() {
     }
 
-    public RapportHebdo(boolean seeStat, ActiviteMene am, String objections, ObjectifNextWeek obNW) {
+    public RapportHebdo(boolean seeStat, ActiviteMene activiteMene, String objections, ObjectifNextWeek obNW) {
         this.seeStat = seeStat;
-        Am = am;
+        this.activiteMene = activiteMene;
         this.objections = objections;
         ObNW = obNW;
     }
 
     protected RapportHebdo(Parcel in) {
         seeStat = in.readByte() != 0x00;
-        Am = (ActiviteMene) in.readValue(ActiviteMene.class.getClassLoader());
+        activiteMene = (ActiviteMene) in.readValue(ActiviteMene.class.getClassLoader());
         objections = in.readString();
         ObNW = (ObjectifNextWeek) in.readValue(ObjectifNextWeek.class.getClassLoader());
     }
@@ -49,12 +49,12 @@ public class RapportHebdo implements Parcelable {
         this.seeStat = seeStat;
     }
 
-    public ActiviteMene getAm() {
-        return Am;
+    public ActiviteMene getActiviteMene() {
+        return activiteMene;
     }
 
-    public void setAm(ActiviteMene am) {
-        Am = am;
+    public void setActiviteMene(ActiviteMene activiteMene) {
+        this.activiteMene = activiteMene;
     }
 
     public String getObjections() {
@@ -81,7 +81,7 @@ public class RapportHebdo implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeByte((byte) (seeStat ? 0x01 : 0x00));
-        dest.writeValue(Am);
+        dest.writeValue(activiteMene);
         dest.writeString(objections);
         dest.writeValue(ObNW);
     }

@@ -10,9 +10,9 @@ import java.util.*
  */
 @IgnoreExtraProperties
 data class FireRoom(
-    val first: String = "",
-    val second: String = "",
-    val createdAt: String = Date().time.toString(),
-    val lastMessage: FireMessage = FireMessage(),
-    val id: String = ""
+        val first: String = "",
+        val second: String = "",
+        val createdAt: String = Date().time.toString(),
+        val lastMessage: FireMessage = FireMessage(),
+        val id: String = ""
 )

@@ -80,9 +80,9 @@ class MessagingActivity : AppCompatActivity() {
                                 authenticatedUser.getLastname(), authenticatedUser.getAvatar())
 
                         userReference.setValue(u).addOnSuccessListener {
-                                    Toast.makeText(mContext,
-                                            "User was added to firebase", Toast.LENGTH_SHORT).show()
-                                }
+                            Toast.makeText(mContext,
+                                    "User was added to firebase", Toast.LENGTH_SHORT).show()
+                        }
                     } else {
 //                        Toast.makeText(mContext, "onDataChange: User exists on Firebase", Toast.LENGTH_SHORT).show()
                     }

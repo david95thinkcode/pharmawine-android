@@ -23,6 +23,7 @@ import com.jmaplus.pharmawine.fragments.profilage.Step1MedicalTeamClientFragment
 import com.jmaplus.pharmawine.fragments.profilage.Step2MedicalTeamClientFragment;
 import com.jmaplus.pharmawine.fragments.profilage.Step3MedicalTeamClientFragment;
 import com.jmaplus.pharmawine.models.Client;
+import com.jmaplus.pharmawine.models.Customer;
 import com.jmaplus.pharmawine.utils.Utils;
 
 import org.jetbrains.annotations.NotNull;
@@ -46,6 +47,9 @@ public class EditMedicalTeamActivity extends AppCompatActivity implements
     private Client client;
     private Client changingInProgressClient;
 
+    private Customer mCustomer;
+    private Customer mChangingCustomer;
+
     private Menu mMenu;
     private Button mSuivantBtn;
     private Button mNextAdaptativeBtn;
@@ -64,9 +68,13 @@ public class EditMedicalTeamActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_edit_medical_team);
 
         medicalTeamId = getIntent().getStringExtra(MEDICAL_ID_KEY);
+
         client = new Client();
         changingInProgressClient = new Client();
         mContext = this;
+
+        mCustomer = new Customer();
+        mChangingCustomer = new Customer();
 
         initialiseUI();
 
@@ -137,7 +145,7 @@ public class EditMedicalTeamActivity extends AppCompatActivity implements
     }
 
     private void getClientDetails() {
-        client.setId(medicalTeamId);
+        //client.setId(medicalTeamId);
 
         // TODO: fetch details
     }

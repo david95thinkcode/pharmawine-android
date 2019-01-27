@@ -3,7 +3,7 @@ package com.jmaplus.pharmawine.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-class ObjectifNextWeek implements Parcelable {
+public class ObjectifNextWeek implements Parcelable {
     @SuppressWarnings("unused")
     public static final Parcelable.Creator<ObjectifNextWeek> CREATOR = new Parcelable.Creator<ObjectifNextWeek>() {
         @Override
