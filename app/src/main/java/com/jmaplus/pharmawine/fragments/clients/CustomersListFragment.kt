@@ -36,6 +36,7 @@ class CustomersListFragment : Fragment(), CustomerCalls.Callbacks {
     private lateinit var mProgressBar: ProgressBar
 
     private lateinit var mCustomersList: MutableList<Customer>
+    private lateinit var mSafeCustomersList: MutableList<Customer>
     private lateinit var mAdapter: RemainingCustomersAdapter
     private lateinit var mContext: Context
     private lateinit var mAuthUser: AuthUser
@@ -52,6 +53,7 @@ class CustomersListFragment : Fragment(), CustomerCalls.Callbacks {
 
         // Initializations
         mCustomersList = ArrayList()
+        mSafeCustomersList = ArrayList()
         mAdapter = RemainingCustomersAdapter(mContext, mCustomersList)
         mRecyclerView.layoutManager = LinearLayoutManager(mContext, LinearLayout.VERTICAL, false)
         mRecyclerView.adapter = mAdapter
@@ -114,6 +116,32 @@ class CustomersListFragment : Fragment(), CustomerCalls.Callbacks {
 
     }
 
+    /**
+     * This method should be called from parent
+     */
+    fun filteredCustomerListByCustomerType(customerTypeID: Int) {
+        if (mCustomersList.isNotEmpty()) {
+            val newList = mSafeCustomersList.filter { it.customerTypeId == customerTypeID }
+            refreshRecyclerViewWithNewList(newList)
+        } else {
+            Utils.presentToast(mContext, "Rien a filtrer", true)
+        }
+    }
+
+    private fun refreshRecyclerViewWithNewList(newCustomerList: List<Customer>) {
+        if (newCustomerList.isNotEmpty()) {
+            mProgressBar.visibility = View.GONE
+
+            mCustomersList.clear()
+            mCustomersList.addAll(newCustomerList)
+            mAdapter.notifyDataSetChanged()
+
+        } else {
+            Utils.presentToast(mContext, "Liste vide", true)
+        }
+    }
+
+
     override fun onCustomerDetailsResponse(customer: Customer?) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
@@ -124,15 +152,21 @@ class CustomersListFragment : Fragment(), CustomerCalls.Callbacks {
 
     override fun onKnownProspectResponse(customers: MutableList<Customer>?) {
         if (!customers.isNullOrEmpty()) {
+
             mCustomersList.clear()
+            mSafeCustomersList.clear()
+
             for (c: Customer in customers) {
                 if (c.customerTypeId == mCustomerType) {
                     mCustomersList.add(c)
                     mAdapter.notifyItemInserted(customers.size - 1)
                 }
             }
+
+            mSafeCustomersList.addAll(mCustomersList) // important
         } else {
             mCustomersList.clear()
+            mSafeCustomersList.clear()
         }
 
         mProgressBar.visibility = View.GONE

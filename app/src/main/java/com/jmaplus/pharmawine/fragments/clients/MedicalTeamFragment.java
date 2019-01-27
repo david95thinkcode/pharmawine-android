@@ -3,10 +3,8 @@ package com.jmaplus.pharmawine.fragments.clients;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -16,38 +14,43 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
-import com.jmaplus.pharmawine.PharmaWine;
 import com.jmaplus.pharmawine.R;
-import com.jmaplus.pharmawine.activities.MainActivity;
-import com.jmaplus.pharmawine.adapters.ClientAdapter;
-import com.jmaplus.pharmawine.models.MedicalTeam;
-import com.jmaplus.pharmawine.utils.PrefManager;
+import com.jmaplus.pharmawine.adapters.RemainingCustomersAdapter;
+import com.jmaplus.pharmawine.models.AuthUser;
+import com.jmaplus.pharmawine.models.Customer;
+import com.jmaplus.pharmawine.utils.Constants;
+import com.jmaplus.pharmawine.utils.CustomerCalls;
+import com.jmaplus.pharmawine.utils.Utils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MedicalTeamFragment extends Fragment {
+public class MedicalTeamFragment extends Fragment implements
+        CustomerCalls.Callbacks {
 
-    private RecyclerView recyclerView;
     private final String TAG = this.getClass().getSimpleName();
     private static final String KEY_LAYOUT_POSITION = "layoutPosition";
-    private int mRecyclerViewPosition = 0;
-    public PharmaciesFragment mPharmaciesFragment = new PharmaciesFragment();
-
-    private ArrayList<MedicalTeam> medicalTeamList;
-    public FavoritesFragment mFavoritesFragment = new FavoritesFragment();
-    private ClientAdapter clientAdapter;
-    private SwipeRefreshLayout mSwipeRefreshLayout;
-    private PrefManager prefManager;
     private OnFragmentInteractionListener mListener;
-    private MainActivity mContext;
+
+
+    private List<Customer> mCustomersList;
+    private List<Customer> mSafeCustomersList;
+    private RemainingCustomersAdapter mAdapter;
+    private Context mContext;
+    private AuthUser mAuthUser;
+
+    private RecyclerView mRecyclerView;
+    private ProgressBar mProgressBar;
 
     public MedicalTeamFragment() {
         // Required empty public constructor
-        medicalTeamList = new ArrayList<>();
     }
 
     @Override
@@ -56,13 +59,26 @@ public class MedicalTeamFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_clients_medical_team, container, false);
 
-        setHasOptionsMenu(true);
+        mContext = requireContext();
+        mAuthUser = AuthUser.getAuthenticatedUser(mContext);
+        mRecyclerView = view.findViewById(R.id.rv_customers2);
+        mProgressBar = view.findViewById(R.id.pb_customers2);
 
-        recyclerView = view.findViewById(R.id.rv_medical_team);
-        mSwipeRefreshLayout = view.findViewById(R.id.swipe_medical_team);
-        mSwipeRefreshLayout.setRefreshing(false);
+        // Initializations
+        mCustomersList = new ArrayList();
+        mSafeCustomersList = new ArrayList();
+        mAdapter = new RemainingCustomersAdapter(mContext, mCustomersList);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext, LinearLayout.VERTICAL, false));
+        mRecyclerView.setAdapter(mAdapter);
 
+        getCustomers();
         return view;
+    }
+
+    private void getCustomers() {
+        mProgressBar.setVisibility(View.VISIBLE);
+        CustomerCalls.getAllKnownProspects(AuthUser.getToken(mContext), this);
+
     }
 
     @Override
@@ -70,8 +86,6 @@ public class MedicalTeamFragment extends Fragment {
         menu.clear();
         inflater.inflate(R.menu.clients_menu, menu);
         super.onCreateOptionsMenu(menu, inflater);
-
-
     }
 
     @Override
@@ -93,12 +107,13 @@ public class MedicalTeamFragment extends Fragment {
                 });
             }
             break;
-//            case R.id.action_pharma:
-//                mListener.showFragment(mPharmaciesFragment);
-//                break;
-//            case R.id.action_favori:
+            case R.id.action_pharma:
+                filteredCustomerListByCustomerType(Constants.TYPE_PHARMACEUTICAL_KEY);
+                break;
+            case R.id.action_favori:
+                Toast.makeText(mContext, "Option non disponible", Toast.LENGTH_LONG);
 //                mListener.showFragment(mFavoritesFragment);
-//                break;
+                break;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -106,30 +121,18 @@ public class MedicalTeamFragment extends Fragment {
     }
 
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    private void filteredCustomerListByCustomerType(Integer customerTypeID) {
+        if (!mCustomersList.isEmpty()) {
+            List<Customer> newList = new ArrayList();
 
-        mContext = (MainActivity) getActivity();
-        prefManager = new PrefManager(mContext);
-
-//        Set the adapter
-        clientAdapter = new ClientAdapter(medicalTeamList, null, mContext, ClientAdapter.MEDICAL_TEAM);
-
-//        Set the adapter to recycler
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
-        recyclerView.setAdapter(clientAdapter);
-
-//        Get the medical team's list
-        getMedicalTeamList();
-
-//        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-//            @Override
-//            public void onRefresh() {
-//                getMedicalTeamList();
-//            }
-//        });
+            for (Customer c : mCustomersList) {
+                if (c.getCustomerTypeId() == customerTypeID)
+                    newList.add(c);
+            }
+            refreshRecyclerViewWithNewList(newList);
+        } else {
+            Utils.presentToast(mContext, "Rien a filtrer", true);
+        }
     }
 
     @Override
@@ -143,6 +146,19 @@ public class MedicalTeamFragment extends Fragment {
         }
     }
 
+    private void refreshRecyclerViewWithNewList(List<Customer> newCustomerList) {
+        if (!newCustomerList.isEmpty()) {
+            mProgressBar.setVisibility(View.GONE);
+
+            mCustomersList.clear();
+            mCustomersList.addAll(newCustomerList);
+            mAdapter.notifyDataSetChanged();
+
+        } else {
+            Utils.presentToast(mContext, "Liste vide", true);
+        }
+    }
+
 
     @Override
     public void onDetach() {
@@ -150,6 +166,41 @@ public class MedicalTeamFragment extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public void onCustomerDetailsResponse(@javax.annotation.Nullable Customer customer) {
+
+    }
+
+    @Override
+    public void onCustomerDetailsFailure() {
+
+    }
+
+    @Override
+    public void onKnownProspectResponse(@javax.annotation.Nullable List<Customer> customers) {
+        if (!customers.isEmpty()) {
+
+            mCustomersList.clear();
+            mSafeCustomersList.clear();
+
+            for (Customer c : customers) {
+                mCustomersList.add(c);
+                mAdapter.notifyItemInserted(customers.size() - 1);
+            }
+            mSafeCustomersList.addAll(mCustomersList); // important
+        } else {
+            mCustomersList.clear();
+            mSafeCustomersList.clear();
+        }
+
+        mProgressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onKnownProspectFailure() {
+        Utils.presentToast(mContext, "Une erreur s'est produite", true);
+        mProgressBar.setVisibility(View.GONE);
+    }
 
     public interface OnFragmentInteractionListener {
 
@@ -158,71 +209,8 @@ public class MedicalTeamFragment extends Fragment {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putInt(KEY_LAYOUT_POSITION, recyclerView.getVerticalScrollbarPosition());
+        outState.putInt(KEY_LAYOUT_POSITION, mRecyclerView.getVerticalScrollbarPosition());
         super.onSaveInstanceState(outState);
     }
-
-    private void getMedicalTeamList() {
-
-        medicalTeamList.clear();
-        medicalTeamList.addAll(MedicalTeam.getAll(PharmaWine.mRealm));
-        clientAdapter.notifyDataSetChanged();
-
-//        Get the fresh client's list if not loaded & connected
-
-//        if (!mContext.isMedicalTeamsLoaded) {
-//
-//            if (PharmaWine.getInstance().isOnline()) {
-//
-//                ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
-//                Call<MedicalClientsResponse> call = apiService.getDelegateMedicalTeamCustomers(AuthenticatedUser.getAuthenticatedUser(PharmaWine.mRealm).getId(), ApiClient.TOKEN_TYPE + prefManager.getToken());
-//
-//                mSwipeRefreshLayout.setRefreshing(true);
-//                call.enqueue(new Callback<MedicalClientsResponse>() {
-//                    @Override
-//                    public void onResponse(Call<MedicalClientsResponse> call, Response<MedicalClientsResponse> response) {
-//
-//                        if (!response.isSuccessful() || response.body() == null) {
-//                            Toast.makeText(mContext, "Response not successful", Toast.LENGTH_SHORT).show();
-////                            Toast.makeText(mContext, getResources().getString(R.string.smthg_wrong_request), Toast.LENGTH_SHORT).show();
-//                        } else {
-//
-//                            if (response.body().getStatusCode() == 200 && response.body().getMedicalTeams() != null) {
-//
-//                                MedicalTeam.saveAll(PharmaWine.mRealm, response.body().getMedicalTeams(), null);
-//                                medicalTeamList.clear();
-//                                medicalTeamList.addAll(response.body().getMedicalTeams());
-//                                mContext.isMedicalTeamsLoaded = true;
-//
-//                            } else {
-////                                Toast.makeText(mContext, getResources().getString(R.string.smthg_wrong_request), Toast.LENGTH_SHORT).show();
-//                                Snackbar.make(mSwipeRefreshLayout, getResources().getString(R.string.no_data_returned), Snackbar.LENGTH_LONG).show();
-//                            }
-//                        }
-//                        //Notify changes
-//                        notifyChanges();
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Call<MedicalClientsResponse> call, Throwable t) {
-//                        Toast.makeText(mContext, "Echec de la requete", Toast.LENGTH_SHORT).show();
-////                        Toast.makeText(mContext, getResources().getString(R.string.smthg_wrong_request), Toast.LENGTH_SHORT).show();
-//                        notifyChanges();
-//                    }
-//                });
-//
-//            } else {
-//                Toast.makeText(mContext, mContext.getResources().getString(R.string.not_connected), Toast.LENGTH_SHORT).show();
-//                notifyChanges();
-//            }
-//        }
-
-    }
-
-    private void notifyChanges() {
-        if (mSwipeRefreshLayout.isRefreshing()) mSwipeRefreshLayout.setRefreshing(false);
-        clientAdapter.notifyDataSetChanged();
-    }
-
 
 }
