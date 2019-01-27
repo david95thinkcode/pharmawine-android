@@ -1,8 +1,8 @@
 package com.jmaplus.pharmawine.fragments.home;
 
-
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -29,16 +29,14 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class HomeSupervisorFragment extends Fragment {
+
+public class HomeAdminFragment extends Fragment {
 
     private TextView tvDate, tvNetworkLabel, tvProgress;
     private CardView cvDate;
     private RoundCornerProgressBar dailyProgressBar;
     private Context mContext;
-    private FloatingActionButton fabNetwork, fabProspection;
+    private FloatingActionButton fabNetwork;
 
     private AuthenticatedUser authenticatedUser;
     private AuthUser currentUser;
@@ -47,7 +45,7 @@ public class HomeSupervisorFragment extends Fragment {
     private LinearLayout clientSeen, clientRemaining;
 
 
-    public HomeSupervisorFragment() {
+    public HomeAdminFragment() {
         // Required empty public constructor
     }
 
@@ -55,11 +53,10 @@ public class HomeSupervisorFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
 
         mContext = getActivity();
-
-        View view = inflater.inflate(R.layout.fragment_home_supervisor, container, false);
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_home_admin, container, false);
 
 
         tvDate = view.findViewById(R.id.tv_home_date);
@@ -72,7 +69,6 @@ public class HomeSupervisorFragment extends Fragment {
 
         tvNetworkLabel = view.findViewById(R.id.tv_network_label);
         fabNetwork = view.findViewById(R.id.fab_network);
-        fabProspection = view.findViewById(R.id.fab_see_more);
 
         initViews();
 
@@ -133,13 +129,6 @@ public class HomeSupervisorFragment extends Fragment {
             }
         });
 
-        fabProspection.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(mContext, ProspectionActivity.class));
-                // startActivity(new Intent(mContext, RapportHebdoActivity.class));
-            }
-        });
     }
 
 
@@ -148,7 +137,14 @@ public class HomeSupervisorFragment extends Fragment {
         tvProgress.setText(String.valueOf(value).concat("%"));
     }
 
+
 }
+
+
+
+
+
+
 
 
 
