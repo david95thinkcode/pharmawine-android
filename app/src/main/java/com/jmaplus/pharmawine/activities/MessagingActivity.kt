@@ -3,7 +3,7 @@ package com.jmaplus.pharmawine.activities
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
@@ -21,7 +21,6 @@ import com.jmaplus.pharmawine.models.Messaging.FireUser
 import com.jmaplus.pharmawine.models.Messaging.MessagingRoom
 import com.jmaplus.pharmawine.models.Network
 import com.jmaplus.pharmawine.models.SimpleUser
-import com.jmaplus.pharmawine.utils.Constants
 import com.jmaplus.pharmawine.utils.FirebaseConstants
 import com.jmaplus.pharmawine.utils.FirebaseConstants.*
 import com.jmaplus.pharmawine.utils.ItemClickSupport
@@ -88,8 +87,10 @@ class MessagingActivity : AppCompatActivity(), NetworkCalls.Callbacks {
             val userListener = object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     if (!dataSnapshot.exists()) {
-                        val u = FireUser(authenticatedUser.getId()!!.toString(), authenticatedUser.getFirstname(),
-                                authenticatedUser.getLastname(), authenticatedUser.getAvatar())
+                        val u = FireUser(authenticatedUser.id.toString(),
+                                authenticatedUser.getFirstname(),
+                                authenticatedUser.getLastname(),
+                                authenticatedUser.getAvatar())
 
                         userReference.setValue(u).addOnSuccessListener {
                             Toast.makeText(mContext,
@@ -369,19 +370,20 @@ class MessagingActivity : AppCompatActivity(), NetworkCalls.Callbacks {
     }
 
     private fun addUserToFireBase(s: SimpleUser) {
-
         // Add members to firebase
 
         database.child(USERS_COLLECTION).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
 
-                // TODO: Get simple user role from API
-                var DEFAULT_ROLE = Constants.ROLE_DELEGUE_KEY
-
                 // Save the FROMUSER object if not exists on Database
                 if (!dataSnapshot.child(s.id.toString()).exists()) {
+
+                    // Make sure avatar is not null
+                    var avatar = ""
+                    if (!s.avatar.isNullOrEmpty()) avatar = s.avatar
+
                     val fireUser = FireUser(s.id.toString(), s.firstname,
-                            s.lastname, s.avatar, DEFAULT_ROLE
+                            s.lastname, avatar, s.typeId
                     )
                     database.child(USERS_COLLECTION).child(s.id.toString()).setValue(fireUser)
                             .addOnSuccessListener {
