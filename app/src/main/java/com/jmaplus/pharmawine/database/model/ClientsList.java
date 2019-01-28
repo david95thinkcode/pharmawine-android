@@ -13,6 +13,11 @@ public class ClientsList {
 
     }
 
+    public ClientsList(String client, String dateProspection) {
+        this.client = client;
+        this.dateProspection = dateProspection;
+    }
+
     public ClientsList(int id, String client, String dateProspection) {
         this.id = id;
         this.client = client;

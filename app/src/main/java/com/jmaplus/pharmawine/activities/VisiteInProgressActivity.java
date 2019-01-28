@@ -20,6 +20,8 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.jmaplus.pharmawine.R;
+import com.jmaplus.pharmawine.database.model.DailyReportNotSent;
+import com.jmaplus.pharmawine.database.utils.DatabaseHelper;
 import com.jmaplus.pharmawine.fragments.rapport.ReportEtape1Fragment;
 import com.jmaplus.pharmawine.fragments.rapport.ReportEtape2Fragment;
 import com.jmaplus.pharmawine.fragments.rapport.ReportEtape3Fragment;
@@ -82,11 +84,15 @@ public class VisiteInProgressActivity extends AppCompatActivity
     private ReportEtape3Fragment mReportEtape3Fragment = new ReportEtape3Fragment();
     private ReportEtape4Fragment mReportEtape4Fragment = new ReportEtape4Fragment();
 
+    DatabaseHelper OffDB;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_visite_in_progress);
+
+        OffDB = new DatabaseHelper(getApplicationContext());
 
         setUI();
 
@@ -305,6 +311,15 @@ public class VisiteInProgressActivity extends AppCompatActivity
 //            dialog.cancel();
 //        }
     }
+
+//    private long saveReportLocaly(DailyReportEnd dailyReportEnd, Boolean status){
+//        String report = dailyReportEnd.toString();
+//
+//        DailyReportNotSent dailyReportNotSent = new DailyReportNotSent(report, dailyReportEnd.getEndTime(), status);
+//
+//        return OffDB.createReport(dailyReportNotSent);
+//
+//    }
 
 
     @Override

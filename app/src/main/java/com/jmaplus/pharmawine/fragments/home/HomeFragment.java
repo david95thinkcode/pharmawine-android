@@ -113,7 +113,7 @@ public class HomeFragment extends Fragment {
 //        });
 
 
-        setDailyProgression(45);
+        setDailyProgression(0);
 
         clientRemaining.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -106,11 +106,8 @@ public class Customer {
      * @return
      */
     public Boolean isKnown() {
-        if (this.customerStatus.getName() == "pim" || this.customerStatus.getName() == "PIM"
-                || this.customerStatus.getName() == "pig" || this.customerStatus.getName() == "PIG")
-            return false;
-        else
-            return true;
+        return this.customerStatus.getName() != "pim" && this.customerStatus.getName() != "PIM"
+                && this.customerStatus.getName() != "pig" && this.customerStatus.getName() != "PIG";
     }
 
     public Integer getFillingLevel() {

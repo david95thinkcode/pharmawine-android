@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.jmaplus.pharmawine.R;
+import com.jmaplus.pharmawine.database.utils.DatabaseHelper;
 import com.jmaplus.pharmawine.fragments.clients.MedicalTeamFragment;
 import com.jmaplus.pharmawine.fragments.home.HomeAdminFragment;
 import com.jmaplus.pharmawine.fragments.home.HomeFragment;
@@ -52,10 +53,15 @@ public class MainActivity extends AppCompatActivity implements MedicalTeamFragme
 
     private AuthUser currentUser;
 
+    DatabaseHelper db;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        db = new DatabaseHelper(getApplicationContext());
+        Log.i(getLocalClassName(), "onCreate: Database");
 
         // This allow firebase offline capabilities
         // FirebaseDatabase.getInstance().setPersistenceEnabled(true);
@@ -186,7 +192,7 @@ public class MainActivity extends AppCompatActivity implements MedicalTeamFragme
                     case IND_NAV_CLIENT:
                         bottomNavigation.setBehaviorTranslationEnabled(true);
                         //startActivity(new Intent(MainActivity.this, ClientsActivity.class));
-                        getSupportActionBar().setTitle("Corps Méd.");
+                        getSupportActionBar().setTitle(getResources().getString(R.string.menu_clients_title));
                         showFragment(mMedicalTeamFragment);
                         break;
                     case IND_NAV_MORE:

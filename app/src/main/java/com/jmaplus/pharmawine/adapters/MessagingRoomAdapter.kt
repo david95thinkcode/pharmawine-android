@@ -20,7 +20,7 @@ class MessagingRoomAdapter(val roomList: MutableList<MessagingRoom>, val mContex
         RecyclerView.Adapter<MessagingRoomViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessagingRoomViewHolder {
-        val v = LayoutInflater.from(parent?.context)
+        val v = LayoutInflater.from(parent.context)
                 .inflate(R.layout.fragment_messaging_room_item, parent, false)
 
         return MessagingRoomViewHolder(v)
@@ -29,25 +29,25 @@ class MessagingRoomAdapter(val roomList: MutableList<MessagingRoom>, val mContex
     override fun onBindViewHolder(holder: MessagingRoomViewHolder, position: Int) {
 
         // Ici on defini les valeurs qui a mettre dans chaque element du layout d'un room
-        holder?.roomLastMessage.text = roomList[position].lastMessage.content
-        holder?.roomName.text = roomList[position].username
+        holder.roomLastMessage.text = roomList[position].lastMessage.content
+        holder.roomName.text = roomList[position].username
 
         if (!roomList[position].lastMessage.isRead && roomList[position].lastMessage.to == currentUserID)
-            holder?.notification.visibility = View.VISIBLE
+            holder.notification.visibility = View.VISIBLE
         else
-            holder?.notification.visibility = View.GONE
+            holder.notification.visibility = View.GONE
 
         // Image de profile
         if (roomList[position].avatarUrl.isNullOrEmpty()) {
             Glide.with(mContext)
                     .load(R.drawable.ast_contacts)
                     .apply { RequestOptions.centerInsideTransform() }
-                    .into(holder?.picture)
+                    .into(holder.picture)
         } else {
             Glide.with(mContext)
                     .load(roomList[position].avatarUrl)
                     .apply { RequestOptions.centerInsideTransform() }
-                    .into(holder?.picture)
+                    .into(holder.picture)
         }
 
         // Last message time
@@ -57,12 +57,12 @@ class MessagingRoomAdapter(val roomList: MutableList<MessagingRoom>, val mContex
             cal.timeInMillis = t
 
             if (!DateUtils.isToday(t))
-                holder?.roomLastMessageTime.text =
+                holder.roomLastMessageTime.text =
                         DateUtils.getRelativeTimeSpanString(t, Date().time, DateUtils.MINUTE_IN_MILLIS).toString()
             else
-                holder?.roomLastMessageTime.text = DateFormat.format("hh:mm a", cal).toString()
+                holder.roomLastMessageTime.text = DateFormat.format("hh:mm a", cal).toString()
         } catch (e: Exception) {
-            holder?.roomLastMessageTime.text = roomList[position].lastMessage.createdAt
+            holder.roomLastMessageTime.text = roomList[position].lastMessage.createdAt
         }
 
     }

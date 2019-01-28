@@ -18,7 +18,7 @@ public class DelegueCalls {
     // Retrofit instance
     public static ApiService mApiService = ApiService.retrofit.create(ApiService.class);
 
-    // Public method to fetch pllanning
+    // Public method to fetch planning
     public static void getPlanning(String token, final Callbacks callbacks,
                                    String delegueID, String startDate, String endDate) {
 

@@ -37,7 +37,7 @@ class RemainingCustomersAdapter(val context: Context, var remainingClientsList: 
         try {
             Glide.with(context)
                     .load(remainingClientsList[position].defaultAvatar)
-                    .into(holder?.picture)
+                    .into(holder.picture)
 
             holder.fullname.text = remainingClientsList[position].fullName
 

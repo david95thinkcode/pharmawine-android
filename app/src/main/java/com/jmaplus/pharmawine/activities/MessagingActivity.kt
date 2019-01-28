@@ -3,7 +3,7 @@ package com.jmaplus.pharmawine.activities
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
@@ -68,16 +68,16 @@ class MessagingActivity : AppCompatActivity() {
         // 1- Initialisation de la db et des references
         database = FirebaseDatabase.getInstance().reference
         database.keepSynced(true) // Sync even offline
-        userReference = database.child(USERS_COLLECTION).child(authenticatedUser.getId()!!.toString())
-        userRoomsReference = database.child(USERS_CHANNEL_COLLECTION).child(authenticatedUser.getId()!!.toString())
+        userReference = database.child(USERS_COLLECTION).child(authenticatedUser.id!!.toString())
+        userRoomsReference = database.child(USERS_CHANNEL_COLLECTION).child(authenticatedUser.id!!.toString())
 
         try {
             // 2- Add user to firebase if it doesn't exists
             val userListener = object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     if (!dataSnapshot.exists()) {
-                        val u = FireUser(authenticatedUser.getId()!!.toString(), authenticatedUser.getFirstname(),
-                                authenticatedUser.getLastname(), authenticatedUser.getAvatar())
+                        val u = FireUser(authenticatedUser.id!!.toString(), authenticatedUser.firstname,
+                                authenticatedUser.lastname, authenticatedUser.avatar)
 
                         userReference.setValue(u).addOnSuccessListener {
                             Toast.makeText(mContext,
@@ -148,7 +148,7 @@ class MessagingActivity : AppCompatActivity() {
 
     fun addToRoomList(fireRoom: FireRoom?, roomKey: String) {
 
-        val secondUserInTheRoom = if (authenticatedUser.id!!.toString() == fireRoom?.first) fireRoom!!.second else fireRoom!!.first
+        val secondUserInTheRoom = if (authenticatedUser.id!!.toString() == fireRoom?.first) fireRoom.second else fireRoom!!.first
         val secondFireUserReference = database.child(USERS_COLLECTION).child(secondUserInTheRoom)
 
         // Details du second user
@@ -169,7 +169,7 @@ class MessagingActivity : AppCompatActivity() {
                         var index = if (roomsList.size == 0) 0 else roomsList.size
 
                         roomsList.add(index, messagingRoom)
-                        adapter.notifyItemInserted(index);
+                        adapter.notifyItemInserted(index)
 
                         Toast.makeText(mContext, "New room added ==>  ${messagingRoom.roomId}t", Toast.LENGTH_SHORT).show()
 

@@ -12,6 +12,12 @@ public class DailyReportNotSent {
 
     }
 
+    public DailyReportNotSent(String report, String creationDate, Boolean status) {
+        this.report = report;
+        this.creationDate = creationDate;
+        this.status = status;
+    }
+
 
     public DailyReportNotSent(int id, String report, String creationDate, Boolean status) {
         this.id = id;
