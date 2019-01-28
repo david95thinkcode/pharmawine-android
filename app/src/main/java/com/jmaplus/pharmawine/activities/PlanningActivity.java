@@ -108,7 +108,8 @@ public class PlanningActivity extends AppCompatActivity
                                 tvDateLabel.setText(frenchMonths[month].toUpperCase().concat(" ").
                                         concat(String.valueOf(year)));
 
-                                Toast.makeText(PlanningActivity.this, "Date : " + date, Toast.LENGTH_SHORT).show();
+                                // Toast.makeText(PlanningActivity.this, "Date : " + date, Toast.LENGTH_SHORT).show();
+                                Log.i(TAG, "onDateSet: Date selected ==> " + date);
 
                                 // Very important
                                 // We should inform visitefragment that date have changed
