@@ -40,6 +40,7 @@ class CustomersListFragment : Fragment(), CustomerCalls.Callbacks {
     private lateinit var mAdapter: RemainingCustomersAdapter
     private lateinit var mContext: Context
     private lateinit var mAuthUser: AuthUser
+    private lateinit var mToken: String
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -47,6 +48,7 @@ class CustomersListFragment : Fragment(), CustomerCalls.Callbacks {
         var rootView = inflater.inflate(R.layout.fragment_customers_list, container, false)
 
         mContext = requireContext()
+        mToken = AuthUser.getToken(mContext)
         mAuthUser = AuthUser.getAuthenticatedUser(mContext)
         mRecyclerView = rootView.findViewById(R.id.rv_customers)
         mProgressBar = rootView.findViewById(R.id.pb_customers)
@@ -141,6 +143,14 @@ class CustomersListFragment : Fragment(), CustomerCalls.Callbacks {
         }
     }
 
+    /**
+     * Should be called from parent activity
+     */
+    fun fetchRemainingCustomers() {
+        mProgressBar.visibility = View.VISIBLE
+        CustomerCalls.getRemaining(mToken, this)
+    }
+
 
     override fun onCustomerDetailsResponse(customer: Customer?) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
@@ -172,14 +182,35 @@ class CustomersListFragment : Fragment(), CustomerCalls.Callbacks {
         mProgressBar.visibility = View.GONE
     }
 
-    override fun onKnownProspectFailure() {
-        Utils.presentToast(mContext, "Une erreur s'est produite", true)
+    override fun onRemainingCustomersResponse(customers: MutableList<Customer>?) {
+        mCustomersList.clear()
+
+        for (c: Customer in customers!!) {
+            mCustomersList.add(c)
+            mAdapter.notifyItemInserted(customers.size - 1)
+        }
+
+        mSafeCustomersList.addAll(mCustomersList) // important
         mProgressBar.visibility = View.GONE
+    }
+
+
+    override fun onRemainingCustomersFailure() {
+        showFailure()
+    }
+
+    override fun onKnownProspectFailure() {
+        showFailure()
     }
 
     override fun onDetach() {
         super.onDetach()
         listener = null
+    }
+
+    private fun showFailure() {
+        Utils.presentToast(mContext, "Une erreur s'est produite", true)
+        mProgressBar.visibility = View.GONE
     }
 
     interface OnFragmentInteractionListener {

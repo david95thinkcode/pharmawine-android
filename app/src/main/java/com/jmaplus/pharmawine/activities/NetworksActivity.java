@@ -1,8 +1,6 @@
 package com.jmaplus.pharmawine.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -22,9 +20,7 @@ import com.jmaplus.pharmawine.R;
 import com.jmaplus.pharmawine.adapters.NetworkMemberAdapter;
 import com.jmaplus.pharmawine.models.AuthUser;
 import com.jmaplus.pharmawine.models.Network;
-import com.jmaplus.pharmawine.models.NetworkMember;
 import com.jmaplus.pharmawine.models.SimpleUser;
-import com.jmaplus.pharmawine.utils.PrefManager;
 import com.jmaplus.pharmawine.utils.RetrofitCalls.NetworkCalls;
 import com.jmaplus.pharmawine.utils.RetrofitCalls.UserCalls;
 
@@ -41,7 +37,7 @@ public class NetworksActivity extends AppCompatActivity implements
     private TextView tvName, tvNetworkLabel, tvProgress;
     private ImageView imgProfil, imgGoToMe, imgGoToSuperviseur;
     private RoundCornerProgressBar progressBar;
-    private FloatingActionButton fabPersonalGoals;
+    //    private FloatingActionButton fabPersonalGoals;
     private ProgressBar mProgressBarOfMembers;
 
     private AuthUser mAuthUser;
@@ -55,12 +51,8 @@ public class NetworksActivity extends AppCompatActivity implements
     private static final String KEY_LAYOUT_POSITION = "layoutPosition";
     private int mRecyclerViewPosition = 0;
 
-    private ArrayList<NetworkMember> networkMemberList;
     private NetworkMemberAdapter networkMemberAdapter;
     private SwipeRefreshLayout mSwipeRefreshLayout;
-    private PrefManager prefManager;
-
-    private boolean isMembersLoaded = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,8 +60,6 @@ public class NetworksActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_network);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        prefManager = new PrefManager(this);
 
         mAuthUser = AuthUser.getAuthenticatedUser(this);
         mNetworkMembers = new ArrayList();
@@ -137,7 +127,7 @@ public class NetworksActivity extends AppCompatActivity implements
         progressBar = findViewById(R.id.progress_network);
         mProgressBarOfMembers = findViewById(R.id.progressBar_members);
 
-        fabPersonalGoals = findViewById(R.id.fab_personal_goals);
+//        fabPersonalGoals = findViewById(R.id.fab_personal_goals);
 
         recyclerView = findViewById(R.id.rv_network_members);
         mSwipeRefreshLayout = findViewById(R.id.swipe_network_members);
@@ -163,12 +153,12 @@ public class NetworksActivity extends AppCompatActivity implements
             }
         });
 
-        fabPersonalGoals.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(NetworksActivity.this, PersonalGoalsActivity.class));
-            }
-        });
+//        fabPersonalGoals.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                startActivity(new Intent(NetworksActivity.this, PersonalGoalsActivity.class));
+//            }
+//        });
     }
 
     public void goToMe() {

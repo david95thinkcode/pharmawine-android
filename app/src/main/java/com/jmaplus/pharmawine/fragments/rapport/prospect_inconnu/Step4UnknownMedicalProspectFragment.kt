@@ -1,18 +1,17 @@
 package com.jmaplus.pharmawine.fragments.rapport.prospect_inconnu
 
 import android.content.Context
-import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Spinner
-
 import com.jmaplus.pharmawine.R
 import com.jmaplus.pharmawine.models.Area
 import com.jmaplus.pharmawine.models.CustomerStatus
-import com.jmaplus.pharmawine.models.CustomerType
 import com.jmaplus.pharmawine.models.Speciality
 
 // TODO: Rename parameter arguments, choose names that match
@@ -64,21 +63,63 @@ class Step4UnknownMedicalProspectFragment : Fragment() {
         mCustomerStatusList.clear()
         mCustomerStatusList.addAll(customerStatus)
 
-        //todo: update spinner adapter
+        val statusAdapter = ArrayAdapter<CustomerStatus>(requireContext(), android.R.layout.simple_spinner_item, mCustomerStatusList)
+                .also { adapter ->
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    mCategorieSpinner.adapter = adapter
+                }
+
+        mZoneSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                var item: CustomerStatus = statusAdapter.getItem(position)
+                listener?.onCustomerStatusUpdated(Integer(item.id))
+            }
+        }
     }
 
     fun populateSpecialyFromSource(specialities: List<Speciality>) {
         mSpecialitiesList.clear()
         mSpecialitiesList.addAll(specialities)
 
-        //todo: update spinner adapter
+        val specialitiesAdapter = ArrayAdapter<Speciality>(requireContext(), android.R.layout.simple_spinner_item, mSpecialitiesList)
+                .also { adapter ->
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    mSpecialitySpinner.adapter = adapter
+                }
+
+        mSpecialitySpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                var item: Speciality = specialitiesAdapter.getItem(position)
+                listener?.onSpecialityUpdated(item)
+            }
+        }
     }
 
     fun populateZoneFromSource(areas: List<Area>) {
         mAreasList.clear()
         mAreasList.addAll(areas)
 
-        //todo: update spinner adapter
+        val areaAdapter = ArrayAdapter<Area>(requireContext(), android.R.layout.simple_spinner_item, mAreasList)
+                .also { adapter ->
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    mZoneSpinner.adapter = adapter
+                }
+
+        mZoneSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+            }
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                var item: Area = areaAdapter.getItem(position)
+                listener?.onAreaUpdated(item)
+            }
+        }
     }
 
     override fun onAttach(context: Context) {

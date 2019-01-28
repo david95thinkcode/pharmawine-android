@@ -13,9 +13,11 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.jmaplus.pharmawine.R;
+import com.jmaplus.pharmawine.fragments.clients.CustomersListFragment;
 import com.jmaplus.pharmawine.fragments.clients.MedicalTeamDetailsFragment;
 import com.jmaplus.pharmawine.fragments.clients.PharmacyDetailsFragment;
 import com.jmaplus.pharmawine.models.Client;
+import com.jmaplus.pharmawine.models.Customer;
 import com.jmaplus.pharmawine.utils.Constants;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
@@ -28,7 +30,8 @@ import org.jetbrains.annotations.NotNull;
 
 public class ClientDetailsActivity extends AppCompatActivity implements
         MedicalTeamDetailsFragment.OnFragmentInteractionListener,
-        PharmacyDetailsFragment.OnFragmentInteractionListener {
+        PharmacyDetailsFragment.OnFragmentInteractionListener,
+        CustomersListFragment.OnFragmentInteractionListener {
 
     public static final String CLIENT_ID_KEY = "com.jmaplus.pharmawine.activities.ClientDetailsActivity.clientId";
     public static final String CLIENT_TYPE_KEY = "com.jmaplus.pharmawine.activities.ClientDetailsActivity.clientType";
@@ -129,6 +132,16 @@ public class ClientDetailsActivity extends AppCompatActivity implements
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onRequestCustumerType() {
+
+    }
+
+    @Override
+    public void onCustomerClicked(@NotNull Customer Customer) {
+
     }
 
     private void makeCall(final String phoneNumber) {

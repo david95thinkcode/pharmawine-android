@@ -180,10 +180,11 @@
         android:id="@+id/fab_personal_goals"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/pill"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
-        android:tint="@android:color/white"/>
+        android:src="@drawable/pill"
+        android:tint="@android:color/white"
+        android:visibility="gone" />
 
     <ProgressBar
         android:id="@+id/progressBar_members"

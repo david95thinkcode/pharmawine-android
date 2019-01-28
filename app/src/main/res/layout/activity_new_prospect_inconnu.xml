@@ -7,6 +7,22 @@
     android:layout_height="match_parent"
     tools:context=".activities.NewProspectInconnuActivity">
 
+    <Button
+        android:id="@+id/btn_next_edit_profile"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="0dp"
+        android:layout_height="72dp"
+        android:layout_gravity="bottom"
+        android:background="@color/colorAccent"
+        android:text="@string/suivant"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <RelativeLayout
         android:id="@+id/layout_profil_activity_edit_medical"
         android:layout_width="0dp"
@@ -49,7 +65,7 @@
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/btn_next_edit_profile"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/divider3" />

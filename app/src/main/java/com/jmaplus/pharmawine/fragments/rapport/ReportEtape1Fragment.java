@@ -3,6 +3,7 @@ package com.jmaplus.pharmawine.fragments.rapport;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -30,6 +31,7 @@ public class ReportEtape1Fragment extends Fragment {
     private CenterSelectionAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private List<Center> mCentersList;
+    private CardView mHeader;
 
     private Center mCentre;
 
@@ -50,12 +52,17 @@ public class ReportEtape1Fragment extends Fragment {
         // binding views
         centersRecyclerView = rootView.findViewById(R.id.rv_centers);
         nextBtn = rootView.findViewById(R.id.btn_suivant_etape_1);
+        mHeader = rootView.findViewById(R.id.cv_header_1);
 
         Initialise();
 
         fetchCenters();
 
         return rootView;
+    }
+
+    public void hideHeader() {
+        mHeader.setVisibility(View.GONE);
     }
 
     private void Initialise() {

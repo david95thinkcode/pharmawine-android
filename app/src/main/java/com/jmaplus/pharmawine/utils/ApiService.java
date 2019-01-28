@@ -1,12 +1,16 @@
 package com.jmaplus.pharmawine.utils;
 
+import com.jmaplus.pharmawine.models.Area;
+import com.jmaplus.pharmawine.models.Center;
 import com.jmaplus.pharmawine.models.Customer;
+import com.jmaplus.pharmawine.models.CustomerStatus;
 import com.jmaplus.pharmawine.models.DailyReportEnd;
 import com.jmaplus.pharmawine.models.DailyReportEndResponse;
 import com.jmaplus.pharmawine.models.DailyReportStart;
 import com.jmaplus.pharmawine.models.DailyReportStartResponse;
 import com.jmaplus.pharmawine.models.Network;
 import com.jmaplus.pharmawine.models.SimpleUser;
+import com.jmaplus.pharmawine.models.Speciality;
 
 import java.util.List;
 
@@ -18,6 +22,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface ApiService {
@@ -68,6 +73,9 @@ public interface ApiService {
     @GET("customers/prospect/connu")
     Call<List<Customer>> getKnownProspects(@Header("Authorization") String authorization);
 
+    @GET("remaining")
+    Call<List<Customer>> getRemainingCustomers(@Header("Authorization") String authorization);
+
     // ======================================= NETWORKS =======================================
 
     @GET("network")
@@ -83,10 +91,27 @@ public interface ApiService {
             @Path("network_id") Integer networkID,
             @Header("Authorization") String authorization);
 
-    // ======================================= PRODUCTS =======================================
+    // ======================================= PROFILAGE =======================================
+    @PUT("customer/{customer_id}")
+    Call<Customer> editCustomer(
+            @Path("customer_id") Integer customer_id,
+            @Body Customer customer,
+            @Header("Authorization") String authorization);
 
+    // ======================================= CENTERS =======================================
+    @GET("center")
+    Call<List<Center>> getAllCenters(@Header("Authorization") String authorization);
 
-    // ======================================= WORKS =======================================
+    // ======================================= SPECIALITY =======================================
+    @GET("speciality")
+    Call<List<Speciality>> getAllSpecialities(@Header("Authorization") String authorization);
 
+    // ======================================= SPECIALITY =======================================
+    @GET("area")
+    Call<List<Area>> getAllAreas(@Header("Authorization") String authorization);
+
+    // ======================================= CUSTOMER STATUS =======================================
+    @GET("customers/status")
+    Call<List<CustomerStatus>> getAllCustomersStatus(@Header("Authorization") String authorization);
 
 }
