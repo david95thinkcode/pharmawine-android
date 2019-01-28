@@ -75,7 +75,13 @@ class DiscussionActivity : AppCompatActivity(), View.OnClickListener {
         ToUserId = intent.extras.getString(TOUSERID_EXTRA, "")
         ToUserFullName = intent.extras.getString(TOUSERFULLNAME_EXTRA, "")
         ToUserAvatarUrl = intent.extras.getString(TOUSERAVATARURL_EXTRA, "")
-        ToUserRoleLabel = Utils.getRoleLabel(intent.extras.getInt(TOUSERROLE_EXTRA, -1))
+
+        if (intent.extras.getInt(TOUSERROLE_EXTRA, -1) == 3) {
+            ToUserRoleLabel = Utils.getRoleLabel(intent.extras.getInt(TOUSERROLE_EXTRA, -1))
+
+        } else {
+            ToUserRoleLabel = "Votre " + Utils.getRoleLabel(intent.extras.getInt(TOUSERROLE_EXTRA, -1))
+        }
         mLastMessageTime = intent.extras.getString(LASTMESSAGETIME_EXTRA, "")
 
         mContext = this
@@ -86,7 +92,7 @@ class DiscussionActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun InitializeUI() {
         title = ToUserFullName
-        supportActionBar?.subtitle = "Votre $ToUserRoleLabel"
+        supportActionBar?.subtitle = ToUserRoleLabel
 
         mRecyclerView = findViewById(R.id.msg_recycle_view)
         mInput = findViewById(R.id.message_input_edit_text)
@@ -194,7 +200,7 @@ class DiscussionActivity : AppCompatActivity(), View.OnClickListener {
                         presentToast(mContext, "Starting a new conversation", true)
                     }
                 } else {
-                    Log.i(TAG, "Room found ==> $mRoom")
+//                    Log.i(TAG, "Room found ==> $mRoom")
                     initializeMessageReferences(mRoom)
                 }
             }
@@ -389,7 +395,7 @@ class DiscussionActivity : AppCompatActivity(), View.OnClickListener {
                         mMessagesReference.child(newFireMessageKey).child("status").setValue("sent")
 
                         // Update lastseen property of message sender
-                        database.child(USERS_COLLECTION).child(FromUserId).child("lastSeenAt").setValue(Date().time.toString())
+                        // todo: on s'en fou database.child(USERS_COLLECTION).child(FromUserId).child("lastSeenAt").setValue(Date().time.toString())
 
                         // Update Room lastMessage property
                         database.child(CHANNEL_COLLECTION).child(mRoom).child("lastMessage").setValue(msg)

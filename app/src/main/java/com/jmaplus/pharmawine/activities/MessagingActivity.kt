@@ -8,7 +8,9 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.MenuItem
+import android.view.View
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.Toast
 import com.google.firebase.database.*
 import com.jmaplus.pharmawine.R
@@ -17,11 +19,17 @@ import com.jmaplus.pharmawine.models.AuthUser
 import com.jmaplus.pharmawine.models.Messaging.FireRoom
 import com.jmaplus.pharmawine.models.Messaging.FireUser
 import com.jmaplus.pharmawine.models.Messaging.MessagingRoom
+import com.jmaplus.pharmawine.models.Network
+import com.jmaplus.pharmawine.models.SimpleUser
+import com.jmaplus.pharmawine.utils.Constants
+import com.jmaplus.pharmawine.utils.FirebaseConstants
 import com.jmaplus.pharmawine.utils.FirebaseConstants.*
 import com.jmaplus.pharmawine.utils.ItemClickSupport
+import com.jmaplus.pharmawine.utils.RetrofitCalls.NetworkCalls
+import com.jmaplus.pharmawine.utils.Utils
 import java.util.*
 
-class MessagingActivity : AppCompatActivity() {
+class MessagingActivity : AppCompatActivity(), NetworkCalls.Callbacks {
     val TAG = "MessagingActivity"
 
     private lateinit var database: DatabaseReference
@@ -34,12 +42,15 @@ class MessagingActivity : AppCompatActivity() {
     private lateinit var adapter: MessagingRoomAdapter
 
     private lateinit var mRecyclerView: RecyclerView
+    private lateinit var mProgressBarOfMembers: ProgressBar
+    private lateinit var mAuthUser: AuthUser
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_messging)
 
         mContext = this
+        mAuthUser = AuthUser.getAuthenticatedUser(mContext)
 
         if (supportActionBar != null)
             supportActionBar!!.setDisplayHomeAsUpEnabled(true)
@@ -53,6 +64,7 @@ class MessagingActivity : AppCompatActivity() {
 
     private fun InitialiseUI() {
         mRecyclerView = findViewById(R.id.rv_messages)
+        mProgressBarOfMembers = findViewById(R.id.pg_netmMessaginng)
 
         configureOnClickRecyclerView()
 
@@ -171,10 +183,11 @@ class MessagingActivity : AppCompatActivity() {
                         roomsList.add(index, messagingRoom)
                         adapter.notifyItemInserted(index);
 
-                        Toast.makeText(mContext, "New room added ==>  ${messagingRoom.roomId}t", Toast.LENGTH_SHORT).show()
-
+//                        Toast.makeText(mContext, "New room added ==>  ${messagingRoom.roomId}t", Toast.LENGTH_SHORT).show()
+                        mProgressBarOfMembers.visibility = View.GONE
                     } else {
                         Log.i(TAG, "Room ${messagingRoom.roomId} already exists on RoomList")
+                        mProgressBarOfMembers.visibility = View.GONE
                     }
                 }
             }
@@ -227,6 +240,21 @@ class MessagingActivity : AppCompatActivity() {
     private fun getNetworkUsers() {
         // TODO: Get network users
 
+        NetworkCalls.getNetworkMembers(
+                this, AuthUser.getToken(this), mAuthUser.getNetworkId())
+
+//        try {
+////            mProgressBarOfMembers.setVisibility(View.VISIBLE)
+//            NetworkCalls.getNetworkMembers(
+//                    this, AuthUser.getToken(this), mAuthUser.getNetworkId())
+//        }
+//        catch (e: Exception) {
+//            Log.e(TAG, "getMembers: " + e.message)
+//            Toast.makeText(this, R.string.une_erreur_s_est_produite, Toast.LENGTH_SHORT).show()
+//            e.printStackTrace()
+//        }
+
+
         // TODO: Add user to firebase if not exists
 
         // TODO: Create Channel for each new added user
@@ -268,13 +296,120 @@ class MessagingActivity : AppCompatActivity() {
 
         if (!first.isNullOrEmpty() && !second.isNullOrEmpty()) {
 
-            // TODO: Create channelsCollection/newChannelKey and get the key
+            // Create channelsCollection/newChannelKey and get the key
 
-            // TODO: create on usersChannelCollection/first ==> { second: newChannelKey }
+            // create on usersChannelCollection/first ==> { second: newChannelKey }
 
-            // TODO: create on usersChannelCollection/second ==> { first: newChannelKey }
+            // create on usersChannelCollection/second ==> { first: newChannelKey }
 
+
+            // 1-a
+            var channelCollection = database.child(FirebaseConstants.CHANNEL_COLLECTION)
+
+            val roomObject = FireRoom(first, second)
+
+            // 1-b
+            val createdRoomKey = database.child(CHANNEL_COLLECTION).push().key
+
+            // Create & save a new room object
+            channelCollection.child(createdRoomKey!!).setValue(roomObject).addOnSuccessListener {
+                // 2-
+                database.child(USERS_CHANNEL_COLLECTION).child(first).child(second).setValue(createdRoomKey)
+                // 3-
+                database.child(USERS_CHANNEL_COLLECTION).child(second).child(first).setValue(createdRoomKey)
+
+                // 4-
+                addToRoomList(roomObject, createdRoomKey)
+            }
+
+//            // Adding the room to room collection for each user
+//            database.child(USER_ROOM_PATH).child(mToUserId).child(mFromUserProfile.id).setValue(createdRoomKey)
+//            database.child(USER_ROOM_PATH).child(mFromUserProfile.id).child(mToUserId).setValue(createdRoomKey)
+//
+//            val toUserListener = object : ValueEventListener {
+//                override fun onDataChange(dataSnapshot: DataSnapshot) {
+//
+//                    if (mRoom.isNullOrEmpty()) {
+//                        println("mRoom empty so this activity is called from UsersList")
+//
+//                        if (dataSnapshot.exists()) {
+//
+//                            initializeMessageReferences(dataSnapshot.value.toString())
+//
+//                            fromUserRoomCollection.setValue(mRoom)
+//
+//                            Log.i(TAG, "mRoom exist on TOUSER")
+//                        } else {
+//                            mNoRoomFound = true
+//
+//                            Log.i(TAG, "mRoom don't exist on TOUSER")
+//
+//                            fromUserRoomCollection.addListenerForSingleValueEvent(fromUserListener)
+//                        }
+//                    } else {
+//                        mNoRoomFound = false
+//                        println("mRoom ==> $mRoom ==> activity called from Messaging Fragment")
+//                        fromUserRoomCollection.addListenerForSingleValueEvent(fromUserListener)
+//                    }
+//                }
+//
+//                override fun onCancelled(error: DatabaseError) {
+//                }
+//            }
         }
+    }
+
+    // ========== callbacks
+    override fun onNetworkMembersResponse(members: MutableList<SimpleUser>?) {
+        Utils.presentToast(mContext, "Membres du reseau recuperer", false)
+        for (s: SimpleUser in members!!) {
+            addUserToFireBase(s)
+        }
+        mProgressBarOfMembers.visibility = View.GONE
+    }
+
+    private fun addUserToFireBase(s: SimpleUser) {
+
+        // Add members to firebase
+
+        database.child(USERS_COLLECTION).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+
+                // TODO: Get simple user role from API
+                var DEFAULT_ROLE = Constants.ROLE_DELEGUE_KEY
+
+                // Save the FROMUSER object if not exists on Database
+                if (!dataSnapshot.child(s.id.toString()).exists()) {
+                    val fireUser = FireUser(s.id.toString(), s.firstname,
+                            s.lastname, s.avatar, DEFAULT_ROLE
+                    )
+                    database.child(USERS_COLLECTION).child(s.id.toString()).setValue(fireUser)
+                            .addOnSuccessListener {
+                                // We Create channel
+                                createANewChannel(s.id.toString(), authenticatedUser.id.toString())
+                            }
+                } else {
+                    // Update users details when already exists
+                    // ....
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                // Getting Post failed, log a message
+                Log.w(TAG, "$USERS_COLLECTION:onCancelled", databaseError.toException())
+            }
+        })
+    }
+
+    override fun onNetworkMembersFailure() {
+        mProgressBarOfMembers.visibility = View.GONE
+        Utils.presentToast(mContext, "Echec de recupereation membres du reseau", false)
+    }
+
+    override fun onNetworkDetailsResponse(network: Network?) {
+    }
+
+    override fun onNetworkDetailsFailure() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
