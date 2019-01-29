@@ -81,7 +81,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="132dp" />
+        app:layout_constraintGuide_begin="115dp" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline3_end"
@@ -90,7 +90,7 @@
         android:layout_marginEnd="16dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintGuide_begin="382dp" />
+        app:layout_constraintGuide_begin="306dp" />
 
     <Button
         android:id="@+id/btn_connu_cm"

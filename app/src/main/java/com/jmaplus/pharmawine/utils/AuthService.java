@@ -16,7 +16,7 @@ import retrofit2.http.Header;
 import retrofit2.http.POST;
 
 public interface AuthService {
-    public static final Retrofit retrofit = new Retrofit.Builder()
+    Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(ApiRoutes.baseRoute)
             .addConverterFactory(GsonConverterFactory.create())
             .build();

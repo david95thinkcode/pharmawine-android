@@ -24,7 +24,7 @@ class DiscussionMessageAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
-        val inflater = LayoutInflater.from(parent?.context)
+        val inflater = LayoutInflater.from(parent.context)
 
         return if (viewType == from_me) {
             val v1 = inflater.inflate(R.layout.item_message_from_me, parent, false)
@@ -50,15 +50,15 @@ class DiscussionMessageAdapter(
      * Configure content data for MessageFromMeViewHolder
      */
     private fun configureFromMeViewHolder(holderFromMe: MessageFromMeViewHolder, position: Int) {
-        holderFromMe?.content.text = messageList[position].fireMessage.content
-        holderFromMe?.datetime.text = getReadableDate(messageList[position].fireMessage.createdAt)
+        holderFromMe.content.text = messageList[position].fireMessage.content
+        holderFromMe.datetime.text = getReadableDate(messageList[position].fireMessage.createdAt)
 
         // picture
 
         Glide.with(mContext)
                 .load(R.drawable.ast_contacts)
                 .apply { RequestOptions.centerInsideTransform() }
-                .into(holderFromMe?.picture)
+                .into(holderFromMe.picture)
 
 
     }
@@ -87,19 +87,19 @@ class DiscussionMessageAdapter(
      * Configure content data for MessageFromUserViewHolder
      */
     private fun configureFromUserViewHolder(holderFromUser: MessageFromUserViewHolder, position: Int) {
-        holderFromUser?.content.text = messageList[position].fireMessage.content
-        holderFromUser?.date.text = getReadableDate(messageList[position].fireMessage.createdAt)
+        holderFromUser.content.text = messageList[position].fireMessage.content
+        holderFromUser.date.text = getReadableDate(messageList[position].fireMessage.createdAt)
 
         if (!fromUserPictureUrl.isEmpty() && fromUserPictureUrl != "") {
             Glide.with(mContext)
                     .load(fromUserPictureUrl)
                     .apply { RequestOptions.centerInsideTransform() }
-                    .into(holderFromUser?.picture)
+                    .into(holderFromUser.picture)
         } else {
             Glide.with(mContext)
                     .load(R.drawable.ast_contacts)
                     .apply { RequestOptions.centerInsideTransform() }
-                    .into(holderFromUser?.picture)
+                    .into(holderFromUser.picture)
         }
 
     }

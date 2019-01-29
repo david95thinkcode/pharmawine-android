@@ -113,7 +113,7 @@ class CustomersListFragment : Fragment(), CustomerCalls.Callbacks {
 
         } else {
             // Le parent n'a envoyeé aucun customer type id ou un type mon valide
-            Utils.presentToast(mContext, "Impossible de recuperer ce type de client", true);
+            Utils.presentToast(mContext, "Impossible de recuperer ce type de client", true)
         }
 
     }

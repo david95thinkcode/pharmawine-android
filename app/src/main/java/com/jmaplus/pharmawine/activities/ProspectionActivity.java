@@ -19,6 +19,8 @@ import android.widget.Toast;
 
 import com.jmaplus.pharmawine.R;
 import com.jmaplus.pharmawine.adapters.RemainingCustomersAdapter;
+import com.jmaplus.pharmawine.database.model.ClientsList;
+import com.jmaplus.pharmawine.database.utils.DatabaseHelper;
 import com.jmaplus.pharmawine.models.AuthUser;
 import com.jmaplus.pharmawine.models.Customer;
 import com.jmaplus.pharmawine.utils.Constants;
@@ -43,24 +45,40 @@ public class ProspectionActivity extends AppCompatActivity implements View.OnCli
     private RemainingCustomersAdapter mAdapter;
     private List<Customer> mCustomerList;
     private AuthUser mAuthUser;
+    DatabaseHelper db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prospection);
 
+        db = new DatabaseHelper(getApplicationContext());
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         bindViewsAndInitilise();
 
+        Log.i(getClass().getName(), "Fetech remote client");
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 fetchRemainingClients();
             }
         }, 800);
+        Log.i(getClass().getName(), "Call Save to DB");
+        saveCustomerToDb();
 
         configureOnClickRecyclerView();
+    }
+
+    private void saveCustomerToDb() {
+        for (Customer c : mCustomerList) {
+            String client = c.toString();
+            ClientsList clientsList = new ClientsList(client, Utils.getCurrentDate());
+            long cID = db.createClient(clientsList);
+            Log.e("Client added to db", Long.toString(cID));
+        }
+
     }
 
     private void bindViewsAndInitilise() {
