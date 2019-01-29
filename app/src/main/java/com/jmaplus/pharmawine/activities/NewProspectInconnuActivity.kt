@@ -1,5 +1,6 @@
 package com.jmaplus.pharmawine.activities
 
+import android.app.ProgressDialog
 import android.os.Bundle
 import android.os.Handler
 import android.support.v4.app.Fragment
@@ -7,9 +8,11 @@ import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
 import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.View
+import android.widget.Button
 import android.widget.RelativeLayout
 import com.jmaplus.pharmawine.R
 import com.jmaplus.pharmawine.fragments.rapport.ReportEtape2Fragment
@@ -21,9 +24,12 @@ import com.jmaplus.pharmawine.fragments.rapport.prospect_inconnu.Step2UnknownMed
 import com.jmaplus.pharmawine.fragments.rapport.prospect_inconnu.Step3UnknownMedicalProspect
 import com.jmaplus.pharmawine.fragments.rapport.prospect_inconnu.Step4UnknownMedicalProspectFragment
 import com.jmaplus.pharmawine.models.*
+import com.jmaplus.pharmawine.utils.RetrofitCalls.*
+import com.jmaplus.pharmawine.utils.Utils
 
 
 class NewProspectInconnuActivity : AppCompatActivity(),
+        View.OnClickListener,
         VisiteInProgressFragment.OnFragmentInteractionListener,
         Step1UnknownMedicalProspect.OnFragmentInteractionListener,
         Step2UnknownMedicalProspect.OnFragmentInteractionListener,
@@ -31,14 +37,20 @@ class NewProspectInconnuActivity : AppCompatActivity(),
         Step4UnknownMedicalProspectFragment.OnFragmentInteractionListener,
         ReportEtape2Fragment.OnFragmentInteractionListener,
         ReportEtape3Fragment.OnFragmentInteractionListener,
-        ReportEtape4Fragment.OnFragmentInteractionListener {
+        ReportEtape4Fragment.OnFragmentInteractionListener,
+        CenterCalls.Callbacks, SpecialityCalls.Callbacks,
+        AreaCalls.Callbacks, CustomerStatusCalls.Callbacks,
+        DailyReportEndCall.Callbacks, ProfilageCalls.Callbacks {
 
+    private var isReportUpdated: Boolean = false
     private var clientType = ""
     private var mReportID: Int = -1
     private var mCustomer = Customer()
     private var mFirstFragmentArgs = Bundle()
     private var mDailyReportEnd = DailyReportEnd()
     private var fragmentManager = supportFragmentManager
+
+    private var mToken = ""
 
     private var mAreasList: MutableList<Area> = ArrayList()
     private var mCenterList: MutableList<Center> = ArrayList()
@@ -47,6 +59,8 @@ class NewProspectInconnuActivity : AppCompatActivity(),
 
     private lateinit var mViewPager: ViewPager
     private lateinit var mPagerAdapter: PagerAdapter
+    private lateinit var mBtnNext: Button
+    private lateinit var mProgressDialog: ProgressDialog
     private lateinit var mTopRapportLayout: RelativeLayout
 
     private lateinit var mFirstFragment: VisiteInProgressFragment
@@ -93,10 +107,21 @@ class NewProspectInconnuActivity : AppCompatActivity(),
     }
 
     private fun initializations() {
+
+        mToken = AuthUser.getToken(this)
+
+        title = "Visite en cours..."
+
         // Views initializations
+        mBtnNext = findViewById(R.id.btn_next_edit_profile)
         mViewPager = findViewById(R.id.view_pager)
         mTopRapportLayout = findViewById(R.id.layout_profil_activity_edit_medical)
         mTopRapportLayout.visibility = View.GONE
+        mBtnNext.setOnClickListener(this)
+
+        mProgressDialog = ProgressDialog(this);
+        mProgressDialog.setMessage("Mis a jour en cours....")
+        mProgressDialog.setCancelable(false)
 
         // fragments initialization
         mFirstFragment = VisiteInProgressFragment()
@@ -107,6 +132,25 @@ class NewProspectInconnuActivity : AppCompatActivity(),
         mStep5Fragment = ReportEtape2Fragment()
         mStep6Fragment = ReportEtape3Fragment()
         mStep7Fragment = ReportEtape4Fragment()
+
+        // listenners
+        mViewPager.setOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            override fun onPageScrolled(i: Int, v: Float, i1: Int) {
+
+            }
+
+            override fun onPageSelected(i: Int) {
+                if (i < STEP_7_FRAGMENT_INDEX) {
+                    mBtnNext.text = "Suivant"
+                } else {
+                    mBtnNext.text = "Terminer mon rapport"
+                }
+            }
+
+            override fun onPageScrollStateChanged(i: Int) {
+
+            }
+        })
 
         // Fetching datas after 10 secondes to make sure a visit is in progress
         Handler().postDelayed({
@@ -142,26 +186,22 @@ class NewProspectInconnuActivity : AppCompatActivity(),
 
 
     private fun fetchCenters() {
-        Log.i(TAG, "Fetching centers...")
-        // todo: implements corresponding retrofit call
-
+        CenterCalls.getCentersList(mToken, this)
     }
 
     private fun fetchAreas() {
         Log.i(TAG, "Fetching areas...")
-        // todo: implements corresponding retrofit call
-
+        AreaCalls.getAreasList(mToken, this)
     }
 
     private fun fetchSpeciaities() {
         Log.i(TAG, "Fetching specialities...")
-        // todo: implements corresponding retrofit call
+        SpecialityCalls.getSpecialitysList(mToken, this)
     }
 
     private fun fetchCustomerStatues() {
         Log.i(TAG, "Fetching customer statues...")
-        // todo: implements corresponding retrofit call
-
+        CustomerStatusCalls.getCustomerStatusList(mToken, this)
     }
 
     // First Fragment callbacks ====================
@@ -211,7 +251,8 @@ class NewProspectInconnuActivity : AppCompatActivity(),
     }
 
     override fun onCenterSelected(selectedCenter: Center) {
-        // todo
+        // todo talk with corentin about hat route
+        mViewPager.currentItem++
     }
 
     // Step 4 callbacks ====================
@@ -224,7 +265,6 @@ class NewProspectInconnuActivity : AppCompatActivity(),
     }
 
     override fun onAreaUpdated(zone: Area) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun onRequestAreasList() {
@@ -253,7 +293,7 @@ class NewProspectInconnuActivity : AppCompatActivity(),
 
     // Step 5 callbacks ====================
     override fun onStep2Finished(purposeOfTheVisit: String?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
     override fun onPurposeUpdated(updatedPurposeOfTheVisit: String?) {
@@ -261,7 +301,7 @@ class NewProspectInconnuActivity : AppCompatActivity(),
     }
 
     override fun onReturnToStep1() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
     // Step 6 callbacks ====================
@@ -270,11 +310,11 @@ class NewProspectInconnuActivity : AppCompatActivity(),
     }
 
     override fun onStep3Finished(promesesHeld: String?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
     override fun onReturnToStep2() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
     // Step 7 callbacks ====================
@@ -283,12 +323,45 @@ class NewProspectInconnuActivity : AppCompatActivity(),
     }
 
     override fun onStep4Finished(prescribedRequirements: String?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
 
     // ==================== Start Retrofit Callbacks ====================
+    override fun onCentersResponse(centers: MutableList<Center>?) {
+        mCenterList = centers!!
+//        Utils.presentToast(this, "Centers fetched", false)
+    }
 
+    override fun onCentersFailure() {
+        Utils.presentToast(this, "Echec de recuperation des centres", false)
+    }
+
+    override fun onSpecialitysResponse(specialities: MutableList<Speciality>?) {
+//        Utils.presentToast(this, "specialities fetched", false)
+        mSpecialitiesList = specialities!!
+    }
+
+    override fun onSpecialitysFailure() {
+        Utils.presentToast(this, "Echec de recuperation des specialites", false)
+    }
+
+    override fun onAreasResponse(areas: MutableList<Area>?) {
+        mAreasList = areas!!
+//        Utils.presentToast(this, "area fetched", false)
+    }
+
+    override fun onAreasFailure() {
+
+    }
+
+    override fun onCustomerStatussResponse(customerStatues: MutableList<CustomerStatus>?) {
+        mCustomerStatusList = customerStatues!!
+//        Utils.presentToast(this, "Customers Statues fetched", false)
+    }
+
+    override fun onCustomerStatussFailure() {
+    }
 
     // ==================== End Retrofit Callbacks ====================
 
@@ -317,6 +390,115 @@ class NewProspectInconnuActivity : AppCompatActivity(),
 
         override fun getCount(): Int {
             return NUM_PAGES
+        }
+    }
+
+
+    override fun onEndDailyReportResponse(response: DailyReportEndResponse?) {
+        // Envoie du rapport reussi
+        // Enregistrons maintenant le profil du customer
+        mProgressDialog.cancel()
+        isReportUpdated = true
+        sendProfile()
+    }
+
+    override fun onEndDailyReportFailure() {
+        mProgressDialog.cancel()
+        showConfirmationToRetryReportSend()
+    }
+
+    override fun onUpdatedCustomerResponse(updatedCustomer: Customer?) {
+        mProgressDialog.cancel()
+    }
+
+    override fun onUpdatedCustomerFailure() {
+        mProgressDialog.cancel()
+        showConfirmationDialogToUpdateProfile()
+    }
+
+    private fun sendReportEnd() {
+        mProgressDialog.show()
+        Log.i(TAG, "$mDailyReportEnd")
+        DailyReportEndCall.postDailyReportEnd(mToken, this, mDailyReportEnd, mReportID)
+    }
+
+    private fun sendProfile() {
+        mProgressDialog.show()
+        Log.i(TAG, "$mCustomer")
+        ProfilageCalls.editCustomerProfile(mToken, this, mCustomer.id, mCustomer)
+    }
+
+    private fun showConfirmationToRetryReportSend() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Echec d'enregistrement du rapport")
+        builder.setMessage("Voulez-vous reessayer ?")
+        builder.setCancelable(false)
+
+        builder.setPositiveButton(R.string.oui) { dialog, which ->
+            sendReportEnd()
+        }
+
+        builder.setNegativeButton(R.string.non) { dialog, which ->
+            {
+                //                finish()
+            }
+        }
+
+        builder.show()
+    }
+
+    private fun showConfirmationDialogToUpdateProfile() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Echec d'enregistrement du client")
+        builder.setMessage("Voulez-vous reessayer ?")
+        builder.setCancelable(false)
+
+        builder.setPositiveButton(R.string.oui) { dialog, which ->
+            sendProfile()
+        }
+
+        builder.setNegativeButton(R.string.non) { dialog, which ->
+            {
+                if (isReportUpdated) {
+                    finish()
+                }
+
+            }
+        }
+
+        builder.show()
+    }
+
+    private fun showConfirmationDialogToFinish() {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("C'est bon ?")
+        builder.setMessage("Etes vous sur d'avoir terminé votre rapport ?")
+        builder.setCancelable(false)
+
+        builder.setPositiveButton(R.string.oui) { dialog, which ->
+            sendReportEnd()
+        }
+
+        builder.setNegativeButton(R.string.non) { dialog, which ->
+            {
+                // code
+                // ...
+            }
+        }
+
+        builder.show()
+    }
+
+    override fun onClick(v: View?) {
+        if (v?.id == mBtnNext.id) {
+            if (mViewPager.currentItem < STEP_7_FRAGMENT_INDEX) {
+                // Action ==> Passer au fragment suivant
+                mViewPager.currentItem = mViewPager.currentItem + 1
+            } else if (mViewPager.currentItem >= STEP_7_FRAGMENT_INDEX) {
+                // Action ==> Terminer le rapport
+
+                showConfirmationDialogToFinish()
+            }
         }
     }
 }

@@ -67,6 +67,33 @@ public class CustomerCalls {
         });
     }
 
+    public static void getRemaining(String token, final Callbacks callbacks) {
+
+        final WeakReference<Callbacks> callbacksWeakReference = new WeakReference<Callbacks>(callbacks);
+
+        // creating call to Api service
+        Call<List<Customer>> call = mApiService.getRemainingCustomers(Utils.getBarearTokenString(token));
+
+        call.enqueue(new Callback<List<Customer>>() {
+            @Override
+            public void onResponse(Call<List<Customer>> call, Response<List<Customer>> response) {
+                if (callbacksWeakReference.get() != null) {
+                    if (response.code() == 200)
+                        callbacks.onRemainingCustomersResponse(response.body());
+                    else
+                        callbacks.onRemainingCustomersFailure();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<List<Customer>> call, Throwable t) {
+                if (callbacksWeakReference.get() != null)
+                    callbacks.onRemainingCustomersFailure();
+            }
+        });
+    }
+
 
     // 1 - Interface
     public interface Callbacks {
@@ -78,6 +105,10 @@ public class CustomerCalls {
         void onKnownProspectResponse(@Nullable List<Customer> customers);
 
         void onKnownProspectFailure();
+
+        void onRemainingCustomersResponse(@Nullable List<Customer> customers);
+
+        void onRemainingCustomersFailure();
     }
 
 

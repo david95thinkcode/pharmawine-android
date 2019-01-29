@@ -1,5 +1,7 @@
 package com.jmaplus.pharmawine.utils.RetrofitCalls;
 
+import android.util.Log;
+
 import com.jmaplus.pharmawine.models.Network;
 import com.jmaplus.pharmawine.models.SimpleUser;
 import com.jmaplus.pharmawine.utils.ApiService;
@@ -38,20 +40,21 @@ public class NetworkCalls {
         });
     }
 
-    public static void getDetails(final Callbacks callbacks, String token, Integer networkID) {
+    public static void getDetails(final Callbacks callbacks, String token) {
         final WeakReference<Callbacks> callbacksWeakReference = new WeakReference(callbacks);
 
-        Call<Network> call = mApiService.getNetworkDetails(networkID, Utils.getBarearTokenString(token));
+        Call<List<Network>> call = mApiService.getNetworkDetails(Utils.getBarearTokenString(token));
 
-        call.enqueue(new Callback<Network>() {
+        call.enqueue(new Callback<List<Network>>() {
             @Override
-            public void onResponse(Call<Network> call, Response<Network> response) {
+            public void onResponse(Call<List<Network>> call, Response<List<Network>> response) {
                 if ((callbacksWeakReference.get() != null) && (response.code() == 200))
-                    callbacks.onNetworkDetailsResponse(response.body());
+                    callbacks.onNetworkDetailsResponse(response.body().get(0));
             }
 
             @Override
-            public void onFailure(Call<Network> call, Throwable t) {
+            public void onFailure(Call<List<Network>> call, Throwable t) {
+                Log.e(getClass().getName(), "onFailure: " + t.getMessage());
                 if (callbacksWeakReference.get() != null)
                     callbacks.onNetworkDetailsFailure();
             }

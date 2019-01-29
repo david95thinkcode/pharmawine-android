@@ -1,5 +1,6 @@
 package com.jmaplus.pharmawine.models;
 
+import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -206,5 +207,12 @@ public class SimpleUser {
 
     public String getFullName() {
         return getFirstname() + " " + getLastname();
+    }
+
+    @Override
+    public String toString() {
+        Gson gson = new Gson();
+
+        return gson.toJson(this);
     }
 }

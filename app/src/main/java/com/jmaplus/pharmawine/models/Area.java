@@ -83,4 +83,9 @@ public class Area {
         this.city = city;
     }
 
+    @Override
+    public String toString() {
+        return this.getName();
+    }
+
 }
