@@ -48,7 +48,7 @@ class PlanningAdapter(val context: Context, var customersList: MutableList<Custo
         else
             holder.status.text = customersList[position].customerStatus.name
 
-        Glide.with(context).load(customersList[position].defaultAvatar).into(holder?.picture)
+        Glide.with(context).load(customersList[position].defaultAvatar).into(holder.picture)
     }
 
     fun getClient(position: Int): Customer = customersList[position]

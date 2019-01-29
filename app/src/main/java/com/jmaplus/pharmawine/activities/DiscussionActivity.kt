@@ -269,7 +269,7 @@ class DiscussionActivity : AppCompatActivity(), View.OnClickListener {
                         && msg.createdAt.toLong() <= mLastMessageTime.toLong() && !fireMsg.key.isNullOrEmpty()
                 ) {
                     mMessagesReference
-                            .child(fireMsg?.key.toString())
+                            .child(fireMsg.key.toString())
                             .child("read")
                             .setValue(true)
 
@@ -381,7 +381,7 @@ class DiscussionActivity : AppCompatActivity(), View.OnClickListener {
             )
 
             // Pushing message object to message collection
-            mMessagesReference.child(newFireMessageKey!!).setValue(msg)
+            mMessagesReference.child(newFireMessageKey).setValue(msg)
                     .addOnSuccessListener {
                         // Write was successful!
 

@@ -15,12 +15,13 @@
         android:layout_height="40dp"
         android:layout_margin="8dp"
         android:background="@drawable/rounded_linearlayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         android:backgroundTint="@color/darker_grey"
         android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/cardView2"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="spread_inside">
 
         <ImageView
             android:layout_width="0dp"
@@ -153,20 +154,22 @@
                         android:layout_width="30dp"
                         android:layout_height="match_parent"
                         android:padding="2dp"
+                        android:layout_marginEnd="15dp"
                         android:src="@drawable/account_multiple" />
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="15dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="2dp"
                         android:layout_weight="30"
                         android:text="@string/reste"
                         android:textColor="@color/darker_grey" />
 
                     <TextView
                         android:id="@+id/textView_num_visit_restant"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_weight="50"

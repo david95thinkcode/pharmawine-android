@@ -100,7 +100,7 @@ public class MessengerActivity extends AppCompatActivity {
                 public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                     FireRoom fr = dataSnapshot.getValue(FireRoom.class);
 
-                    addToRoomList(fr, dataSnapshot.getKey().toString());
+                    addToRoomList(fr, dataSnapshot.getKey());
                 }
 
                 @Override

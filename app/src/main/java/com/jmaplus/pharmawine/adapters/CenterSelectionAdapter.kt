@@ -27,7 +27,7 @@ class CenterSelectionAdapter(var centersList: MutableList<Center>) :
     override fun getItemCount(): Int = centersList.size
 
     override fun onBindViewHolder(holder: CenterSelectionViewHolder, position: Int) {
-        holder?.center.text = centersList[position].name
+        holder.center.text = centersList[position].name
 //        holder?.zone.text = centersList[position].zone
     }
 

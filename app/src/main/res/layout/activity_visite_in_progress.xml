@@ -6,34 +6,34 @@
     android:layout_height="match_parent"
     tools:context=".activities.VisiteInProgressActivity">
 
-    <LinearLayout
-        android:id="@+id/header_report"
-        android:layout_width="320dp"
-        android:layout_height="45dp"
-        android:layout_gravity="top|center"
-        android:layout_marginTop="30dp"
-        android:background="@drawable/rounded_linearlayout">
+    <!--<LinearLayout-->
+    <!--android:id="@+id/header_report"-->
+    <!--android:layout_width="320dp"-->
+    <!--android:layout_height="45dp"-->
+    <!--android:layout_gravity="top|center"-->
+    <!--android:layout_marginTop="30dp"-->
+    <!--android:background="@drawable/rounded_linearlayout">-->
 
-        <ImageButton
-            android:id="@+id/imageButtonBackToEtape4"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center|start"
-            android:layout_weight="1"
-            android:backgroundTint="@color/grey"
-            android:contentDescription="chevronBack"
-            android:src="@drawable/ic_rapport"
-            tools:ignore="HardcodedText" />
+    <!--<ImageButton-->
+    <!--android:id="@+id/imageButtonBackToEtape4"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_gravity="center|start"-->
+    <!--android:layout_weight="1"-->
+    <!--android:backgroundTint="@color/grey"-->
+    <!--android:contentDescription="chevronBack"-->
+    <!--android:src="@drawable/ic_rapport"-->
+    <!--tools:ignore="HardcodedText" />-->
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:text="@string/rapport" />
+    <!--<TextView-->
+    <!--android:id="@+id/textView"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_gravity="center"-->
+    <!--android:layout_weight="1"-->
+    <!--android:text="@string/rapport" />-->
 
-    </LinearLayout>
+    <!--</LinearLayout>-->
 
 
     <android.support.v4.view.ViewPager
