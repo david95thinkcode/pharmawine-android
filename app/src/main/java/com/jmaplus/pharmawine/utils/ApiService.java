@@ -81,9 +81,8 @@ public interface ApiService {
     @GET("network")
     Call<List<Network>> getAllNetworks(@Header("Authorization") String authorization);
 
-    @GET("network/{network_id}")
-    Call<Network> getNetworkDetails(
-            @Path("network_id") Integer networkID,
+    @GET("user/network")
+    Call<List<Network>> getNetworkDetails(
             @Header("Authorization") String authorization);
 
     @GET("network/{network_id}/users")
