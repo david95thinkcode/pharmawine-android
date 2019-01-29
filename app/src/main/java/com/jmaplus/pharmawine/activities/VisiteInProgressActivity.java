@@ -20,7 +20,6 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.jmaplus.pharmawine.R;
-import com.jmaplus.pharmawine.database.model.DailyReportNotSent;
 import com.jmaplus.pharmawine.database.utils.DatabaseHelper;
 import com.jmaplus.pharmawine.fragments.rapport.ReportEtape1Fragment;
 import com.jmaplus.pharmawine.fragments.rapport.ReportEtape2Fragment;
@@ -152,9 +151,9 @@ public class VisiteInProgressActivity extends AppCompatActivity
         mRootContainer = findViewById(R.id.fragment_container_visite_in_progress);
         mViewPager = findViewById(R.id.view_pager_rapport_fragments_container);
         mViewPager.setVisibility(View.GONE);
-        headerReport = findViewById(R.id.header_report);
+//        headerReport = findViewById(R.id.header_report);
 
-        hideHeader(true);
+//        hideHeader(true);
 
         dialog = new ProgressDialog(this);
         dialog.setCancelable(false);
@@ -447,12 +446,12 @@ public class VisiteInProgressActivity extends AppCompatActivity
 
     }
 
-    public void hideHeader(boolean hideIt) {
-        if (hideIt) {
-            headerReport.setVisibility(View.GONE);
-        } else {
-            headerReport.setVisibility(View.VISIBLE);
-        }
-
-    }
+//    public void hideHeader(boolean hideIt) {
+//        if (hideIt) {
+//            headerReport.setVisibility(View.GONE);
+//        } else {
+//            headerReport.setVisibility(View.VISIBLE);
+//        }
+//
+//    }
 }

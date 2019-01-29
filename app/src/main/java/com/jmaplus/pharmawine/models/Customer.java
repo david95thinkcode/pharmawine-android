@@ -106,8 +106,17 @@ public class Customer {
      * @return
      */
     public Boolean isKnown() {
-        return this.customerStatus.getName() != "pim" && this.customerStatus.getName() != "PIM"
-                && this.customerStatus.getName() != "pig" && this.customerStatus.getName() != "PIG";
+        try {
+            return this.customerStatus.getName() != "pim" && this.customerStatus.getName() != "PIM"
+                    && this.customerStatus.getName() != "pig" && this.customerStatus.getName() != "PIG";
+        } catch (NullPointerException e) {
+            return this.customerStatusId != 8 && this.getCustomerStatusId() != 7;
+        } catch (Exception e) {
+            Log.e(getClass().getName(), "isKnown() " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+
     }
 
     public Integer getFillingLevel() {
