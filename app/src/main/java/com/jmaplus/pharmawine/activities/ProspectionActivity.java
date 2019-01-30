@@ -183,7 +183,8 @@ public class ProspectionActivity extends AppCompatActivity implements View.OnCli
                 i.putExtra(Constants.CLIENT_FIRSTNAME_KEY, customer.getFirstname());
                 i.putExtra(Constants.CLIENT_FULLNAME_KEY, customer.getFullName());
                 i.putExtra(Constants.CLIENT_LASTNAME_KEY, customer.getLastname());
-                i.putExtra(Constants.CLIENT_AVATAR_URL_KEY, customer.getAvatar());
+                i.putExtra(Constants.CLIENT_AVATAR_URL_KEY, customer.getDefaultAvatar());
+                i.putExtra(VisiteInProgressActivity.EXTRA_PROSPECT_SEX, customer.getSex());
 
                 // Preventing against null exception
                 try {

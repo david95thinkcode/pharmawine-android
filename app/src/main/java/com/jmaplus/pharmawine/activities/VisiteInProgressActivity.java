@@ -58,6 +58,7 @@ public class VisiteInProgressActivity extends AppCompatActivity
     public static final int STEP_3_FRAGMENT_INDEX = 2;
     public static final int STEP_4_FRAGMENT_INDEX = 3;
     public static final String EXTRA_PROSPECT_TYPE = "prospectType";
+    public static final String EXTRA_PROSPECT_SEX = "prospectSex";
     private static final String TAG = "VisiteActivity";
     private ProgressDialog dialog;
 
@@ -69,6 +70,7 @@ public class VisiteInProgressActivity extends AppCompatActivity
     private ViewPager mViewPager;
     private View mRootContainer;
     private String prospectType = "";
+    private String mCustomerSex = "M";
     private LinearLayout headerReport;
 
     private Integer customerID = -1;
@@ -96,6 +98,7 @@ public class VisiteInProgressActivity extends AppCompatActivity
         setUI();
 
         mContext = this;
+        mCustomerSex = getIntent().getStringExtra(VisiteInProgressActivity.EXTRA_PROSPECT_SEX);
         prospectType = getIntent().getStringExtra(VisiteInProgressActivity.EXTRA_PROSPECT_TYPE);
 
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -111,6 +114,7 @@ public class VisiteInProgressActivity extends AppCompatActivity
         Bundle args = new Bundle();
 
         args.putString(VisiteInProgressFragment.ARGS_PROSPECT_TYPE, prospectType);
+        args.putString(VisiteInProgressFragment.ARGS_CLIENT_SEX_KEY, mCustomerSex);
         args.putInt(VisiteInProgressFragment.ARGS_CLIENT_ID_KEY, customerID);
         args.putString(VisiteInProgressFragment.ARGS_CLIENT_FIRSTNAME_KEY,
                 getIntent().getStringExtra(Constants.CLIENT_FIRSTNAME_KEY));

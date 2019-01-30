@@ -58,6 +58,7 @@ public class Constants {
     public static String CLIENT_SPECIALITY_KEY = "client_spec";
     public static String CLIENT_CUSTOMER_STATUS_KEY = "client_stat";
     public static String CLIENT_CUSTOMER_TYPE_KEY = "client_type";
+    public static String CLIENT_SEX_KEY = "client_sex";
     public static String CLIENT_AVATAR_URL_KEY = "client_av_url";
 
 

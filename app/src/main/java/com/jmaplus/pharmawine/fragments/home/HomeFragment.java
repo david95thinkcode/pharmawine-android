@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
 import com.jmaplus.pharmawine.R;
@@ -215,7 +214,7 @@ public class HomeFragment extends Fragment implements
     public void onRemainingCustomersResponse(@Nullable List<Customer> customers) {
 
         tvRemainingCount.setText(String.valueOf(customers.size()));
-        Toast.makeText(mContext, "Nombre de client restant mis a jour", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(mContext, "Nombre de client restant mis a jour", Toast.LENGTH_SHORT).show();
     }
 
     @Override
