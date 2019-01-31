@@ -62,8 +62,8 @@
 
             <Button
                 android:id="@+id/send_message_btn"
-                android:layout_width="47dp"
-                android:layout_height="50dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:layout_marginEnd="8dp"
                 android:background="@drawable/ic_baseline_send_24px"
                 app:layout_constraintBottom_toBottomOf="parent"
