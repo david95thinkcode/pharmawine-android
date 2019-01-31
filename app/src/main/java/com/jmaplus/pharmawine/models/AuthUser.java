@@ -2,6 +2,7 @@ package com.jmaplus.pharmawine.models;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
@@ -380,8 +381,28 @@ public class AuthUser {
                     Constants.F_PROFIL, Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPref.edit();
 
-            editor.putInt(Constants.SP_ID_KEY, this.id);
-            editor.putString(Constants.SP_TOKEN_KEY, token);
+            // Les champs obligatoires
+            // =======================================
+
+            try {
+                editor.putInt(Constants.SP_ID_KEY, this.id);
+                editor.putString(Constants.SP_TOKEN_KEY, token);
+                editor.putInt(Constants.SP_TYPE_KEY, this.typeId);
+                editor.putInt(Constants.SP_ROLE_KEY, getFirstRole().getId());
+            } catch (NullPointerException e) {
+                Log.e(getClass().getName(), "Un des champs obligatoire est null");
+                Log.e(getClass().getName(), e.getMessage());
+                e.printStackTrace();
+                return false;
+            }
+            // Fin des champs obligatoires
+            // =======================================
+
+            // On a besoin du network uniquement si le user n'est pas un admin
+            if (this.getFirstRole().getId() != Constants.ROLE_ADMIN_KEY) {
+                editor.putInt(Constants.SP_NETWORK_KEY, getNetworkId());
+            }
+
             editor.putString(Constants.SP_FIRSTNAME_KEY, this.firstname);
             editor.putString(Constants.SP_LASTNAME_KEY, this.lastname);
             editor.putString(Constants.SP_AVATAR_URL_KEY, this.avatar);
@@ -392,9 +413,6 @@ public class AuthUser {
             editor.putString(Constants.SP_PHONE_1_KEY, this.telephone1);
             editor.putString(Constants.SP_PHONE_2_KEY, this.telephone2);
             editor.putString(Constants.SP_MARITAL_STATUS_KEY, this.maritalStatus);
-            editor.putInt(Constants.SP_TYPE_KEY, this.typeId);
-            editor.putInt(Constants.SP_ROLE_KEY, getFirstRole().getId());
-            editor.putInt(Constants.SP_NETWORK_KEY, getNetworkId());
 
             // Objects
             Gson gson = new Gson();
@@ -405,8 +423,10 @@ public class AuthUser {
             editor.putInt(Constants.SP_ACCOUNT_STATUS_KEY, this.status);
 
             editor.commit();
-
         } catch (Exception e) {
+            Log.e(getClass().getName(), e.getMessage());
+            e.printStackTrace();
+
             return false;
         }
 
