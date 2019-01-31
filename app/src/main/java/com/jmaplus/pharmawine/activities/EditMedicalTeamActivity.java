@@ -2,6 +2,7 @@ package com.jmaplus.pharmawine.activities;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -11,6 +12,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -222,27 +224,31 @@ public class EditMedicalTeamActivity extends AppCompatActivity implements
 
     private void confirmationFinishDialog() {
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(R.string.etes_vous_sur_d_avoir_termine);
-        builder.setCancelable(false);
-
-        builder.setPositiveButton(R.string.oui, new DialogInterface.OnClickListener() {
+        LayoutInflater factory = LayoutInflater.from(this);
+        final View customDialogBoxView = factory.inflate(R.layout.custom_dialog_box, null);
+        final AlertDialog customDialog = new AlertDialog.Builder(this).create();
+        customDialog.setView(customDialogBoxView);
+        customDialog.setCancelable(false);
+        TextView titleDialog = customDialog.findViewById(R.id.dialog_box_title);
+        TextView msgDialog = customDialogBoxView.findViewById(R.id.dialog_box_content);
+        msgDialog.setText(R.string.etes_vous_sur_d_avoir_termine);
+        titleDialog.setVisibility(View.GONE);
+        customDialogBoxView.findViewById(R.id.yes_button_custom_dialogbox).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onClick(View v) {
                 updateProfileOnServer();
                 finish();
+
             }
         });
-
-        builder.setNegativeButton(R.string.non, new DialogInterface.OnClickListener() {
+        customDialogBoxView.findViewById(R.id.no_button_custom_dialogbox).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
+            public void onClick(View v) {
+                customDialog.cancel();
             }
-
         });
 
-        builder.show();
+        customDialog.show();
     }
 
     private void updateProgressionBar() {

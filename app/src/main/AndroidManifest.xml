@@ -19,7 +19,9 @@
         tools:replace="android:icon">
         <activity
             android:name=".activities.DiscussionActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait">
+
+        </activity>
         <activity
             android:name=".activities.MessagingActivity"
             android:label="@string/title_activity_messging"

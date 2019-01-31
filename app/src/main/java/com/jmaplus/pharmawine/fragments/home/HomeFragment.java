@@ -37,7 +37,6 @@ public class HomeFragment extends Fragment {
 
     private String TAG = "HomeFragment";
     private TextView tvDate, tvNetworkLabel, tvProgress;
-    //private LinearLayout cvDate;
     private RoundCornerProgressBar dailyProgressBar;
     private Context mContext;
     private FloatingActionButton fabNetwork, fabProspection;
@@ -62,7 +61,6 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         tvDate = view.findViewById(R.id.tv_home_date);
-        //cvDate = view.findViewById(R.id.cv_home_date);
         dailyProgressBar = view.findViewById(R.id.daily_progressbar);
         tvProgress = view.findViewById(R.id.tv_progress);
         layBottomFabs = view.findViewById(R.id.lay_bottom_fabs);
@@ -82,9 +80,9 @@ public class HomeFragment extends Fragment {
 
         currentUser = AuthUser.getAuthenticatedUser(requireContext());
         try {
-            tvNetworkLabel.setText("Réseau " + currentUser.getNetwork().getName());
+            tvNetworkLabel.setText(String.format("Réseau %s", currentUser.getNetwork().getName()));
         } catch (Exception e) {
-            tvNetworkLabel.setText("Aucun réseau");
+            tvNetworkLabel.setText(getString(R.string.aucun_reseau));
             Log.e(TAG, "initViews: " + e.getMessage());
             e.printStackTrace();
         }
@@ -92,25 +90,6 @@ public class HomeFragment extends Fragment {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.FRENCH);
         tvDate.setText(dateFormat.format(new Date()));
 
-//        cvDate.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//                CalendarDatePickerDialogFragment datePickerDialog = new CalendarDatePickerDialogFragment()
-//                        .setOnDateSetListener(new CalendarDatePickerDialogFragment.OnDateSetListener() {
-//                            @Override
-//                            public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int month, int dayOfMonth) {
-//                                String[] frenchMonths = new DateFormatSymbols(Locale.FRENCH).getMonths();
-//                                tvDate.setText(
-//                                        String.valueOf(dayOfMonth).concat(" ").
-//                                                concat(frenchMonths[month]).concat(" ").
-//                                                concat(String.valueOf(year)));
-//                            }
-//                        });
-//                datePickerDialog.show(getActivity().getSupportFragmentManager(), "DatePicker");
-//
-//            }
-//        });
 
 
         setDailyProgression(0);
