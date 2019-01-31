@@ -141,6 +141,7 @@ class CustomersListFragment : Fragment(),
 
     /**
      * This method should be called from parent
+     * to filter the list by customer type id
      */
     fun filteredCustomerListByCustomerType(customerTypeID: Int) {
         if (mCustomersList.isNotEmpty()) {
