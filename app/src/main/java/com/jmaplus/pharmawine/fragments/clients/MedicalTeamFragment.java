@@ -30,6 +30,8 @@ import com.jmaplus.pharmawine.utils.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -205,6 +207,16 @@ public class MedicalTeamFragment extends Fragment implements
     public void onKnownProspectFailure() {
         Utils.presentToast(mContext, "Une erreur s'est produite", true);
         mProgressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onRemainingCustomersResponse(@Nullable List<Customer> customers) {
+
+    }
+
+    @Override
+    public void onRemainingCustomersFailure() {
+
     }
 
     public interface OnFragmentInteractionListener {

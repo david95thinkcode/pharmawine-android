@@ -13,83 +13,36 @@
         android:padding="16dp"
         android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="16dp">
+        <android.support.v7.widget.CardView
+            android:id="@+id/cv_header_1"
+            android:layout_width="320dp"
+            android:layout_height="45dp"
+            android:layout_gravity="center"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            app:cardBackgroundColor="@color/grey"
+            app:cardCornerRadius="30dp"
+            app:contentPadding="2dp">
 
-            <LinearLayout
-                android:layout_width="320dp"
-                android:layout_height="45dp"
-                android:layout_gravity="center"
-                android:background="@drawable/rounded_linearlayout"
-                android:textAppearance="?android:attr/textAppearanceMedium">
+            <ImageButton
+                android:id="@+id/imageButtoBackToEtape1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|start"
+                android:layout_marginStart="15dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/grey"
+                android:contentDescription="chevronBack"
+                android:src="@drawable/ic_rapport" />
 
-                <ImageButton
-                    android:id="@+id/imageButtoBackToEtape1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center|start"
-                    android:layout_marginStart="15dp"
-                    android:layout_weight="1"
-                    android:backgroundTint="@color/grey"
-                    android:contentDescription="chevronBack"
-                    android:src="@drawable/ic_rapport" />
-
-                <TextView
-                    android:id="@+id/tv_autres_infos"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:text="@string/rapport" />
-
-            </LinearLayout>
-
-            <!--Don't forget to add dot progress bar later-->
-            <LinearLayout
+            <TextView
+                android:id="@+id/tv_autres_infos"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:orientation="vertical">
+                android:layout_weight="1"
+                android:text="@string/rapport" />
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="64dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/textViewZone"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/roboto_black"
-                        android:text="@string/zone"
-                        android:textColor="@color/black_variant"
-                        android:textSize="16sp" />
-
-                    <TextView
-                        android:id="@+id/textView3"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="22dp"
-                        android:fontFamily="@font/roboto_regular"
-                        android:text="@string/changer_si_pas_correcte"
-                        android:textColor="@color/darker_grey" />
-                </LinearLayout>
-
-
-                <Spinner
-                    android:id="@+id/choix_zone_pour_rapport"
-                    style="@style/edit_text_bordered_lg_style"
-                    android:layout_width="350dp"
-                    android:layout_height="42dp"
-                    android:layout_marginTop="12dp" />
-            </LinearLayout>
-
-
-        </LinearLayout>
+        </android.support.v7.widget.CardView>
 
         <!--Don't forget to add dot progress bar later-->
         <LinearLayout
@@ -124,6 +77,14 @@
             </LinearLayout>
 
 
+            <!-- TODO: Walis, il faudra supprimer le spinner-->
+            <Spinner
+                android:id="@+id/sp_choix_centre_pour_rapport"
+                style="@style/edit_text_bordered_lg_style"
+                android:layout_width="350dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="12dp"
+                android:visibility="invisible" />
         </LinearLayout>
 
 
@@ -141,6 +102,7 @@
         android:textAllCaps="false"
         android:textSize="13sp" />
 
+    <!--TODO: Wallis, veuille ameliorer le style ci apres si ce n'est pas bon-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="390dp"

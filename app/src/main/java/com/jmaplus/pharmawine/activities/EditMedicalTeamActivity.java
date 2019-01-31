@@ -1,5 +1,6 @@
 package com.jmaplus.pharmawine.activities;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -18,17 +19,25 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
 import com.jmaplus.pharmawine.R;
 import com.jmaplus.pharmawine.fragments.profilage.Step1MedicalTeamClientFragment;
 import com.jmaplus.pharmawine.fragments.profilage.Step2MedicalTeamClientFragment;
 import com.jmaplus.pharmawine.fragments.profilage.Step3MedicalTeamClientFragment;
+import com.jmaplus.pharmawine.models.AuthUser;
 import com.jmaplus.pharmawine.models.Client;
 import com.jmaplus.pharmawine.models.Customer;
+import com.jmaplus.pharmawine.utils.CustomerCalls;
+import com.jmaplus.pharmawine.utils.RetrofitCalls.ProfilageCalls;
 import com.jmaplus.pharmawine.utils.Utils;
 
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
+
+import javax.annotation.Nullable;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -36,7 +45,8 @@ public class EditMedicalTeamActivity extends AppCompatActivity implements
         View.OnClickListener,
         Step1MedicalTeamClientFragment.OnFragmentInteractionListener,
         Step2MedicalTeamClientFragment.OnFragmentInteractionListener,
-        Step3MedicalTeamClientFragment.OnFragmentInteractionListener {
+        Step3MedicalTeamClientFragment.OnFragmentInteractionListener,
+        ProfilageCalls.Callbacks, CustomerCalls.Callbacks {
 
     public static final String MEDICAL_ID_KEY = "com.jmaplus.pharmawine.activities.medicalTeamId";
     public static final String TAG = "EditMedicalTeamActivity";
@@ -63,6 +73,9 @@ public class EditMedicalTeamActivity extends AppCompatActivity implements
     private Context mContext;
     private ViewPager mPager;
     private PagerAdapter mPagerAdapter;
+    private String mToken = "";
+    private ProgressDialog mProgressDialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +88,7 @@ public class EditMedicalTeamActivity extends AppCompatActivity implements
         changingInProgressClient = new Client();
         mContext = this;
 
+        mToken = AuthUser.getToken(this);
         mCustomer = new Customer();
         mChangingCustomer = new Customer();
 
@@ -96,6 +110,10 @@ public class EditMedicalTeamActivity extends AppCompatActivity implements
         mNextAdaptativeBtn = findViewById(R.id.btn_next_2_to_3_activity_edit_medical);
         mPrevAdaptativeBtn = findViewById(R.id.btn_prev_2_to_1_activity_edit_medical2);
         mPager = findViewById(R.id.fragment_container);
+
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setMessage("Mis a jour en cours....");
+        mProgressDialog.setCancelable(false);
 
         // listenners
         mPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -149,7 +167,49 @@ public class EditMedicalTeamActivity extends AppCompatActivity implements
     private void getClientDetails() {
         //client.setId(medicalTeamId);
 
-        // TODO: fetch details
+        CustomerCalls.getDetails(mToken, this, mCustomer.getId());
+    }
+
+    // =================== Start retrofit calls callbacks =============================
+
+    @Override
+    public void onUpdatedCustomerResponse(@Nullable Customer updatedCustomer) {
+
+        mProgressDialog.show();
+        Toast.makeText(mContext, "Profil mis a jour avec success", Toast.LENGTH_SHORT).show();
+        finish();
+    }
+
+    @Override
+    public void onUpdatedCustomerFailure() {
+        mProgressDialog.cancel();
+    }
+
+    @Override
+    public void onCustomerDetailsResponse(@Nullable Customer customer) {
+        if (customer != null)
+            updateViewsWithCustomerDetails(customer);
+    }
+
+    @Override
+    public void onCustomerDetailsFailure() {
+
+    }
+
+    @Override
+    public void onKnownProspectResponse(@Nullable List<Customer> customers) {
+
+    }
+
+    @Override
+    public void onKnownProspectFailure() {
+
+    }
+
+    // =================== End retrofit calls callbacks ==============================
+
+    private void updateViewsWithCustomerDetails(Customer customer) {
+        mCustomer = customer;
     }
 
     @Override
@@ -262,11 +322,18 @@ public class EditMedicalTeamActivity extends AppCompatActivity implements
     }
 
     private void updateProfileOnServer() {
-        // TODO : Call api
-        // Start a async task to update profile to server
+        try {
+            mProgressDialog.show();
+            // Start a async task to update profile to server
+            ProfilageCalls.editCustomerProfile(mToken, this, mCustomer.getId(), mChangingCustomer);
 
-        Utils.presentToast(this, "Updating profile on the server", true);
-        Log.i(TAG, changingInProgressClient.toString());
+            Utils.presentToast(this, "Updating profile on the server", true);
+            Log.i(TAG, changingInProgressClient.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            mProgressDialog.cancel();
+        }
+
     }
 
     /**
@@ -329,6 +396,16 @@ public class EditMedicalTeamActivity extends AppCompatActivity implements
     public void onMartialStatusUpdated(@NotNull String maritalStatus) {
         changingInProgressClient.setMaritalStatus(maritalStatus);
         updateProgressionBar();
+    }
+
+    @Override
+    public void onRemainingCustomersResponse(@Nullable List<Customer> customers) {
+
+    }
+
+    @Override
+    public void onRemainingCustomersFailure() {
+
     }
 
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {

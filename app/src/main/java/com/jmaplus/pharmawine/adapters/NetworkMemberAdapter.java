@@ -45,6 +45,7 @@ public class NetworkMemberAdapter extends RecyclerView.Adapter<NetworkMemberAdap
 
         if (networkMember != null) {
             holder.tvMemberName.setText(networkMember.getFirstname().concat(" ").concat(networkMember.getLastname()));
+            holder.tvProgressLevel.setText("45 %");
 
             /**
              * TODO: Waiting for the API to replace it with the real  daily goal level

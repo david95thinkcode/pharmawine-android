@@ -155,7 +155,7 @@ public class VisitFragment extends Fragment {
         // Here we get the customers list
         if (!customers.isEmpty()) {
             mCustomerList.clear();
-            mAdapter.notifyItemRangeRemoved(0, mCustomerList.size() - 1);
+            mAdapter.notifyDataSetChanged();
 
             for (Customer c : customers) {
                 mCustomerList.add(c);
@@ -163,6 +163,7 @@ public class VisitFragment extends Fragment {
             }
 
         } else {
+
             Toast.makeText(mContext, "Planning vide", Toast.LENGTH_SHORT).show();
         }
         updateUIWhenDataFetched();

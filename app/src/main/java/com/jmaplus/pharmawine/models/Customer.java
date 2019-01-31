@@ -386,6 +386,20 @@ public class Customer {
         }
     }
 
+    public int getBigDefaultAvatar() {
+        int ic_doctor_man = R.drawable.bg_doctor_man;
+        int ic_doctor_woman = R.drawable.bg_doctor_woman;
+
+        if (getSex() != null) {
+            if (getSex().toUpperCase().equals("F"))
+                return ic_doctor_woman;
+            else
+                return ic_doctor_man;
+        } else {
+            return R.drawable.bg_avatar_pharmacy;
+        }
+    }
+
     @Override
     public String toString() {
         Gson gson = new Gson();

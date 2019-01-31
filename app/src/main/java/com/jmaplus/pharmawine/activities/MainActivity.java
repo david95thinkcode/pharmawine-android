@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
+import com.google.firebase.database.FirebaseDatabase;
 import com.jmaplus.pharmawine.R;
 import com.jmaplus.pharmawine.database.utils.DatabaseHelper;
 import com.jmaplus.pharmawine.fragments.clients.MedicalTeamFragment;
@@ -65,6 +66,22 @@ public class MainActivity extends AppCompatActivity implements MedicalTeamFragme
 
         // This allow firebase offline capabilities
         // FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        try {
+            // This allow firebase offline capabilities
+            // Should stay here
+            FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        } catch (com.google.firebase.database.DatabaseException e) {
+            /**
+             * Exception catched when Firebase set persistent is already called
+             * This one happens when we exit the app using backPress and returned to it
+             */
+
+            Log.w(TAG, "${e.message}");
+            e.printStackTrace();
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+            e.printStackTrace();
+        }
 
 //
 //        authenticatedUser = AuthenticatedUser.getAuthenticatedUser(PharmaWine.mRealm);
@@ -192,7 +209,7 @@ public class MainActivity extends AppCompatActivity implements MedicalTeamFragme
                     case IND_NAV_CLIENT:
                         bottomNavigation.setBehaviorTranslationEnabled(true);
                         //startActivity(new Intent(MainActivity.this, ClientsActivity.class));
-                        getSupportActionBar().setTitle(getResources().getString(R.string.menu_clients_title));
+                        getSupportActionBar().setTitle("Corps Méd.");
                         showFragment(mMedicalTeamFragment);
                         break;
                     case IND_NAV_MORE:

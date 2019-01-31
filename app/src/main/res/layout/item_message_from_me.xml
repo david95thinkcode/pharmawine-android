@@ -8,16 +8,17 @@
 
     <TextView
         android:id="@+id/item_content_from_text_view"
-        style="@style/message_buble_style"
+        style="@style/message_bubble_style"
         android:layout_width="0dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
+        android:layout_marginEnd="42dp"
         android:background="@drawable/message_from_me"
+        android:fontFamily="@font/roboto_regular"
         android:text="@string/message_that_ive_sent_to_user"
         android:textColor="@android:color/white"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/message_from_me_item_picture"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <de.hdodenhof.circleimageview.CircleImageView
@@ -29,25 +30,21 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
+        android:visibility="gone"
         android:src="@drawable/ast_contacts"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
         android:id="@+id/message_from_me_item_datetime"
-        android:layout_width="0dp"
+        style="@style/message_bubble_time_style"
         android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
         android:layout_alignTop="@+id/item_content_from_text_view"
         android:layout_alignBottom="@+id/item_content_from_text_view"
         android:layout_alignParentStart="true"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="8dp"
-        android:elevation="6dp"
-        android:text="date_time"
-        android:textColor="@android:color/white"
-        android:textSize="10sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/item_content_from_text_view"
-        app:layout_constraintStart_toStartOf="@+id/item_content_from_text_view" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/item_content_from_text_view"
+        app:layout_constraintTop_toBottomOf="@+id/item_content_from_text_view" />
 
 </android.support.constraint.ConstraintLayout>

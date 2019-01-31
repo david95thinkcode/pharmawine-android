@@ -154,6 +154,9 @@ public class VisiteInProgressActivity extends AppCompatActivity
         mRootContainer = findViewById(R.id.fragment_container_visite_in_progress);
         mViewPager = findViewById(R.id.view_pager_rapport_fragments_container);
         mViewPager.setVisibility(View.GONE);
+        headerReport = findViewById(R.id.header_report);
+
+        hideHeader(true);
 
         dialog = new ProgressDialog(this);
         dialog.setCancelable(false);
@@ -434,6 +437,23 @@ public class VisiteInProgressActivity extends AppCompatActivity
             return NUM_PAGES;
         }
     }
+
+    @Override
+    public void onRemainingCustomersResponse(@Nullable List<Customer> customers) {
+
+    }
+
+    @Override
+    public void onRemainingCustomersFailure() {
+
+    }
+
+    public void hideHeader(boolean hideIt) {
+        if (hideIt) {
+            headerReport.setVisibility(View.GONE);
+        } else {
+            headerReport.setVisibility(View.VISIBLE);
+        }
 
     @Override
     public void onBackPressed() {

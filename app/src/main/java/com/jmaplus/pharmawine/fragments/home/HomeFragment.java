@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
 import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
@@ -24,19 +25,28 @@ import com.jmaplus.pharmawine.activities.RemainingClientsActivity;
 import com.jmaplus.pharmawine.activities.SeenCustomers;
 import com.jmaplus.pharmawine.models.AuthUser;
 import com.jmaplus.pharmawine.models.AuthenticatedUser;
+import com.jmaplus.pharmawine.models.Customer;
+import com.jmaplus.pharmawine.utils.CustomerCalls;
 
 import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
+
+import javax.annotation.Nullable;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment
+        implements CustomerCalls.Callbacks {
 
     private String TAG = "HomeFragment";
     private TextView tvDate, tvNetworkLabel, tvProgress;
+    //private LinearLayout cvDate;
+    private TextView tvRemainingCount;
+    private LinearLayout cvDate;
     private RoundCornerProgressBar dailyProgressBar;
     private Context mContext;
     private FloatingActionButton fabNetwork, fabProspection;
@@ -61,11 +71,13 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         tvDate = view.findViewById(R.id.tv_home_date);
+        //cvDate = view.findViewById(R.id.cv_home_date);
         dailyProgressBar = view.findViewById(R.id.daily_progressbar);
         tvProgress = view.findViewById(R.id.tv_progress);
         layBottomFabs = view.findViewById(R.id.lay_bottom_fabs);
         clientRemaining = view.findViewById(R.id.clients_remaining);
         clientSeen = view.findViewById(R.id.clients_seen);
+        tvRemainingCount = view.findViewById(R.id.textView_num_visit_restant);
 
         tvNetworkLabel = view.findViewById(R.id.tv_network_label);
         fabNetwork = view.findViewById(R.id.fab_network);
@@ -76,7 +88,19 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+
+        // Refresh all datas
+        // Remaining clients count
+        CustomerCalls.getRemaining(AuthUser.getToken(mContext), this);
+
+        super.onResume();
+    }
+
     private void initViews() {
+
+        tvRemainingCount.setText(String.valueOf(0));
 
         currentUser = AuthUser.getAuthenticatedUser(requireContext());
         try {
@@ -90,6 +114,25 @@ public class HomeFragment extends Fragment {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy", Locale.FRENCH);
         tvDate.setText(dateFormat.format(new Date()));
 
+//        cvDate.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                CalendarDatePickerDialogFragment datePickerDialog = new CalendarDatePickerDialogFragment()
+//                        .setOnDateSetListener(new CalendarDatePickerDialogFragment.OnDateSetListener() {
+//                            @Override
+//                            public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int month, int dayOfMonth) {
+//                                String[] frenchMonths = new DateFormatSymbols(Locale.FRENCH).getMonths();
+//                                tvDate.setText(
+//                                        String.valueOf(dayOfMonth).concat(" ").
+//                                                concat(frenchMonths[month]).concat(" ").
+//                                                concat(String.valueOf(year)));
+//                            }
+//                        });
+//                datePickerDialog.show(getActivity().getSupportFragmentManager(), "DatePicker");
+//
+//            }
+//        });
 
 
         setDailyProgression(0);
@@ -129,4 +172,35 @@ public class HomeFragment extends Fragment {
         tvProgress.setText(String.valueOf(value).concat("%"));
     }
 
+    @Override
+    public void onCustomerDetailsResponse(@Nullable Customer customer) {
+
+    }
+
+    @Override
+    public void onCustomerDetailsFailure() {
+
+    }
+
+    @Override
+    public void onKnownProspectResponse(@Nullable List<Customer> customers) {
+
+    }
+
+    @Override
+    public void onKnownProspectFailure() {
+
+    }
+
+    @Override
+    public void onRemainingCustomersResponse(@Nullable List<Customer> customers) {
+
+        tvRemainingCount.setText(String.valueOf(customers.size()));
+        Toast.makeText(mContext, "Nombre de client restant mis a jour", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onRemainingCustomersFailure() {
+
+    }
 }

@@ -15,6 +15,7 @@ import android.widget.ProgressBar
 import com.google.firebase.database.*
 import com.jmaplus.pharmawine.R
 import com.jmaplus.pharmawine.adapters.DiscussionMessageAdapter
+import com.jmaplus.pharmawine.models.AuthUser
 import com.jmaplus.pharmawine.models.Messaging.DiscussionMessage
 import com.jmaplus.pharmawine.models.Messaging.FireMessage
 import com.jmaplus.pharmawine.models.Messaging.FireRoom
@@ -61,6 +62,7 @@ class DiscussionActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var mSendBtn: Button
     private lateinit var mProgressBar: ProgressBar
     private lateinit var mRecyclerView: RecyclerView
+    private lateinit var mAuthUser: AuthUser
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,13 +71,23 @@ class DiscussionActivity : AppCompatActivity(), View.OnClickListener {
         if (supportActionBar != null)
             supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
-        // Get data from previous activity
+        mAuthUser = AuthUser.getAuthenticatedUser(this)
+
+//        FromUserId = intent.extras.getString(FROMUSER_EXTRA, "")
+        FromUserId = mAuthUser.id.toString()
+
+        // Get data from previous activit
         mRoom = intent.extras.getString(ROOM_EXTRA, "")
-        FromUserId = intent.extras.getString(FROMUSER_EXTRA, "")
         ToUserId = intent.extras.getString(TOUSERID_EXTRA, "")
         ToUserFullName = intent.extras.getString(TOUSERFULLNAME_EXTRA, "")
         ToUserAvatarUrl = intent.extras.getString(TOUSERAVATARURL_EXTRA, "")
-        ToUserRoleLabel = Utils.getRoleLabel(intent.extras.getInt(TOUSERROLE_EXTRA, -1))
+
+        if (intent.extras.getInt(TOUSERROLE_EXTRA, -1) == 3) {
+            ToUserRoleLabel = Utils.getRoleLabel(intent.extras.getInt(TOUSERROLE_EXTRA, -1))
+
+        } else {
+            ToUserRoleLabel = "Votre " + Utils.getRoleLabel(intent.extras.getInt(TOUSERROLE_EXTRA, -1))
+        }
         mLastMessageTime = intent.extras.getString(LASTMESSAGETIME_EXTRA, "")
 
         mContext = this
@@ -86,7 +98,7 @@ class DiscussionActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun InitializeUI() {
         title = ToUserFullName
-        supportActionBar?.subtitle = "Votre $ToUserRoleLabel"
+        supportActionBar?.subtitle = ToUserRoleLabel
 
         mRecyclerView = findViewById(R.id.msg_recycle_view)
         mInput = findViewById(R.id.message_input_edit_text)
@@ -194,7 +206,7 @@ class DiscussionActivity : AppCompatActivity(), View.OnClickListener {
                         presentToast(mContext, "Starting a new conversation", true)
                     }
                 } else {
-                    Log.i(TAG, "Room found ==> $mRoom")
+//                    Log.i(TAG, "Room found ==> $mRoom")
                     initializeMessageReferences(mRoom)
                 }
             }
@@ -389,7 +401,7 @@ class DiscussionActivity : AppCompatActivity(), View.OnClickListener {
                         mMessagesReference.child(newFireMessageKey).child("status").setValue("sent")
 
                         // Update lastseen property of message sender
-                        database.child(USERS_COLLECTION).child(FromUserId).child("lastSeenAt").setValue(Date().time.toString())
+                        // todo: on s'en fou database.child(USERS_COLLECTION).child(FromUserId).child("lastSeenAt").setValue(Date().time.toString())
 
                         // Update Room lastMessage property
                         database.child(CHANNEL_COLLECTION).child(mRoom).child("lastMessage").setValue(msg)

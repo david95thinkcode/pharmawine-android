@@ -122,11 +122,13 @@ public class VisiteInProgressFragment extends Fragment
                 }
                 break;
                 case Constants.PROSPECT_UNKNOWN_MEDICAL_TEAM_TYPE_KEY: {
-
+                    // Prospect inconnu donc le customer id est 0
+                    mDailyReportStart.setCustomerId(0);
                 }
                 break;
                 case Constants.PROSPECT_UNKNOWN_CLIENT_PHARMACY_TYPE_KEY: {
-
+                    // Prospect inconnu donc le customer id est 0
+                    mDailyReportStart.setCustomerId(0);
                 }
                 break;
                 default: {
@@ -201,7 +203,7 @@ public class VisiteInProgressFragment extends Fragment
             tvCustomerSpeciality.setText(customer.getSpeciality().getName());
         }
 
-        Glide.with(this).load(customer.getDefaultAvatar()).into(profileImage);
+        Glide.with(this).load(customer.getBigDefaultAvatar()).into(profileImage);
     }
 
     private void updateViewsContent() {

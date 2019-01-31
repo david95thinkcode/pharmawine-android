@@ -8,25 +8,16 @@
 
     <TextView
         android:id="@+id/item_to_text_view"
-        style="@style/message_buble_style"
+        style="@style/message_bubble_style"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="62dp"
-        android:layout_marginBottom="8dp"
         android:background="@drawable/message_from_user"
-        android:elevation="6dp"
         android:text="Message that the user sent to me"
         android:textColor="@color/black_variant"
-        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/item_from_user_picture"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/item_from_user_picture"
@@ -43,19 +34,15 @@
 
     <TextView
         android:id="@+id/item_date_time_text_view"
-        android:layout_width="0dp"
+        style="@style/message_bubble_time_style"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/item_content_from_text_view"
         android:layout_alignBottom="@+id/item_content_from_text_view"
         android:layout_alignParentStart="true"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:elevation="7dp"
-        android:text="date_time"
-        android:textColor="@color/colorMessageFromMeBackgrounnd"
-        android:textSize="10sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/item_to_text_view"
-        app:layout_constraintEnd_toEndOf="@+id/item_to_text_view" />
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/item_to_text_view"
+        app:layout_constraintTop_toBottomOf="@+id/item_to_text_view" />
 
 </android.support.constraint.ConstraintLayout>

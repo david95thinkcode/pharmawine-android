@@ -50,4 +50,8 @@ public class CustomerStatus {
         this.updatedAt = updatedAt;
     }
 
+    @Override
+    public String toString() {
+        return this.getName();
+    }
 }
