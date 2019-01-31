@@ -19,7 +19,7 @@ import com.jmaplus.pharmawine.R;
 import com.jmaplus.pharmawine.activities.NetworksActivity;
 import com.jmaplus.pharmawine.activities.ProspectionActivity;
 import com.jmaplus.pharmawine.activities.RemainingClientsActivity;
-import com.jmaplus.pharmawine.activities.SeenCustomers;
+import com.jmaplus.pharmawine.activities.SeenCustomersActivity;
 import com.jmaplus.pharmawine.models.AuthUser;
 import com.jmaplus.pharmawine.models.AuthenticatedUser;
 import com.jmaplus.pharmawine.models.Customer;
@@ -165,7 +165,7 @@ public class HomeFragment extends Fragment implements
         clientSeen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(mContext, SeenCustomers.class));
+                startActivity(new Intent(mContext, SeenCustomersActivity.class));
             }
         });
 
