@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.jmaplus.pharmawine.R;
+import com.jmaplus.pharmawine.utils.Constants;
 
 import java.util.List;
 
@@ -62,6 +63,12 @@ public class Customer {
     @SerializedName("updated_at")
     @Expose
     private String updatedAt;
+    @SerializedName("name")
+    @Expose
+    private String name;
+    @SerializedName("nb_employe")
+    @Expose
+    private String nbEmploye;
     @SerializedName("speciality_id")
     @Expose
     private Integer specialityId;
@@ -373,6 +380,22 @@ public class Customer {
         this.customerStatus = customerStatus;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getNbEmploye() {
+        return nbEmploye;
+    }
+
+    public void setNbEmploye(String nbEmploye) {
+        this.nbEmploye = nbEmploye;
+    }
+
     public Speciality getSpeciality() {
         return speciality;
     }
@@ -385,7 +408,7 @@ public class Customer {
         int ic_doctor_man = R.drawable.ic_doctor_man;
         int ic_doctor_woman = R.drawable.ic_doctor_woman;
 
-        if (getSex() != null) {
+        if (getCustomerTypeId() == Constants.TYPE_MEDICAL_KEY && (getSex() != null)) {
             if (getSex().toUpperCase().equals("F"))
                 return ic_doctor_woman;
             else
@@ -393,6 +416,7 @@ public class Customer {
         } else {
             return R.drawable.ic_pharmacy;
         }
+
     }
 
     public int getBigDefaultAvatar() {

@@ -118,6 +118,11 @@ public class ClientDetailsActivity extends AppCompatActivity implements
     }
 
     @Override
+    public void onRequestCustomerPharmacyObjectForUIInitialization() {
+        mPharmacyDetailsFragment.updateCustomersWith(mCustomer);
+    }
+
+    @Override
     public void onCustomerDetailsFailure() {
         Log.e(TAG, "onCustomerDetailsFailure: ");
     }
@@ -164,15 +169,15 @@ public class ClientDetailsActivity extends AppCompatActivity implements
                 Log.e(TAG, "Type : " + mCustomerTypeId);
 
                 if (mCustomerTypeId == Constants.TYPE_MEDICAL_KEY) {
-                    Log.e(TAG, "Opening edit page for client");
-
                     Intent i = new Intent(this, EditMedicalTeamActivity.class);
-                    i.putExtra(EditMedicalTeamActivity.MEDICAL_ID_KEY, mCustomerId);
+                    i.putExtra(EditMedicalTeamActivity.CUSTOMER_ID_EXTRA, mCustomerId);
+                    i.putExtra(EditMedicalTeamActivity.CUSTOMER_JSON_EXTRA, mCustomerString);
                     startActivity(i);
-
                 } else if (mCustomerTypeId == Constants.TYPE_PHARMACEUTICAL_KEY) {
-                    startActivity(new Intent(this, EditPharmacyActivity.class)
-                            .putExtra(EditPharmacyActivity.PHARMACY_ID_KEY, mCustomerId));
+                    Intent i = new Intent(this, EditMedicalTeamActivity.class);
+                    i.putExtra(EditPharmacyActivity.PHARMACY_ID_KEY, mCustomerId);
+                    i.putExtra(EditMedicalTeamActivity.CUSTOMER_JSON_EXTRA, mCustomerString);
+                    startActivity(i);
                 }
                 break;
             default:

@@ -20,20 +20,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
+import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
 import com.jmaplus.pharmawine.R;
 import com.jmaplus.pharmawine.fragments.profilage.Step1MedicalTeamClientFragment;
 import com.jmaplus.pharmawine.fragments.profilage.Step2MedicalTeamClientFragment;
 import com.jmaplus.pharmawine.fragments.profilage.Step3MedicalTeamClientFragment;
 import com.jmaplus.pharmawine.models.AuthUser;
-import com.jmaplus.pharmawine.models.Client;
 import com.jmaplus.pharmawine.models.Customer;
-import com.jmaplus.pharmawine.utils.CustomerCalls;
-import com.jmaplus.pharmawine.utils.RetrofitCalls.ProfilageCalls;
+import com.jmaplus.pharmawine.utils.Constants;
+import com.jmaplus.pharmawine.utils.RetrofitCalls.customers.CustomerDetailsCalls;
+import com.jmaplus.pharmawine.utils.RetrofitCalls.customers.CustomerEditionCalls;
 import com.jmaplus.pharmawine.utils.Utils;
 
 import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
 
 import javax.annotation.Nullable;
 
@@ -44,19 +44,17 @@ public class EditMedicalTeamActivity extends AppCompatActivity implements
         Step1MedicalTeamClientFragment.OnFragmentInteractionListener,
         Step2MedicalTeamClientFragment.OnFragmentInteractionListener,
         Step3MedicalTeamClientFragment.OnFragmentInteractionListener,
-        ProfilageCalls.Callbacks, CustomerCalls.Callbacks {
+        CustomerEditionCalls.Callbacks, CustomerDetailsCalls.Callbacks {
 
-    public static final String MEDICAL_ID_KEY = "com.jmaplus.pharmawine.activities.medicalTeamId";
     public static final String TAG = "EditMedicalTeamActivity";
+    public static final String CUSTOMER_JSON_EXTRA = "customer_json";
+    public static final String CUSTOMER_ID_EXTRA = "com.mCustomerId";
     public static final Integer NUM_PAGES = 3;
     public static final int STEP_1_FRAGMENT_INDEX = 0;
     public static final int STEP_2_FRAGMENT_INDEX = 1;
     public static final int STEP_3_FRAGMENT_INDEX = 2;
 
-    private String medicalTeamId = "";
-    private Client client;
-    private Client changingInProgressClient;
-
+    private Integer mCustomerId = -1;
     private Customer mCustomer;
     private Customer mChangingCustomer;
 
@@ -80,19 +78,39 @@ public class EditMedicalTeamActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_medical_team);
 
-        medicalTeamId = getIntent().getStringExtra(MEDICAL_ID_KEY);
-
-        client = new Client();
-        changingInProgressClient = new Client();
         mContext = this;
-
         mToken = AuthUser.getToken(this);
-        mCustomer = new Customer();
-        mChangingCustomer = new Customer();
+        mCustomerId = getIntent().getIntExtra(CUSTOMER_ID_EXTRA, -1);
+
+        // Getting customer full details from intent string extra
+        String mCustomerString = getIntent().getStringExtra(CUSTOMER_JSON_EXTRA);
+        Gson gson = new Gson();
+        mCustomer = gson.fromJson(mCustomerString, Customer.class);
 
         initialiseUI();
 
-        getClientDetails();
+        if (mCustomer == null) {
+            // the activity caller have not set customer json extra
+            // So we have to fetch the customers details from server
+            mCustomer = new Customer();
+            mChangingCustomer = new Customer();
+            getClientDetails();
+        } else {
+            Log.i(TAG, "Customer received ==> " + mCustomer.toString());
+            updateViewsWithCustomerDetails(mCustomer);
+        }
+    }
+
+    private void updateAvatarView() {
+        if (mCustomer.getCustomerTypeId() == Constants.TYPE_MEDICAL_KEY) {
+            // Medical team customer
+            if (mCustomer.getSex() != null && mCustomer.getSex().toUpperCase().equals("F")) {
+                Glide.with(this).load(R.drawable.bg_doctor_woman).into(mPicture);
+            }
+        } else {
+            // Here is pharmacy case
+            Glide.with(this).load(R.drawable.bg_avatar_pharmacy).into(mPicture);
+        }
     }
 
     private void initialiseUI() {
@@ -163,23 +181,20 @@ public class EditMedicalTeamActivity extends AppCompatActivity implements
     }
 
     private void getClientDetails() {
-        //client.setId(medicalTeamId);
-
-        CustomerCalls.getDetails(mToken, this, mCustomer.getId());
+        CustomerDetailsCalls.getDetails(mToken, this, mCustomer.getId());
     }
 
     // =================== Start retrofit calls callbacks =============================
 
     @Override
-    public void onUpdatedCustomerResponse(@Nullable Customer updatedCustomer) {
-
+    public void onCustomerEditionResponse(@Nullable Customer customer) {
         mProgressDialog.show();
         Toast.makeText(mContext, "Profil mis a jour avec success", Toast.LENGTH_SHORT).show();
         finish();
     }
 
     @Override
-    public void onUpdatedCustomerFailure() {
+    public void onCustomerEditionFailure() {
         mProgressDialog.cancel();
     }
 
@@ -194,20 +209,15 @@ public class EditMedicalTeamActivity extends AppCompatActivity implements
 
     }
 
-    @Override
-    public void onKnownProspectResponse(@Nullable List<Customer> customers) {
-
-    }
-
-    @Override
-    public void onKnownProspectFailure() {
-
-    }
-
     // =================== End retrofit calls callbacks ==============================
 
     private void updateViewsWithCustomerDetails(Customer customer) {
         mCustomer = customer;
+        mChangingCustomer = mCustomer;
+
+        updateAvatarView();
+
+        // Todo: send data to fragments
     }
 
     @Override
@@ -307,7 +317,7 @@ public class EditMedicalTeamActivity extends AppCompatActivity implements
 
     private void updateProgressionBar() {
 
-        Integer progression = changingInProgressClient.getFillingLevel();
+        Integer progression = mChangingCustomer.getFillingLevel();
 
         Log.i(TAG, "Progression ==> " + progression);
 
@@ -318,16 +328,15 @@ public class EditMedicalTeamActivity extends AppCompatActivity implements
     private void updateProfileOnServer() {
         try {
             mProgressDialog.show();
+            Log.i(TAG, "Updating profile on the server");
+            Log.i(TAG, mChangingCustomer.toString());
             // Start a async task to update profile to server
-            ProfilageCalls.editCustomerProfile(mToken, this, mCustomer.getId(), mChangingCustomer);
-
-            Utils.presentToast(this, "Updating profile on the server", true);
-            Log.i(TAG, changingInProgressClient.toString());
+            CustomerEditionCalls.editCustomerProfile(mToken, this, mCustomer.getId(), mChangingCustomer);
         } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
             e.printStackTrace();
             mProgressDialog.cancel();
         }
-
     }
 
     /**
@@ -346,60 +355,50 @@ public class EditMedicalTeamActivity extends AppCompatActivity implements
 
     @Override
     public void onReligionSelected(@NotNull String religion) {
-        changingInProgressClient.setReligion(religion);
+        mChangingCustomer.setReligion(religion);
         updateProgressionBar();
     }
 
     @Override
     public void onAddressEntered(@NotNull String address) {
-        changingInProgressClient.setAddress(address);
+        mChangingCustomer.setAddress(address);
         updateProgressionBar();
     }
 
     @Override
     public void onAdresseEmailEntered(@NotNull String email) {
-        changingInProgressClient.setEmail(email);
+        mChangingCustomer.setEmail(email);
         updateProgressionBar();
     }
 
     @Override
     public void onPhoneNumber2Entered(@NotNull String phoneNumber2) {
-        changingInProgressClient.setPhoneNumber2(phoneNumber2);
+        mChangingCustomer.setPhoneNumber2(phoneNumber2);
         updateProgressionBar();
     }
 
     @Override
     public void onBirthDayPartiallyUpdated(@NotNull String partialBirthday) {
-        changingInProgressClient.setBirthday(partialBirthday);
+        mChangingCustomer.setBirthday(partialBirthday);
         updateProgressionBar();
     }
 
     @Override
     public void onBithdayFullyUpdated(@NotNull String birthDay) {
-        changingInProgressClient.setBirthday(birthDay);
+        mChangingCustomer.setBirthday(birthDay);
         updateProgressionBar();
     }
 
     @Override
     public void onNationalityUpdated(@NotNull String nationality) {
-        changingInProgressClient.setNationality(nationality);
+        mChangingCustomer.setNationality(nationality);
         updateProgressionBar();
     }
 
     @Override
     public void onMartialStatusUpdated(@NotNull String maritalStatus) {
-        changingInProgressClient.setMaritalStatus(maritalStatus);
+        mChangingCustomer.setMaritalStatus(maritalStatus);
         updateProgressionBar();
-    }
-
-    @Override
-    public void onRemainingCustomersResponse(@Nullable List<Customer> customers) {
-
-    }
-
-    @Override
-    public void onRemainingCustomersFailure() {
-
     }
 
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {

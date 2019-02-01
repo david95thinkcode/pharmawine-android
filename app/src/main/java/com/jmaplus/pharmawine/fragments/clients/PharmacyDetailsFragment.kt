@@ -1,6 +1,7 @@
 package com.jmaplus.pharmawine.fragments.clients
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -9,8 +10,12 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar
+import com.bumptech.glide.Glide
+import com.google.gson.Gson
 import com.jmaplus.pharmawine.R
+import com.jmaplus.pharmawine.activities.ClientDetailsActivity
 import com.jmaplus.pharmawine.models.Client
+import com.jmaplus.pharmawine.models.Customer
 import de.hdodenhof.circleimageview.CircleImageView
 
 /**
@@ -24,6 +29,9 @@ class PharmacyDetailsFragment : Fragment(), View.OnClickListener {
 
     private var listener: OnFragmentInteractionListener? = null
     private var pharmacy: Client = Client()
+    private var mCustomer: Customer = Customer()
+    private lateinit var mContext: Context
+
 
     private lateinit var tvRepresentative: TextView
     private lateinit var tvFounder: TextView
@@ -44,6 +52,13 @@ class PharmacyDetailsFragment : Fragment(), View.OnClickListener {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         val rootView = inflater.inflate(R.layout.fragment_pharmacy_details, container, false)
+
+        mContext = requireContext()
+
+        var gson = Gson()
+        var customerStringFronArguments = arguments?.getString(ClientDetailsActivity.CUSTOMER_OBJECT_EXTRA)
+        mCustomer = gson.fromJson(customerStringFronArguments, Customer::class.java)
+
         imgProfile = rootView.findViewById(R.id.img_profile_picture)
         tvClientName = rootView.findViewById(R.id.tv_i_client_name)
         tvClientCategory = rootView.findViewById(R.id.tv_i_client_category)
@@ -58,17 +73,107 @@ class PharmacyDetailsFragment : Fragment(), View.OnClickListener {
         tvPharmaAddress = rootView.findViewById(R.id.tv_pharma_address)
         btnCall1 = rootView.findViewById(R.id.btn_call_1)
 
-        getPharmacyDetails()
+//        getPharmacyDetails()
+        if (mCustomer == null) listener?.onRequestCustomerPharmacyObjectForUIInitialization()
+        else updateUI()
 
         return rootView
     }
 
-    private fun getPharmacyDetails() {
-        // TODO: call the api to get pharmacy details
+    fun updateCustomersWith(customer: Customer) {
+        updateUI()
+    }
 
-        // When the details is successfully fetched
-        listener?.onClientDetailsReceived(pharmacy)
-        updateViewsWithDatas()
+    private fun updateUI() {
+
+        // Client avatar
+        if (!mCustomer.sex.isNullOrEmpty() && mCustomer.sex.toUpperCase() == "F") {
+            Glide.with(mContext).load(R.drawable.bg_avatar_pharmacy).into(imgProfile)
+        }
+
+        // Representant name
+        tvRepresentative.text = mCustomer.fullName
+
+        // TODO: Founder name
+        tvFounder.text = resources.getString(R.string.non_defini)
+        // tvRepresentative.text = mCustomer.fullName
+
+        tvPharmaAddress.text = mCustomer.address
+        tvCreatedOn.text = mCustomer.redabledate
+
+        // Progress bar
+        profileProgress.progress = mCustomer.getFillingLevel().toFloat()
+        tvProfileProgress.text = mCustomer.getFillingLevel().toString() + " %"
+
+        val fillingLevel = mCustomer.fillingLevel
+
+        if (fillingLevel < 35) {
+            profileProgress.progressColor = resources.getColor(R.color.red)
+        } else if (fillingLevel < 69) {
+            profileProgress.progressColor = resources.getColor(R.color.orange)
+        } else {
+            profileProgress.progressColor = resources.getColor(R.color.green)
+        }
+
+        // Speciality
+        if (mCustomer.speciality != null && !mCustomer.speciality.name.isNullOrEmpty()) {
+            tvClientCategory.text = mCustomer.speciality.name
+        } else {
+            tvClientCategory.text = resources.getString(R.string.non_defini)
+        }
+
+        // Nb Employes
+        if (mCustomer.nbEmploye != null && !mCustomer.nbEmploye.isNullOrEmpty()) {
+            tvNbEmployees.text = mCustomer.nbEmploye
+        } else {
+            tvNbEmployees.text = resources.getString(R.string.non_defini)
+        }
+
+        // Customer status
+        if (mCustomer.customerStatus != null && !mCustomer.customerStatus.name.isNullOrEmpty()) {
+            tvClientType.text = mCustomer.customerStatus.name
+        } else {
+            tvClientType.text = resources.getString(R.string.non_defini)
+        }
+
+        // customer name
+        if (mCustomer.name != null && !mCustomer.name.isNullOrEmpty()) {
+            tvClientName.text = mCustomer.name
+        } else {
+            tvClientName.text = resources.getString(R.string.non_defini)
+        }
+
+        // PhoneNumber view management
+        if (!mCustomer.phoneNumber2.isNullOrEmpty()) {
+
+            if (!mCustomer.tel.trim { it <= ' ' }.isEmpty()) {
+                btnCall1.text = mCustomer.tel
+                btnCall1.setOnClickListener(this)
+            } else {
+                // Empty phone number
+                btnCall1.setText(R.string.call)
+                btnCall1.isEnabled = false
+                btnCall1.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.grey))
+
+                if (!mCustomer.phoneNumber2.trim { it <= ' ' }.isEmpty()) {
+                    btnCall1.visibility = View.GONE
+                }
+            }
+        } else {
+            btnCall1.visibility = View.GONE
+        }
+
+        // PhoneNumber2 view management
+//        if (!mCustomer.phoneNumber2.isNullOrEmpty()) {
+//            if (!mCustomer.phoneNumber2.trim { it <= ' ' }.isEmpty()) {
+//                btnCall2.text = mCustomer.phoneNumber2
+//                btnCall2.setOnClickListener(this)
+//            } else {
+//                btnCall2.visibility = View.GONE
+//            }
+//        } else {
+//            btnCall2.visibility = View.GONE
+//        }
     }
 
     private fun updateViewsWithDatas() {
@@ -158,6 +263,7 @@ class PharmacyDetailsFragment : Fragment(), View.OnClickListener {
     }
 
     interface OnFragmentInteractionListener {
+        fun onRequestCustomerPharmacyObjectForUIInitialization()
         fun onPhoneNumberCallInteraction(phoneNumber: String)
         fun onClientDetailsReceived(clientDetails: Client)
     }

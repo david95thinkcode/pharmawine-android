@@ -366,7 +366,7 @@ public class VisiteInProgressActivity extends AppCompatActivity
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Intent i = new Intent(mContext, EditMedicalTeamActivity.class);
-                i.putExtra(EditMedicalTeamActivity.MEDICAL_ID_KEY, mCustomer.getId().toString());
+                i.putExtra(EditMedicalTeamActivity.CUSTOMER_ID_EXTRA, mCustomer.getId().toString());
                 i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
                 startActivity(i);

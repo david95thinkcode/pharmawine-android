@@ -25,6 +25,7 @@ import com.jmaplus.pharmawine.fragments.rapport.prospect_inconnu.Step3UnknownMed
 import com.jmaplus.pharmawine.fragments.rapport.prospect_inconnu.Step4UnknownMedicalProspectFragment
 import com.jmaplus.pharmawine.models.*
 import com.jmaplus.pharmawine.utils.RetrofitCalls.*
+import com.jmaplus.pharmawine.utils.RetrofitCalls.customers.CustomerEditionCalls
 import com.jmaplus.pharmawine.utils.Utils
 
 
@@ -40,7 +41,7 @@ class NewProspectInconnuActivity : AppCompatActivity(),
         ReportEtape4Fragment.OnFragmentInteractionListener,
         CenterCalls.Callbacks, SpecialityCalls.Callbacks,
         AreaCalls.Callbacks, CustomerStatusCalls.Callbacks,
-        DailyReportEndCall.Callbacks, ProfilageCalls.Callbacks {
+        DailyReportEndCall.Callbacks, CustomerEditionCalls.Callbacks {
 
     private var isReportUpdated: Boolean = false
     private var clientType = ""
@@ -407,11 +408,11 @@ class NewProspectInconnuActivity : AppCompatActivity(),
         showConfirmationToRetryReportSend()
     }
 
-    override fun onUpdatedCustomerResponse(updatedCustomer: Customer?) {
+    override fun onCustomerEditionResponse(customer: Customer?) {
         mProgressDialog.cancel()
     }
 
-    override fun onUpdatedCustomerFailure() {
+    override fun onCustomerEditionFailure() {
         mProgressDialog.cancel()
         showConfirmationDialogToUpdateProfile()
     }
@@ -425,7 +426,7 @@ class NewProspectInconnuActivity : AppCompatActivity(),
     private fun sendProfile() {
         mProgressDialog.show()
         Log.i(TAG, "$mCustomer")
-        ProfilageCalls.editCustomerProfile(mToken, this, mCustomer.id, mCustomer)
+        CustomerEditionCalls.editCustomerProfile(mToken, this, mCustomer.id, mCustomer)
     }
 
     private fun showConfirmationToRetryReportSend() {
