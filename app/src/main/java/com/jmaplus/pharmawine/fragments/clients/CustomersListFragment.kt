@@ -18,6 +18,7 @@ import com.jmaplus.pharmawine.models.Customer
 import com.jmaplus.pharmawine.utils.Constants
 import com.jmaplus.pharmawine.utils.CustomerCalls
 import com.jmaplus.pharmawine.utils.ItemClickSupport
+import com.jmaplus.pharmawine.utils.RetrofitCalls.customers.SeenCustomerCalls
 import com.jmaplus.pharmawine.utils.Utils
 
 
@@ -28,12 +29,14 @@ import com.jmaplus.pharmawine.utils.Utils
  * to handle interaction events.
  *
  */
-class CustomersListFragment : Fragment(), CustomerCalls.Callbacks {
+class CustomersListFragment : Fragment(),
+        CustomerCalls.Callbacks, SeenCustomerCalls.Callbacks {
 
     private var listener: OnFragmentInteractionListener? = null
     private var mCustomerType: Int = -1
     private lateinit var mRecyclerView: RecyclerView
     private lateinit var mProgressBar: ProgressBar
+    private lateinit var mEmptyCustomersLayout: LinearLayout
 
     private lateinit var mCustomersList: MutableList<Customer>
     private lateinit var mSafeCustomersList: MutableList<Customer>
@@ -52,8 +55,10 @@ class CustomersListFragment : Fragment(), CustomerCalls.Callbacks {
         mAuthUser = AuthUser.getAuthenticatedUser(mContext)
         mRecyclerView = rootView.findViewById(R.id.rv_customers)
         mProgressBar = rootView.findViewById(R.id.pb_customers)
+        mEmptyCustomersLayout = rootView.findViewById(R.id.layout_cutomers_empty_list_layout)
 
         // Initializations
+        mEmptyCustomersLayout.visibility = View.GONE
         mCustomersList = ArrayList()
         mSafeCustomersList = ArrayList()
         mAdapter = RemainingCustomersAdapter(mContext, mCustomersList)
@@ -88,6 +93,22 @@ class CustomersListFragment : Fragment(), CustomerCalls.Callbacks {
         }
     }
 
+    /**
+     * This method can be called by fragment parent
+     */
+    fun fetchSeenCustomers() {
+        mProgressBar.visibility = View.VISIBLE
+        SeenCustomerCalls.getSeenCustomers(mToken, this)
+    }
+
+    override fun onSeenCustomersResponse(customers: MutableList<Customer>?) {
+        updateUIWithResponse(customers!!)
+    }
+
+    override fun onSeenCustomersFailure() {
+        showFailure()
+    }
+
     private fun configureOnClickRecyclerView() {
         ItemClickSupport
                 .addTo(mRecyclerView, R.layout.client_row_without_progression)
@@ -120,6 +141,7 @@ class CustomersListFragment : Fragment(), CustomerCalls.Callbacks {
 
     /**
      * This method should be called from parent
+     * to filter the list by customer type id
      */
     fun filteredCustomerListByCustomerType(customerTypeID: Int) {
         if (mCustomersList.isNotEmpty()) {
@@ -150,7 +172,6 @@ class CustomersListFragment : Fragment(), CustomerCalls.Callbacks {
         mProgressBar.visibility = View.VISIBLE
         CustomerCalls.getRemaining(mToken, this)
     }
-
 
     override fun onCustomerDetailsResponse(customer: Customer?) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
@@ -183,15 +204,7 @@ class CustomersListFragment : Fragment(), CustomerCalls.Callbacks {
     }
 
     override fun onRemainingCustomersResponse(customers: MutableList<Customer>?) {
-        mCustomersList.clear()
-
-        for (c: Customer in customers!!) {
-            mCustomersList.add(c)
-            mAdapter.notifyItemInserted(customers.size - 1)
-        }
-
-        mSafeCustomersList.addAll(mCustomersList) // important
-        mProgressBar.visibility = View.GONE
+        updateUIWithResponse(customers!!)
     }
 
 
@@ -206,6 +219,33 @@ class CustomersListFragment : Fragment(), CustomerCalls.Callbacks {
     override fun onDetach() {
         super.onDetach()
         listener = null
+    }
+
+    /**
+     * Method used to populate the list
+     * and update the UI
+     */
+    private fun updateUIWithResponse(customers: List<Customer>) {
+
+        if (customers.isNotEmpty()) {
+            mCustomersList.clear()
+            mEmptyCustomersLayout.visibility = View.GONE
+
+            // Populating the recycler view
+            for (c: Customer in customers) {
+                mCustomersList.add(c)
+                mAdapter.notifyItemInserted(customers.size - 1)
+            }
+
+            mSafeCustomersList.addAll(mCustomersList) // important
+        } else showEmptyResults()
+
+        mProgressBar.visibility = View.GONE
+    }
+
+    private fun showEmptyResults() {
+        mProgressBar.visibility = View.GONE
+        mEmptyCustomersLayout.visibility = View.VISIBLE
     }
 
     private fun showFailure() {

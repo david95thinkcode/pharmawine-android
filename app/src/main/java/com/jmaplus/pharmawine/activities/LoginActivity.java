@@ -78,8 +78,7 @@ public class LoginActivity extends AppCompatActivity implements AuthCalls.Callba
         btnConnexion = findViewById(R.id.btn_login_connexion);
 
 //        TODO removes this
-//        etId.setText("alcoy@gmail.com");
-        etId.setText("christiansen.jordan@example.net");
+        etId.setText("mervin07@example.com");
         etPassword.setText("secret");
 
 //        Avoid courrier font for passwords input

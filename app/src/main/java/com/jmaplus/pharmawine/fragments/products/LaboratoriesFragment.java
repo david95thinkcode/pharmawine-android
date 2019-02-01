@@ -19,6 +19,7 @@ import com.jmaplus.pharmawine.adapters.ProductAdapter;
 import com.jmaplus.pharmawine.models.ApiProduct;
 import com.jmaplus.pharmawine.models.AuthUser;
 import com.jmaplus.pharmawine.models.AuthUserResponse;
+import com.jmaplus.pharmawine.utils.ItemClickSupport;
 import com.jmaplus.pharmawine.utils.RetrofitCalls.AuthCalls;
 
 import java.util.ArrayList;
@@ -29,12 +30,11 @@ import java.util.List;
  */
 public class LaboratoriesFragment extends Fragment implements AuthCalls.Callbacks {
 
-    private RecyclerView recyclerView;
+    private RecyclerView mRecyclerView;
     private final String TAG = this.getClass().getSimpleName();
     private OnFragmentInteractionListener mListener;
 
     private static final String KEY_LAYOUT_POSITION = "layoutPosition";
-    private int mRecyclerViewPosition = 0;
     private AuthUser mAuthUser;
 
     private List<ApiProduct> mProductsList;
@@ -56,7 +56,7 @@ public class LaboratoriesFragment extends Fragment implements AuthCalls.Callback
         mProductsList = new ArrayList();
         productAdapter = new ProductAdapter(mProductsList, mContext, ProductAdapter.LABORATORY);
 
-        recyclerView = view.findViewById(R.id.rv_products_lab);
+        mRecyclerView = view.findViewById(R.id.rv_products_lab);
         mSwipeRefreshLayout = view.findViewById(R.id.swipe_products_lab);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -66,11 +66,13 @@ public class LaboratoriesFragment extends Fragment implements AuthCalls.Callback
         });
 
 //        Set the adapter to recycler
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
-        recyclerView.setAdapter(productAdapter);
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        mRecyclerView.setAdapter(productAdapter);
 
         getProductList();
+
+        configureOnClickRecyclerView();
 
         return view;
     }
@@ -82,8 +84,22 @@ public class LaboratoriesFragment extends Fragment implements AuthCalls.Callback
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putInt(KEY_LAYOUT_POSITION, recyclerView.getVerticalScrollbarPosition());
+        outState.putInt(KEY_LAYOUT_POSITION, mRecyclerView.getVerticalScrollbarPosition());
         super.onSaveInstanceState(outState);
+    }
+
+    /**
+     * Tells the parent that a product was clicked
+     */
+    private void configureOnClickRecyclerView() {
+        ItemClickSupport
+                .addTo(mRecyclerView, R.layout.client_row_without_progression)
+                .setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+                    @Override
+                    public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+                        mListener.onProductSelected(mProductsList.get(position));
+                    }
+                });
     }
 
     private void getProductList() {
@@ -100,6 +116,7 @@ public class LaboratoriesFragment extends Fragment implements AuthCalls.Callback
 
             if (!query.isEmpty()) {
                 query = query.toLowerCase();
+
                 for (ApiProduct model : models) {
                     final String text = model.getName().toLowerCase();
                     final String text2 = model.getLaboratory().getName().toLowerCase();
@@ -110,10 +127,10 @@ public class LaboratoriesFragment extends Fragment implements AuthCalls.Callback
             } else {
                 filteredModelList = models;
                 productAdapter = new ProductAdapter(filteredModelList, mContext, ProductAdapter.LABORATORY);
-                recyclerView.setAdapter(productAdapter);
+                mRecyclerView.setAdapter(productAdapter);
             }
         } catch (NullPointerException e) {
-            // TODO: il y a null exception ici ==> recyclerView.setAdapter(productAdapter);
+            // TODO: il y a null exception ici ==> mRecyclerView.setAdapter(productAdapter);
 //            Toast.makeText(requireContext(), "Non disponible", Toast.LENGTH_SHORT).show();
             Log.e(TAG, "search: Il y a un probleme ==> " + e.getMessage());
             e.printStackTrace();
@@ -165,6 +182,7 @@ public class LaboratoriesFragment extends Fragment implements AuthCalls.Callback
                 } catch (NullPointerException e) {
                     // est declenchee quand l'activite parente est fermee avant l'execution du code du fragment
                     Log.w(TAG, "onAuthProductsResponse: Activite parente fermee trop tot");
+                    Log.w(TAG, "onAuthProductsResponse: " + e.getMessage());
                     e.printStackTrace();
                 }
             }
@@ -201,6 +219,8 @@ public class LaboratoriesFragment extends Fragment implements AuthCalls.Callback
     public interface OnFragmentInteractionListener {
 
         void onProductNumberUpdated(Integer productsNumber);
+
+        void onProductSelected(ApiProduct product);
 
     }
 }

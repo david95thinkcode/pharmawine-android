@@ -106,63 +106,72 @@ public class Customer {
      * @return
      */
     public Boolean isKnown() {
-        return this.customerStatus.getName() != "pim" && this.customerStatus.getName() != "PIM"
-                && this.customerStatus.getName() != "pig" && this.customerStatus.getName() != "PIG";
+        try {
+            return this.customerStatus.getName() != "pim" && this.customerStatus.getName() != "PIM"
+                    && this.customerStatus.getName() != "pig" && this.customerStatus.getName() != "PIG";
+        } catch (NullPointerException e) {
+            return this.customerStatusId != 8 && this.getCustomerStatusId() != 7;
+        } catch (Exception e) {
+            Log.e(getClass().getName(), "isKnown() " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+
     }
 
     public Integer getFillingLevel() {
         Integer totalFieldNumber = 13;
         Integer filledFieldNumber = 0;
 
-        if (!this.lastname.isEmpty() && this.lastname != null) {
+        if (this.lastname != null && !this.lastname.isEmpty()) {
             filledFieldNumber++;
             Log.i("Client", "lastname IS NOT NULL OR EMPTY : " + lastname);
         }
-        if (!this.firstname.isEmpty() && this.firstname != null) {
+        if (this.firstname != null && !this.firstname.isEmpty()) {
             filledFieldNumber++;
             Log.i("Client", "firstname IS NOT NULL OR EMPTY : " + firstname);
         }
-        if (!this.sex.isEmpty() && this.sex != null) {
+        if (this.sex != null && !this.sex.isEmpty()) {
             filledFieldNumber++;
             Log.i("Client", "sex IS NOT NULL OR EMPTY : " + sex);
         }
-        if (!this.birthday.isEmpty() && this.birthday != null) {
+        if (this.birthday != null && !this.birthday.isEmpty()) {
             filledFieldNumber++;
             Log.i("Client", "birthday IS NOT NULL OR EMPTY : " + birthday);
         }
-        if (!this.maritalStatus.isEmpty() && this.maritalStatus != null) {
+        if (this.maritalStatus != null && !this.maritalStatus.isEmpty()) {
             filledFieldNumber++;
             Log.i("Client", "maritalStatus IS NOT NULL OR EMPTY : " + maritalStatus);
         }
-        if (!this.phoneNumber1.isEmpty() && this.phoneNumber1 != null) {
+        if (this.phoneNumber1 != null && !this.phoneNumber1.isEmpty()) {
             filledFieldNumber++;
             Log.i("Client", "phoneNumber IS NOT NULL OR EMPTY : " + phoneNumber1);
         }
-        if (!this.phoneNumber2.isEmpty() && this.phoneNumber2 != null) {
+        if (this.phoneNumber2 != null && !this.phoneNumber2.isEmpty()) {
             filledFieldNumber++;
             Log.i("Client", "phoneNumber2 IS NOT NULL OR EMPTY : " + phoneNumber2);
         }
-        if (!this.address.isEmpty() && this.address != null) {
+        if (this.address != null && !this.address.isEmpty()) {
             filledFieldNumber++;
             Log.i("Client", "address IS NOT NULL OR EMPTY : " + address);
         }
-        if (!this.email.isEmpty() && this.email != null) {
+        if (this.email != null && !this.email.isEmpty()) {
             filledFieldNumber++;
             Log.i("Client", "email IS NOT NULL OR EMPTY : " + email);
         }
-        if (!this.avatar.isEmpty() && this.avatar != null) {
+        if (this.avatar != null && !this.avatar.isEmpty()) {
             filledFieldNumber++;
             Log.i("Client", "avatar IS NOT NULL OR EMPTY : " + avatar);
         }
-        if (!this.nationality.isEmpty() && this.nationality != null) {
+        if (this.nationality != null && !this.nationality.isEmpty()) {
             filledFieldNumber++;
             Log.i("Client", "nationality IS NOT NULL OR EMPTY : " + nationality);
         }
-        if (!this.speciality.getId().toString().isEmpty() && this.speciality != null) {
+        if (this.speciality != null && !this.speciality.getId().toString().isEmpty()) {
             filledFieldNumber++;
             Log.i("Client", "speciality IS NOT NULL OR EMPTY : " + speciality);
         }
-        if (!this.religion.isEmpty() && this.religion != null) {
+        if (this.religion != null && !this.religion.isEmpty()) {
             filledFieldNumber++;
             Log.i("Client", "religion IS NOT NULL OR EMPTY : " + religion);
         }

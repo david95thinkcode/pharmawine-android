@@ -1,5 +1,7 @@
 package com.jmaplus.pharmawine.models;
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -74,12 +76,27 @@ public class DailyReportEnd {
     }
 
     public Boolean isCompleted() {
-//        if (getCenterId() != null && getCustomerId() != null && !getEndTime().isEmpty() && getEndTime() != null) {
-        return true;
-//        }
-//        else {
-//            return false;
-//        }
+        if (getCenterId() == null) {
+            Log.i(getClass().getName(), "CenterId missed");
+            return false;
+        } else if (getCustomerId() == null) {
+            Log.i(getClass().getName(), "CustomerId missed");
+            return false;
+        } else if (getEndTime() == null || getEndTime().isEmpty()) {
+            Log.i(getClass().getName(), "EndTime missed");
+            return false;
+        } else if (getGoal() == null || getGoal().isEmpty()) {
+            Log.i(getClass().getName(), "Goal missed");
+            return false;
+        } else if (getPromise() == null || getPromise().isEmpty()) {
+            Log.i(getClass().getName(), "Promise missed");
+            return false;
+        } else if (getPrescription() == null || getPrescription().isEmpty()) {
+            Log.i(getClass().getName(), "Prescription missed");
+            return false;
+        } else {
+            return true;
+        }
     }
 
     @Override

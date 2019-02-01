@@ -38,7 +38,7 @@
                         android:id="@+id/img_profile_picture"
                         android:layout_width="75dp"
                         android:layout_height="75dp"
-                        android:src="@drawable/profil_sup"
+                        android:src="@drawable/bg_doctor_man"
                         app:civ_border_color="@color/light_grey"
                         app:civ_border_width="1dp" />
 
@@ -321,25 +321,37 @@
             android:paddingRight="8dp"
             android:paddingBottom="15dp">
 
-            <Button
-                android:id="@+id/btn_call_1"
-                style="@style/btn_primary_rounded_margin_tb_3_style"
-                android:drawableLeft="@drawable/phone"
-                android:drawableTint="@android:color/white"
-                android:layout_marginBottom="8dp"
-                android:paddingLeft="40dp"
-                android:paddingRight="40dp"
-                android:text="+229 61 32 82 70" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
 
-            <Button
-                android:id="@+id/btn_call_2"
-                style="@style/btn_primary_rounded_margin_tb_3_style"
-                android:layout_marginBottom="8dp"
-                android:paddingLeft="40dp"
-                android:paddingRight="40dp"
-                android:drawableLeft="@drawable/phone"
-                android:drawableTint="@android:color/white"
-                android:text="+229 61 32 82 70" />
+                <Button
+                    android:id="@+id/btn_call_1"
+                    style="@style/btn_primary_rounded_margin_tb_3_style"
+                    android:layout_marginBottom="8dp"
+                    android:drawableLeft="@drawable/phone"
+                    android:drawableTint="@android:color/white"
+                    android:paddingLeft="40dp"
+                    android:paddingRight="40dp"
+                    android:text="+229 61 32 82 70" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+
+                <Button
+                    android:id="@+id/btn_call_2"
+                    style="@style/btn_primary_rounded_margin_tb_3_style"
+                    android:layout_marginBottom="8dp"
+                    android:drawableLeft="@drawable/phone"
+                    android:drawableTint="@android:color/white"
+                    android:paddingLeft="40dp"
+                    android:paddingRight="40dp"
+                    android:text="+229 61 32 82 70" />
+            </LinearLayout>
 
         </LinearLayout>
 

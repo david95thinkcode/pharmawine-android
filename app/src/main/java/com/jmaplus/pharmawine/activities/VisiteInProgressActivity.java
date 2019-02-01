@@ -22,7 +22,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jmaplus.pharmawine.R;
-import com.jmaplus.pharmawine.database.model.DailyReportNotSent;
 import com.jmaplus.pharmawine.database.utils.DatabaseHelper;
 import com.jmaplus.pharmawine.fragments.rapport.ReportEtape1Fragment;
 import com.jmaplus.pharmawine.fragments.rapport.ReportEtape2Fragment;
@@ -61,8 +60,10 @@ public class VisiteInProgressActivity extends AppCompatActivity
     public static final int STEP_3_FRAGMENT_INDEX = 2;
     public static final int STEP_4_FRAGMENT_INDEX = 3;
     public static final String EXTRA_PROSPECT_TYPE = "prospectType";
+    public static final String EXTRA_PROSPECT_SEX = "prospectSex";
     private static final String TAG = "VisiteActivity";
     private ProgressDialog dialog;
+    private Boolean isAllowToGoBack = false;
 
 
     private FragmentManager fragmentManager = getSupportFragmentManager();
@@ -72,6 +73,7 @@ public class VisiteInProgressActivity extends AppCompatActivity
     private ViewPager mViewPager;
     private View mRootContainer;
     private String prospectType = "";
+    private String mCustomerSex = "M";
     private LinearLayout headerReport;
 
     private Integer customerID = -1;
@@ -99,6 +101,7 @@ public class VisiteInProgressActivity extends AppCompatActivity
         setUI();
 
         mContext = this;
+        mCustomerSex = getIntent().getStringExtra(VisiteInProgressActivity.EXTRA_PROSPECT_SEX);
         prospectType = getIntent().getStringExtra(VisiteInProgressActivity.EXTRA_PROSPECT_TYPE);
 
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -114,6 +117,7 @@ public class VisiteInProgressActivity extends AppCompatActivity
         Bundle args = new Bundle();
 
         args.putString(VisiteInProgressFragment.ARGS_PROSPECT_TYPE, prospectType);
+        args.putString(VisiteInProgressFragment.ARGS_CLIENT_SEX_KEY, mCustomerSex);
         args.putInt(VisiteInProgressFragment.ARGS_CLIENT_ID_KEY, customerID);
         args.putString(VisiteInProgressFragment.ARGS_CLIENT_FIRSTNAME_KEY,
                 getIntent().getStringExtra(Constants.CLIENT_FIRSTNAME_KEY));
@@ -154,14 +158,23 @@ public class VisiteInProgressActivity extends AppCompatActivity
         mRootContainer = findViewById(R.id.fragment_container_visite_in_progress);
         mViewPager = findViewById(R.id.view_pager_rapport_fragments_container);
         mViewPager.setVisibility(View.GONE);
-        headerReport = findViewById(R.id.header_report);
+//        headerReport = findViewById(R.id.header_report);
 
-        hideHeader(true);
+//        hideHeader(true);
 
         dialog = new ProgressDialog(this);
         dialog.setCancelable(false);
         dialog.setMessage("Envoie du rapport en cours....");
+    }
 
+    @Override
+    public void onBackPressed() {
+        if (!isAllowToGoBack) {
+            // User should not go back when he is doing a visit
+            Toast.makeText(mContext, "Vous ne pouvez revenir en arriere tant que la visite n'est pas terminee", Toast.LENGTH_SHORT).show();
+        } else {
+            super.onBackPressed();
+        }
     }
 
     private void fetchCustomerDetails() {
@@ -206,6 +219,8 @@ public class VisiteInProgressActivity extends AppCompatActivity
     public void onEndDailyReportFailure() {
         dialog.cancel();
         Toast.makeText(mContext, "Echec d'envoie du rapport. Reessayez !", Toast.LENGTH_SHORT).show();
+
+        // todo: Store end report offline
     }
 
     private void showViewPager() {
@@ -291,9 +306,7 @@ public class VisiteInProgressActivity extends AppCompatActivity
         Log.i(TAG, "onStep4Finished: ==> " + mDailyReportEnd);
 
         if (mDailyReportEnd.isCompleted()) {
-
             sendReportTOTheServer();
-
         } else {
             Utils.presentToast(this,
                     getResources().getString(R.string.certaines_informations_sont_maquantes),
@@ -308,13 +321,6 @@ public class VisiteInProgressActivity extends AppCompatActivity
         DailyReportEndCall.postDailyReportEnd(
                 AuthUser.getToken(this),
                 this, mDailyReportEnd, currentReportID);
-//        try {
-//
-//        } catch (Exception e) {
-//            Log.e(TAG, "sendReportTOTheServer: " + e.getMessage());
-//            e.printStackTrace();
-//            dialog.cancel();
-//        }
     }
 
 //    private long saveReportLocaly(DailyReportEnd dailyReportEnd, Boolean status){
@@ -448,25 +454,12 @@ public class VisiteInProgressActivity extends AppCompatActivity
 
     }
 
-    public void hideHeader(boolean hideIt) {
-        if (hideIt) {
-            headerReport.setVisibility(View.GONE);
-        } else {
-            headerReport.setVisibility(View.VISIBLE);
-        }
-
-    @Override
-    public void onBackPressed() {
-        //super.onBackPressed();
-    }
-}
-
-
-//    public void headerVisibility(boolean hv) {
-//        if (hv) {
+//    public void hideHeader(boolean hideIt) {
+//        if (hideIt) {
 //            headerReport.setVisibility(View.GONE);
 //        } else {
 //            headerReport.setVisibility(View.VISIBLE);
 //        }
 //
 //    }
+}

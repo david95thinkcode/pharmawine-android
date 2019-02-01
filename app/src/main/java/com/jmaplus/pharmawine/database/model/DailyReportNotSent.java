@@ -8,6 +8,12 @@ public class DailyReportNotSent {
     private String creationDate;
     private Boolean status;
 
+    // TODO: ajouter aussi les proprietes suivante :
+    // - DailyReportStart: DailyReportStart
+    // - DailyReportEnd : DailyReportEnd
+    // - isStartRequestSent : Boolean
+    // - isEndRequestSent : Boolean
+
     public DailyReportNotSent() {
 
     }

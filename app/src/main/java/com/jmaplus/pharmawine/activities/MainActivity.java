@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity implements MedicalTeamFragme
 
         Log.i(getLocalClassName(), "onCreate: authUser ==> " + currentUser);
 
-        Toast.makeText(this, "Content de vous revoir " + currentUser.getLastname() + " !", Toast.LENGTH_LONG).show();
+//        Toast.makeText(this, "Content de vous revoir " + currentUser.getLastname() + " !", Toast.LENGTH_LONG).show();
 
 //        try {
 //            DateFormat format = new SimpleDateFormat("MM/dd/yyyy");

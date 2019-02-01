@@ -2,6 +2,7 @@ package com.jmaplus.pharmawine.activities;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
@@ -18,9 +19,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jmaplus.pharmawine.R;
+import com.jmaplus.pharmawine.fragments.dialogs.ProductDetailsFragmentDialog;
 import com.jmaplus.pharmawine.fragments.products.ClassesFragment;
 import com.jmaplus.pharmawine.fragments.products.LaboratoriesFragment;
 import com.jmaplus.pharmawine.fragments.products.ReferencesFragment;
+import com.jmaplus.pharmawine.models.ApiProduct;
 
 public class ProductsActivity extends AppCompatActivity implements LaboratoriesFragment.OnFragmentInteractionListener {
 
@@ -31,12 +34,12 @@ public class ProductsActivity extends AppCompatActivity implements LaboratoriesF
     private MenuItem itemSearch, itemLabo, itemRef, itemClass;
 
     private String mCurrentFragment;
+    private ApiProduct mSelectedProduct;
 
     public LaboratoriesFragment mLaboratoriesFragment = new LaboratoriesFragment();
     public ReferencesFragment mReferencesFragment = new ReferencesFragment();
     public ClassesFragment mClassesFragment = new ClassesFragment();
 
-    public boolean isProductsLoaded = false;
     public boolean isProdClassesLoaded = false;
 
     private LinearLayout bottomLay;
@@ -49,13 +52,17 @@ public class ProductsActivity extends AppCompatActivity implements LaboratoriesF
     private ReferencesFragment referencesFragment = new ReferencesFragment();
     private ClassesFragment classesFragment = new ClassesFragment();
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_products);
 
+        setUI();
+
+        showFragment(laboratoriesFragment);
+    }
+
+    private void setUI() {
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -66,9 +73,8 @@ public class ProductsActivity extends AppCompatActivity implements LaboratoriesF
         bottomLay = findViewById(R.id.lay_bottom_lay);
         bottomIcon = findViewById(R.id.img_bottom_icon);
         bottomText = findViewById(R.id.tv_bottom_text);
-
-        showFragment(laboratoriesFragment);
     }
+
 
     @Override
     public void onProductNumberUpdated(Integer productsNumber) {
@@ -76,6 +82,22 @@ public class ProductsActivity extends AppCompatActivity implements LaboratoriesF
         String text = productsNumber + " produit(s)";
 
         updateBottomView(R.drawable.pill, text);
+    }
+
+    @Override
+    public void onProductSelected(ApiProduct product) {
+        Log.i(TAG, "onProductSelected: Product received ==> " + product.toString());
+        mSelectedProduct = product;
+        showProductDetailsDialog();
+    }
+
+    private void showProductDetailsDialog() {
+        // Show the alert dialog for the product details
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        ProductDetailsFragmentDialog detailDialog = new ProductDetailsFragmentDialog();
+
+        detailDialog.updateDetails(mSelectedProduct);
+        detailDialog.show(fragmentManager, "olo");
     }
 
     public void updateBottomView(int iconId, String text) {
@@ -117,6 +139,7 @@ public class ProductsActivity extends AppCompatActivity implements LaboratoriesF
         switch (item.getItemId()) {
             case R.id.action_labo:
                 showFragment(laboratoriesFragment);
+                Toast.makeText(this, "Option indisponible", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.action_search:
                 SearchView searchView = (SearchView) MenuItemCompat.getActionView(item);

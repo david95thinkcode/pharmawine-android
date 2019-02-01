@@ -44,6 +44,7 @@ public class VisiteInProgressFragment extends Fragment
 
     public static final String ARGS_PROSPECT_TYPE = "ARGS_PROSPECT_TYPE";
     public static final String ARGS_CLIENT_ID_KEY = "ARGS_CLIENT_ID_KEY";
+    public static final String ARGS_CLIENT_SEX_KEY = "ARGS_CLIENT_SEX_KEY";
     public static final String ARGS_CLIENT_FIRSTNAME_KEY = "ARGS_CLIENT_FIRSTNAME_KEY";
     public static final String ARGS_CLIENT_LASTNAME_KEY = "ARGS_CLIENT_LASTNAME_KEY";
     public static final String ARGS_CLIENT_SPECIALITY_KEY = "ARGS_CLIENT_SPECIALITY_KEY";
@@ -104,6 +105,12 @@ public class VisiteInProgressFragment extends Fragment
 
             mProspectType = getArguments().getString(ARGS_PROSPECT_TYPE);
             Log.i(getClass().getName(), "mProspectType ==> : " + mProspectType);
+
+            // Setting picture
+            String sex = getArguments().getString(ARGS_CLIENT_SEX_KEY);
+            if (sex != null && sex.toUpperCase().equals("F")) {
+                Glide.with(this).load(R.drawable.bg_doctor_woman).into(profileImage);
+            }
 
             // Obligatoire
             mDailyReportStart.setCustomerId(getArguments().getInt(ARGS_CLIENT_ID_KEY, -1));
@@ -185,6 +192,8 @@ public class VisiteInProgressFragment extends Fragment
 
     @Override
     public void onStartDailyReportFailure() {
+        // todo: Store start report offline
+
         Log.e(TAG, "onStartDailyReportFailure");
     }
 
@@ -203,7 +212,7 @@ public class VisiteInProgressFragment extends Fragment
             tvCustomerSpeciality.setText(customer.getSpeciality().getName());
         }
 
-        Glide.with(this).load(customer.getBigDefaultAvatar()).into(profileImage);
+//        Glide.with(this).load(customer.getBigDefaultAvatar()).into(profileImage);
     }
 
     private void updateViewsContent() {

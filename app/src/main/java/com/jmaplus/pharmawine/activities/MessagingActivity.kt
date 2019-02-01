@@ -11,7 +11,6 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.ProgressBar
-import android.widget.Toast
 import com.google.firebase.database.*
 import com.jmaplus.pharmawine.R
 import com.jmaplus.pharmawine.adapters.MessagingRoomAdapter
@@ -93,8 +92,7 @@ class MessagingActivity : AppCompatActivity(), NetworkCalls.Callbacks {
                                 authenticatedUser.getAvatar())
 
                         userReference.setValue(u).addOnSuccessListener {
-                            Toast.makeText(mContext,
-                                    "User was added to firebase", Toast.LENGTH_SHORT).show()
+                            Log.i(TAG, "User was added to firebase")
                         }
                     } else {
 //                        Toast.makeText(mContext, "onDataChange: User exists on Firebase", Toast.LENGTH_SHORT).show()
@@ -239,55 +237,13 @@ class MessagingActivity : AppCompatActivity(), NetworkCalls.Callbacks {
     }
 
     private fun getNetworkUsers() {
-        // TODO: Get network users
-
+        // Get network users
         NetworkCalls.getNetworkMembers(
-                this, AuthUser.getToken(this), mAuthUser.getNetworkId())
-
-//        try {
-////            mProgressBarOfMembers.setVisibility(View.VISIBLE)
-//            NetworkCalls.getNetworkMembers(
-//                    this, AuthUser.getToken(this), mAuthUser.getNetworkId())
-//        }
-//        catch (e: Exception) {
-//            Log.e(TAG, "getMembers: " + e.message)
-//            Toast.makeText(this, R.string.une_erreur_s_est_produite, Toast.LENGTH_SHORT).show()
-//            e.printStackTrace()
-//        }
-
+                this, AuthUser.getToken(this), mAuthUser.networkId)
 
         // TODO: Add user to firebase if not exists
 
         // TODO: Create Channel for each new added user
-
-        // TODO: ========== CODE TEMPLATES =================
-
-        // ADD USER TO FIREBASE
-//        database.child(USERS_COLLECTION).addListenerForSingleValueEvent(object : ValueEventListener {
-//            override fun onDataChange(dataSnapshot: DataSnapshot) {
-//
-//                // Save the FROMUSER object if not exists on Database
-//                if (!dataSnapshot.child(THEUSER.id).exists()) {
-//                    val fireUser = FireUser(THEUSER.id, THEUSER.firstname,
-//                            THEUSER.lastname, THEUSER.avatar, THEUSER.role
-//                    )
-//                    database.child(USERS_COLLECTION).child(THEUSER.id).setValue(fireUser)
-//                            .addOnSuccessListener {
-//                                // We Create channel
-//                                createANewChannel(THEUSER.id, authenticatedUser.id.toString())
-//                            }
-//                }
-//                else {
-//                    // Update users details when already exists
-//                    // ....
-//                }
-//            }
-//
-//            override fun onCancelled(databaseError: DatabaseError) {
-//                // Getting Post failed, log a message
-//                Log.w(TAG, "$USERS_COLLECTION:onCancelled", databaseError.toException())
-//            }
-//        })
     }
 
     /**

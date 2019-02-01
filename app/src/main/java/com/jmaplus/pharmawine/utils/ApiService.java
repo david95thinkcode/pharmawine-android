@@ -76,6 +76,9 @@ public interface ApiService {
     @GET("remaining")
     Call<List<Customer>> getRemainingCustomers(@Header("Authorization") String authorization);
 
+    @GET("customers/viewed")
+    Call<List<Customer>> getSeenCustomers(@Header("Authorization") String authorization);
+
     // ======================================= NETWORKS =======================================
 
     @GET("network")
