@@ -98,17 +98,14 @@ public class PlanningActivity extends AppCompatActivity
                             @Override
                             public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int month, int dayOfMonth) {
 
-                                int realMonthIndex = month + 1;
-
                                 String[] frenchMonths = new DateFormatSymbols(Locale.FRENCH).getMonths();
 
                                 tvDateLabel.setText(frenchMonths[month].toUpperCase().concat(" ").
                                         concat(String.valueOf(year)));
 
-
                                 // Very important
                                 // We should inform visitefragment that date have changed
-                                Calendar calendar = new GregorianCalendar(year, realMonthIndex, dayOfMonth);
+                                Calendar calendar = new GregorianCalendar(year, month, dayOfMonth);
                                 mVisitFragment.setDateString(calendar.getTime());
                             }
                         });

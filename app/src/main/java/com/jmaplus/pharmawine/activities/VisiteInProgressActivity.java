@@ -61,6 +61,7 @@ public class VisiteInProgressActivity extends AppCompatActivity
     public static final String EXTRA_PROSPECT_SEX = "prospectSex";
     private static final String TAG = "VisiteActivity";
     private ProgressDialog dialog;
+    private Boolean isAllowToGoBack = false;
 
 
     private FragmentManager fragmentManager = getSupportFragmentManager();
@@ -162,7 +163,16 @@ public class VisiteInProgressActivity extends AppCompatActivity
         dialog = new ProgressDialog(this);
         dialog.setCancelable(false);
         dialog.setMessage("Envoie du rapport en cours....");
+    }
 
+    @Override
+    public void onBackPressed() {
+        if (!isAllowToGoBack) {
+            // User should not go back when he is doing a visit
+            Toast.makeText(mContext, "Vous ne pouvez revenir en arriere tant que la visite n'est pas terminee", Toast.LENGTH_SHORT).show();
+        } else {
+            super.onBackPressed();
+        }
     }
 
     private void fetchCustomerDetails() {
