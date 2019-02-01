@@ -53,6 +53,7 @@ public class PlanningActivity extends AppCompatActivity
     public static String SALES_GOALS = "com.jmaplus.pharmawine.activities.sales_goals";
     public static String ACTIVITY_AREA = "com.jmaplus.pharmawine.activities.activity_area";
     public List<Customer> mCustomerList = new ArrayList();
+    private String[] frenchMonths;
     private String TAG = "PlanningActivity";
     private String mCurrentFragment;
     private int userRole;
@@ -70,6 +71,7 @@ public class PlanningActivity extends AppCompatActivity
 
         mAuthUser = AuthUser.getAuthenticatedUser(this);
         mCurrentFragment = mVisitFragment.getClass().getSimpleName();
+        frenchMonths = new DateFormatSymbols(Locale.FRENCH).getMonths();
 
         initViews();
     }
@@ -88,6 +90,12 @@ public class PlanningActivity extends AppCompatActivity
         setupViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
 
+        // Date label for the first time
+        Calendar calendar = Calendar.getInstance();
+        tvDateLabel.setText(frenchMonths[calendar.get(Calendar.MONTH)].toUpperCase().concat(" ").
+                concat(String.valueOf(calendar.get(Calendar.YEAR))));
+
+
         // Set listenners
         cvSelectDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -97,8 +105,6 @@ public class PlanningActivity extends AppCompatActivity
                         .setOnDateSetListener(new CalendarDatePickerDialogFragment.OnDateSetListener() {
                             @Override
                             public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int month, int dayOfMonth) {
-
-                                String[] frenchMonths = new DateFormatSymbols(Locale.FRENCH).getMonths();
 
                                 tvDateLabel.setText(frenchMonths[month].toUpperCase().concat(" ").
                                         concat(String.valueOf(year)));
