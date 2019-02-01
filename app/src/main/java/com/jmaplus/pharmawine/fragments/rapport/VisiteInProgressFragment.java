@@ -105,7 +105,7 @@ public class VisiteInProgressFragment extends Fragment
 
             // Setting picture
             String sex = getArguments().getString(ARGS_CLIENT_SEX_KEY);
-            if (sex.toUpperCase().equals("F")) {
+            if (sex != null && sex.toUpperCase().equals("F")) {
                 Glide.with(this).load(R.drawable.bg_doctor_woman).into(profileImage);
             }
 
@@ -189,6 +189,8 @@ public class VisiteInProgressFragment extends Fragment
 
     @Override
     public void onStartDailyReportFailure() {
+        // todo: Store start report offline
+
         Log.e(TAG, "onStartDailyReportFailure");
     }
 
@@ -259,8 +261,6 @@ public class VisiteInProgressFragment extends Fragment
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
 
         builder.setTitle("Visite terminée ?");
-
-        // TODO :
 
         builder.setMessage(R.string.msg_confim_visite_end);
         builder.setCancelable(false);

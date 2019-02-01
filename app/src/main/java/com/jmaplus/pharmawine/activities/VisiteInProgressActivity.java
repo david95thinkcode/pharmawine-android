@@ -217,6 +217,8 @@ public class VisiteInProgressActivity extends AppCompatActivity
     public void onEndDailyReportFailure() {
         dialog.cancel();
         Toast.makeText(mContext, "Echec d'envoie du rapport. Reessayez !", Toast.LENGTH_SHORT).show();
+
+        // todo: Store end report offline
     }
 
     private void showViewPager() {
@@ -302,9 +304,7 @@ public class VisiteInProgressActivity extends AppCompatActivity
         Log.i(TAG, "onStep4Finished: ==> " + mDailyReportEnd);
 
         if (mDailyReportEnd.isCompleted()) {
-
             sendReportTOTheServer();
-
         } else {
             Utils.presentToast(this,
                     getResources().getString(R.string.certaines_informations_sont_maquantes),
@@ -319,13 +319,6 @@ public class VisiteInProgressActivity extends AppCompatActivity
         DailyReportEndCall.postDailyReportEnd(
                 AuthUser.getToken(this),
                 this, mDailyReportEnd, currentReportID);
-//        try {
-//
-//        } catch (Exception e) {
-//            Log.e(TAG, "sendReportTOTheServer: " + e.getMessage());
-//            e.printStackTrace();
-//            dialog.cancel();
-//        }
     }
 
 //    private long saveReportLocaly(DailyReportEnd dailyReportEnd, Boolean status){
