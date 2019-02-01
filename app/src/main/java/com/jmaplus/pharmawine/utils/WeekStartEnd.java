@@ -19,10 +19,14 @@ public class WeekStartEnd {
         calculateStartAndEndDate(date);
     }
 
-    public void calculateStartAndEndDate(Date choosedDate) {
+    public void calculateStartAndEndDate(Date selectedDate) {
 //        SimpleDateFormat sdf = new SimpleDateFormat("yyyy MMM dd");
         Calendar c = Calendar.getInstance();
-        c.setTime(choosedDate);
+        c.setTime(selectedDate);
+
+        // month doesn't have the correct index
+        // let's set it to the correct month number
+        c.add(Calendar.MONTH, 1);
 
         int originalMonth = c.get(Calendar.MONTH);
 
