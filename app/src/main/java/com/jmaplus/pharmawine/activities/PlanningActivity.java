@@ -30,6 +30,8 @@ import com.jmaplus.pharmawine.utils.RetrofitCalls.DelegueCalls;
 
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -97,23 +99,17 @@ public class PlanningActivity extends AppCompatActivity
                             public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int month, int dayOfMonth) {
 
                                 int realMonthIndex = month + 1;
-                                String date;
-                                if (realMonthIndex < 10)
-                                    date = year + "-0" + realMonthIndex + "-" + dayOfMonth;
-                                else
-                                    date = year + "-" + realMonthIndex + "-" + dayOfMonth;
 
                                 String[] frenchMonths = new DateFormatSymbols(Locale.FRENCH).getMonths();
 
                                 tvDateLabel.setText(frenchMonths[month].toUpperCase().concat(" ").
                                         concat(String.valueOf(year)));
 
-                                // Toast.makeText(PlanningActivity.this, "Date : " + date, Toast.LENGTH_SHORT).show();
-                                Log.i(TAG, "onDateSet: Date selected ==> " + date);
 
                                 // Very important
                                 // We should inform visitefragment that date have changed
-                                mVisitFragment.setDateString(date);
+                                Calendar calendar = new GregorianCalendar(year, realMonthIndex, dayOfMonth);
+                                mVisitFragment.setDateString(calendar.getTime());
                             }
                         });
                 datePickerDialog.show(getSupportFragmentManager(), "DatePicker");

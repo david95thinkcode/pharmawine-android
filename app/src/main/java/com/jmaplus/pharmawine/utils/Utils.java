@@ -5,9 +5,11 @@ import android.widget.Toast;
 
 import com.jmaplus.pharmawine.models.TestCountry;
 
+import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -91,38 +93,56 @@ public class Utils {
     }
 
     /**
-     * Retourne la liste des jours de la meme semaine que @startDate
-     *
-     * @param startDate
-     * @param onlyDaysOfSameMonth
+     * @param date
+     * @return Example de reponse : 2019-02-13
      */
-    public static WeekDays getDaysOfTheWeek(String startDate, Boolean onlyDaysOfSameMonth) {
+    public static final String getFormattedDateForApiRequest(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
 
-        WeekDays w = new WeekDays();
+        String MM = String.valueOf(calendar.get(Calendar.MONTH));
+        String DD = String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
 
-        if (!startDate.isEmpty()) {
-            // TODO TODO TODO : Finish it
-
-            w.setSameMonth(onlyDaysOfSameMonth);
-            w.setStartDate(startDate);
-            // todo: pour l'instant mais c'est a changer
-            w.setEndDate(startDate);
-
-            if (onlyDaysOfSameMonth) {
-                // todo: get only days that got the same month with start date
-                // ...
-            } else {
-                // todo: return all days of the week
-                // ...
-            }
-
-            return w;
+        if (calendar.get(Calendar.DAY_OF_MONTH) < 10) {
+            DD = "0" + DD;
         }
 
-        return null;
+        if (calendar.get(Calendar.MONTH) < 10) {
+            MM = "0" + MM;
+        }
 
+        String formatted = calendar.get(Calendar.YEAR) + "-" + MM + "-" + DD;
+
+        return formatted;
     }
 
+    /**
+     * @param date
+     * @return Exemple de reponses: 05,23
+     */
+    public static final String getDayOfMonthFromDate(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
 
+        if (calendar.get(Calendar.DAY_OF_MONTH) < 10) {
+            return "0" + String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
+        }
+
+        return String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
+    }
+
+    /**
+     * Retourne le nom du jour de la semaine en francais
+     *
+     * @param date
+     * @return
+     */
+    public static final String getDayLabelFromDate(Date date) {
+        String[] frenchDays = new DateFormatSymbols(Locale.FRENCH).getWeekdays();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+
+        return frenchDays[calendar.get(Calendar.DAY_OF_WEEK)];
+    }
 
 }
