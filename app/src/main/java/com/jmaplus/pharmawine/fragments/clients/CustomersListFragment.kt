@@ -15,11 +15,8 @@ import com.jmaplus.pharmawine.R
 import com.jmaplus.pharmawine.adapters.RemainingCustomersAdapter
 import com.jmaplus.pharmawine.models.AuthUser
 import com.jmaplus.pharmawine.models.Customer
-import com.jmaplus.pharmawine.utils.Constants
-import com.jmaplus.pharmawine.utils.CustomerCalls
-import com.jmaplus.pharmawine.utils.ItemClickSupport
+import com.jmaplus.pharmawine.utils.*
 import com.jmaplus.pharmawine.utils.RetrofitCalls.customers.SeenCustomerCalls
-import com.jmaplus.pharmawine.utils.Utils
 
 
 /**
@@ -98,7 +95,12 @@ class CustomersListFragment : Fragment(),
      */
     fun fetchSeenCustomers() {
         mProgressBar.visibility = View.VISIBLE
-        SeenCustomerCalls.getSeenCustomers(mToken, this)
+
+        updateUIWithResponse(FakeData.getCustomers());
+
+
+        // TODO: uncomment this when week end will end
+        // SeenCustomerCalls.getSeenCustomers(mToken, this)
     }
 
     override fun onSeenCustomersResponse(customers: MutableList<Customer>?) {
@@ -118,6 +120,8 @@ class CustomersListFragment : Fragment(),
                     listener?.onCustomerClicked(customer)
                 }
     }
+
+    // ============ METHODS WHICH CAN BE CALLED BY PARENT
 
     /**
      * Should be called by the parent activity
@@ -145,22 +149,44 @@ class CustomersListFragment : Fragment(),
      */
     fun filteredCustomerListByCustomerType(customerTypeID: Int) {
         if (mCustomersList.isNotEmpty()) {
-            val newList = mSafeCustomersList.filter { it.customerTypeId == customerTypeID }
+            val newList = mSafeCustomersList.filter {
+                it.customerTypeId == customerTypeID
+            }
             refreshRecyclerViewWithNewList(newList)
         } else {
             Utils.presentToast(mContext, "Rien a filtrer", true)
         }
     }
 
-    private fun refreshRecyclerViewWithNewList(newCustomerList: List<Customer>) {
-        if (newCustomerList.isNotEmpty()) {
-            mProgressBar.visibility = View.GONE
+    fun showAllWithoutFiltering() {
+        refreshRecyclerViewWithNewList(mSafeCustomersList)
+    }
 
-            mCustomersList.clear()
-            mCustomersList.addAll(newCustomerList)
-            mAdapter.notifyDataSetChanged()
+
+    fun filterCustomersByKnownCriteria(isKnownCustomer: Boolean) {
+
+        if (mSafeCustomersList.isNotEmpty()) {
+
+            val filteredList = mSafeCustomersList.filter {
+                it.isKnown == isKnownCustomer
+            }
+
+            refreshRecyclerViewWithNewList(filteredList)
 
         } else {
+            Utils.presentToast(mContext, "Rien a filtrer", true)
+        }
+    }
+
+    private fun refreshRecyclerViewWithNewList(newCustomerList: List<Customer>) {
+
+        mProgressBar.visibility = View.GONE
+
+        mCustomersList.clear()
+        mCustomersList.addAll(newCustomerList)
+        mAdapter.notifyDataSetChanged()
+
+        if (newCustomerList.isEmpty()) {
             Utils.presentToast(mContext, "Liste vide", true)
         }
     }

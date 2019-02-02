@@ -72,21 +72,33 @@ class SeenCustomersActivity : AppCompatActivity(),
         }
     }
 
+    private fun filterByKnownCriteria() {
+        mCustomersListFragment.filterCustomersByKnownCriteria(true)
+    }
+
+    private fun filterByUnknownCriteria() {
+        mCustomersListFragment.filterCustomersByKnownCriteria(false)
+    }
+
+    private fun showAll() {
+        mCustomersListFragment.showAllWithoutFiltering()
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_option_connus -> {
-//                filterClients(true)
+                filterByKnownCriteria()
                 title = resources.getString(R.string.clients_connus)
                 return true
             }
             R.id.menu_option_inconnus -> {
-//                filterClients(false)
+                filterByUnknownCriteria()
                 title = resources.getString(R.string.clients_inconnus)
                 return true
             }
             R.id.menu_option_tous -> {
                 title = resources.getString(R.string.clients_vus)
-//                populateRecyclerView()
+                showAll()
                 return true
             }
             else -> return super.onOptionsItemSelected(item)

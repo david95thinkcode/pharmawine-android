@@ -113,11 +113,13 @@ public class Customer {
      * @return
      */
     public Boolean isKnown() {
+        /**
+         * Les id 8 et 7 representent ceux
+         * des status des clients inconnus
+         */
+
         try {
-            return this.customerStatus.getName() != "pim" && this.customerStatus.getName() != "PIM"
-                    && this.customerStatus.getName() != "pig" && this.customerStatus.getName() != "PIG";
-        } catch (NullPointerException e) {
-            return this.customerStatusId != 8 && this.getCustomerStatusId() != 7;
+            return this.getCustomerStatusId() != 8 && this.getCustomerStatusId() != 7;
         } catch (Exception e) {
             Log.e(getClass().getName(), "isKnown() " + e.getMessage());
             e.printStackTrace();
