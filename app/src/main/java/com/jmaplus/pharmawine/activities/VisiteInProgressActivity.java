@@ -323,15 +323,6 @@ public class VisiteInProgressActivity extends AppCompatActivity
                 this, mDailyReportEnd, currentReportID);
     }
 
-//    private long saveReportLocaly(DailyReportEnd dailyReportEnd, Boolean status){
-//        String report = dailyReportEnd.toString();
-//
-//        DailyReportNotSent dailyReportNotSent = new DailyReportNotSent(report, dailyReportEnd.getEndTime(), status);
-//
-//        return OffDB.createReport(dailyReportNotSent);
-//
-//    }
-
 
     @Override
     public void onReturnToStep1() {
