@@ -2,6 +2,10 @@ package com.jmaplus.pharmawine.utils;
 
 public class Constants {
 
+    // ENVIRONMENT VARIABLE
+    // ===================================
+    public static final Boolean ENV_TESTMODE = true;
+
     // SHARED PREFERENCES PRIVATE FILES
     // ===================================
     //

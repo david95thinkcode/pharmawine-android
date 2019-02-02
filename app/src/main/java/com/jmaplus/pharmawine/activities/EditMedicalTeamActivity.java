@@ -35,6 +35,8 @@ import com.jmaplus.pharmawine.utils.Utils;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Date;
+
 import javax.annotation.Nullable;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -72,6 +74,11 @@ public class EditMedicalTeamActivity extends AppCompatActivity implements
     private String mToken = "";
     private ProgressDialog mProgressDialog;
 
+    // Fragments
+    private Step1MedicalTeamClientFragment mStep1MedicalTeamClientFragment;
+    private Step2MedicalTeamClientFragment mStep2MedicalTeamClientFragment;
+    private Step3MedicalTeamClientFragment mStep3MedicalTeamClientFragment;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,7 +86,11 @@ public class EditMedicalTeamActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_edit_medical_team);
 
         mContext = this;
-        mToken = AuthUser.getToken(this);
+        mToken = AuthUser.getToken(mContext);
+        mStep1MedicalTeamClientFragment = new Step1MedicalTeamClientFragment();
+        mStep2MedicalTeamClientFragment = new Step2MedicalTeamClientFragment();
+        mStep3MedicalTeamClientFragment = new Step3MedicalTeamClientFragment();
+
         mCustomerId = getIntent().getIntExtra(CUSTOMER_ID_EXTRA, -1);
 
         // Getting customer full details from intent string extra
@@ -184,6 +195,59 @@ public class EditMedicalTeamActivity extends AppCompatActivity implements
         CustomerDetailsCalls.getDetails(mToken, this, mCustomer.getId());
     }
 
+    private void onEditionFinished() {
+        confirmationFinishDialog();
+    }
+
+    private void updateProfileOnServer() {
+
+        Log.i(TAG, "Uploading ==> \n" + "\n" + mChangingCustomer.toString() + "\n");
+
+        if (!mCustomer.toString().equals(mChangingCustomer.toString())) {
+            try {
+//                mProgressDialog.show();
+                // Start a async task to update profile to server
+                CustomerEditionCalls.editCustomerProfile(mToken,
+                        this, mCustomer.getId(), mChangingCustomer);
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+                e.printStackTrace();
+//                mProgressDialog.cancel();
+            }
+            Log.i(TAG, "updateProfileOnServer: Changes detected");
+        } else {
+            // Aucune nouveau changement effectue
+            // on close l'activity simplement
+            Log.i(TAG, "updateProfileOnServer: No change detected");
+            finish();
+        }
+    }
+
+    private void confirmationFinishDialog() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.etes_vous_sur_d_avoir_termine);
+        builder.setCancelable(false);
+
+        builder.setPositiveButton(R.string.oui, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                updateProfileOnServer();
+                finish();
+            }
+        });
+
+        builder.setNegativeButton(R.string.non, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+
+        });
+
+        builder.show();
+    }
+
     // =================== Start retrofit calls callbacks =============================
 
     @Override
@@ -216,8 +280,6 @@ public class EditMedicalTeamActivity extends AppCompatActivity implements
         mChangingCustomer = mCustomer;
 
         updateAvatarView();
-
-        // Todo: send data to fragments
     }
 
     @Override
@@ -285,36 +347,6 @@ public class EditMedicalTeamActivity extends AppCompatActivity implements
         }
     }
 
-
-    private void onEditionFinished() {
-        confirmationFinishDialog();
-    }
-
-    private void confirmationFinishDialog() {
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(R.string.etes_vous_sur_d_avoir_termine);
-        builder.setCancelable(false);
-
-        builder.setPositiveButton(R.string.oui, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                updateProfileOnServer();
-                finish();
-            }
-        });
-
-        builder.setNegativeButton(R.string.non, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-
-        });
-
-        builder.show();
-    }
-
     private void updateProgressionBar() {
 
         Integer progression = mChangingCustomer.getFillingLevel();
@@ -325,19 +357,51 @@ public class EditMedicalTeamActivity extends AppCompatActivity implements
         mProgressLabel.setText(String.valueOf(progression).concat(" %"));
     }
 
-    private void updateProfileOnServer() {
-        try {
-            mProgressDialog.show();
-            Log.i(TAG, "Updating profile on the server");
-            Log.i(TAG, mChangingCustomer.toString());
-            // Start a async task to update profile to server
-            CustomerEditionCalls.editCustomerProfile(mToken, this, mCustomer.getId(), mChangingCustomer);
-        } catch (Exception e) {
-            Log.e(TAG, e.getMessage());
-            e.printStackTrace();
-            mProgressDialog.cancel();
-        }
+    // ============= FRAGMENT CALLBACK REQUEST ===========
+
+    @Override
+    public void onRequestExistingBirthday() {
+        Date birthDay = Utils.getDateObjectFromFormattedString(mCustomer.getBirthday());
+
+        mStep1MedicalTeamClientFragment.setExistingBirthday(
+                Utils.getDayOfMonthIntFromDate(birthDay),
+                Utils.getMonthIntOfYearFromDate(birthDay),
+                Utils.getYearIntFromDate(birthDay)
+        );
     }
+
+    @Override
+    public void onRequestExistingMaritalStatus() {
+        mStep1MedicalTeamClientFragment.setExistingMaritalStatus(mCustomer.getMaritalStatus());
+    }
+
+    @Override
+    public void onRequestExistingNationality() {
+        mStep1MedicalTeamClientFragment.setExistingNationality(mCustomer.getNationality());
+    }
+
+    @Override
+    public void onRequestExistingAddress() {
+        mStep2MedicalTeamClientFragment.setExistingAddress(mCustomer.getAddress());
+    }
+
+    @Override
+    public void onRequestExistingReligion() {
+        mStep2MedicalTeamClientFragment.setExistingReligion(mCustomer.getReligion());
+    }
+
+    @Override
+    public void onRequestExistingEmail() {
+        mStep3MedicalTeamClientFragment.setExistingEmail(mCustomer.getEmail());
+    }
+
+    @Override
+    public void onRequestExistingPhoneNumber2() {
+        mStep3MedicalTeamClientFragment.setExistingPhoneNumber2(mCustomer.getPhoneNumber2());
+    }
+
+    // ============= END FRAGMENTS REQUEST ===========
+
 
     /**
      * Switch to corresponding fragment index received
@@ -362,11 +426,13 @@ public class EditMedicalTeamActivity extends AppCompatActivity implements
     @Override
     public void onAddressEntered(@NotNull String address) {
         mChangingCustomer.setAddress(address);
+        Log.i(TAG, "onAddressEntered: changing " + mChangingCustomer.getAddress());
+        Log.i(TAG, "onAddressEntered: original " + mCustomer.getAddress());
         updateProgressionBar();
     }
 
     @Override
-    public void onAdresseEmailEntered(@NotNull String email) {
+    public void onEmailEntered(@NotNull String email) {
         mChangingCustomer.setEmail(email);
         updateProgressionBar();
     }
@@ -384,7 +450,7 @@ public class EditMedicalTeamActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onBithdayFullyUpdated(@NotNull String birthDay) {
+    public void onBirthdayFullyUpdated(@NotNull String birthDay) {
         mChangingCustomer.setBirthday(birthDay);
         updateProgressionBar();
     }
@@ -409,23 +475,24 @@ public class EditMedicalTeamActivity extends AppCompatActivity implements
         @Override
         public Fragment getItem(int position) {
 
-            Fragment f;
+            Fragment fragment;
             switch (position) {
                 case STEP_1_FRAGMENT_INDEX:
-                    f = new Step1MedicalTeamClientFragment();
+                    fragment = mStep1MedicalTeamClientFragment;
                     break;
                 case STEP_2_FRAGMENT_INDEX:
-                    f = new Step2MedicalTeamClientFragment();
+                    fragment = mStep2MedicalTeamClientFragment;
                     break;
                 case STEP_3_FRAGMENT_INDEX:
-                    f = new Step3MedicalTeamClientFragment();
+                    fragment = mStep3MedicalTeamClientFragment;
                     break;
                 default:
-                    f = new Step1MedicalTeamClientFragment();
+                    fragment = mStep1MedicalTeamClientFragment;
                     break;
             }
             // TODO: Update title
-            return f;
+
+            return fragment;
         }
 
         @Override

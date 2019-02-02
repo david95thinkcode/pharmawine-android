@@ -1,6 +1,7 @@
 package com.jmaplus.pharmawine.utils;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.jmaplus.pharmawine.models.TestCountry;
@@ -10,12 +11,15 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
 
 import javax.annotation.Nullable;
 
 public class Utils {
+
+    public static final String TAG = "Utils";
 
     public static void presentToast(Context mContext, String message, @Nullable Boolean Long_duration) {
         if (Long_duration) {
@@ -129,6 +133,70 @@ public class Utils {
         }
 
         return String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
+    }
+
+    /**
+     * @param date
+     * @return int
+     * Exemple de reponses: 5,23
+     */
+    public static final int getDayOfMonthIntFromDate(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+
+        return calendar.get(Calendar.DAY_OF_MONTH);
+    }
+
+    /**
+     * @param date
+     * @return Exemple de reponses: 3
+     */
+    public static final int getMonthIntOfYearFromDate(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+
+
+        return calendar.get(Calendar.MONTH);
+    }
+
+    /**
+     * @param date
+     * @return Exemple de reponses: 2018
+     */
+    public static final int getYearIntFromDate(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+
+
+        return calendar.get(Calendar.YEAR);
+    }
+
+    /**
+     * @param date : 2019-07-09
+     * @return Date object
+     */
+    public static final Date getDateObjectFromFormattedString(String date) {
+
+        try {
+            String[] splitted = date.split("-");
+            String year = splitted[0];
+            String month = splitted[1];
+            String day = splitted[2];
+
+            Calendar cal = new GregorianCalendar(
+                    Integer.parseInt(year),
+                    Integer.parseInt(month),
+                    Integer.parseInt(day)
+            );
+
+            return cal.getTime();
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+            Log.e(TAG, e.getLocalizedMessage());
+            e.printStackTrace();
+
+            return new Date();
+        }
     }
 
     /**

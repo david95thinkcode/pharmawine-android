@@ -4,6 +4,7 @@ import com.jmaplus.pharmawine.models.AuthenticatedUser;
 import com.jmaplus.pharmawine.models.Bonus;
 import com.jmaplus.pharmawine.models.Client;
 import com.jmaplus.pharmawine.models.Customer;
+import com.jmaplus.pharmawine.models.CustomerStatus;
 import com.jmaplus.pharmawine.models.Gift;
 import com.jmaplus.pharmawine.models.MedicalCenter;
 import com.jmaplus.pharmawine.models.Speciality;
@@ -91,24 +92,45 @@ public class FakeData {
             customer.setId(i);
             customer.setFirstname(mFaker.name.firstName());
             customer.setLastname(mFaker.name.lastName());
-            customer.setSex("m");
-//            customer.setStatus(mFaker.lorem.characters(3).toUpperCase());
-            customer.setEmail(mFaker.name.name().concat("@").concat(mFaker.lorem.characters(5)).concat(mFaker.lorem.characters(2)));
-            customer.setBirthday(mFaker.date.birthday().toString());
+            customer.setSex(mFaker.lorem.characters(1));
+            customer.setMaritalStatus(mFaker.lorem.characters(1));
+            customer.setNationality(mFaker.address.country());
+            customer.setAddress(mFaker.address.streetAddress());
+            customer.setReligion(mFaker.name.name());
+            customer.setBirthday(Utils.getFormattedDateForApiRequest(mFaker.date.birthday()));
+            customer.setCustomerTypeId(mFaker.number.between(Constants.TYPE_MEDICAL_KEY, Constants.TYPE_PHARMACEUTICAL_KEY));
+
+            // Contact fields
+            customer.setEmail(mFaker.name.firstName()
+                    .concat("@")
+                    .concat(mFaker.lorem.characters(5))
+                    .concat(".")
+                    .concat("com"));
             customer.setTel(mFaker.phoneNumber.phoneNumber());
             customer.setPhoneNumber2(mFaker.phoneNumber.phoneNumber());
-            customer.setMaritalStatus("Marié");
-            customer.setNationality("Béninoise");
-            customer.setCustomerStatusId(mFaker.number.between(1, 3));
-//            customer.setType(Constants.CLIENT_MEDICAL_TEAM_TYPE_KEY);
 
-            // object data
+            // pharmacy specification
+            if (customer.getCustomerTypeId() == Constants.TYPE_PHARMACEUTICAL_KEY) {
+                customer.setName(mFaker.company.industry());
+                customer.setSex(null);
+            }
+
+            // Speciality
             Speciality s = new Speciality();
-            s.setName(mFaker.company.profession());
             s.setId(mFaker.number.between(1, 45));
-
-
+            s.setName(mFaker.company.profession().toUpperCase());
+            customer.setSpecialityId(s.getId());
             customer.setSpeciality(s);
+
+            // Customer Status
+            CustomerStatus customerStatus = new CustomerStatus();
+            customerStatus.setId(mFaker.number.between(1, 10));
+            customerStatus.setName(mFaker.lorem.characters(3).toUpperCase());
+            customer.setCustomerStatusId(customerStatus.getId());
+            customer.setCustomerStatus(customerStatus);
+
+
+            // Add to list
             customers.add(customer);
         }
 

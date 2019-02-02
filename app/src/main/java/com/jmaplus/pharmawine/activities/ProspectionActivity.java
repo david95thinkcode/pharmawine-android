@@ -24,6 +24,7 @@ import com.jmaplus.pharmawine.database.utils.DatabaseHelper;
 import com.jmaplus.pharmawine.models.AuthUser;
 import com.jmaplus.pharmawine.models.Customer;
 import com.jmaplus.pharmawine.utils.Constants;
+import com.jmaplus.pharmawine.utils.FakeData;
 import com.jmaplus.pharmawine.utils.ItemClickSupport;
 import com.jmaplus.pharmawine.utils.RetrofitCalls.DelegueCalls;
 import com.jmaplus.pharmawine.utils.Utils;
@@ -112,8 +113,13 @@ public class ProspectionActivity extends AppCompatActivity implements View.OnCli
 
         try {
             mProgressBar.setVisibility(View.VISIBLE);
-            DelegueCalls.getPlanning(token, this,
-                    mAuthUser.getId().toString(), currentDate, currentDate);
+
+            if (!Constants.ENV_TESTMODE) {
+                DelegueCalls.getPlanning(token, this,
+                        mAuthUser.getId().toString(), currentDate, currentDate);
+            } else {
+                onPlanningResponse(FakeData.getCustomers());
+            }
         } catch (Exception e) {
             Log.e(TAG, "fetchRemainingClients: " + e.getMessage());
             mProgressBar.setVisibility(View.VISIBLE);

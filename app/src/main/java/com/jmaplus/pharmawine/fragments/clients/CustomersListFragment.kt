@@ -29,6 +29,11 @@ import com.jmaplus.pharmawine.utils.RetrofitCalls.customers.SeenCustomerCalls
 class CustomersListFragment : Fragment(),
         CustomerCalls.Callbacks, SeenCustomerCalls.Callbacks {
 
+    companion object {
+        const val TAG = "CustomersListFragment"
+        const val TESTMODE = true
+    }
+
     private var listener: OnFragmentInteractionListener? = null
     private var mCustomerType: Int = -1
     private lateinit var mRecyclerView: RecyclerView
@@ -96,11 +101,11 @@ class CustomersListFragment : Fragment(),
     fun fetchSeenCustomers() {
         mProgressBar.visibility = View.VISIBLE
 
-        updateUIWithResponse(FakeData.getCustomers());
-
-
-        // TODO: uncomment this when week end will end
-        // SeenCustomerCalls.getSeenCustomers(mToken, this)
+        if (!TESTMODE) {
+            SeenCustomerCalls.getSeenCustomers(mToken, this)
+        } else {
+            updateUIWithResponse(FakeData.getCustomers());
+        }
     }
 
     override fun onSeenCustomersResponse(customers: MutableList<Customer>?) {
@@ -196,7 +201,12 @@ class CustomersListFragment : Fragment(),
      */
     fun fetchRemainingCustomers() {
         mProgressBar.visibility = View.VISIBLE
-        CustomerCalls.getRemaining(mToken, this)
+
+        if (!Constants.ENV_TESTMODE) {
+            CustomerCalls.getRemaining(mToken, this)
+        } else {
+            updateUIWithResponse(FakeData.getCustomers());
+        }
     }
 
     override fun onCustomerDetailsResponse(customer: Customer?) {
@@ -285,10 +295,6 @@ class CustomersListFragment : Fragment(),
 
         fun onCustomerClicked(Customer: Customer)
 
-    }
-
-    companion object {
-        const val TAG = "CustomersListFragment"
     }
 
 }
