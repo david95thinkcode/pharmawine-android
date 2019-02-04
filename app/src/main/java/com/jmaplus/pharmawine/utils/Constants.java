@@ -4,7 +4,7 @@ public class Constants {
 
     // ENVIRONMENT VARIABLE
     // ===================================
-    public static final Boolean ENV_TESTMODE = true;
+    public static final Boolean ENV_TESTMODE = false;
 
     // SHARED PREFERENCES PRIVATE FILES
     // ===================================

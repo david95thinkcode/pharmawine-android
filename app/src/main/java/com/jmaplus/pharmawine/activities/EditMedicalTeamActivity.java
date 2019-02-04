@@ -398,36 +398,41 @@ public class EditMedicalTeamActivity extends AppCompatActivity implements
 
     @Override
     public void onRequestExistingMaritalStatus() {
-        mStep1MedicalTeamClientFragment.setExistingMaritalStatus(mCustomer.getMaritalStatus());
+        if (mCustomer.getMaritalStatus() != null)
+            mStep1MedicalTeamClientFragment.setExistingMaritalStatus(mCustomer.getMaritalStatus());
     }
 
     @Override
     public void onRequestExistingNationality() {
-        mStep1MedicalTeamClientFragment.setExistingNationality(mCustomer.getNationality());
+        if (mCustomer.getNationality() != null)
+            mStep1MedicalTeamClientFragment.setExistingNationality(mCustomer.getNationality());
     }
 
     @Override
     public void onRequestExistingAddress() {
-        mStep2MedicalTeamClientFragment.setExistingAddress(mCustomer.getAddress());
+        if (mCustomer.getAddress() != null)
+            mStep2MedicalTeamClientFragment.setExistingAddress(mCustomer.getAddress());
     }
 
     @Override
     public void onRequestExistingReligion() {
-        mStep2MedicalTeamClientFragment.setExistingReligion(mCustomer.getReligion());
+        if (mCustomer.getReligion() != null)
+            mStep2MedicalTeamClientFragment.setExistingReligion(mCustomer.getReligion());
     }
 
     @Override
     public void onRequestExistingEmail() {
-        mStep3MedicalTeamClientFragment.setExistingEmail(mCustomer.getEmail());
+        if (mCustomer.getEmail() != null)
+            mStep3MedicalTeamClientFragment.setExistingEmail(mCustomer.getEmail());
     }
 
     @Override
     public void onRequestExistingPhoneNumber2() {
-        mStep3MedicalTeamClientFragment.setExistingPhoneNumber2(mCustomer.getPhoneNumber2());
+        if (mCustomer.getPhoneNumber2() != null)
+            mStep3MedicalTeamClientFragment.setExistingPhoneNumber2(mCustomer.getPhoneNumber2());
     }
 
-    // ============= END FRAGMENTS REQUEST ===========
-
+    // ============= END FRAGMENTS REQUEST  ===========
 
     /**
      * Switch to corresponding fragment index received
