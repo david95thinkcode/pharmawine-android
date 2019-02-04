@@ -102,13 +102,7 @@ class MedicalTeamDetailsFragment : Fragment(), View.OnClickListener {
 
     private fun updateUI() {
 
-        // Client avatar
-        if (!mCustomer.sex.isNullOrEmpty() && mCustomer.sex.toUpperCase() == "F") {
-            Glide.with(mContext).load(R.drawable.bg_doctor_woman).into(imgProfile)
-        } else {
-            Glide.with(mContext).load(R.drawable.bg_doctor_man).into(imgProfile)
-        }
-
+        Glide.with(mContext).load(mCustomer.bigDefaultAvatar).into(imgProfile)
         // Progress bar
 
         profileProgress.progress = mCustomer.getFillingLevel().toFloat()
@@ -196,6 +190,8 @@ class MedicalTeamDetailsFragment : Fragment(), View.OnClickListener {
         } else {
             btnCall2.visibility = View.GONE
         }
+
+        Log.i(TAG, "Progress ==> ${mCustomer.fillingLevel}")
     }
 
     override fun onClick(v: View?) {

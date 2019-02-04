@@ -80,31 +80,22 @@ class CustomersListFragment : Fragment(),
         if (context is OnFragmentInteractionListener) {
             listener = context
         } else {
-            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
+            throw RuntimeException("${context.toString()} must implement OnFragmentInteractionListener")
         }
     }
 
     private fun getCustomers(isProspectConnu: Boolean) {
         mProgressBar.visibility = View.VISIBLE
-        if (isProspectConnu) {
-            Log.i(TAG, "Recuperation prospect connus")
-            CustomerCalls.getAllKnownProspects(AuthUser.getToken(mContext), this)
+        if (!Constants.ENV_TESTMODE) {
+            if (isProspectConnu) {
+                Log.i(TAG, "Recuperation prospect connus")
+                CustomerCalls.getAllKnownProspects(AuthUser.getToken(mContext), this)
+            } else {
+                // Others cases
+                Log.i(TAG, "Recuperation prospect inconnus")
+            }
         } else {
-            // Others cases
-            Log.i(TAG, "Recuperation prospect inconnus")
-        }
-    }
-
-    /**
-     * This method can be called by fragment parent
-     */
-    fun fetchSeenCustomers() {
-        mProgressBar.visibility = View.VISIBLE
-
-        if (!TESTMODE) {
-            SeenCustomerCalls.getSeenCustomers(mToken, this)
-        } else {
-            updateUIWithResponse(FakeData.getCustomers());
+            updateUIWithResponse(FakeData.getCustomers())
         }
     }
 
@@ -128,24 +119,44 @@ class CustomersListFragment : Fragment(),
 
     // ============ METHODS WHICH CAN BE CALLED BY PARENT
 
-    /**
-     * Should be called by the parent activity
-     */
+
     fun fetchCustomers(customerType: Int, isProspectConnu: Boolean) {
 
-        if (customerType != null
-                && (customerType == Constants.TYPE_MEDICAL_KEY || customerType == Constants.TYPE_PHARMACEUTICAL_KEY)) {
-            mProgressBar.visibility = View.VISIBLE
+        if (!Constants.ENV_TESTMODE) {
+            if (customerType != null
+                    && (customerType == Constants.TYPE_MEDICAL_KEY || customerType == Constants.TYPE_PHARMACEUTICAL_KEY)) {
+                mProgressBar.visibility = View.VISIBLE
 
-            mCustomerType = customerType // important
+                mCustomerType = customerType // important
 
-            getCustomers(isProspectConnu) // let's get customers
+                getCustomers(isProspectConnu) // let's get customers
 
+            } else {
+                // Le parent n'a envoyeé aucun customer type id ou un type mon valide
+                Utils.presentToast(mContext, "Impossible de recuperer ce type de client", true)
+            }
         } else {
-            // Le parent n'a envoyeé aucun customer type id ou un type mon valide
-            Utils.presentToast(mContext, "Impossible de recuperer ce type de client", true)
         }
+    }
 
+    fun fetchSeenCustomers() {
+        mProgressBar.visibility = View.VISIBLE
+
+        if (!TESTMODE) {
+            SeenCustomerCalls.getSeenCustomers(mToken, this)
+        } else {
+            updateUIWithResponse(FakeData.getCustomers())
+        }
+    }
+
+    fun fetchRemainingCustomers() {
+        mProgressBar.visibility = View.VISIBLE
+
+        if (!Constants.ENV_TESTMODE) {
+            CustomerCalls.getRemaining(mToken, this)
+        } else {
+            updateUIWithResponse(FakeData.getCustomers())
+        }
     }
 
     /**
@@ -166,7 +177,6 @@ class CustomersListFragment : Fragment(),
     fun showAllWithoutFiltering() {
         refreshRecyclerViewWithNewList(mSafeCustomersList)
     }
-
 
     fun filterCustomersByKnownCriteria(isKnownCustomer: Boolean) {
 
@@ -196,18 +206,7 @@ class CustomersListFragment : Fragment(),
         }
     }
 
-    /**
-     * Should be called from parent activity
-     */
-    fun fetchRemainingCustomers() {
-        mProgressBar.visibility = View.VISIBLE
 
-        if (!Constants.ENV_TESTMODE) {
-            CustomerCalls.getRemaining(mToken, this)
-        } else {
-            updateUIWithResponse(FakeData.getCustomers());
-        }
-    }
 
     override fun onCustomerDetailsResponse(customer: Customer?) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.

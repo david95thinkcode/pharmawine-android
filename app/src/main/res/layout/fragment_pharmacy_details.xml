@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#eee"
     android:orientation="vertical"
     tools:context=".fragments.clients.PharmacyDetailsFragment">
 
@@ -12,14 +11,16 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:orientation="vertical">
 
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="2dp"
-            app:cardElevation="3dp">
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginRight="15dp"
+            app:cardCornerRadius="3dp"
+            app:cardElevation="6dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -344,7 +345,8 @@
                             android:layout_weight="40"
                             android:ellipsize="end"
                             android:maxLines="1"
-                            android:text="@string/reprensentative" />
+                            android:text="@string/reprensentative"
+                            android:textColor="@color/project_grey" />
 
                         <TextView
                             android:id="@+id/tv_pharma_representative"
@@ -354,7 +356,8 @@
                             android:layout_weight="60"
                             android:ellipsize="end"
                             android:maxLines="1"
-                            android:text="M. Henri J. Aïdasso" />
+                            android:text="M. Henri J. Aïdasso"
+                            android:textColor="@color/project_grey" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -369,7 +372,8 @@
                             android:layout_weight="40"
                             android:ellipsize="end"
                             android:maxLines="1"
-                            android:text="@string/founder" />
+                            android:text="@string/founder"
+                            android:textColor="@color/project_grey" />
 
                         <TextView
                             android:id="@+id/tv_pharma_founder"
@@ -379,7 +383,8 @@
                             android:layout_weight="60"
                             android:ellipsize="end"
                             android:maxLines="1"
-                            android:text="M. Henri J. Aïdasso" />
+                            android:text="M. Henri J. Aïdasso"
+                            android:textColor="@color/project_grey" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -394,7 +399,8 @@
                             android:layout_weight="40"
                             android:ellipsize="end"
                             android:maxLines="1"
-                            android:text="@string/created_on" />
+                            android:text="@string/created_on"
+                            android:textColor="@color/project_grey" />
 
                         <TextView
                             android:id="@+id/tv_pharma_created_on"
@@ -404,7 +410,8 @@
                             android:layout_weight="60"
                             android:ellipsize="end"
                             android:maxLines="1"
-                            android:text="17/12/1997" />
+                            android:text="17/12/1997"
+                            android:textColor="@color/project_grey" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -419,7 +426,8 @@
                             android:layout_weight="40"
                             android:ellipsize="end"
                             android:maxLines="1"
-                            android:text="@string/employees_number" />
+                            android:text="@string/employees_number"
+                            android:textColor="@color/project_grey" />
 
                         <TextView
                             android:id="@+id/tv_pharma_employees"
@@ -429,7 +437,8 @@
                             android:layout_weight="60"
                             android:ellipsize="end"
                             android:maxLines="1"
-                            android:text="15" />
+                            android:text="15"
+                            android:textColor="@color/project_grey" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -444,7 +453,8 @@
                             android:layout_weight="40"
                             android:ellipsize="end"
                             android:maxLines="1"
-                            android:text="@string/pharma_annexe" />
+                            android:text="@string/pharma_annexe"
+                            android:textColor="@color/project_grey" />
 
                         <TextView
                             android:id="@+id/tv_pharma_annexe"
@@ -454,7 +464,8 @@
                             android:layout_weight="60"
                             android:ellipsize="end"
                             android:maxLines="1"
-                            android:text="Oui" />
+                            android:text="Oui"
+                            android:textColor="@color/project_grey" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -469,7 +480,8 @@
                             android:layout_weight="40"
                             android:ellipsize="end"
                             android:maxLines="1"
-                            android:text="@string/address" />
+                            android:text="@string/address"
+                            android:textColor="@color/project_grey" />
 
                         <TextView
                             android:id="@+id/tv_pharma_address"
@@ -479,7 +491,8 @@
                             android:layout_weight="60"
                             android:ellipsize="end"
                             android:maxLines="1"
-                            android:text="Abomey-Calci, Tankpè" />
+                            android:text="Abomey-Calci, Tankpè"
+                            android:textColor="@color/project_grey" />
                     </LinearLayout>
 
                 </LinearLayout>
@@ -491,49 +504,46 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@android:color/white"
             android:gravity="center"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:paddingLeft="8dp"
             android:paddingTop="15dp"
             android:paddingRight="8dp"
             android:paddingBottom="15dp">
 
-            <Button
-                android:id="@+id/btn_call_1"
-                android:layout_width="wrap_content"
-                android:layout_height="35dp"
-                android:layout_marginTop="3dp"
-                android:layout_marginBottom="3dp"
-                android:background="@drawable/button_rounded"
-                android:backgroundTint="@color/colorAccent"
-                android:drawableLeft="@drawable/phone"
-                android:drawablePadding="5dp"
-                android:drawableTint="@android:color/white"
-                android:paddingLeft="10dp"
-                android:paddingRight="15dp"
-                android:text="+229 61 32 82 70"
-                android:textColor="@android:color/white"
-                android:textSize="13sp" />
-
-            <Button
-                android:id="@+id/btn_call_2"
-                android:layout_width="wrap_content"
-                android:layout_height="35dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="3dp"
-                android:layout_marginBottom="3dp"
-                android:background="@drawable/button_rounded"
-                android:backgroundTint="@color/colorAccent"
-                android:drawableLeft="@drawable/phone"
-                android:drawablePadding="5dp"
-                android:drawableTint="@android:color/white"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:gravity="center"
-                android:paddingLeft="10dp"
-                android:paddingRight="15dp"
-                android:text="+229 61 32 82 70"
-                android:textColor="@android:color/white"
-                android:textSize="13sp" />
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/btn_call_1"
+                    style="@style/btn_primary_rounded_margin_tb_3_style"
+                    android:layout_marginBottom="8dp"
+                    android:drawableLeft="@drawable/phone"
+                    android:drawableTint="@android:color/white"
+                    android:paddingLeft="40dp"
+                    android:paddingRight="40dp"
+                    android:text="+229 61 32 82 70" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/btn_call_2"
+                    style="@style/btn_primary_rounded_margin_tb_3_style"
+                    android:layout_marginBottom="8dp"
+                    android:drawableLeft="@drawable/phone"
+                    android:drawableTint="@android:color/white"
+                    android:paddingLeft="40dp"
+                    android:paddingRight="40dp"
+                    android:text="+229 61 32 82 70" />
+            </LinearLayout>
 
         </LinearLayout>
 

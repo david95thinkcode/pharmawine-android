@@ -129,65 +129,63 @@ public class Customer implements Cloneable {
     }
 
     public Integer getFillingLevel() {
-        Integer totalFieldNumber = 13;
+        Integer totalFieldNumber = 11;
         Integer filledFieldNumber = 0;
 
-        if (this.lastname != null && !this.lastname.isEmpty()) {
-            filledFieldNumber++;
-            Log.i("Client", "lastname IS NOT NULL OR EMPTY : " + lastname);
+        if (getCustomerTypeId() == Constants.TYPE_MEDICAL_KEY) {
+            if (this.lastname != null && !this.lastname.isEmpty()) {
+                filledFieldNumber++;
+            }
+            if (this.firstname != null && !this.firstname.isEmpty()) {
+                filledFieldNumber++;
+            }
+            if (this.sex != null && !this.sex.isEmpty()) {
+                filledFieldNumber++;
+            }
+            if (this.maritalStatus != null && !this.maritalStatus.isEmpty()) {
+                filledFieldNumber++;
+                Log.i("Customer", filledFieldNumber + " : " + "maritalStatus ==> : " + maritalStatus);
+            }
+            if (this.nationality != null && !this.nationality.isEmpty()) {
+                filledFieldNumber++;
+            }
+            if (this.getSpecialityId() != null || this.getSpecialityId() != 0) {
+                filledFieldNumber++;
+            }
+            if (this.religion != null && !this.religion.isEmpty()) {
+                filledFieldNumber++;
+            }
+        } else {
+            filledFieldNumber += 7;
         }
-        if (this.firstname != null && !this.firstname.isEmpty()) {
-            filledFieldNumber++;
-            Log.i("Client", "firstname IS NOT NULL OR EMPTY : " + firstname);
-        }
-        if (this.sex != null && !this.sex.isEmpty()) {
-            filledFieldNumber++;
-            Log.i("Client", "sex IS NOT NULL OR EMPTY : " + sex);
-        }
+
         if (this.birthday != null && !this.birthday.isEmpty()) {
             filledFieldNumber++;
-            Log.i("Client", "birthday IS NOT NULL OR EMPTY : " + birthday);
         }
-        if (this.maritalStatus != null && !this.maritalStatus.isEmpty()) {
-            filledFieldNumber++;
-            Log.i("Client", "maritalStatus IS NOT NULL OR EMPTY : " + maritalStatus);
-        }
+
         if (this.phoneNumber1 != null && !this.phoneNumber1.isEmpty()) {
             filledFieldNumber++;
-            Log.i("Client", "phoneNumber IS NOT NULL OR EMPTY : " + phoneNumber1);
         }
-        if (this.phoneNumber2 != null && !this.phoneNumber2.isEmpty()) {
-            filledFieldNumber++;
-            Log.i("Client", "phoneNumber2 IS NOT NULL OR EMPTY : " + phoneNumber2);
-        }
+
         if (this.address != null && !this.address.isEmpty()) {
             filledFieldNumber++;
-            Log.i("Client", "address IS NOT NULL OR EMPTY : " + address);
         }
         if (this.email != null && !this.email.isEmpty()) {
             filledFieldNumber++;
-            Log.i("Client", "email IS NOT NULL OR EMPTY : " + email);
         }
-        if (this.avatar != null && !this.avatar.isEmpty()) {
-            filledFieldNumber++;
-            Log.i("Client", "avatar IS NOT NULL OR EMPTY : " + avatar);
-        }
-        if (this.nationality != null && !this.nationality.isEmpty()) {
-            filledFieldNumber++;
-            Log.i("Client", "nationality IS NOT NULL OR EMPTY : " + nationality);
-        }
-        if (this.speciality != null && !this.speciality.getId().toString().isEmpty()) {
-            filledFieldNumber++;
-            Log.i("Client", "speciality IS NOT NULL OR EMPTY : " + speciality);
-        }
-        if (this.religion != null && !this.religion.isEmpty()) {
-            filledFieldNumber++;
-            Log.i("Client", "religion IS NOT NULL OR EMPTY : " + religion);
-        }
+        // Avatar is not required
+        // if (this.avatar != null && !this.avatar.isEmpty()) {
+        //     filledFieldNumber++;
+        // }
+        // Phone number 2 is not required
+        // if (this.phoneNumber2 != null && !this.phoneNumber2.isEmpty()) {
+        //filledFieldNumber++;
+        // }
 
-        Integer level = ((filledFieldNumber / totalFieldNumber) * 100);
 
-        return level;
+        double level = filledFieldNumber.doubleValue() / totalFieldNumber * 100;
+
+        return (int) level;
     }
 
     public Integer getId() {

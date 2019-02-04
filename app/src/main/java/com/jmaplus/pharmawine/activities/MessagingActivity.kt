@@ -318,7 +318,6 @@ class MessagingActivity : AppCompatActivity(), NetworkCalls.Callbacks {
 
     // ========== callbacks
     override fun onNetworkMembersResponse(members: MutableList<SimpleUser>?) {
-        Utils.presentToast(mContext, "Membres du reseau recuperer", false)
         for (s: SimpleUser in members!!) {
             addUserToFireBase(s)
         }

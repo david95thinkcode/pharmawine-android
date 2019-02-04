@@ -36,11 +36,6 @@ public class Constants {
     public static final String SP_AVATAR_URL_KEY = "sp_avatar";
     public static final String SP_TOKEN_KEY = "sp_token";
 
-    // MENU ITEMS ================================
-    public static final String MENU_PLANNING_KEY = "menu_planning";
-    public static final String MENU_CLIENTS_KEY = "menu_clients";
-    public static final String MENU_RESEAUX_KEY = "menu_reseaux";
-    public static final String MENU_PRODUITS_KEY = "menu_produits";
 
     // USERS ROLES ================================
     public static final int ROLE_ADMIN_KEY = 1;

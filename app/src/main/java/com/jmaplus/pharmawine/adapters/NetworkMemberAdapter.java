@@ -12,6 +12,7 @@ import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
 import com.bumptech.glide.Glide;
 import com.jmaplus.pharmawine.R;
 import com.jmaplus.pharmawine.models.SimpleUser;
+import com.jmaplus.pharmawine.utils.Constants;
 
 import java.util.List;
 
@@ -66,7 +67,7 @@ public class NetworkMemberAdapter extends RecyclerView.Adapter<NetworkMemberAdap
 //                holder.progressBar.setProgressColor(mContext.getResources().getColor(R.color.green));
 //            }
 
-            if (devMode) {
+            if (Constants.ENV_TESTMODE) {
                 if (networkMember.getSex() == "M" || networkMember.getSex() == "m") {
                     Glide.with(mContext).load(R.drawable.ic_ast_man).into(holder.imgMember);
                 } else {
