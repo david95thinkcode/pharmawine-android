@@ -108,7 +108,12 @@ public class EditMedicalTeamActivity extends AppCompatActivity implements
             getClientDetails();
         } else {
             Log.i(TAG, "Customer received ==> " + mCustomer.toString());
-            updateViewsWithCustomerDetails(mCustomer);
+            try {
+                updateViewsWithCustomerDetails(mCustomer);
+            } catch (CloneNotSupportedException e) {
+                Log.e(TAG, "onCreate: " + e.getMessage());
+                e.printStackTrace();
+            }
         }
     }
 
@@ -125,9 +130,17 @@ public class EditMedicalTeamActivity extends AppCompatActivity implements
     }
 
     private void initialiseUI() {
+
         // Setting up the action bar
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.close);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        // The activity title
+        if (mCustomer.getCustomerTypeId() == Constants.TYPE_MEDICAL_KEY) {
+            setTitle(mCustomer.getFullName());
+        } else {
+            setTitle(mCustomer.getName());
+        }
 
         // Binding views
         mPicture = findViewById(R.id.img_profile_picture);
@@ -139,7 +152,7 @@ public class EditMedicalTeamActivity extends AppCompatActivity implements
         mPager = findViewById(R.id.fragment_container);
 
         mProgressDialog = new ProgressDialog(this);
-        mProgressDialog.setMessage("Mis a jour en cours....");
+        mProgressDialog.setMessage("Mis a jour du profil en cours....");
         mProgressDialog.setCancelable(false);
 
         // listenners
@@ -201,24 +214,23 @@ public class EditMedicalTeamActivity extends AppCompatActivity implements
 
     private void updateProfileOnServer() {
 
-        Log.i(TAG, "Uploading ==> \n" + "\n" + mChangingCustomer.toString() + "\n");
+        Log.i(TAG, "changed ==> \n" + "\n" + mChangingCustomer.toString() + "\n");
 
         if (!mCustomer.toString().equals(mChangingCustomer.toString())) {
+            // Here we're sure the the changing object is truly different from the original
             try {
-//                mProgressDialog.show();
-                // Start a async task to update profile to server
+                mProgressDialog.show();
+
                 CustomerEditionCalls.editCustomerProfile(mToken,
                         this, mCustomer.getId(), mChangingCustomer);
             } catch (Exception e) {
+                mProgressDialog.cancel();
                 Log.e(TAG, e.getMessage());
                 e.printStackTrace();
-//                mProgressDialog.cancel();
             }
-            Log.i(TAG, "updateProfileOnServer: Changes detected");
         } else {
-            // Aucune nouveau changement effectue
-            // on close l'activity simplement
-            Log.i(TAG, "updateProfileOnServer: No change detected");
+            // No changes detected
+            Log.i(TAG, "updateProfileOnServer: No changes detected");
             finish();
         }
     }
@@ -233,7 +245,7 @@ public class EditMedicalTeamActivity extends AppCompatActivity implements
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 updateProfileOnServer();
-                finish();
+//                finish();
             }
         });
 
@@ -254,18 +266,26 @@ public class EditMedicalTeamActivity extends AppCompatActivity implements
     public void onCustomerEditionResponse(@Nullable Customer customer) {
         mProgressDialog.show();
         Toast.makeText(mContext, "Profil mis a jour avec success", Toast.LENGTH_SHORT).show();
+        mProgressDialog.cancel();
         finish();
     }
 
     @Override
     public void onCustomerEditionFailure() {
         mProgressDialog.cancel();
+        Toast.makeText(mContext, "Echec de la mise a jour", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onCustomerDetailsResponse(@Nullable Customer customer) {
-        if (customer != null)
-            updateViewsWithCustomerDetails(customer);
+        if (customer != null) {
+            try {
+                updateViewsWithCustomerDetails(customer);
+            } catch (CloneNotSupportedException e) {
+                Log.e(TAG, "onCustomerDetailsResponse: " + e.getMessage());
+            }
+        }
+
     }
 
     @Override
@@ -275,9 +295,15 @@ public class EditMedicalTeamActivity extends AppCompatActivity implements
 
     // =================== End retrofit calls callbacks ==============================
 
-    private void updateViewsWithCustomerDetails(Customer customer) {
+    private void updateViewsWithCustomerDetails(Customer customer) throws CloneNotSupportedException {
         mCustomer = customer;
-        mChangingCustomer = mCustomer;
+        mChangingCustomer = (Customer) customer.clone();
+
+        if (mCustomer.getCustomerTypeId() == Constants.TYPE_MEDICAL_KEY) {
+            setTitle(mCustomer.getFullName());
+        } else {
+            setTitle("Pharmacie " + mCustomer.getName());
+        }
 
         updateAvatarView();
     }
@@ -351,7 +377,7 @@ public class EditMedicalTeamActivity extends AppCompatActivity implements
 
         Integer progression = mChangingCustomer.getFillingLevel();
 
-        Log.i(TAG, "Progression ==> " + progression);
+//        Log.i(TAG, "Progression ==> " + progression);
 
         mRoundCornerProgressBar.setProgress(progression);
         mProgressLabel.setText(String.valueOf(progression).concat(" %"));
@@ -426,8 +452,6 @@ public class EditMedicalTeamActivity extends AppCompatActivity implements
     @Override
     public void onAddressEntered(@NotNull String address) {
         mChangingCustomer.setAddress(address);
-        Log.i(TAG, "onAddressEntered: changing " + mChangingCustomer.getAddress());
-        Log.i(TAG, "onAddressEntered: original " + mCustomer.getAddress());
         updateProgressionBar();
     }
 

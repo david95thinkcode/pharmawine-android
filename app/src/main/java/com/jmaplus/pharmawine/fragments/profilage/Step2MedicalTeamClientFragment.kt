@@ -73,7 +73,7 @@ class Step2MedicalTeamClientFragment : Fragment() {
             }
         }
 
-        val adresListenner = object : TextWatcher {
+        val adressListenner = object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
             }
 
@@ -84,7 +84,7 @@ class Step2MedicalTeamClientFragment : Fragment() {
                 listener?.onAddressEntered(s.toString())
             }
         }
-        mAddress.addTextChangedListener(adresListenner)
+        mAddress.addTextChangedListener(adressListenner)
     }
 
     override fun onDetach() {
@@ -96,13 +96,14 @@ class Step2MedicalTeamClientFragment : Fragment() {
     fun setExistingAddress(existingAddress: String) {
         if (!existingAddress.isNullOrEmpty()) {
             mAddress.setText(existingAddress)
-//            mAddress.isEnabled = false
         }
 
     }
 
     fun setExistingReligion(religion: String) {
-        if (!religion.isNullOrEmpty()) mReligion.isEnabled = false
+        if (!religion.isNullOrEmpty()) {
+            // TODO: Preselect the corresponding religion
+        }
     }
 
     interface OnFragmentInteractionListener {

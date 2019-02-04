@@ -39,6 +39,7 @@ class Step1MedicalTeamClientFragment : Fragment() {
     private lateinit var mMaritalStatusSpinner: Spinner
 
     private var mMonth: String = ""
+    private val numberThatNeedZeroPrefix = intArrayOf(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
     private var mCountriesList: MutableList<TestCountry> = ArrayList()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -158,32 +159,46 @@ class Step1MedicalTeamClientFragment : Fragment() {
      */
     private fun updateBirthday() {
 
-        var b = ""
-        if (!mDay.text.isEmpty() && !mMonth.isNullOrEmpty() && !mYear.text.isNullOrEmpty()) {
-            b = "${mYear.text}-$mMonth-${mDay.text}"
-            Log.i(TAG, "Birthday updated ==> $b ")
-        } else // Log.i(TAG, "Birthday is not complete")
+        var formattedBirthday = ""
+        var dayString = mDay.text.toString()
+        var monthString = ""
 
-            listener?.onBirthdayFullyUpdated(b)
+        if (dayString.isNotEmpty() && !mMonth.isNullOrEmpty() && !mYear.text.isNullOrEmpty()) {
+
+            if (numberThatNeedZeroPrefix.contains(mDay.text.toString().toInt())) {
+                dayString = "0${mDay.text}"
+            }
+
+            if (numberThatNeedZeroPrefix.contains(mMonth.toInt())) {
+                monthString = "0$mMonth"
+            }
+
+            formattedBirthday = "${mYear.text}/$monthString/$dayString"
+
+            Log.i(TAG, "Birthday updated ==> $formattedBirthday ")
+        }
+
+        listener?.onBirthdayFullyUpdated(formattedBirthday)
     }
 
-    // =========== PUBLIC METHODS ==========
+    // =========== PUBLIC METHODS ==================
+
     fun setExistingBirthday(day: Int, month: Int, year: Int) {
         mDay.setText(day.toString())
         mYear.setText(year.toString())
-        mMonthSpinner.setSelection(month - 1);
-
-        mDay.isEnabled = false
-        mYear.isEnabled = false
-        mMonthSpinner.isEnabled = false
+        mMonthSpinner.setSelection(month - 1)
     }
 
     fun setExistingMaritalStatus(status: String) {
-        if (!status.isNullOrEmpty()) mMaritalStatusSpinner.isEnabled = false
+        if (!status.isNullOrEmpty()) {
+            // todo: preselect the corresponding
+        }
     }
 
     fun setExistingNationality(nationality: String) {
-        if (!nationality.isNullOrEmpty()) mNationalitySpinner.isEnabled = false
+        if (!nationality.isNullOrEmpty()) {
+            // todo: select the exisiting one
+        }
     }
 
 

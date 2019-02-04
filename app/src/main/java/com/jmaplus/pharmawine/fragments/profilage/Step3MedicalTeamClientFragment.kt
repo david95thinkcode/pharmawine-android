@@ -82,7 +82,7 @@ class Step3MedicalTeamClientFragment : Fragment() {
 
     fun setExistingPhoneNumber2(existingPhone2: String) {
         mPhoneNumber2.setText(existingPhone2)
-        mPhoneNumber2.isEnabled = false
+
     }
 
 

@@ -10,7 +10,7 @@ import com.jmaplus.pharmawine.utils.Constants;
 
 import java.util.List;
 
-public class Customer {
+public class Customer implements Cloneable {
 
     @SerializedName("id")
     @Expose
@@ -442,4 +442,8 @@ public class Customer {
         return gson.toJson(this);
     }
 
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 }
