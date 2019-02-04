@@ -105,7 +105,8 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_stat_hebdo_p"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            tools:listitem="@layout/fdc_item" />
 
     </android.support.v4.widget.SwipeRefreshLayout>
 
@@ -171,7 +172,7 @@
                 android:text="16" />
 
             <TextView
-                android:id="@+id/tv_real_pim"
+                android:id="@+id/tv_real_p_pim"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:gravity="center|start"
