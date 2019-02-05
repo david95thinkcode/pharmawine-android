@@ -12,6 +12,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -235,31 +236,6 @@ public class EditMedicalTeamActivity extends AppCompatActivity implements
         }
     }
 
-    private void confirmationFinishDialog() {
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage(R.string.etes_vous_sur_d_avoir_termine);
-        builder.setCancelable(false);
-
-        builder.setPositiveButton(R.string.oui, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                updateProfileOnServer();
-//                finish();
-            }
-        });
-
-        builder.setNegativeButton(R.string.non, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-
-        });
-
-        builder.show();
-    }
-
     // =================== Start retrofit calls callbacks =============================
 
     @Override
@@ -371,6 +347,34 @@ public class EditMedicalTeamActivity extends AppCompatActivity implements
             goToFragment(STEP_2_FRAGMENT_INDEX);
             showAdaptativeNavigationButtons(true);
         }
+    }
+
+
+    private void confirmationFinishDialog() {
+
+        LayoutInflater factory = LayoutInflater.from(this);
+        final View customDialogBoxView = factory.inflate(R.layout.custom_dialog_box, null);
+        final AlertDialog customDialog = new AlertDialog.Builder(this).create();
+        customDialog.setView(customDialogBoxView);
+        customDialog.setCancelable(false);
+        TextView titleDialog = customDialog.findViewById(R.id.dialog_box_title);
+        TextView msgDialog = customDialogBoxView.findViewById(R.id.dialog_box_content);
+        msgDialog.setText(R.string.etes_vous_sur_d_avoir_termine);
+        titleDialog.setVisibility(View.GONE);
+        customDialogBoxView.findViewById(R.id.yes_button_custom_dialogbox).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateProfileOnServer();
+            }
+        });
+        customDialogBoxView.findViewById(R.id.no_button_custom_dialogbox).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                customDialog.cancel();
+            }
+        });
+
+        customDialog.show();
     }
 
     private void updateProgressionBar() {

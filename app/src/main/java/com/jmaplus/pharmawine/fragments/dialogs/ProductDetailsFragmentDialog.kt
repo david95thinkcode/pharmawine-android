@@ -54,7 +54,6 @@ class ProductDetailsFragmentDialog : DialogFragment() {
         } catch (e: Exception) {
             Log.e(javaClass.name, e.message)
             Log.e(javaClass.name, e.cause.toString())
-
             e.printStackTrace()
         }
 

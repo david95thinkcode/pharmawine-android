@@ -3,7 +3,7 @@ package com.jmaplus.pharmawine.database.model;
 public class UserProduct {
 
 
-    private int id;
+    private long id;
     private String product;
 
 
@@ -11,12 +11,12 @@ public class UserProduct {
 
     }
 
-    public UserProduct(int id, String product) {
+    public UserProduct(long id, String product) {
         this.id = id;
         this.product = product;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 

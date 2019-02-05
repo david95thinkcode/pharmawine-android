@@ -15,8 +15,10 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jmaplus.pharmawine.R;
@@ -321,15 +323,6 @@ public class VisiteInProgressActivity extends AppCompatActivity
                 this, mDailyReportEnd, currentReportID);
     }
 
-//    private long saveReportLocaly(DailyReportEnd dailyReportEnd, Boolean status){
-//        String report = dailyReportEnd.toString();
-//
-//        DailyReportNotSent dailyReportNotSent = new DailyReportNotSent(report, dailyReportEnd.getEndTime(), status);
-//
-//        return OffDB.createReport(dailyReportNotSent);
-//
-//    }
-
 
     @Override
     public void onReturnToStep1() {
@@ -356,33 +349,32 @@ public class VisiteInProgressActivity extends AppCompatActivity
     }
 
     private void confirmationDialogToEditProfile() {
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.rapport_termine);
-        builder.setMessage(R.string.voulez_vous_terminer_le_profilage_de_ce_client);
-        builder.setCancelable(false);
-
-        builder.setPositiveButton(R.string.oui, new DialogInterface.OnClickListener() {
+        LayoutInflater factory = LayoutInflater.from(this);
+        final View customDialogBoxView = factory.inflate(R.layout.custom_dialog_box, null);
+        final AlertDialog customDialog = new AlertDialog.Builder(this).create();
+        customDialog.setView(customDialogBoxView);
+        TextView msgDialog = customDialogBoxView.findViewById(R.id.dialog_box_content);
+        msgDialog.setText(R.string.voulez_vous_terminer_le_profilage_de_ce_client);
+        customDialogBoxView.findViewById(R.id.yes_button_custom_dialogbox).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onClick(View v) {
                 Intent i = new Intent(mContext, EditMedicalTeamActivity.class);
                 i.putExtra(EditMedicalTeamActivity.CUSTOMER_ID_EXTRA, mCustomer.getId().toString());
                 i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
                 startActivity(i);
                 finish();
+
             }
         });
-
-        builder.setNegativeButton(R.string.non, new DialogInterface.OnClickListener() {
+        customDialogBoxView.findViewById(R.id.no_button_custom_dialogbox).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onClick(View v) {
                 finish();
             }
-
         });
 
-        builder.show();
+        customDialog.show();
+
     }
 
     @Override

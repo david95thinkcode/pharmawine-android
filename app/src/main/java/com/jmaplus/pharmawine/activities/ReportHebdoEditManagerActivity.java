@@ -27,12 +27,12 @@ import com.jmaplus.pharmawine.models.ActiviteMene;
 
 public class ReportHebdoEditManagerActivity extends AppCompatActivity {
 
-    String activityTitle;
-    ImageView fillChecker;
-    TextView titleOfStepReportHebdo;
-    ImageButton backToReportHebdoActivity;
-    Intent mIntent = null;  
-    FragmentManager fragManager = getSupportFragmentManager();
+    private String activityTitle;
+    private ImageView fillChecker;
+    private TextView titleOfStepReportHebdo;
+    private ImageButton backToReportHebdoActivity;
+    private Intent mIntent = null;
+    private FragmentManager fragManager = getSupportFragmentManager();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +100,5 @@ public class ReportHebdoEditManagerActivity extends AppCompatActivity {
                 finish();
             }
         });
-
     }
 }

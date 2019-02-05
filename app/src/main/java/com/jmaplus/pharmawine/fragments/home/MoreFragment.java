@@ -143,9 +143,6 @@ public class MoreFragment extends Fragment {
             case R.id.cv_menu_planning:
                 startActivity(new Intent(mContext, PlanningActivity.class));
                 break;
-//            case R.id.cv_menu_clients :
-//                startActivity(new Intent(mContext, ClientsActivity.class));
-//                break;
             case R.id.cv_menu_stats:
                 startActivity(new Intent(mContext, StatsActivity.class));
                 break;

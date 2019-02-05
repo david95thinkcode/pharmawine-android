@@ -10,6 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:text="@string/visite_terminee"
         android:textAlignment="center" />
 
     <TextView
@@ -20,7 +21,6 @@
         android:text="@string/msg_confim_visite_end"
         android:textAlignment="center" />
 
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="45dp"
@@ -29,20 +29,29 @@
         android:paddingRight="16dp">
 
         <Button
+            android:id="@+id/no_button_custom_dialogbox"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="171dp"
+            android:layout_marginBottom="0dp"
             android:background="@null"
             android:text="@string/non"
             android:textAllCaps="false"
-            android:textColor="@color/colorPrimary"
-
-            />
+            android:textColor="@color/colorPrimary" />
 
         <Button
+            android:id="@+id/yes_button_custom_dialogbox"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="0dp"
             android:background="@null"
             android:text="@string/oui"
             android:textAllCaps="false"
