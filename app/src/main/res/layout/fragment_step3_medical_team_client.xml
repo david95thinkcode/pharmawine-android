@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/profilage_medicalTeam_nestedLayout_step_fragment_style"
     tools:context=".fragments.profilage.Step3MedicalTeamClientFragment">
 
@@ -27,11 +28,20 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
 
-                <EditText
+                <!--<EditText-->
+                <!--android:id="@+id/ed_country_flag"-->
+                <!--style="@style/edit_text_bordered_lg_style"-->
+                <!--android:layout_width="101dp"-->
+                <!--android:layout_height="50dp"-->
+                <!--android:layout_marginRight="12dp"-->
+                <!--android:layout_weight="1"-->
+                <!--android:ems="10" />-->
+
+                <com.hbb20.CountryCodePicker
                     android:id="@+id/ed_country_flag"
-                    style="@style/edit_text_bordered_lg_style"
-                    android:layout_width="101dp"
-                    android:layout_height="50dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    app:ccp_defaultNameCode="US"
                     android:layout_marginRight="12dp"
                     android:layout_weight="1"
                     android:ems="10" />

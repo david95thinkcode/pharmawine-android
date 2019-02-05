@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import com.hbb20.CountryCodePicker
 import com.jmaplus.pharmawine.R
 
 /**
@@ -21,7 +22,7 @@ class Step2UnknownMedicalProspect : Fragment() {
     private var listener: OnFragmentInteractionListener? = null
 
     private lateinit var mAddresse: EditText
-    private lateinit var mPhoneNumberFlag: EditText
+    private lateinit var mPhoneNumberFlag: CountryCodePicker
     private lateinit var mPhoneNumber: EditText
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -91,8 +92,8 @@ class Step2UnknownMedicalProspect : Fragment() {
     private fun getPhoneNumberWithFlag(): String {
         // check if flag is not null before building full phone number and call listener
 
-        return if (!mPhoneNumberFlag.text.isNullOrEmpty() && !mPhoneNumber.text.isNullOrEmpty()) {
-            "${mPhoneNumberFlag.text}${mPhoneNumber.text}"
+        return if (!mPhoneNumberFlag.selectedCountryCode.isNullOrEmpty() && !mPhoneNumber.text.isNullOrEmpty()) {
+            "${mPhoneNumberFlag.selectedCountryCode}${mPhoneNumber.text}"
         } else {
             ""
         }

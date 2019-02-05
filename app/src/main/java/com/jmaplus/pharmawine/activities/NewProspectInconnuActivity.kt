@@ -14,6 +14,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.RelativeLayout
+import android.widget.Toast
 import com.jmaplus.pharmawine.R
 import com.jmaplus.pharmawine.fragments.rapport.ReportEtape2Fragment
 import com.jmaplus.pharmawine.fragments.rapport.ReportEtape3Fragment
@@ -50,6 +51,8 @@ class NewProspectInconnuActivity : AppCompatActivity(),
     private var mFirstFragmentArgs = Bundle()
     private var mDailyReportEnd = DailyReportEnd()
     private var fragmentManager = supportFragmentManager
+    private var isAllowToGoBack: Boolean = false
+
 
     private var mToken = ""
 
@@ -185,6 +188,14 @@ class NewProspectInconnuActivity : AppCompatActivity(),
         fragmentTransaction.commit()
     }
 
+    override fun onBackPressed() {
+        if (!isAllowToGoBack) {
+            // User should not go back when he is doing a visit
+            Toast.makeText(this, "Vous ne pouvez revenir en arriere tant que la visite n'est pas terminee", Toast.LENGTH_SHORT).show()
+        } else {
+            super.onBackPressed()
+        }
+    }
 
     private fun fetchCenters() {
         CenterCalls.getCentersList(mToken, this)
@@ -210,6 +221,7 @@ class NewProspectInconnuActivity : AppCompatActivity(),
     override fun onVisiteEnded(reportID: Int?, EndTime: String?) {
 
         mDailyReportEnd.endTime = EndTime
+        isAllowToGoBack = true
 
         mReportID = reportID!!
 

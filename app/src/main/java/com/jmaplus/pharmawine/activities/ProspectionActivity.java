@@ -205,11 +205,16 @@ public class ProspectionActivity extends AppCompatActivity implements View.OnCli
                         i.putExtra(Constants.CLIENT_CUSTOMER_STATUS_KEY, customer.getCustomerStatus().getName());
                     }
                 } catch (NullPointerException e) {
-
+                    Log.e(TAG, "An error occured : " + e.getMessage());
+                    Log.e(TAG, "Because : " + e.getCause());
+                    e.printStackTrace();
                 } catch (Exception e) {
-
+                    Log.e(TAG, "An error occured : " + e.getMessage());
+                    Log.e(TAG, "Because : " + e.getCause());
+                    e.printStackTrace();
                 }
 
+                customDialog.dismiss();
                 startActivity(i);
             }
         });

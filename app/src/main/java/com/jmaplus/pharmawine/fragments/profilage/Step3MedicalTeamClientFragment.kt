@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import com.hbb20.CountryCodePicker
 import com.jmaplus.pharmawine.R
 
 class Step3MedicalTeamClientFragment : Fragment() {
@@ -21,6 +22,7 @@ class Step3MedicalTeamClientFragment : Fragment() {
 
     private lateinit var mEmail: EditText
     private lateinit var mPhoneNumber2: EditText
+    private lateinit var mCcp: CountryCodePicker;
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {

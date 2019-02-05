@@ -201,7 +201,6 @@ public class VisiteInProgressActivity extends AppCompatActivity
     @Override
     public void onCustomerDetailsFailure() {
         Toast.makeText(this, "Failed to get customer centers", Toast.LENGTH_LONG).show();
-
     }
 
 
@@ -245,6 +244,7 @@ public class VisiteInProgressActivity extends AppCompatActivity
         mDailyReportEnd.setEndTime(EndTime);
 
         setTitle(customerName);
+        isAllowToGoBack = true;
 
         showViewPager();
 
