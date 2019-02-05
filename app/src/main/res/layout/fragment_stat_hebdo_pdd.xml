@@ -124,7 +124,8 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_stat_hebdo_pdd"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            tools:listitem="@layout/pdd_item" />
 
     </android.support.v4.widget.SwipeRefreshLayout>
 
@@ -267,7 +268,7 @@
                 android:text="500%" />
 
             <TextView
-                android:id="@+id/tv_pdd_rover_p_pcg"
+                android:id="@+id/tv_pdd_r_over_p_pcg"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:background="@color/colorAccent50op"

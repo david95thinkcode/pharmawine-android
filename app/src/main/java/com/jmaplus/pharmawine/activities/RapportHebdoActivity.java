@@ -156,38 +156,45 @@ public class RapportHebdoActivity extends AppCompatActivity {
             ivIsSeeStat.setImageDrawable(getResources().getDrawable(R.drawable.valideicon));
         }
 
-        if (!(filledObjection && filledAmGarde && filledAmPharma && filledAmReunion && filledAmZoneProfond && filledAmParcoursFidel && filledAmRelationPubliq && filledObNxWkPharma && filledObNxWkPrescripteurs)) {
+        if (!(filledObjection)) {
+            if (!(filledAmGarde && filledAmPharma && filledAmReunion && filledAmZoneProfond && filledAmParcoursFidel && filledAmRelationPubliq)) {
+                if (!(filledObNxWkPharma && filledObNxWkPrescripteurs)) {
 
-            btnSendReportHebdo.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+                    btnSendReportHebdo.setBackgroundColor(getResources().getColor(R.color.colorAccent));
 
-            btnSendReportHebdo.setOnClickListener(new View.OnClickListener() {
-                ActiviteMene activiteMene = new ActiviteMene(contentAmGarde, contentAmReunion, contentAmRelationPubliq, contentAmPharma, contentAmParcoursFidel, contentAmZoneProfond);
-                ObjectifNextWeek objectifNextWeek = new ObjectifNextWeek(contentObNxWkPharma, contentObNxWkPrescripteurs);
-                RapportHebdo rapportHebdo = new RapportHebdo(true, activiteMene, contentObjection, objectifNextWeek);
-                Gson JSONTransRH = new Gson();
-                String RapportHebdoInJSON = JSONTransRH.toJson(rapportHebdo);
+                    btnSendReportHebdo.setOnClickListener(new View.OnClickListener() {
+                        ActiviteMene activiteMene = new ActiviteMene(contentAmGarde, contentAmReunion, contentAmRelationPubliq, contentAmPharma, contentAmParcoursFidel, contentAmZoneProfond);
+                        ObjectifNextWeek objectifNextWeek = new ObjectifNextWeek(contentObNxWkPharma, contentObNxWkPrescripteurs);
+                        RapportHebdo rapportHebdo = new RapportHebdo(true, activiteMene, contentObjection, objectifNextWeek);
+                        Gson JSONTransRH = new Gson();
+                        String RapportHebdoInJSON = JSONTransRH.toJson(rapportHebdo);
 
-                @Override
-                public void onClick(View v) {
-                    /*
-                     * TODO: Send the JSON string to Server
-                     * May be Save it to local database too
-                     */
-                    Log.e(getClass().getName(), RapportHebdoInJSON);
-                    spTogetFillOfReport.edit().remove(Constants.REPORT_HEBDO_OBJECTION).apply();
-                    spTogetFillOfReport.edit().remove(Constants.REPORT_HEBDO_SEE_STATISTIQUE).apply();
-                    spTogetFillOfReport.edit().remove(Constants.REPORT_HEBDO_AM_GARDE).apply();
-                    spTogetFillOfReport.edit().remove(Constants.REPORT_HEBDO_AM_PHARMACY).apply();
-                    spTogetFillOfReport.edit().remove(Constants.REPORT_HEBDO_AM_RELATION_PUBLIQ).apply();
-                    spTogetFillOfReport.edit().remove(Constants.REPORT_HEBDO_AM_PARCOURS_FIDEL).apply();
-                    spTogetFillOfReport.edit().remove(Constants.REPORT_HEBDO_AM_REUNIONS).apply();
-                    spTogetFillOfReport.edit().remove(Constants.REPORT_HEBDO_AM_ZONE_PROFOND).apply();
-                    spTogetFillOfReport.edit().remove(Constants.REPORT_HEBDO_OBJECTIF_NEXT_WEEK_PHARMACY).apply();
-                    spTogetFillOfReport.edit().remove(Constants.REPORT_HEBDO_OBJECTIF_NEXT_WEEK_PRESCRIPTEUR).apply();
-                    finish();
+                        @Override
+                        public void onClick(View v) {
+                            /*
+                             * TODO: Send the JSON string to Server
+                             * May be Save it to local database too
+                             */
+                            Log.e(getClass().getName(), RapportHebdoInJSON);
+                            spTogetFillOfReport.edit().remove(Constants.REPORT_HEBDO_OBJECTION).apply();
+                            spTogetFillOfReport.edit().remove(Constants.REPORT_HEBDO_SEE_STATISTIQUE).apply();
+                            spTogetFillOfReport.edit().remove(Constants.REPORT_HEBDO_AM_GARDE).apply();
+                            spTogetFillOfReport.edit().remove(Constants.REPORT_HEBDO_AM_PHARMACY).apply();
+                            spTogetFillOfReport.edit().remove(Constants.REPORT_HEBDO_AM_RELATION_PUBLIQ).apply();
+                            spTogetFillOfReport.edit().remove(Constants.REPORT_HEBDO_AM_PARCOURS_FIDEL).apply();
+                            spTogetFillOfReport.edit().remove(Constants.REPORT_HEBDO_AM_REUNIONS).apply();
+                            spTogetFillOfReport.edit().remove(Constants.REPORT_HEBDO_AM_ZONE_PROFOND).apply();
+                            spTogetFillOfReport.edit().remove(Constants.REPORT_HEBDO_OBJECTIF_NEXT_WEEK_PHARMACY).apply();
+                            spTogetFillOfReport.edit().remove(Constants.REPORT_HEBDO_OBJECTIF_NEXT_WEEK_PRESCRIPTEUR).apply();
+                            finish();
+
+                        }
+
+
+                    });
 
                 }
-            });
+            }
         } else {
             btnSendReportHebdo.setBackgroundColor(getResources().getColor(R.color.white_gray));
         }

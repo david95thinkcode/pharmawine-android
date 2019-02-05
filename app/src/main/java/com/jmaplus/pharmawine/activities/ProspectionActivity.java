@@ -10,11 +10,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jmaplus.pharmawine.R;
@@ -168,14 +170,20 @@ public class ProspectionActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void ShowConfirmationToProgressPage(final Customer customer) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Confirmation de visite");
-        builder.setMessage(VISITE_MESSAGE + customer.getFullName() + " ? ");
-        builder.setCancelable(false);
+        LayoutInflater factory = LayoutInflater.from(this);
+        final View customDialogView = factory.inflate(R.layout.custom_dialog_box, null);
+        final AlertDialog customDialog = new AlertDialog.Builder(this).create();
+        customDialog.setView(customDialogView);
+        TextView msgDialog = customDialogView.findViewById(R.id.dialog_box_content);
+        TextView titleDialog = customDialogView.findViewById(R.id.dialog_box_title);
+        customDialog.findViewById(R.id.dialog_box_content);
+        msgDialog.setText(R.string.msg_confirmation_visite);
+        titleDialog.setVisibility(View.GONE);
 
-        builder.setPositiveButton(R.string.oui, new DialogInterface.OnClickListener() {
+        customDialogView.findViewById(R.id.yes_button_custom_dialogbox).setOnClickListener(new View.OnClickListener() {
+
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onClick(View v) {
                 Intent i = new Intent(mContext, VisiteInProgressActivity.class);
 
                 // TODO: Important thing to consider after implentation of Pharmacy model
@@ -209,16 +217,14 @@ public class ProspectionActivity extends AppCompatActivity implements View.OnCli
                 startActivity(i);
             }
         });
-
-        builder.setNegativeButton(R.string.non, new DialogInterface.OnClickListener() {
+        customDialogView.findViewById(R.id.no_button_custom_dialogbox).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
+            public void onClick(View v) {
+                customDialog.dismiss();
             }
-
         });
 
-        builder.show();
+        customDialog.show();
     }
 
     @Override

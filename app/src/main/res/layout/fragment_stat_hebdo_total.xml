@@ -73,7 +73,8 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_stat_hebdo_total"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            tools:listitem="@layout/total_item" />
 
     </android.support.v4.widget.SwipeRefreshLayout>
 

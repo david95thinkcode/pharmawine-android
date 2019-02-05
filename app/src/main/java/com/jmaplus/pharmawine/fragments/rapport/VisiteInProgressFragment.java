@@ -1,7 +1,9 @@
 package com.jmaplus.pharmawine.fragments.rapport;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -17,6 +19,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.jmaplus.pharmawine.R;
+import com.jmaplus.pharmawine.activities.EditMedicalTeamActivity;
 import com.jmaplus.pharmawine.models.AuthUser;
 import com.jmaplus.pharmawine.models.Customer;
 import com.jmaplus.pharmawine.models.DailyReportStart;
@@ -257,30 +260,29 @@ public class VisiteInProgressFragment extends Fragment
     }
 
     private void confirmationDialogToEditRapport() {
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-
-        builder.setTitle("Visite terminée ?");
-
-        builder.setMessage(R.string.msg_confim_visite_end);
-        builder.setCancelable(false);
-
-        builder.setPositiveButton(R.string.oui, new DialogInterface.OnClickListener() {
+        LayoutInflater factory = LayoutInflater.from(requireContext());
+        final View customDialogBoxView = factory.inflate(R.layout.custom_dialog_box, null);
+        final AlertDialog customDialog = new AlertDialog.Builder(requireContext()).create();
+        customDialog.setView(customDialogBoxView);
+        TextView titleDialog = customDialogBoxView.findViewById(R.id.dialog_box_title);
+        TextView msgDialog = customDialogBoxView.findViewById(R.id.dialog_box_content);
+        msgDialog.setText(R.string.msg_confim_visite_end);
+        titleDialog.setText(R.string.visite_terminee);
+        customDialogBoxView.findViewById(R.id.yes_button_custom_dialogbox).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onClick(View v) {
                 mListener.onVisiteEnded(reportID, Utils.getCurrentTime());
+                customDialog.cancel();
             }
         });
-
-        builder.setNegativeButton(R.string.non, new DialogInterface.OnClickListener() {
+        customDialogBoxView.findViewById(R.id.no_button_custom_dialogbox).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
+            public void onClick(View v) {
+                customDialog.cancel();
             }
-
         });
 
-        builder.show();
+        customDialog.show();
     }
 
     @Override

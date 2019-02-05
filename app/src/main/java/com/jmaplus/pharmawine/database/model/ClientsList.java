@@ -3,7 +3,7 @@ package com.jmaplus.pharmawine.database.model;
 public class ClientsList {
 
 
-    private int id;
+    private long id;
     private String client;
     private String dateProspection;
 
@@ -18,17 +18,17 @@ public class ClientsList {
         this.dateProspection = dateProspection;
     }
 
-    public ClientsList(int id, String client, String dateProspection) {
+    public ClientsList(long id, String client, String dateProspection) {
         this.id = id;
         this.client = client;
         this.dateProspection = dateProspection;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

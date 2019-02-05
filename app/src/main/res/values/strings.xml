@@ -281,6 +281,7 @@
     <string name="network_error">Erreur de Chargement</string>
     <string name="try_again">Ressayez</string>
     <string name="zero_produits">0 produit</string>
+    <string name="aucun_reseau">Aucun réseau</string>
 
     <string name="non_defini">Non défini(e)</string>
 </resources>
