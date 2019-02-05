@@ -12,6 +12,11 @@ import android.widget.EditText
 import com.jmaplus.pharmawine.R
 
 class Step3MedicalTeamClientFragment : Fragment() {
+
+    companion object {
+        val TAG = "Step3MedicalFragment"
+    }
+
     private var listener: OnFragmentInteractionListener? = null
 
     private lateinit var mEmail: EditText
@@ -25,6 +30,9 @@ class Step3MedicalTeamClientFragment : Fragment() {
 
         setUpListenners()
 
+        listener?.onRequestExistingEmail()
+        listener?.onRequestExistingPhoneNumber2()
+
         return rootView
     }
 
@@ -36,7 +44,7 @@ class Step3MedicalTeamClientFragment : Fragment() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                listener?.onAdresseEmailEntered(s.toString())
+                listener?.onEmailEntered(s.toString())
             }
         })
 
@@ -66,6 +74,17 @@ class Step3MedicalTeamClientFragment : Fragment() {
         listener = null
     }
 
+    // =========== PUBLIC METHODS ==========
+
+    fun setExistingEmail(existingEmail: String) {
+        mEmail.setText(existingEmail)
+    }
+
+    fun setExistingPhoneNumber2(existingPhone2: String) {
+        mPhoneNumber2.setText(existingPhone2)
+
+    }
+
 
     /**
      * This interface must be implemented by activities that contain this
@@ -75,9 +94,13 @@ class Step3MedicalTeamClientFragment : Fragment() {
      */
     interface OnFragmentInteractionListener {
 
-        fun onAdresseEmailEntered(email: String)
+        fun onEmailEntered(email: String)
 
         fun onPhoneNumber2Entered(phoneNumber2: String)
+
+        fun onRequestExistingEmail()
+
+        fun onRequestExistingPhoneNumber2()
     }
 
 }

@@ -16,6 +16,10 @@ import com.jmaplus.pharmawine.R
 
 class Step2MedicalTeamClientFragment : Fragment() {
 
+    companion object {
+        val TAG = "Step2MedicalFragment"
+    }
+
     private var listener: OnFragmentInteractionListener? = null
 
     private lateinit var mAddress: EditText
@@ -31,6 +35,10 @@ class Step2MedicalTeamClientFragment : Fragment() {
         setListenners()
 
         fetchReligions()
+
+        // Here we request the parent activty to send us existing values
+        listener?.onRequestExistingAddress()
+        listener?.onRequestExistingReligion()
 
         return rootView
     }
@@ -65,7 +73,7 @@ class Step2MedicalTeamClientFragment : Fragment() {
             }
         }
 
-        val adresListenner = object : TextWatcher {
+        val adressListenner = object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
             }
 
@@ -76,7 +84,7 @@ class Step2MedicalTeamClientFragment : Fragment() {
                 listener?.onAddressEntered(s.toString())
             }
         }
-        mAddress.addTextChangedListener(adresListenner)
+        mAddress.addTextChangedListener(adressListenner)
     }
 
     override fun onDetach() {
@@ -84,11 +92,29 @@ class Step2MedicalTeamClientFragment : Fragment() {
         listener = null
     }
 
+    // =========== PUBLIC METHODS ==========
+    fun setExistingAddress(existingAddress: String) {
+        if (!existingAddress.isNullOrEmpty()) {
+            mAddress.setText(existingAddress)
+        }
+
+    }
+
+    fun setExistingReligion(religion: String) {
+        if (!religion.isNullOrEmpty()) {
+            // TODO: Preselect the corresponding religion
+        }
+    }
 
     interface OnFragmentInteractionListener {
+
         fun onReligionSelected(religion: String)
 
         fun onAddressEntered(address: String)
+
+        fun onRequestExistingAddress()
+
+        fun onRequestExistingReligion()
     }
 
 }

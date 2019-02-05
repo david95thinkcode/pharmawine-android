@@ -2,30 +2,24 @@ package com.jmaplus.pharmawine.fragments.home;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
-import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
 import com.jmaplus.pharmawine.R;
 import com.jmaplus.pharmawine.activities.NetworksActivity;
-import com.jmaplus.pharmawine.activities.ProspectionActivity;
 import com.jmaplus.pharmawine.activities.RemainingClientsActivity;
-import com.jmaplus.pharmawine.activities.SeenCustomers;
+import com.jmaplus.pharmawine.activities.SeenCustomersActivity;
 import com.jmaplus.pharmawine.models.AuthUser;
 import com.jmaplus.pharmawine.models.AuthenticatedUser;
 
-import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -119,7 +113,7 @@ public class HomeAdminFragment extends Fragment {
         clientSeen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(mContext, SeenCustomers.class));
+                startActivity(new Intent(mContext, SeenCustomersActivity.class));
             }
         });
 

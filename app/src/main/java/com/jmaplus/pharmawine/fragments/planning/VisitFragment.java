@@ -20,9 +20,11 @@ import com.jmaplus.pharmawine.adapters.PlanningAdapter;
 import com.jmaplus.pharmawine.models.Customer;
 import com.jmaplus.pharmawine.utils.Constants;
 import com.jmaplus.pharmawine.utils.Utils;
-import com.jmaplus.pharmawine.utils.WeekDays;
+import com.jmaplus.pharmawine.utils.WeekStartEnd;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /*
@@ -49,6 +51,7 @@ public class VisitFragment extends Fragment {
      * Date du fragment
      */
     public String mDateString;
+    private WeekStartEnd mWeek;
     private OnFragmentInteractionListener mListener;
     private PlanningAdapter mAdapter;
     /**
@@ -72,6 +75,7 @@ public class VisitFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_visit, container, false);
+        mWeek = new WeekStartEnd(Calendar.getInstance().getTime());
 
         mContext = requireContext();
         tvMonthLabel = rootView.findViewById(R.id.tv_planning_date);
@@ -129,7 +133,7 @@ public class VisitFragment extends Fragment {
      *
      * @param date
      */
-    public void setDateString(String date) {
+    public void setDateString(Date date) {
         /**
          * 1- Get all days in the same week as the received date
          * 2- Filter the previous list and get only the dates withing the same month
@@ -137,13 +141,27 @@ public class VisitFragment extends Fragment {
          * 4- Call retrofit and send these two dates to the server
          */
 
-        if (!date.isEmpty() && date != null) {
+        if (date != null) {
 
-            mDateString = date;
-            WeekDays dates = Utils.getDaysOfTheWeek(mDateString, true);
+            if (mUserRoleID == Constants.ROLE_DELEGUE_KEY) {
 
-            mListener.onRequestPlanning(dates.getStartDate(), dates.getEndDate());
+                mDateString = Utils.getFormattedDateForApiRequest(date);
+
+                mWeek = new WeekStartEnd(date);
+
+                fetchDeleguePlanning();
+            }
         }
+    }
+
+    private void fetchDeleguePlanning() {
+        Log.i(TAG, "fetchDeleguePlanning: Fetching datas...");
+
+        mListener.onRequestPlanning(
+                Utils.getFormattedDateForApiRequest(mWeek.getStartDate()),
+                Utils.getFormattedDateForApiRequest(mWeek.getEndDate()));
+
+        updateUIDuringFetching();
     }
 
     /**
@@ -162,21 +180,25 @@ public class VisitFragment extends Fragment {
                 mAdapter.notifyItemInserted(mCustomerList.size() - 1);
             }
 
-        } else {
+            updateLabel();
 
+        } else {
             Toast.makeText(mContext, "Planning vide", Toast.LENGTH_SHORT).show();
         }
         updateUIWhenDataFetched();
     }
 
-    private void fetchDeleguePlanning() {
-        Log.i(TAG, "fetchDeleguePlanning: Fetching datas...");
+    private void updateLabel() {
+        // Update date label on fragment
+        String startInterval = Utils.getDayLabelFromDate(mWeek.getStartDate())
+                + " " + Utils.getDayOfMonthFromDate(mWeek.getStartDate());
+        String endInterval = Utils.getDayLabelFromDate(mWeek.getEndDate())
+                + " " + Utils.getDayOfMonthFromDate(mWeek.getEndDate());
 
-        WeekDays dates = Utils.getDaysOfTheWeek(mDateString, true);
-        mListener.onRequestPlanning(dates.getStartDate(), dates.getEndDate());
-
-        updateUIDuringFetching();
+        mWeekTextView.setText(startInterval + " - " + endInterval);
     }
+
+
 
     private void fetchPlanningForSupervisor() {
         // TODO: Complete when the api will be ready

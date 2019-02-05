@@ -9,12 +9,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.EditText
+import android.widget.Spinner
 import com.jmaplus.pharmawine.R
-import com.jmaplus.pharmawine.models.Center
-import com.jmaplus.pharmawine.models.Customer
 import com.jmaplus.pharmawine.models.TestCountry
-import com.jmaplus.pharmawine.utils.CustomerCalls
 import com.jmaplus.pharmawine.utils.Utils
 
 /**
@@ -25,6 +25,11 @@ import com.jmaplus.pharmawine.utils.Utils
  *
  */
 class Step1MedicalTeamClientFragment : Fragment() {
+
+    companion object {
+        val TAG = "Step1MedicalFragment"
+    }
+
     private var listener: OnFragmentInteractionListener? = null
 
     private lateinit var mDay: EditText
@@ -34,6 +39,7 @@ class Step1MedicalTeamClientFragment : Fragment() {
     private lateinit var mMaritalStatusSpinner: Spinner
 
     private var mMonth: String = ""
+    private val numberThatNeedZeroPrefix = intArrayOf(0, 1, 2, 3, 4, 5, 6, 7, 8, 9)
     private var mCountriesList: MutableList<TestCountry> = ArrayList()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -46,8 +52,11 @@ class Step1MedicalTeamClientFragment : Fragment() {
         mNationalitySpinner = rootView.findViewById(R.id.spinner_nationality)
         mMaritalStatusSpinner = rootView.findViewById(R.id.spinner_marital_status)
 
-
         initialiseViews()
+
+        listener?.onRequestExistingBirthday()
+        listener?.onRequestExistingMaritalStatus()
+        listener?.onRequestExistingNationality()
 
         return rootView
     }
@@ -146,20 +155,52 @@ class Step1MedicalTeamClientFragment : Fragment() {
     }
 
     /**
-     * Update the bithday and call the listenner if necessary
+     * Update the birthday and call the listenner if necessary
      */
     private fun updateBirthday() {
 
-        var b = ""
-        if (!mDay.text.isEmpty() && !mMonth.isNullOrEmpty() && !mYear.text.isNullOrEmpty()) {
-            b = "${mDay.text}/$mMonth/${mYear.text}"
-            Log.i("STEP1", "Birthday updated ==> $b ")
-        } else {
-            Log.i("STEP1", "Birthday is not complete")
+        var formattedBirthday = ""
+        var dayString = mDay.text.toString()
+        var monthString = ""
+
+        if (dayString.isNotEmpty() && !mMonth.isNullOrEmpty() && !mYear.text.isNullOrEmpty()) {
+
+            if (numberThatNeedZeroPrefix.contains(mDay.text.toString().toInt())) {
+                dayString = "0${mDay.text}"
+            }
+
+            if (numberThatNeedZeroPrefix.contains(mMonth.toInt())) {
+                monthString = "0$mMonth"
+            }
+
+            formattedBirthday = "${mYear.text}/$monthString/$dayString"
+
+            Log.i(TAG, "Birthday updated ==> $formattedBirthday ")
         }
 
-        listener?.onBithdayFullyUpdated(b)
+        listener?.onBirthdayFullyUpdated(formattedBirthday)
     }
+
+    // =========== PUBLIC METHODS ==================
+
+    fun setExistingBirthday(day: Int, month: Int, year: Int) {
+        mDay.setText(day.toString())
+        mYear.setText(year.toString())
+        mMonthSpinner.setSelection(month - 1)
+    }
+
+    fun setExistingMaritalStatus(status: String) {
+        if (!status.isNullOrEmpty()) {
+            // todo: preselect the corresponding
+        }
+    }
+
+    fun setExistingNationality(nationality: String) {
+        if (!nationality.isNullOrEmpty()) {
+            // todo: select the exisiting one
+        }
+    }
+
 
     /**
      * This interface must be implemented by activities that contain this
@@ -168,13 +209,20 @@ class Step1MedicalTeamClientFragment : Fragment() {
      * activity.
      */
     interface OnFragmentInteractionListener {
+
         fun onBirthDayPartiallyUpdated(partialBirthday: String)
 
-        fun onBithdayFullyUpdated(birthDay: String)
+        fun onBirthdayFullyUpdated(birthDay: String)
 
         fun onMartialStatusUpdated(maritalStatus: String)
 
         fun onNationalityUpdated(nationality: String)
+
+        fun onRequestExistingBirthday()
+
+        fun onRequestExistingNationality()
+
+        fun onRequestExistingMaritalStatus()
 
     }
 

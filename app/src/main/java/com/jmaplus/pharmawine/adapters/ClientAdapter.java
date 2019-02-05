@@ -1,17 +1,12 @@
 package com.jmaplus.pharmawine.adapters;
 
 import android.content.Context;
-
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,8 +17,6 @@ import com.jmaplus.pharmawine.activities.ClientDetailsActivity;
 import com.jmaplus.pharmawine.models.MedicalTeam;
 import com.jmaplus.pharmawine.models.Pharmacy;
 import com.jmaplus.pharmawine.utils.Constants;
-import com.jmaplus.pharmawine.PharmaWine;
-import com.jmaplus.pharmawine.models.FavoriteClient;
 
 import java.util.ArrayList;
 
@@ -135,8 +128,8 @@ public class ClientAdapter extends RecyclerView.Adapter<ClientAdapter.ViewHolder
 
                         if(medicalTeam.isValid()) {
 
-                            i.putExtra(ClientDetailsActivity.CLIENT_TYPE_KEY, Constants.CLIENT_MEDICAL_TEAM_TYPE_KEY);
-                            i.putExtra(ClientDetailsActivity.CLIENT_ID_KEY, medicalTeam.getId());
+                            i.putExtra(ClientDetailsActivity.CLIENT_TYPE_EXTRA, Constants.CLIENT_MEDICAL_TEAM_TYPE_KEY);
+                            i.putExtra(ClientDetailsActivity.CLIENT_ID_EXTRA, medicalTeam.getId());
                             mContext.startActivity(i);
                         } else {
                             Toast.makeText(mContext, "Lecture de donnée non réussie. Réessayez s'il vous plait", Toast.LENGTH_SHORT).show();
@@ -149,8 +142,8 @@ public class ClientAdapter extends RecyclerView.Adapter<ClientAdapter.ViewHolder
                         pharmacy.load();
 
                         if(pharmacy.isValid()) {
-                            i.putExtra(ClientDetailsActivity.CLIENT_TYPE_KEY, Constants.CLIENT_PHARMACY_TYPE_KEY);
-                            i.putExtra(ClientDetailsActivity.CLIENT_ID_KEY, pharmacy.getId());
+                            i.putExtra(ClientDetailsActivity.CLIENT_TYPE_EXTRA, Constants.CLIENT_PHARMACY_TYPE_KEY);
+                            i.putExtra(ClientDetailsActivity.CLIENT_ID_EXTRA, pharmacy.getId());
                             mContext.startActivity(i);
                         } else {
                             Toast.makeText(mContext, "Lecture de donnée non réussie. Réessayez s'il vous plait", Toast.LENGTH_SHORT).show();

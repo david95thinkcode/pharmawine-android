@@ -22,7 +22,6 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
-import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface ApiService {
@@ -76,6 +75,9 @@ public interface ApiService {
     @GET("remaining")
     Call<List<Customer>> getRemainingCustomers(@Header("Authorization") String authorization);
 
+    @GET("customers/viewed")
+    Call<List<Customer>> getSeenCustomers(@Header("Authorization") String authorization);
+
     // ======================================= NETWORKS =======================================
 
     @GET("network")
@@ -91,7 +93,8 @@ public interface ApiService {
             @Header("Authorization") String authorization);
 
     // ======================================= PROFILAGE =======================================
-    @PUT("customer/{customer_id}")
+    @Headers("X-HTTP-Method-Override: PUT")
+    @POST("customer/{customer_id}")
     Call<Customer> editCustomer(
             @Path("customer_id") Integer customer_id,
             @Body Customer customer,

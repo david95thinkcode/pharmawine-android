@@ -2,6 +2,10 @@ package com.jmaplus.pharmawine.utils;
 
 public class Constants {
 
+    // ENVIRONMENT VARIABLE
+    // ===================================
+    public static final Boolean ENV_TESTMODE = false;
+
     // SHARED PREFERENCES PRIVATE FILES
     // ===================================
     //
@@ -32,11 +36,6 @@ public class Constants {
     public static final String SP_AVATAR_URL_KEY = "sp_avatar";
     public static final String SP_TOKEN_KEY = "sp_token";
 
-    // MENU ITEMS ================================
-    public static final String MENU_PLANNING_KEY = "menu_planning";
-    public static final String MENU_CLIENTS_KEY = "menu_clients";
-    public static final String MENU_RESEAUX_KEY = "menu_reseaux";
-    public static final String MENU_PRODUITS_KEY = "menu_produits";
 
     // USERS ROLES ================================
     public static final int ROLE_ADMIN_KEY = 1;
@@ -58,6 +57,7 @@ public class Constants {
     public static String CLIENT_SPECIALITY_KEY = "client_spec";
     public static String CLIENT_CUSTOMER_STATUS_KEY = "client_stat";
     public static String CLIENT_CUSTOMER_TYPE_KEY = "client_type";
+    public static String CLIENT_SEX_KEY = "client_sex";
     public static String CLIENT_AVATAR_URL_KEY = "client_av_url";
 
 

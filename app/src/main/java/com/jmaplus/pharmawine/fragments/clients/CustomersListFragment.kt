@@ -15,10 +15,8 @@ import com.jmaplus.pharmawine.R
 import com.jmaplus.pharmawine.adapters.RemainingCustomersAdapter
 import com.jmaplus.pharmawine.models.AuthUser
 import com.jmaplus.pharmawine.models.Customer
-import com.jmaplus.pharmawine.utils.Constants
-import com.jmaplus.pharmawine.utils.CustomerCalls
-import com.jmaplus.pharmawine.utils.ItemClickSupport
-import com.jmaplus.pharmawine.utils.Utils
+import com.jmaplus.pharmawine.utils.*
+import com.jmaplus.pharmawine.utils.RetrofitCalls.customers.SeenCustomerCalls
 
 
 /**
@@ -28,12 +26,19 @@ import com.jmaplus.pharmawine.utils.Utils
  * to handle interaction events.
  *
  */
-class CustomersListFragment : Fragment(), CustomerCalls.Callbacks {
+class CustomersListFragment : Fragment(),
+        CustomerCalls.Callbacks, SeenCustomerCalls.Callbacks {
+
+    companion object {
+        const val TAG = "CustomersListFragment"
+        const val TESTMODE = true
+    }
 
     private var listener: OnFragmentInteractionListener? = null
     private var mCustomerType: Int = -1
     private lateinit var mRecyclerView: RecyclerView
     private lateinit var mProgressBar: ProgressBar
+    private lateinit var mEmptyCustomersLayout: LinearLayout
 
     private lateinit var mCustomersList: MutableList<Customer>
     private lateinit var mSafeCustomersList: MutableList<Customer>
@@ -52,8 +57,10 @@ class CustomersListFragment : Fragment(), CustomerCalls.Callbacks {
         mAuthUser = AuthUser.getAuthenticatedUser(mContext)
         mRecyclerView = rootView.findViewById(R.id.rv_customers)
         mProgressBar = rootView.findViewById(R.id.pb_customers)
+        mEmptyCustomersLayout = rootView.findViewById(R.id.layout_cutomers_empty_list_layout)
 
         // Initializations
+        mEmptyCustomersLayout.visibility = View.GONE
         mCustomersList = ArrayList()
         mSafeCustomersList = ArrayList()
         mAdapter = RemainingCustomersAdapter(mContext, mCustomersList)
@@ -73,19 +80,31 @@ class CustomersListFragment : Fragment(), CustomerCalls.Callbacks {
         if (context is OnFragmentInteractionListener) {
             listener = context
         } else {
-            throw RuntimeException(context.toString() + " must implement OnFragmentInteractionListener")
+            throw RuntimeException("${context.toString()} must implement OnFragmentInteractionListener")
         }
     }
 
     private fun getCustomers(isProspectConnu: Boolean) {
         mProgressBar.visibility = View.VISIBLE
-        if (isProspectConnu) {
-            Log.i(TAG, "Recuperation prospect connus")
-            CustomerCalls.getAllKnownProspects(AuthUser.getToken(mContext), this)
+        if (!Constants.ENV_TESTMODE) {
+            if (isProspectConnu) {
+                Log.i(TAG, "Recuperation prospect connus")
+                CustomerCalls.getAllKnownProspects(AuthUser.getToken(mContext), this)
+            } else {
+                // Others cases
+                Log.i(TAG, "Recuperation prospect inconnus")
+            }
         } else {
-            // Others cases
-            Log.i(TAG, "Recuperation prospect inconnus")
+            updateUIWithResponse(FakeData.getCustomers())
         }
+    }
+
+    override fun onSeenCustomersResponse(customers: MutableList<Customer>?) {
+        updateUIWithResponse(customers!!)
+    }
+
+    override fun onSeenCustomersFailure() {
+        showFailure()
     }
 
     private fun configureOnClickRecyclerView() {
@@ -98,58 +117,95 @@ class CustomersListFragment : Fragment(), CustomerCalls.Callbacks {
                 }
     }
 
-    /**
-     * Should be called by the parent activity
-     */
+    // ============ METHODS WHICH CAN BE CALLED BY PARENT
+
+
     fun fetchCustomers(customerType: Int, isProspectConnu: Boolean) {
 
-        if (customerType != null
-                && (customerType == Constants.TYPE_MEDICAL_KEY || customerType == Constants.TYPE_PHARMACEUTICAL_KEY)) {
-            mProgressBar.visibility = View.VISIBLE
+        if (!Constants.ENV_TESTMODE) {
+            if (customerType != null
+                    && (customerType == Constants.TYPE_MEDICAL_KEY || customerType == Constants.TYPE_PHARMACEUTICAL_KEY)) {
+                mProgressBar.visibility = View.VISIBLE
 
-            mCustomerType = customerType // important
+                mCustomerType = customerType // important
 
-            getCustomers(isProspectConnu) // let's get customers
+                getCustomers(isProspectConnu) // let's get customers
 
+            } else {
+                // Le parent n'a envoyeé aucun customer type id ou un type mon valide
+                Utils.presentToast(mContext, "Impossible de recuperer ce type de client", true)
+            }
         } else {
-            // Le parent n'a envoyeé aucun customer type id ou un type mon valide
-            Utils.presentToast(mContext, "Impossible de recuperer ce type de client", true)
         }
+    }
 
+    fun fetchSeenCustomers() {
+        mProgressBar.visibility = View.VISIBLE
+
+        if (!TESTMODE) {
+            SeenCustomerCalls.getSeenCustomers(mToken, this)
+        } else {
+            updateUIWithResponse(FakeData.getCustomers())
+        }
+    }
+
+    fun fetchRemainingCustomers() {
+        mProgressBar.visibility = View.VISIBLE
+
+        if (!Constants.ENV_TESTMODE) {
+            CustomerCalls.getRemaining(mToken, this)
+        } else {
+            updateUIWithResponse(FakeData.getCustomers())
+        }
     }
 
     /**
      * This method should be called from parent
+     * to filter the list by customer type id
      */
     fun filteredCustomerListByCustomerType(customerTypeID: Int) {
         if (mCustomersList.isNotEmpty()) {
-            val newList = mSafeCustomersList.filter { it.customerTypeId == customerTypeID }
+            val newList = mSafeCustomersList.filter {
+                it.customerTypeId == customerTypeID
+            }
             refreshRecyclerViewWithNewList(newList)
         } else {
             Utils.presentToast(mContext, "Rien a filtrer", true)
         }
     }
 
-    private fun refreshRecyclerViewWithNewList(newCustomerList: List<Customer>) {
-        if (newCustomerList.isNotEmpty()) {
-            mProgressBar.visibility = View.GONE
+    fun showAllWithoutFiltering() {
+        refreshRecyclerViewWithNewList(mSafeCustomersList)
+    }
 
-            mCustomersList.clear()
-            mCustomersList.addAll(newCustomerList)
-            mAdapter.notifyDataSetChanged()
+    fun filterCustomersByKnownCriteria(isKnownCustomer: Boolean) {
+
+        if (mSafeCustomersList.isNotEmpty()) {
+
+            val filteredList = mSafeCustomersList.filter {
+                it.isKnown == isKnownCustomer
+            }
+
+            refreshRecyclerViewWithNewList(filteredList)
 
         } else {
+            Utils.presentToast(mContext, "Rien a filtrer", true)
+        }
+    }
+
+    private fun refreshRecyclerViewWithNewList(newCustomerList: List<Customer>) {
+
+        mProgressBar.visibility = View.GONE
+
+        mCustomersList.clear()
+        mCustomersList.addAll(newCustomerList)
+        mAdapter.notifyDataSetChanged()
+
+        if (newCustomerList.isEmpty()) {
             Utils.presentToast(mContext, "Liste vide", true)
         }
     }
 
-    /**
-     * Should be called from parent activity
-     */
-    fun fetchRemainingCustomers() {
-        mProgressBar.visibility = View.VISIBLE
-        CustomerCalls.getRemaining(mToken, this)
-    }
 
 
     override fun onCustomerDetailsResponse(customer: Customer?) {
@@ -183,15 +239,7 @@ class CustomersListFragment : Fragment(), CustomerCalls.Callbacks {
     }
 
     override fun onRemainingCustomersResponse(customers: MutableList<Customer>?) {
-        mCustomersList.clear()
-
-        for (c: Customer in customers!!) {
-            mCustomersList.add(c)
-            mAdapter.notifyItemInserted(customers.size - 1)
-        }
-
-        mSafeCustomersList.addAll(mCustomersList) // important
-        mProgressBar.visibility = View.GONE
+        updateUIWithResponse(customers!!)
     }
 
 
@@ -208,6 +256,33 @@ class CustomersListFragment : Fragment(), CustomerCalls.Callbacks {
         listener = null
     }
 
+    /**
+     * Method used to populate the list
+     * and update the UI
+     */
+    private fun updateUIWithResponse(customers: List<Customer>) {
+
+        if (customers.isNotEmpty()) {
+            mCustomersList.clear()
+            mEmptyCustomersLayout.visibility = View.GONE
+
+            // Populating the recycler view
+            for (c: Customer in customers) {
+                mCustomersList.add(c)
+                mAdapter.notifyItemInserted(customers.size - 1)
+            }
+
+            mSafeCustomersList.addAll(mCustomersList) // important
+        } else showEmptyResults()
+
+        mProgressBar.visibility = View.GONE
+    }
+
+    private fun showEmptyResults() {
+        mProgressBar.visibility = View.GONE
+        mEmptyCustomersLayout.visibility = View.VISIBLE
+    }
+
     private fun showFailure() {
         Utils.presentToast(mContext, "Une erreur s'est produite", true)
         mProgressBar.visibility = View.GONE
@@ -219,10 +294,6 @@ class CustomersListFragment : Fragment(), CustomerCalls.Callbacks {
 
         fun onCustomerClicked(Customer: Customer)
 
-    }
-
-    companion object {
-        const val TAG = "CustomersListFragment"
     }
 
 }

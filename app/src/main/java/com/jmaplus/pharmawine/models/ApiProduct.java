@@ -1,5 +1,6 @@
 package com.jmaplus.pharmawine.models;
 
+import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -203,5 +204,12 @@ public class ApiProduct {
 
     public void setSaleGoals(List<SaleGoal> saleGoals) {
         this.saleGoals = saleGoals;
+    }
+
+    @Override
+    public String toString() {
+        Gson gson = new Gson();
+
+        return gson.toJson(this);
     }
 }

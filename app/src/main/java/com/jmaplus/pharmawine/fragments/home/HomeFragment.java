@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,21 +13,19 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
-import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment;
 import com.jmaplus.pharmawine.R;
 import com.jmaplus.pharmawine.activities.NetworksActivity;
 import com.jmaplus.pharmawine.activities.ProspectionActivity;
 import com.jmaplus.pharmawine.activities.RemainingClientsActivity;
-import com.jmaplus.pharmawine.activities.SeenCustomers;
+import com.jmaplus.pharmawine.activities.SeenCustomersActivity;
 import com.jmaplus.pharmawine.models.AuthUser;
 import com.jmaplus.pharmawine.models.AuthenticatedUser;
 import com.jmaplus.pharmawine.models.Customer;
 import com.jmaplus.pharmawine.utils.CustomerCalls;
+import com.jmaplus.pharmawine.utils.RetrofitCalls.customers.SeenCustomerCalls;
 
-import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -39,13 +36,20 @@ import javax.annotation.Nullable;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class HomeFragment extends Fragment
-        implements CustomerCalls.Callbacks {
+public class HomeFragment extends Fragment implements
+        CustomerCalls.Callbacks,
+        SeenCustomerCalls.Callbacks {
 
     private String TAG = "HomeFragment";
     private TextView tvDate, tvNetworkLabel, tvProgress;
+
     //private LinearLayout cvDate;
     private TextView tvRemainingCount;
+    private TextView tvSeenCount;
+    private TextView tvSeenUnknown;
+    private TextView tvSeenKnown;
+    
+    
     private LinearLayout cvDate;
     private RoundCornerProgressBar dailyProgressBar;
     private Context mContext;
@@ -53,6 +57,7 @@ public class HomeFragment extends Fragment
 
     private AuthenticatedUser authenticatedUser;
     private AuthUser currentUser;
+    private String mToken;
 
     private RelativeLayout layBottomFabs;
     private LinearLayout clientSeen, clientRemaining;
@@ -66,6 +71,7 @@ public class HomeFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mContext = getActivity();
+        mToken = AuthUser.getToken(mContext);
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
@@ -78,7 +84,10 @@ public class HomeFragment extends Fragment
         clientRemaining = view.findViewById(R.id.clients_remaining);
         clientSeen = view.findViewById(R.id.clients_seen);
         tvRemainingCount = view.findViewById(R.id.textView_num_visit_restant);
-
+        tvSeenCount = view.findViewById(R.id.tv_SeenCustomersTotal);
+        tvSeenKnown = view.findViewById(R.id.tv_known_customer);
+        tvSeenUnknown = view.findViewById(R.id.tv_unknown_customer);
+        
         tvNetworkLabel = view.findViewById(R.id.tv_network_label);
         fabNetwork = view.findViewById(R.id.fab_network);
         fabProspection = view.findViewById(R.id.fab_see_more);
@@ -91,9 +100,18 @@ public class HomeFragment extends Fragment
     @Override
     public void onResume() {
 
-        // Refresh all datas
-        // Remaining clients count
-        CustomerCalls.getRemaining(AuthUser.getToken(mContext), this);
+        try {
+            // Refresh all datas
+
+            // here we get the remaining customers
+            CustomerCalls.getRemaining(mToken, this);
+
+            // here we get the known customers
+            SeenCustomerCalls.getSeenCustomers(mToken, this);
+        } catch (Exception e) {
+            Log.e(TAG, "onResume: " + e.getMessage());
+            e.printStackTrace();
+        }
 
         super.onResume();
     }
@@ -147,7 +165,7 @@ public class HomeFragment extends Fragment
         clientSeen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(mContext, SeenCustomers.class));
+                startActivity(new Intent(mContext, SeenCustomersActivity.class));
             }
         });
 
@@ -196,11 +214,38 @@ public class HomeFragment extends Fragment
     public void onRemainingCustomersResponse(@Nullable List<Customer> customers) {
 
         tvRemainingCount.setText(String.valueOf(customers.size()));
-        Toast.makeText(mContext, "Nombre de client restant mis a jour", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(mContext, "Nombre de client restant mis a jour", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onRemainingCustomersFailure() {
 
+    }
+
+    @Override
+    public void onSeenCustomersResponse(@Nullable List<Customer> customers) {
+        Integer UnknownCount = 0;
+        Integer KnownCount = 0;
+        Integer TotalKnown = 0;
+
+        if (!customers.isEmpty()) {
+            for (Customer c : customers) {
+                if (c.isKnown())
+                    KnownCount++;
+                else
+                    UnknownCount++;
+            }
+            TotalKnown = UnknownCount + KnownCount;
+
+            // Update the view
+            tvSeenCount.setText(TotalKnown.toString());
+            tvSeenUnknown.setText("Inconnus : " + UnknownCount);
+            tvSeenKnown.setText("Connus : " + KnownCount);
+        }
+    }
+
+    @Override
+    public void onSeenCustomersFailure() {
+        Log.e(TAG, "onSeenCustomersFailure: Failed to get seen customer from the API");
     }
 }
