@@ -31,7 +31,6 @@ class CustomersListFragment : Fragment(),
 
     companion object {
         const val TAG = "CustomersListFragment"
-        const val TESTMODE = true
     }
 
     private var listener: OnFragmentInteractionListener? = null
@@ -142,7 +141,7 @@ class CustomersListFragment : Fragment(),
     fun fetchSeenCustomers() {
         mProgressBar.visibility = View.VISIBLE
 
-        if (!TESTMODE) {
+        if (!Constants.ENV_TESTMODE) {
             SeenCustomerCalls.getSeenCustomers(mToken, this)
         } else {
             updateUIWithResponse(FakeData.getCustomers())

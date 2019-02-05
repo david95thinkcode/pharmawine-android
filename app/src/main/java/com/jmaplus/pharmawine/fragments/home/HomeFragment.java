@@ -202,124 +202,131 @@ public class HomeFragment extends Fragment implements
     }
 
     private void inflateDecateLayout() {
-        Calendar cal = Calendar.getInstance();
-        int day = cal.get(Calendar.DAY_OF_MONTH);
-        int maxDayInpresentMonth = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
-        int posi = day % 10;
-        int[] decades = new int[10];
-        if (posi == 0) {
-            if (day <= maxDayInpresentMonth) {
-                decades[posi] = day;
-            }
-
-            for (int i = 0; i < decades.length; i++) {
-                if (day + i + 1 <= maxDayInpresentMonth) {
-                    decades[i] = day + i + 1;
-                } else {
-                    decades[i] = i + 1;
+        try {
+            Calendar cal = Calendar.getInstance();
+            int day = cal.get(Calendar.DAY_OF_MONTH);
+            int maxDayInpresentMonth = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+            int posi = day % 10;
+            int[] decades = new int[10];
+            if (posi == 0) {
+                if (day <= maxDayInpresentMonth) {
+                    decades[posi] = day;
                 }
 
-            }
-        } else if (posi == 1) {
-            decades[0] = day - 1;
-        } else if (posi > 1) {
-            decades[posi - 1] = day;
-            for (int i = 0; i <= posi - 1; i++) {
-                decades[i] = day - posi + i + 1;
-            }
-            int y = 1;
-            for (int i = posi; i < decades.length; i++) {
+                for (int i = 0; i < decades.length; i++) {
+                    if (day + i + 1 <= maxDayInpresentMonth) {
+                        decades[i] = day + i + 1;
+                    } else {
+                        decades[i] = i + 1;
+                    }
 
-                if (day + y == maxDayInpresentMonth) {
-                    decades[i] = day + y;
-                } else if (day + y < maxDayInpresentMonth) {
-
-                    decades[i] = day + y;
-
-                } else if (day + y > maxDayInpresentMonth) {
-                    decades[i] = y - 1;
                 }
-                y++;
-            }
-        }
-        if (day == maxDayInpresentMonth) {
-            posi = 10;
-            decades[posi - 1] = day;
-            for (int i = 0; i <= posi - 1; i++) {
-                decades[i] = day - posi + i + 1;
-            }
-        }
-        tvDecade1.setText(decades[0]);
-        tvDecade2.setText(decades[1]);
-        tvDecade3.setText(decades[2]);
-        tvDecade4.setText(decades[3]);
-        tvDecade5.setText(decades[4]);
-        tvDecade6.setText(decades[5]);
-        tvDecade7.setText(decades[6]);
-        tvDecade8.setText(decades[7]);
-        tvDecade9.setText(decades[8]);
-        tvDecade10.setText(decades[9]);
+            } else if (posi == 1) {
+                decades[0] = day - 1;
+            } else if (posi > 1) {
+                decades[posi - 1] = day;
+                for (int i = 0; i <= posi - 1; i++) {
+                    decades[i] = day - posi + i + 1;
+                }
+                int y = 1;
+                for (int i = posi; i < decades.length; i++) {
 
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-        );
-        params.setMargins(5, 1, 0, 0);
-        switch (posi) {
-            case 0: {
-                indicator.setLayoutParams(params);
-            }
-            break;
-            case 1: {
-                indicator.setLayoutParams(params);
-            }
-            break;
-            case 2: {
-                params.setMargins(deplacement1To2, 1, 0, 0);
-                indicator.setLayoutParams(params);
-            }
-            break;
-            case 3: {
-                params.setMargins(deplacement2To3, 1, 0, 0);
-                indicator.setLayoutParams(params);
-            }
-            break;
-            case 4: {
-                params.setMargins(deplacement3To4, 1, 0, 0);
-                indicator.setLayoutParams(params);
-            }
-            break;
-            case 5: {
-                params.setMargins(deplacement4To5, 1, 0, 0);
-                indicator.setLayoutParams(params);
-            }
-            break;
-            case 6: {
-                params.setMargins(deplacement5To6, 1, 0, 0);
-                indicator.setLayoutParams(params);
-            }
-            break;
-            case 7: {
-                params.setMargins(deplacement7To8, 1, 0, 0);
-                indicator.setLayoutParams(params);
-            }
-            break;
-            case 8: {
-                params.setMargins(deplacement8To9, 1, 0, 0);
-                indicator.setLayoutParams(params);
-            }
-            break;
-            case 9: {
-                params.setMargins(deplacement9To10, 1, 0, 0);
-                indicator.setLayoutParams(params);
-            }
-            break;
-            default: {
-                indicator.setLayoutParams(params);
-            }
-            break;
+                    if (day + y == maxDayInpresentMonth) {
+                        decades[i] = day + y;
+                    } else if (day + y < maxDayInpresentMonth) {
 
+                        decades[i] = day + y;
+
+                    } else if (day + y > maxDayInpresentMonth) {
+                        decades[i] = y - 1;
+                    }
+                    y++;
+                }
+            }
+            if (day == maxDayInpresentMonth) {
+                posi = 10;
+                decades[posi - 1] = day;
+                for (int i = 0; i <= posi - 1; i++) {
+                    decades[i] = day - posi + i + 1;
+                }
+            }
+            tvDecade1.setText(decades[0]);
+            tvDecade2.setText(decades[1]);
+            tvDecade3.setText(decades[2]);
+            tvDecade4.setText(decades[3]);
+            tvDecade5.setText(decades[4]);
+            tvDecade6.setText(decades[5]);
+            tvDecade7.setText(decades[6]);
+            tvDecade8.setText(decades[7]);
+            tvDecade9.setText(decades[8]);
+            tvDecade10.setText(decades[9]);
+
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+            );
+            params.setMargins(5, 1, 0, 0);
+            switch (posi) {
+                case 0: {
+                    indicator.setLayoutParams(params);
+                }
+                break;
+                case 1: {
+                    indicator.setLayoutParams(params);
+                }
+                break;
+                case 2: {
+                    params.setMargins(deplacement1To2, 1, 0, 0);
+                    indicator.setLayoutParams(params);
+                }
+                break;
+                case 3: {
+                    params.setMargins(deplacement2To3, 1, 0, 0);
+                    indicator.setLayoutParams(params);
+                }
+                break;
+                case 4: {
+                    params.setMargins(deplacement3To4, 1, 0, 0);
+                    indicator.setLayoutParams(params);
+                }
+                break;
+                case 5: {
+                    params.setMargins(deplacement4To5, 1, 0, 0);
+                    indicator.setLayoutParams(params);
+                }
+                break;
+                case 6: {
+                    params.setMargins(deplacement5To6, 1, 0, 0);
+                    indicator.setLayoutParams(params);
+                }
+                break;
+                case 7: {
+                    params.setMargins(deplacement7To8, 1, 0, 0);
+                    indicator.setLayoutParams(params);
+                }
+                break;
+                case 8: {
+                    params.setMargins(deplacement8To9, 1, 0, 0);
+                    indicator.setLayoutParams(params);
+                }
+                break;
+                case 9: {
+                    params.setMargins(deplacement9To10, 1, 0, 0);
+                    indicator.setLayoutParams(params);
+                }
+                break;
+                default: {
+                    indicator.setLayoutParams(params);
+                }
+                break;
+
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "An error occured : " + e.getMessage());
+            Log.e(TAG, "Because : " + e.getCause());
+            e.printStackTrace();
         }
+        
     }
 
     private void setDailyProgression(int value) {

@@ -1,9 +1,6 @@
 package com.jmaplus.pharmawine.fragments.rapport;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -19,7 +16,6 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.jmaplus.pharmawine.R;
-import com.jmaplus.pharmawine.activities.EditMedicalTeamActivity;
 import com.jmaplus.pharmawine.models.AuthUser;
 import com.jmaplus.pharmawine.models.Customer;
 import com.jmaplus.pharmawine.models.DailyReportStart;
@@ -187,7 +183,8 @@ public class VisiteInProgressFragment extends Fragment
     @Override
     public void onStartDailyReportResponse(@Nullable DailyReportStartResponse response) {
         reportID = response.getId();
-        Toast.makeText(requireContext(), "Vos superieurs savent que vous commencez une visite", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(requireContext(), "Vos superieurs savent que vous commencez une visite", Toast.LENGTH_SHORT).show();
+        Log.i(TAG, "Vos superieurs savent que vous commencez une visite");
     }
 
     @Override

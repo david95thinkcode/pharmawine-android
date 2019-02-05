@@ -2,7 +2,6 @@ package com.jmaplus.pharmawine.activities;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -92,6 +91,7 @@ public class EditMedicalTeamActivity extends AppCompatActivity implements
         mStep2MedicalTeamClientFragment = new Step2MedicalTeamClientFragment();
         mStep3MedicalTeamClientFragment = new Step3MedicalTeamClientFragment();
 
+        // Useless now because we alreadygot the full customer object below
         mCustomerId = getIntent().getIntExtra(CUSTOMER_ID_EXTRA, -1);
 
         // Getting customer full details from intent string extra
@@ -103,10 +103,13 @@ public class EditMedicalTeamActivity extends AppCompatActivity implements
 
         if (mCustomer == null) {
             // the activity caller have not set customer json extra
+            // We have to throw an Exception
             // So we have to fetch the customers details from server
-            mCustomer = new Customer();
-            mChangingCustomer = new Customer();
-            getClientDetails();
+            throw new RuntimeException(this
+                    + " must get an CUSTOMER_JSON_EXTRA argument with not null customer object in json");
+//            mCustomer = new Customer();
+//            mChangingCustomer = new Customer();
+//            getClientDetails();
         } else {
             Log.i(TAG, "Customer received ==> " + mCustomer.toString());
             try {
@@ -210,7 +213,8 @@ public class EditMedicalTeamActivity extends AppCompatActivity implements
     }
 
     private void onEditionFinished() {
-        confirmationFinishDialog();
+//        confirmationFinishDialog();
+        updateProfileOnServer();
     }
 
     private void updateProfileOnServer() {
@@ -226,7 +230,8 @@ public class EditMedicalTeamActivity extends AppCompatActivity implements
                         this, mCustomer.getId(), mChangingCustomer);
             } catch (Exception e) {
                 mProgressDialog.cancel();
-                Log.e(TAG, e.getMessage());
+                Log.e(TAG, "An error occured : " + e.getMessage());
+                Log.e(TAG, "Because : " + e.getCause());
                 e.printStackTrace();
             }
         } else {

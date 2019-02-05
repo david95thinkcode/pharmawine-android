@@ -1,7 +1,6 @@
 package com.jmaplus.pharmawine.activities;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -61,15 +60,13 @@ public class ProspectionActivity extends AppCompatActivity implements View.OnCli
 
         bindViewsAndInitilise();
 
-        Log.i(getClass().getName(), "Fetech remote client");
+        Log.i(getClass().getName(), "Fetch remote client");
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 fetchRemainingClients();
             }
         }, 800);
-        Log.i(getClass().getName(), "Call Save to DB");
-        saveCustomerToDb();
 
         configureOnClickRecyclerView();
     }
@@ -78,10 +75,9 @@ public class ProspectionActivity extends AppCompatActivity implements View.OnCli
         for (Customer c : mCustomerList) {
             String client = c.toString();
             ClientsList clientsList = new ClientsList(client, Utils.getCurrentDate());
-            long cID = db.createClient(clientsList);
+            long cID = db.saveToDBClient(clientsList);
             Log.e("Client added to db", Long.toString(cID));
         }
-
     }
 
     private void bindViewsAndInitilise() {
@@ -238,6 +234,9 @@ public class ProspectionActivity extends AppCompatActivity implements View.OnCli
                 mCustomerList.add(c);
                 mAdapter.notifyItemChanged(mCustomerList.size() - 1);
             }
+
+            Log.i(getClass().getName(), "Call Save to DB");
+            saveCustomerToDb();
         }
     }
 

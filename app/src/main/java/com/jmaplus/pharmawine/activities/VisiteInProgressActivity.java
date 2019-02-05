@@ -2,7 +2,6 @@ package com.jmaplus.pharmawine.activities;
 
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.jmaplus.pharmawine.R;
 import com.jmaplus.pharmawine.database.utils.DatabaseHelper;
 import com.jmaplus.pharmawine.fragments.rapport.ReportEtape1Fragment;
@@ -352,18 +352,25 @@ public class VisiteInProgressActivity extends AppCompatActivity
         LayoutInflater factory = LayoutInflater.from(this);
         final View customDialogBoxView = factory.inflate(R.layout.custom_dialog_box, null);
         final AlertDialog customDialog = new AlertDialog.Builder(this).create();
+
         customDialog.setView(customDialogBoxView);
         TextView msgDialog = customDialogBoxView.findViewById(R.id.dialog_box_content);
         msgDialog.setText(R.string.voulez_vous_terminer_le_profilage_de_ce_client);
+
         customDialogBoxView.findViewById(R.id.yes_button_custom_dialogbox).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Gson gson = new Gson();
+                String customerObjectString = gson.toJson(mCustomer);
+
                 Intent i = new Intent(mContext, EditMedicalTeamActivity.class);
+
                 i.putExtra(EditMedicalTeamActivity.CUSTOMER_ID_EXTRA, mCustomer.getId().toString());
+                i.putExtra(EditMedicalTeamActivity.CUSTOMER_JSON_EXTRA, customerObjectString);
+
                 i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(i);
                 finish();
-
             }
         });
         customDialogBoxView.findViewById(R.id.no_button_custom_dialogbox).setOnClickListener(new View.OnClickListener() {
