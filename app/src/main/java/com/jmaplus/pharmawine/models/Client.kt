@@ -5,10 +5,10 @@ import com.jmaplus.pharmawine.R
 
 class Client {
     var id: String = ""
-    var firstName: String = ""
-    var lastName: String = ""
+    var firstname: String = ""
+    var lastname: String = ""
     var sex: String = ""
-    var avatarUrl: String = ""
+    var avatar: String = ""
     var birthday: String = ""
     var nationality: String = ""
     var address: String = ""
@@ -23,7 +23,7 @@ class Client {
     var status: String = ""
     var isKnown: Boolean = false // a true pour les clients connus et a false sinon
 
-    fun getFullName(): String = "$firstName $lastName"
+    fun getFullName(): String = "$firstname $lastname"
 
     fun getDefaultAvatarUrl(): Int {
         return if (this.sex == "m" || this.sex == "M") R.drawable.ic_ast_man
@@ -40,13 +40,13 @@ class Client {
         val totalFieldNumber = 13
         var filledFieldNumber = 0
 
-        if (!this.lastName.isNullOrEmpty()) {
+        if (!this.lastname.isNullOrEmpty()) {
             filledFieldNumber++
-            Log.i("Client", "lastName IS NOT NULL OR EMPTY : $lastName")
+            Log.i("Client", "lastname IS NOT NULL OR EMPTY : $lastname")
         }
-        if (!this.firstName.isNullOrEmpty()) {
+        if (!this.firstname.isNullOrEmpty()) {
             filledFieldNumber++
-            Log.i("Client", "firstName IS NOT NULL OR EMPTY : $firstName")
+            Log.i("Client", "firstname IS NOT NULL OR EMPTY : $firstname")
         }
         if (!this.sex.isNullOrEmpty()) {
             filledFieldNumber++
@@ -76,9 +76,9 @@ class Client {
             filledFieldNumber++
             Log.i("Client", "email IS NOT NULL OR EMPTY : $email")
         }
-        if (!this.avatarUrl.isNullOrEmpty()) {
+        if (!this.avatar.isNullOrEmpty()) {
             filledFieldNumber++
-            Log.i("Client", "avatarUrl IS NOT NULL OR EMPTY : $avatarUrl")
+            Log.i("Client", "avatar IS NOT NULL OR EMPTY : $avatar")
         }
         if (!this.nationality.isNullOrEmpty()) {
             filledFieldNumber++
@@ -102,10 +102,10 @@ class Client {
         return "" +
                 "\n id = $id, " +
                 "\n filling level = ${getFillingLevel()}" +
-                "\n firstname = $firstName, " +
-                "\n lastname = $lastName, " +
+                "\n firstname = $firstname, " +
+                "\n lastname = $lastname, " +
                 "\n sex = $sex, " +
-                "\n avatarUrl = $avatarUrl " +
+                "\n avatar = $avatar " +
                 "\n birthday = $birthday, " +
                 "\n email = $email, " +
                 "\n type = $type, " +

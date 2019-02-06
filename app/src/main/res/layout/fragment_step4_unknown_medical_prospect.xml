@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/profilage_medicalTeam_nestedLayout_step_fragment_style"
+
+    tools:context=".fragments.rapport.prospect_inconnu.Step4UnknownMedicalProspectFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            style="@style/margin_top_and_bottom_12_dp_style"
+            android:layout_height="77dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textViewx"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="@string/specialite"
+                android:textColor="@color/bpDark_gray" />
+
+            <Spinner
+                android:id="@+id/spinner_speciality"
+                style="@style/edit_text_bordered_lg_style"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@color/bpDark_gray" />
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/margin_top_and_bottom_12_dp_style"
+            android:layout_height="77dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="@string/zone"
+                android:textColor="@color/bpDark_gray" />
+
+            <Spinner
+                android:id="@+id/spinner_zone"
+                style="@style/edit_text_bordered_lg_style"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@color/bpDark_gray" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/margin_top_and_bottom_12_dp_style"
+            android:layout_height="77dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="@string/categorie"
+                android:textColor="@color/bpDark_gray" />
+
+            <Spinner
+                android:id="@+id/spinner_category"
+                style="@style/edit_text_bordered_lg_style"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textColor="@color/bpDark_gray" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</android.support.v4.widget.NestedScrollView>

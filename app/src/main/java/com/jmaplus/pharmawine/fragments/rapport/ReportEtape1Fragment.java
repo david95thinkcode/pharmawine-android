@@ -3,20 +3,17 @@ package com.jmaplus.pharmawine.fragments.rapport;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.Spinner;
 
 import com.jmaplus.pharmawine.R;
-import com.jmaplus.pharmawine.adapters.MedicalTeamCenterSelectionAdapter;
+import com.jmaplus.pharmawine.adapters.CenterSelectionAdapter;
 import com.jmaplus.pharmawine.models.Center;
-import com.jmaplus.pharmawine.utils.FakeData;
 import com.jmaplus.pharmawine.utils.ItemClickSupport;
 import com.jmaplus.pharmawine.utils.Utils;
 
@@ -29,14 +26,14 @@ public class ReportEtape1Fragment extends Fragment {
     private static final String TAG = "ReportEtape1Fragment";
     private OnFragmentInteractionListener mListener;
     private RecyclerView centersRecyclerView;
-    private Spinner centreSpinner;
     private Button nextBtn;
     private Context mParentContext;
-    private MedicalTeamCenterSelectionAdapter mAdapter;
+    private CenterSelectionAdapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private List<Center> mCentersList;
+    private CardView mHeader;
 
-    private String mCentre = "";
+    private Center mCentre;
 
     public ReportEtape1Fragment() {
         // this constructor should be empty
@@ -54,8 +51,8 @@ public class ReportEtape1Fragment extends Fragment {
 
         // binding views
         centersRecyclerView = rootView.findViewById(R.id.rv_centers);
-        centreSpinner = rootView.findViewById(R.id.sp_choix_centre_pour_rapport);
         nextBtn = rootView.findViewById(R.id.btn_suivant_etape_1);
+        mHeader = rootView.findViewById(R.id.cv_header_1);
 
         Initialise();
 
@@ -64,7 +61,13 @@ public class ReportEtape1Fragment extends Fragment {
         return rootView;
     }
 
+    public void hideHeader() {
+        mHeader.setVisibility(View.GONE);
+    }
+
     private void Initialise() {
+
+        mCentre = new Center();
 
         setUpEvents();
 
@@ -74,16 +77,10 @@ public class ReportEtape1Fragment extends Fragment {
         mCentersList = new ArrayList();
 
         // Setting required thins for recycler view
-        mAdapter = new MedicalTeamCenterSelectionAdapter(mCentersList);
+        mAdapter = new CenterSelectionAdapter(mCentersList);
         mLayoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false);
         centersRecyclerView.setLayoutManager(mLayoutManager);
         centersRecyclerView.setAdapter(mAdapter);
-
-        // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(mParentContext,
-                R.array.centres_array, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        centreSpinner.setAdapter(adapter);
     }
 
     private void configureOnClickRecyclerView() {
@@ -92,41 +89,35 @@ public class ReportEtape1Fragment extends Fragment {
                 .setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
                     @Override
                     public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-                        mCentre = mCentersList.get(position).getName();
-                        mListener.onStep1Finished(mCentre);
+                        mCentre = mCentersList.get(position);
+
+                        mListener.onStep1Finished(mCentersList.get(position));
                     }
                 });
     }
 
     private void fetchCenters() {
+        mListener.onRequestGetCenters();
+    }
 
-        // TODO: use api call
+    public void populateCenters(List<Center> centers) {
+        mCentersList.clear();
+        mAdapter.notifyDataSetChanged();
 
-        // Using fake data below
-        for (Center c : FakeData.getCenters()) {
-            mCentersList.add(c);
+        for (Center i : centers) {
+            mCentersList.add(i);
             mAdapter.notifyItemInserted(mCentersList.size() - 1);
         }
+
+        // Update
     }
 
     public void setUpEvents() {
 
-        // events
-        centreSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                mCentre = parent.getItemAtPosition(position).toString();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!mCentre.isEmpty() || mCentre != null) {
+                if (mCentre != null) {
                     mListener.onStep1Finished(mCentre);
                 } else {
                     Utils.presentToast(requireContext(),
@@ -156,8 +147,9 @@ public class ReportEtape1Fragment extends Fragment {
     }
 
     public interface OnFragmentInteractionListener {
-        void onStep1Finished(String center);
 
-        void onCenterUpdated(String updatedCenter);
+        void onRequestGetCenters();
+
+        void onStep1Finished(Center center);
     }
 }

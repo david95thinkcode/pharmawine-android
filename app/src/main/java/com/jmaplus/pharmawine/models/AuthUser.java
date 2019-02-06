@@ -1,8 +1,13 @@
 package com.jmaplus.pharmawine.models;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.jmaplus.pharmawine.utils.Constants;
 
 import java.util.List;
 
@@ -37,7 +42,7 @@ public class AuthUser {
     private String birthday;
     @SerializedName("avatar")
     @Expose
-    private Object avatar;
+    private String avatar;
     @SerializedName("email")
     @Expose
     private String email;
@@ -58,7 +63,7 @@ public class AuthUser {
     private Integer typeId;
     @SerializedName("network_id")
     @Expose
-    private Object networkId;
+    private Integer networkId;
     @SerializedName("areas")
     @Expose
     private List<Object> areas = null;
@@ -68,12 +73,18 @@ public class AuthUser {
     @SerializedName("products")
     @Expose
     private List<Object> products = null;
+    @SerializedName("network")
+    @Expose
+    private Network network;
     @SerializedName("networks")
     @Expose
     private Object networks;
     @SerializedName("goals")
     @Expose
     private List<Object> goals = null;
+    @SerializedName("roles")
+    @Expose
+    private List<AuthUserRole> roles = null;
 
     public Integer getId() {
         return id;
@@ -147,11 +158,11 @@ public class AuthUser {
         this.birthday = birthday;
     }
 
-    public Object getAvatar() {
+    public String getAvatar() {
         return avatar;
     }
 
-    public void setAvatar(Object avatar) {
+    public void setAvatar(String avatar) {
         this.avatar = avatar;
     }
 
@@ -203,11 +214,61 @@ public class AuthUser {
         this.typeId = typeId;
     }
 
-    public Object getNetworkId() {
+    public static AuthUser getAuthenticatedUser(Context mContext) {
+        AuthUser u = new AuthUser();
+
+        SharedPreferences sharedPref = mContext.getSharedPreferences(
+                Constants.F_PROFIL, Context.MODE_PRIVATE);
+
+        u.setId(sharedPref.getInt(Constants.SP_ID_KEY, -1));
+        u.setTypeId(sharedPref.getInt(Constants.SP_TYPE_KEY, -1));
+        u.setNetworkId(sharedPref.getInt(Constants.SP_NETWORK_KEY, -1));
+        u.setFirstname(sharedPref.getString(Constants.SP_FIRSTNAME_KEY, ""));
+        u.setLastname(sharedPref.getString(Constants.SP_LASTNAME_KEY, ""));
+        u.setAvatar(sharedPref.getString(Constants.SP_AVATAR_URL_KEY, ""));
+        u.setEmail(sharedPref.getString(Constants.SP_EMAIL_KEY, ""));
+        u.setBirthday(sharedPref.getString(Constants.SP_BIRTHDAY_KEY, ""));
+        u.setSex(sharedPref.getString(Constants.SP_SEX_KEY, ""));
+        u.setNationalite(sharedPref.getString(Constants.SP_NATIONALITY_KEY, ""));
+        u.setTelephone1(sharedPref.getString(Constants.SP_PHONE_1_KEY, ""));
+        u.setTelephone2(sharedPref.getString(Constants.SP_PHONE_2_KEY, ""));
+        u.setMaritalStatus(sharedPref.getString(Constants.SP_MARITAL_STATUS_KEY, ""));
+
+        // Objects
+        Gson gson = new Gson();
+
+        String NetworkObjectJson = sharedPref.getString(Constants.SP_NETWORK_OBJECT_KEY, "");
+        u.setNetwork(gson.fromJson(NetworkObjectJson, Network.class));
+
+        return u;
+    }
+
+    /**
+     * Clearing all datas from shared prefrences file used for user profile
+     */
+    public static Boolean deleteUserDatas(Context mContext) {
+
+        try {
+            SharedPreferences sharedPref = mContext.getSharedPreferences(
+                    Constants.F_PROFIL, Context.MODE_PRIVATE);
+
+            SharedPreferences.Editor editor = sharedPref.edit();
+
+            editor.clear();
+
+            editor.commit();
+
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public Integer getNetworkId() {
         return networkId;
     }
 
-    public void setNetworkId(Object networkId) {
+    public void setNetworkId(Integer networkId) {
         this.networkId = networkId;
     }
 
@@ -251,11 +312,138 @@ public class AuthUser {
         this.goals = goals;
     }
 
+    public String getFullName() {
+        return getFirstname() + " " + getLastname();
+    }
+
+    /**
+     * Get authenticated user roles
+     *
+     * @param mContext
+     * @return
+     */
+    public static final int getRoleFromSharedPreferences(Context mContext) {
+        SharedPreferences sharedPref = mContext.getSharedPreferences(
+                Constants.F_PROFIL, Context.MODE_PRIVATE);
+
+        return sharedPref.getInt(Constants.SP_ROLE_KEY, -1);
+
+    }
+
+    public Network getNetwork() {
+        return network;
+    }
+
+    public void setNetwork(Network network) {
+        this.network = network;
+    }
+
+    public List<AuthUserRole> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<AuthUserRole> roles) {
+        this.roles = roles;
+    }
+
     @Override
     public String toString() {
         Gson gson = new Gson();
 
         return gson.toJson(this);
     }
+
+
+    /**
+     * Get authenticated user token
+     *  from shared preferences
+     * @param mContext
+     * @return
+     */
+    public static String getToken(Context mContext) {
+        SharedPreferences sharedPref = mContext.getSharedPreferences(
+                Constants.F_PROFIL, Context.MODE_PRIVATE);
+
+        return sharedPref.getString(Constants.SP_TOKEN_KEY, "");
+
+    }
+
+    /**
+     * Write user data into shared Preferences
+     *
+     * @param context
+     * @return
+     */
+    public Boolean storeInSharedPreferences(Context context, String token) {
+
+        try {
+            SharedPreferences sharedPref = context.getSharedPreferences(
+                    Constants.F_PROFIL, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPref.edit();
+
+            // Les champs obligatoires
+            // =======================================
+
+            try {
+                editor.putInt(Constants.SP_ID_KEY, this.id);
+                editor.putString(Constants.SP_TOKEN_KEY, token);
+                editor.putInt(Constants.SP_TYPE_KEY, this.typeId);
+                editor.putInt(Constants.SP_ROLE_KEY, getFirstRole().getId());
+            } catch (NullPointerException e) {
+                Log.e(getClass().getName(), "Un des champs obligatoire est null");
+                Log.e(getClass().getName(), e.getMessage());
+                e.printStackTrace();
+                return false;
+            }
+            // Fin des champs obligatoires
+            // =======================================
+
+            // On a besoin du network uniquement si le user n'est pas un admin
+            if (this.getFirstRole().getId() != Constants.ROLE_ADMIN_KEY) {
+                editor.putInt(Constants.SP_NETWORK_KEY, getNetworkId());
+            }
+
+            editor.putString(Constants.SP_FIRSTNAME_KEY, this.firstname);
+            editor.putString(Constants.SP_LASTNAME_KEY, this.lastname);
+            editor.putString(Constants.SP_AVATAR_URL_KEY, this.avatar);
+            editor.putString(Constants.SP_EMAIL_KEY, this.email);
+            editor.putString(Constants.SP_BIRTHDAY_KEY, this.birthday);
+            editor.putString(Constants.SP_SEX_KEY, this.sex);
+            editor.putString(Constants.SP_NATIONALITY_KEY, this.nationalite);
+            editor.putString(Constants.SP_PHONE_1_KEY, this.telephone1);
+            editor.putString(Constants.SP_PHONE_2_KEY, this.telephone2);
+            editor.putString(Constants.SP_MARITAL_STATUS_KEY, this.maritalStatus);
+
+            // Objects
+            Gson gson = new Gson();
+            String networkObjectToJsonString = gson.toJson(this.network);
+            editor.putString(Constants.SP_NETWORK_OBJECT_KEY, networkObjectToJsonString);
+
+            // Un compte de user actif a pour status = 0 sinon 1
+            editor.putInt(Constants.SP_ACCOUNT_STATUS_KEY, this.status);
+
+            editor.commit();
+        } catch (Exception e) {
+            Log.e(getClass().getName(), e.getMessage());
+            e.printStackTrace();
+
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Recupere le vrai roles de l'utilisatuer
+     *
+     * @return
+     */
+    private AuthUserRole getFirstRole() {
+        if (this.roles != null && !getRoles().isEmpty())
+            return getRoles().get(0);
+        else
+            return null;
+    }
+
 
 }

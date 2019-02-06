@@ -1,60 +1,99 @@
 package com.jmaplus.pharmawine.activities;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jmaplus.pharmawine.R;
-import com.jmaplus.pharmawine.adapters.RemainingClientsAdapter;
-import com.jmaplus.pharmawine.models.Client;
+import com.jmaplus.pharmawine.adapters.RemainingCustomersAdapter;
+import com.jmaplus.pharmawine.database.model.ClientsList;
+import com.jmaplus.pharmawine.database.utils.DatabaseHelper;
+import com.jmaplus.pharmawine.models.AuthUser;
+import com.jmaplus.pharmawine.models.Customer;
 import com.jmaplus.pharmawine.utils.Constants;
 import com.jmaplus.pharmawine.utils.FakeData;
 import com.jmaplus.pharmawine.utils.ItemClickSupport;
+import com.jmaplus.pharmawine.utils.RetrofitCalls.DelegueCalls;
+import com.jmaplus.pharmawine.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProspectionActivity extends AppCompatActivity implements View.OnClickListener {
+import javax.annotation.Nullable;
+
+public class ProspectionActivity extends AppCompatActivity implements View.OnClickListener, DelegueCalls.Callbacks {
     private static String TAG = "ProspectionActivity";
     private static String VISITE_MESSAGE = "Êtes-vous sur le point de commencer une visite chez le medecin ";
 
     private Context mContext;
-    private LinearLayout mNewClient;
+    private ProgressBar mProgressBar;
+    private LinearLayout mNewClient, mRetryLayout;
+    private Button mRetryBtn;
     private RecyclerView mRecyclerView;
-    private RemainingClientsAdapter mAdapter;
-    private List<Client> clientsList;
+    private RemainingCustomersAdapter mAdapter;
+    private List<Customer> mCustomerList;
+    private AuthUser mAuthUser;
+    DatabaseHelper db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prospection);
 
+        db = new DatabaseHelper(getApplicationContext());
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         bindViewsAndInitilise();
 
-        fetchRemainingClients();
+        Log.i(getClass().getName(), "Fetch remote client");
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                fetchRemainingClients();
+            }
+        }, 800);
 
         configureOnClickRecyclerView();
     }
 
+    private void saveCustomerToDb() {
+        for (Customer c : mCustomerList) {
+            String client = c.toString();
+            ClientsList clientsList = new ClientsList(client, Utils.getCurrentDate());
+            long cID = db.saveToDBClient(clientsList);
+            Log.e("Client added to db", Long.toString(cID));
+        }
+    }
+
     private void bindViewsAndInitilise() {
         mContext = this;
+        mRetryBtn = findViewById(R.id.retry_btn);
+        mProgressBar = findViewById(R.id.progressBar_remaining_customers);
         mNewClient = findViewById(R.id.lay_new_client);
+        mRetryLayout = findViewById(R.id.retry_layout);
         mRecyclerView = findViewById(R.id.rv_remaining_customers_prospection);
         mNewClient.setOnClickListener(this);
+        mRetryBtn.setOnClickListener(this);
 
         // Initializations
-        clientsList = new ArrayList();
-        mAdapter = new RemainingClientsAdapter(this, clientsList);
+        mCustomerList = new ArrayList();
+        mAuthUser = AuthUser.getAuthenticatedUser(this);
+        mAdapter = new RemainingCustomersAdapter(this, mCustomerList);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayout.VERTICAL, false));
         mRecyclerView.setAdapter(mAdapter);
     }
@@ -65,13 +104,42 @@ public class ProspectionActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void fetchRemainingClients() {
-        // todo : use api datas
+        updateUIViewForFetching();
 
-        // using fake data
-        for (Client c : FakeData.getMedicalTeamClients()) {
-            clientsList.add(c);
-            mAdapter.notifyItemInserted(clientsList.size() - 1);
+        String currentDate = Utils.getCurrentDate();
+        String token = AuthUser.getToken(mContext);
+
+        try {
+            mProgressBar.setVisibility(View.VISIBLE);
+
+            if (!Constants.ENV_TESTMODE) {
+                DelegueCalls.getPlanning(token, this,
+                        mAuthUser.getId().toString(), currentDate, currentDate);
+            } else {
+                onPlanningResponse(FakeData.getCustomers());
+            }
+        } catch (Exception e) {
+            Log.e(TAG, "fetchRemainingClients: " + e.getMessage());
+            mProgressBar.setVisibility(View.VISIBLE);
         }
+
+    }
+
+    private void updateUIViewForFetching() {
+        mProgressBar.setVisibility(View.VISIBLE);
+        mRetryLayout.setVisibility(View.GONE);
+    }
+
+    private void updateUIViewForFetchingSuccess() {
+        mProgressBar.setVisibility(View.GONE);
+        mRetryLayout.setVisibility(View.GONE);
+        mRecyclerView.setVisibility(View.VISIBLE);
+    }
+
+    private void updateUIViewForFetchingError() {
+        mProgressBar.setVisibility(View.GONE);
+        mRetryLayout.setVisibility(View.VISIBLE);
+        mRecyclerView.setVisibility(View.GONE);
     }
 
     private void configureOnClickRecyclerView() {
@@ -80,7 +148,7 @@ public class ProspectionActivity extends AppCompatActivity implements View.OnCli
                 .setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
                     @Override
                     public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-                        ShowConfirmationToProgressPage(clientsList.get(position));
+                        ShowConfirmationToProgressPage(mCustomerList.get(position));
                     }
                 });
     }
@@ -97,15 +165,21 @@ public class ProspectionActivity extends AppCompatActivity implements View.OnCli
         return super.onOptionsItemSelected(item);
     }
 
-    private void ShowConfirmationToProgressPage(final Client customer) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Confirmation de visite");
-        builder.setMessage(VISITE_MESSAGE + customer.getFullName() + " ? ");
-        builder.setCancelable(false);
+    private void ShowConfirmationToProgressPage(final Customer customer) {
+        LayoutInflater factory = LayoutInflater.from(this);
+        final View customDialogView = factory.inflate(R.layout.custom_dialog_box, null);
+        final AlertDialog customDialog = new AlertDialog.Builder(this).create();
+        customDialog.setView(customDialogView);
+        TextView msgDialog = customDialogView.findViewById(R.id.dialog_box_content);
+        TextView titleDialog = customDialogView.findViewById(R.id.dialog_box_title);
+        customDialog.findViewById(R.id.dialog_box_content);
+        msgDialog.setText(R.string.msg_confirmation_visite);
+        titleDialog.setVisibility(View.GONE);
 
-        builder.setPositiveButton(R.string.oui, new DialogInterface.OnClickListener() {
+        customDialogView.findViewById(R.id.yes_button_custom_dialogbox).setOnClickListener(new View.OnClickListener() {
+
             @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onClick(View v) {
                 Intent i = new Intent(mContext, VisiteInProgressActivity.class);
 
                 // TODO: Important thing to consider after implentation of Pharmacy model
@@ -116,31 +190,73 @@ public class ProspectionActivity extends AppCompatActivity implements View.OnCli
                         Constants.PROSPECT_KNOWN_MEDICAL_TEAM_TYPE_KEY);
 
                 i.putExtra(Constants.CLIENT_ID_KEY, customer.getId());
-                i.putExtra(Constants.CLIENT_FIRSTNAME_KEY, customer.getFirstName());
-                i.putExtra(Constants.CLIENT_LASTNAME_KEY, customer.getLastName());
-                i.putExtra(Constants.CLIENT_SPECIALITY_KEY, customer.getSpeciality());
-                i.putExtra(Constants.CLIENT_STATUS_KEY, customer.getStatus());
-                i.putExtra(Constants.CLIENT_AVATAR_URL_KEY, customer.getAvatarUrl());
+                i.putExtra(Constants.CLIENT_FIRSTNAME_KEY, customer.getFirstname());
+                i.putExtra(Constants.CLIENT_FULLNAME_KEY, customer.getFullName());
+                i.putExtra(Constants.CLIENT_LASTNAME_KEY, customer.getLastname());
+                i.putExtra(Constants.CLIENT_AVATAR_URL_KEY, customer.getDefaultAvatar());
+                i.putExtra(VisiteInProgressActivity.EXTRA_PROSPECT_SEX, customer.getSex());
 
+                // Preventing against null exception
+                try {
+                    if (customer.getCustomerStatus() != null && customer.getCustomerType() != null
+                            && customer.getSpeciality() != null) {
+                        i.putExtra(Constants.CLIENT_SPECIALITY_KEY, customer.getSpeciality().getName());
+                        i.putExtra(Constants.CLIENT_CUSTOMER_TYPE_KEY, customer.getCustomerType().getName());
+                        i.putExtra(Constants.CLIENT_CUSTOMER_STATUS_KEY, customer.getCustomerStatus().getName());
+                    }
+                } catch (NullPointerException e) {
+                    Log.e(TAG, "An error occured : " + e.getMessage());
+                    Log.e(TAG, "Because : " + e.getCause());
+                    e.printStackTrace();
+                } catch (Exception e) {
+                    Log.e(TAG, "An error occured : " + e.getMessage());
+                    Log.e(TAG, "Because : " + e.getCause());
+                    e.printStackTrace();
+                }
+
+                customDialog.dismiss();
                 startActivity(i);
             }
         });
-
-        builder.setNegativeButton(R.string.non, new DialogInterface.OnClickListener() {
+        customDialogView.findViewById(R.id.no_button_custom_dialogbox).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
+            public void onClick(View v) {
+                customDialog.dismiss();
             }
-
         });
 
-        builder.show();
+        customDialog.show();
+    }
+
+    @Override
+    public void onPlanningResponse(@Nullable List<Customer> customers) {
+        updateUIViewForFetchingSuccess();
+
+        if (customers.isEmpty())
+            Toast.makeText(mContext, "Aucun client trouvé", Toast.LENGTH_SHORT).show();
+        else {
+            for (Customer c : customers) {
+                mCustomerList.add(c);
+                mAdapter.notifyItemChanged(mCustomerList.size() - 1);
+            }
+
+            Log.i(getClass().getName(), "Call Save to DB");
+            saveCustomerToDb();
+        }
+    }
+
+    @Override
+    public void onPlanningFailure() {
+        updateUIViewForFetchingError();
+        Toast.makeText(mContext, "Une erreur s'est produite", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onClick(View v) {
         if (v.getId() == mNewClient.getId()) {
             showNewClientView();
+        } else if (v.getId() == mRetryBtn.getId()) {
+            fetchRemainingClients();
         }
     }
 }

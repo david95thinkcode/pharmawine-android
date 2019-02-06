@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:backgroundTint="@color/stat_frag_bg"
+    tools:context=".fragments.rapportHebdo.StatHebdoPDDFragment">
+
+
+    <LinearLayout
+        android:id="@+id/linearLayoutpdd"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/swipe_stat_hebdo_pdd"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+
+        <android.support.v7.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:cardElevation="5dp">
+
+            <TextView
+                android:layout_width="150dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="3dp"
+                android:background="@color/bpWhite"
+                android:backgroundTint="@color/bpWhite"
+                android:fontFamily="@font/roboto_regular"
+                android:gravity="center"
+                android:text="@string/specialite"
+                android:textColor="@color/stat_title_txt_color"
+                android:textSize="18sp" />
+
+        </android.support.v7.widget.CardView>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/bpWhite"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:cardElevation="5dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:fontFamily="@font/roboto_regular"
+                    android:gravity="center"
+                    android:text="@string/potentiel_de_dev"
+                    android:textColor="@color/stat_title_txt_color"
+                    android:textSize="18sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="25dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_cig"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="-20dp"
+                        android:text="@string/cig"
+                        android:textColor="@color/sigle_color"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/tv_cim"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:text="@string/cim"
+                        android:textColor="@color/sigle_color"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/tv_pcg"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:text="@string/pcg"
+                        android:textColor="@color/sigle_color"
+                        android:textSize="16sp" />
+
+                    <TextView
+                        android:id="@+id/tv_pcm"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:text="@string/pcm"
+                        android:textColor="@color/sigle_color"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_stat_hebdo_pdd"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:context=".fragments.rapportHebdo.StatHebdoPDDFragment">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_stat_hebdo_pdd"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listitem="@layout/pdd_item" />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <TableLayout
+        android:id="@+id/tableLayout"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+
+        <TableRow>
+
+            <TextView
+                android:layout_width="150dp"
+                android:layout_height="30dp"
+                android:layout_marginEnd="2dp"
+                android:background="@color/grey"
+                android:gravity="center|start"
+                android:paddingStart="16dp"
+                android:text="@string/total_prevu" />
+
+
+            <TextView
+                android:id="@+id/tv_pdd_tp_cig"
+                android:layout_width="70dp"
+                android:layout_height="30dp"
+                android:background="@color/grey"
+                android:gravity="center|start"
+                android:paddingStart="35dp"
+                android:text="5" />
+
+            <TextView
+                android:id="@+id/tv_pdd_tp_cim"
+                android:layout_width="70dp"
+                android:layout_height="30dp"
+                android:background="@color/grey"
+                android:gravity="center|start"
+                android:paddingStart="30dp"
+                android:text="3" />
+
+            <TextView
+                android:id="@+id/tv_pdd_tp_pcg"
+                android:layout_width="68dp"
+                android:layout_height="30dp"
+                android:background="@color/grey"
+                android:gravity="center|start"
+                android:paddingStart="15dp"
+                android:text="3" />
+
+            <TextView
+                android:id="@+id/tv_pdd_tp_pcm"
+                android:layout_width="70dp"
+                android:layout_height="30dp"
+                android:background="@color/grey"
+                android:gravity="center|start"
+                android:paddingStart="5dp"
+                android:text="3" />
+
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:layout_width="150dp"
+                android:layout_height="30dp"
+                android:layout_marginEnd="2dp"
+                android:background="@color/othergrey"
+                android:gravity="center|start"
+                android:paddingStart="16dp"
+                android:text="@string/real" />
+
+            <TextView
+                android:id="@+id/tv_pdd_real_cig"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:background="@color/othergrey"
+                android:gravity="center|start"
+                android:paddingStart="30dp"
+                android:text="16" />
+
+            <TextView
+                android:id="@+id/tv_pdd_real_cim"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:background="@color/othergrey"
+                android:gravity="center|start"
+                android:paddingStart="25dp"
+                android:text="16" />
+
+            <TextView
+                android:id="@+id/tv_pdd_real_pcg"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:background="@color/othergrey"
+                android:gravity="center|start"
+                android:paddingStart="10dp"
+                android:text="16" />
+
+            <TextView
+                android:id="@+id/tv_pdd_real_pcm"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:background="@color/othergrey"
+                android:gravity="center|start"
+                android:paddingStart="1dp"
+                android:text="16" />
+
+
+        </TableRow>
+
+        <TableRow>
+
+            <TextView
+                android:layout_width="150dp"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="2dp"
+                android:background="@color/colorAccent50op"
+                android:gravity="center|start"
+                android:paddingStart="16dp"
+                android:text="@string/r_over_p" />
+
+            <TextView
+                android:id="@+id/tv_pdd_r_over_p_cig"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:background="@color/colorAccent50op"
+                android:gravity="center|start"
+                android:paddingStart="25dp"
+                android:text="300%" />
+
+            <TextView
+                android:id="@+id/tv_pdd_r_over_p_cim"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:background="@color/colorAccent50op"
+                android:gravity="center|start"
+                android:paddingStart="25dp"
+                android:text="500%" />
+
+            <TextView
+                android:id="@+id/tv_pdd_r_over_p_pcg"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:background="@color/colorAccent50op"
+                android:gravity="center|start"
+                android:paddingStart="12dp"
+                android:text="16" />
+
+            <TextView
+                android:id="@+id/tv_pdd_r_over_p_pcm"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:background="@color/colorAccent50op"
+                android:gravity="center|start"
+                android:paddingStart="1dp"
+                android:text="16" />
+
+        </TableRow>
+
+
+    </TableLayout>
+
+</android.support.constraint.ConstraintLayout>

@@ -11,19 +11,21 @@ import android.widget.TextView;
 import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
 import com.bumptech.glide.Glide;
 import com.jmaplus.pharmawine.R;
-import com.jmaplus.pharmawine.models.NetworkMember;
+import com.jmaplus.pharmawine.models.SimpleUser;
+import com.jmaplus.pharmawine.utils.Constants;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class NetworkMemberAdapter extends RecyclerView.Adapter<NetworkMemberAdapter.ViewHolder> {
 
 
-    private ArrayList<NetworkMember> networkMemberList;
+    private List<SimpleUser> networkMemberList;
     private Context mContext;
+    private Boolean devMode = true;
 
-    public NetworkMemberAdapter(Context context, ArrayList<NetworkMember> networkMembers) {
+    public NetworkMemberAdapter(Context context, List<SimpleUser> networkMembers) {
         super();
         this.mContext = context;
         this.networkMemberList = networkMembers;
@@ -40,27 +42,44 @@ public class NetworkMemberAdapter extends RecyclerView.Adapter<NetworkMemberAdap
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
-        final NetworkMember networkMember = networkMemberList.get(position);
-        networkMember.load();
+        final SimpleUser networkMember = networkMemberList.get(position);
 
-        if (networkMember.isValid()) {
-            holder.tvMemberName.setText(networkMember.getName().concat(" ").concat(networkMember.getLastName()));
-            holder.tvProgressLevel.setText(String.valueOf(networkMember.getDailyGoalLevel()).concat(" %"));
+        if (networkMember != null) {
+            holder.tvMemberName.setText(networkMember.getFirstname().concat(" ").concat(networkMember.getLastname()));
+            holder.tvProgressLevel.setText("45 %");
 
-            holder.progressBar.setProgress(networkMember.getDailyGoalLevel());
-            if (networkMember.getDailyGoalLevel() < 35) {
-                holder.progressBar.setProgressColor(mContext.getResources().getColor(R.color.red));
-            }
-            if (networkMember.getDailyGoalLevel() >= 35 && networkMember.getDailyGoalLevel() < 70) {
-                holder.progressBar.setProgressColor(mContext.getResources().getColor(R.color.orange));
+            /**
+             * TODO: Waiting for the API to replace it with the real  daily goal level
+             *
+             * holder.tvProgressLevel.setText(String.valueOf(networkMember.getDailyGoalLevel()).concat(" %"));
+             *
+             */
+
+//            holder.progressBar.setProgress(networkMember.getDailyGoalLevel());
+//            if (networkMember.getDailyGoalLevel() < 35) {
+//                holder.progressBar.setProgressColor(mContext.getResources().getColor(R.color.red));
+//            }
+//            if (networkMember.getDailyGoalLevel() >= 35 && networkMember.getDailyGoalLevel() < 70) {
+//                holder.progressBar.setProgressColor(mContext.getResources().getColor(R.color.orange));
+//            }
+//
+//            if (networkMember.getDailyGoalLevel() > 70){
+//                holder.progressBar.setProgressColor(mContext.getResources().getColor(R.color.green));
+//            }
+
+            if (Constants.ENV_TESTMODE) {
+                if (networkMember.getSex() == "M" || networkMember.getSex() == "m") {
+                    Glide.with(mContext).load(R.drawable.ic_ast_man).into(holder.imgMember);
+                } else {
+                    // woman case
+                    Glide.with(mContext).load(R.drawable.ic_ast_woman).into(holder.imgMember);
+                }
+            } else {
+                Glide.with(mContext)
+                        .load(networkMember.getAvatar())
+                        .into(holder.imgMember);
             }
 
-            if (networkMember.getDailyGoalLevel() > 70){
-                holder.progressBar.setProgressColor(mContext.getResources().getColor(R.color.green));
-            }
-            Glide.with(mContext)
-                    .load(networkMember.getProfilePicture())
-                    .into(holder.imgMember);
         }
     }
 

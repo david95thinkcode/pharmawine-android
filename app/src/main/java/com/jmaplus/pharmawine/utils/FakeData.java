@@ -2,9 +2,12 @@ package com.jmaplus.pharmawine.utils;
 
 import com.jmaplus.pharmawine.models.AuthenticatedUser;
 import com.jmaplus.pharmawine.models.Bonus;
-import com.jmaplus.pharmawine.models.Center;
 import com.jmaplus.pharmawine.models.Client;
+import com.jmaplus.pharmawine.models.Customer;
+import com.jmaplus.pharmawine.models.CustomerStatus;
 import com.jmaplus.pharmawine.models.Gift;
+import com.jmaplus.pharmawine.models.MedicalCenter;
+import com.jmaplus.pharmawine.models.Speciality;
 import com.jmaplus.pharmawine.models.User;
 import com.jmaplus.pharmawine.models.Wholesaler;
 
@@ -59,8 +62,8 @@ public class FakeData {
             Client client = new Client();
 
             client.setId(i.toString());
-            client.setFirstName(mFaker.name.firstName());
-            client.setLastName(mFaker.name.lastName());
+            client.setFirstname(mFaker.name.firstName());
+            client.setLastname(mFaker.name.lastName());
             client.setSex("m");
             client.setSpeciality(mFaker.lorem.characters(8) + "" + mFaker.lorem.characters(12));
             client.setStatus(mFaker.lorem.characters(3).toUpperCase());
@@ -79,19 +82,74 @@ public class FakeData {
         return customers;
     }
 
-    public static ArrayList<Center> getCenters() {
-        ArrayList<Center> centers = new ArrayList<>();
+    public static ArrayList<Customer> getCustomers() {
+
+        ArrayList<Customer> customers = new ArrayList<>();
+
+        for (Integer i = 1; i <= 10; i++) {
+            Customer customer = new Customer();
+
+            customer.setId(i);
+            customer.setFirstname(mFaker.name.firstName());
+            customer.setLastname(mFaker.name.lastName());
+            customer.setSex(mFaker.lorem.characters(1));
+            customer.setMaritalStatus(mFaker.lorem.characters(1));
+            customer.setNationality(mFaker.address.country());
+            customer.setAddress(mFaker.address.streetAddress());
+            customer.setReligion(mFaker.name.name());
+            customer.setBirthday(Utils.getFormattedDateForApiRequest(mFaker.date.birthday()));
+            customer.setCustomerTypeId(mFaker.number.between(Constants.TYPE_MEDICAL_KEY, Constants.TYPE_PHARMACEUTICAL_KEY));
+
+            // Contact fields
+            customer.setEmail(mFaker.name.firstName()
+                    .concat("@")
+                    .concat(mFaker.lorem.characters(5))
+                    .concat(".")
+                    .concat("com"));
+            customer.setTel(mFaker.phoneNumber.phoneNumber());
+            customer.setPhoneNumber2(mFaker.phoneNumber.phoneNumber());
+
+            // pharmacy specification
+            if (customer.getCustomerTypeId() == Constants.TYPE_PHARMACEUTICAL_KEY) {
+                customer.setName(mFaker.company.industry());
+                customer.setSex(null);
+            }
+
+            // Speciality
+            Speciality s = new Speciality();
+            s.setId(mFaker.number.between(1, 45));
+            s.setName(mFaker.company.profession().toUpperCase());
+            customer.setSpecialityId(s.getId());
+            customer.setSpeciality(s);
+
+            // Customer Status
+            CustomerStatus customerStatus = new CustomerStatus();
+            customerStatus.setId(mFaker.number.between(1, 10));
+            customerStatus.setName(mFaker.lorem.characters(3).toUpperCase());
+            customer.setCustomerStatusId(customerStatus.getId());
+            customer.setCustomerStatus(customerStatus);
+
+
+            // Add to list
+            customers.add(customer);
+        }
+
+        return customers;
+    }
+
+    public static ArrayList<MedicalCenter> getCenters() {
+        ArrayList<MedicalCenter> medicalCenters = new ArrayList<>();
 
         for (Integer i = 1; i <= 5; i++) {
-            Center c = new Center();
+            MedicalCenter c = new MedicalCenter();
 
             c.setId(i.toString());
             c.setName(mFaker.company.name());
             c.setZone(mFaker.address.city());
-            centers.add(c);
+            medicalCenters.add(c);
         }
 
-        return centers;
+        return medicalCenters;
 
     }
 

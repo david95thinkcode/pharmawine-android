@@ -2,7 +2,6 @@ package com.jmaplus.pharmawine.fragments.productCategory;
 
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -12,25 +11,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import com.jmaplus.pharmawine.PharmaWine;
 import com.jmaplus.pharmawine.R;
 import com.jmaplus.pharmawine.activities.ProductCategoryActivity;
-import com.jmaplus.pharmawine.activities.ProductsActivity;
 import com.jmaplus.pharmawine.adapters.ProductAdapter;
-import com.jmaplus.pharmawine.models.AuthenticatedUser;
-import com.jmaplus.pharmawine.models.Product;
-import com.jmaplus.pharmawine.services.ApiClient;
-import com.jmaplus.pharmawine.services.ApiInterface;
-import com.jmaplus.pharmawine.services.responses.ProductsResponse;
-import com.jmaplus.pharmawine.utils.PrefManager;
+import com.jmaplus.pharmawine.models.ApiProduct;
 
 import java.util.ArrayList;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -42,11 +29,10 @@ public class LaboratoriesFragment extends Fragment {
     private static final String KEY_LAYOUT_POSITION = "layoutPosition";
     private int mRecyclerViewPosition = 0;
 
-    private ArrayList<Product> productList;
+    private ArrayList<ApiProduct> productList;
     private ProductCategoryActivity mContext;
     private ProductAdapter productAdapter;
     private SwipeRefreshLayout mSwipeRefreshLayout;
-    private PrefManager prefManager;
 
     public LaboratoriesFragment() {
         // Required empty public constructor
@@ -71,18 +57,12 @@ public class LaboratoriesFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         mContext = (ProductCategoryActivity) getActivity();
-        prefManager = new PrefManager(mContext);
-
-//        Set the adapter
         productAdapter = new ProductAdapter(productList, mContext, ProductAdapter.LABORATORY);
 
-
-//        Set the adapter to recycler
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         recyclerView.setAdapter(productAdapter);
 
-//        Get the product's list
         getProductList();
 
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -105,10 +85,11 @@ public class LaboratoriesFragment extends Fragment {
         mSwipeRefreshLayout.setRefreshing(true);
         productList.clear();
 
-        productList.addAll(Product.getAllByCategory(PharmaWine.mRealm, mContext.selectedProductCategory));
-        if(mSwipeRefreshLayout.isRefreshing()) mSwipeRefreshLayout.setRefreshing(false);
+//        productList.addAll(Product.getAllByCategory(PharmaWine.mRealm, mContext.selectedProductCategory));
 
-        notifyChanges();
+//        if(mSwipeRefreshLayout.isRefreshing()) mSwipeRefreshLayout.setRefreshing(false);
+
+//        notifyChanges();
     }
 
     private void notifyChanges() {
@@ -123,14 +104,14 @@ public class LaboratoriesFragment extends Fragment {
     }
 
     public void search(String query) {
-        ArrayList<Product> models = productList;
-        ArrayList<Product> filteredModelList = new ArrayList<>();
+        ArrayList<ApiProduct> models = productList;
+        ArrayList<ApiProduct> filteredModelList = new ArrayList<>();
 
         if (!query.isEmpty()) {
             query = query.toLowerCase();
-            for (Product model : models) {
+            for (ApiProduct model : models) {
                 final String text = model.getName().toLowerCase();
-                final String text2 = model.getLaboratory().toLowerCase();
+                final String text2 = model.getLaboratory().getName().toLowerCase();
                 if (text.contains(query) || text2.contains(query)) {
                     filteredModelList.add(model);
                 }
@@ -140,8 +121,6 @@ public class LaboratoriesFragment extends Fragment {
         }
         productAdapter = new ProductAdapter(filteredModelList, mContext, ProductAdapter.LABORATORY);
         recyclerView.setAdapter(productAdapter);
-
-//        Mettre à jour le nombre de produits total
-        mContext.updateBottomView(R.drawable.pill, mContext.getResources().getString(R.string.products_number).replace("%", String.valueOf(filteredModelList.size())));
+        // todo: call the root to udate number of products
     }
 }

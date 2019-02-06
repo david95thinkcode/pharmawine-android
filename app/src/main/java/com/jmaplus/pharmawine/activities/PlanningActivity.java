@@ -1,5 +1,6 @@
 package com.jmaplus.pharmawine.activities;
 
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -7,10 +8,9 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -24,15 +24,23 @@ import com.jmaplus.pharmawine.R;
 import com.jmaplus.pharmawine.fragments.planning.ActivitiesAreaFragment;
 import com.jmaplus.pharmawine.fragments.planning.SalesGoalsFragment;
 import com.jmaplus.pharmawine.fragments.planning.VisitFragment;
-
-import org.w3c.dom.Text;
+import com.jmaplus.pharmawine.models.AuthUser;
+import com.jmaplus.pharmawine.models.Customer;
+import com.jmaplus.pharmawine.utils.RetrofitCalls.DelegueCalls;
 
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
 
-public class PlanningActivity extends AppCompatActivity {
+import javax.annotation.Nullable;
+
+public class PlanningActivity extends AppCompatActivity
+        implements View.OnClickListener,
+        DelegueCalls.Callbacks,
+        VisitFragment.OnFragmentInteractionListener {
 
     private Toolbar toolbar;
     private TabLayout tabLayout;
@@ -41,13 +49,17 @@ public class PlanningActivity extends AppCompatActivity {
     private LinearLayout cvSelectDate;
     private TextView tvDateLabel;
 
-
     public static String VISIT = "com.jmaplus.pharmawine.activities.visites";
     public static String SALES_GOALS = "com.jmaplus.pharmawine.activities.sales_goals";
     public static String ACTIVITY_AREA = "com.jmaplus.pharmawine.activities.activity_area";
-
+    public List<Customer> mCustomerList = new ArrayList();
+    private String[] frenchMonths;
+    private String TAG = "PlanningActivity";
     private String mCurrentFragment;
-
+    private int userRole;
+    private AuthUser mAuthUser;
+    private String mDate;
+    private ViewPagerAdapter mPagerAdapter;
     public VisitFragment mVisitFragment = new VisitFragment();
     public SalesGoalsFragment mSalesGoalsFragment = new SalesGoalsFragment();
     public ActivitiesAreaFragment mActAreaFragment = new ActivitiesAreaFragment();
@@ -57,19 +69,34 @@ public class PlanningActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_planning);
 
-        toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        mAuthUser = AuthUser.getAuthenticatedUser(this);
         mCurrentFragment = mVisitFragment.getClass().getSimpleName();
+        frenchMonths = new DateFormatSymbols(Locale.FRENCH).getMonths();
+
+        initViews();
+    }
+
+    private void initViews() {
+
+        // Binding views
+        toolbar = findViewById(R.id.toolbar);
         viewPager = findViewById(R.id.viewpager);
-        setupViewPager(viewPager);
-
         tabLayout = findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(viewPager);
-
         tvDateLabel = findViewById(R.id.tv_planning_date);
         cvSelectDate = findViewById(R.id.cv_planning_visit_date);
+
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setupViewPager(viewPager);
+        tabLayout.setupWithViewPager(viewPager);
+
+        // Date label for the first time
+        Calendar calendar = Calendar.getInstance();
+        tvDateLabel.setText(frenchMonths[calendar.get(Calendar.MONTH)].toUpperCase().concat(" ").
+                concat(String.valueOf(calendar.get(Calendar.YEAR))));
+
+
+        // Set listenners
         cvSelectDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -78,14 +105,49 @@ public class PlanningActivity extends AppCompatActivity {
                         .setOnDateSetListener(new CalendarDatePickerDialogFragment.OnDateSetListener() {
                             @Override
                             public void onDateSet(CalendarDatePickerDialogFragment dialog, int year, int month, int dayOfMonth) {
-                                String[] frenchMonths = new DateFormatSymbols(Locale.FRENCH).getMonths();
-                                tvDateLabel.setText(frenchMonths[month].concat(" ").
-                                                concat(String.valueOf(year)));
+
+                                tvDateLabel.setText(frenchMonths[month].toUpperCase().concat(" ").
+                                        concat(String.valueOf(year)));
+
+                                // Very important
+                                // We should inform visitefragment that date have changed
+                                Calendar calendar = new GregorianCalendar(year, month, dayOfMonth);
+                                mVisitFragment.setDateString(calendar.getTime());
                             }
                         });
                 datePickerDialog.show(getSupportFragmentManager(), "DatePicker");
             }
         });
+    }
+
+    // ================ CALLBACKS =============
+
+    @Override
+    public void onRequestUserRoleID() {
+        int userRole = AuthUser.getRoleFromSharedPreferences(this);
+
+        if (userRole != -1 && userRole > 0)
+            mVisitFragment.setUserRoleIDFromSource(userRole);
+        else
+            Log.i(TAG, "onRequestUserRoleID: Le role de ce user n'est pas clair");
+    }
+
+    @Override
+    public void onRequestPlanning(String startDate, String endDate) {
+        DelegueCalls.getPlanning(AuthUser.getToken(this), this,
+                mAuthUser.getId().toString(), startDate, endDate);
+    }
+
+    @Override
+    public void onPlanningResponse(@Nullable List<Customer> customers) {
+        mCustomerList = customers;
+        mVisitFragment.populateCustomerListFromSource(mCustomerList);
+    }
+
+    @Override
+    public void onPlanningFailure() {
+        mVisitFragment.populateCustomerListFromSource(mCustomerList);
+        Toast.makeText(this, R.string.erreur_de_recuperation_du_planning, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -95,6 +157,11 @@ public class PlanningActivity extends AppCompatActivity {
 
         itemSearch = menu.getItem(0);
         return true;
+    }
+
+    @Override
+    public void onClick(View v) {
+
     }
 
     @Override
@@ -125,12 +192,12 @@ public class PlanningActivity extends AppCompatActivity {
     }
 
     private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        mPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-        adapter.addFragment(mVisitFragment, "Visites");
-        adapter.addFragment(mSalesGoalsFragment, "Obj. de ventes");
-        adapter.addFragment(mActAreaFragment, "Zones d'act.");
-        viewPager.setAdapter(adapter);
+        mPagerAdapter.addFragment(mVisitFragment, "Visites");
+        mPagerAdapter.addFragment(mSalesGoalsFragment, "Obj. de ventes");
+        mPagerAdapter.addFragment(mActAreaFragment, "Zones d'act.");
+        viewPager.setAdapter(mPagerAdapter);
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
@@ -165,6 +232,5 @@ public class PlanningActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             return mFragmentTitleList.get(position);
         }
-
     }
 }

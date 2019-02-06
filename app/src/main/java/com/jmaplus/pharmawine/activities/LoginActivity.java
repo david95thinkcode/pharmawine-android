@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.method.PasswordTransformationMethod;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
@@ -17,16 +16,17 @@ import android.widget.Toast;
 
 import com.jmaplus.pharmawine.PharmaWine;
 import com.jmaplus.pharmawine.R;
+import com.jmaplus.pharmawine.models.ApiProduct;
 import com.jmaplus.pharmawine.models.AuthUser;
 import com.jmaplus.pharmawine.models.AuthUserResponse;
 import com.jmaplus.pharmawine.models.AuthenticatedUser;
-import com.jmaplus.pharmawine.models.LoginCredentials;
 import com.jmaplus.pharmawine.services.ApiClient;
 import com.jmaplus.pharmawine.services.ApiInterface;
 import com.jmaplus.pharmawine.services.responses.LoginResponse;
 import com.jmaplus.pharmawine.utils.PrefManager;
 import com.jmaplus.pharmawine.utils.RetrofitCalls.AuthCalls;
 
+import java.util.List;
 import java.util.regex.Pattern;
 
 import javax.annotation.Nullable;
@@ -46,6 +46,8 @@ public class LoginActivity extends AppCompatActivity implements AuthCalls.Callba
     private final int MIN_PASSWORD_LENGTH = 6;
     private static final String TAG = "LoginActivity";
     private ProgressDialog dialog;
+    private String userToken = "";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +78,7 @@ public class LoginActivity extends AppCompatActivity implements AuthCalls.Callba
         btnConnexion = findViewById(R.id.btn_login_connexion);
 
 //        TODO removes this
-        etId.setText("alcoy@gmail.com");
+        etId.setText("mervin07@example.com");
         etPassword.setText("secret");
 
 //        Avoid courrier font for passwords input
@@ -101,7 +103,7 @@ public class LoginActivity extends AppCompatActivity implements AuthCalls.Callba
 
     private void getAuthenticatedUserInfos(String token) {
         try {
-            LoginCredentials credentials = new LoginCredentials(etId.getText().toString().trim(), etPassword.getText().toString().trim());
+//            LoginCredentials credentials = new LoginCredentials(etId.getText().toString().trim(), etPassword.getText().toString().trim());
             AuthCalls.getDetails(this, token);
         } catch (Exception e) {
             Toast.makeText(this, "Error pour recuperation des details du user", Toast.LENGTH_SHORT).show();
@@ -113,7 +115,18 @@ public class LoginActivity extends AppCompatActivity implements AuthCalls.Callba
     @Override
     public void onLoginResponse(@Nullable AuthUserResponse response) {
 //        Toast.makeText(this, "Authentication step 1 passed", Toast.LENGTH_SHORT).show();
+        userToken = response.getToken();
         getAuthenticatedUserInfos(response.getToken());
+    }
+
+    @Override
+    public void onAuthProductsResponse(@Nullable List<ApiProduct> products) {
+
+    }
+
+    @Override
+    public void onAuthProductFailure() {
+
     }
 
     @Override
@@ -132,11 +145,10 @@ public class LoginActivity extends AppCompatActivity implements AuthCalls.Callba
     public void onFetchingDetailsResponse(@Nullable AuthUser response) {
 //        Toast.makeText(this, "Authentication step 2 passed", Toast.LENGTH_SHORT).show();
 
-        Boolean isStored = storeAuthenticatedUserInfosInSharedPreferences(response);
+        Boolean isStored = saveUserData(response);
 
         if (isStored) {
 //            Toast.makeText(this, "Authentication step 3 passed", Toast.LENGTH_SHORT).show();
-
             // open the app
             stopLoadingDialog();
             startActivity(new Intent(LoginActivity.this, MainActivity.class));
@@ -152,12 +164,8 @@ public class LoginActivity extends AppCompatActivity implements AuthCalls.Callba
         stopLoadingDialog();
     }
 
-    private boolean storeAuthenticatedUserInfosInSharedPreferences(AuthUser user) {
-
-        Log.i(TAG, user.toString());
-
-        // TODO:
-        return true;
+    private boolean saveUserData(AuthUser user) {
+        return user.storeInSharedPreferences(this, userToken);
     }
 
     private boolean validateForm() {
@@ -255,7 +263,7 @@ public class LoginActivity extends AppCompatActivity implements AuthCalls.Callba
                                         etId.requestFocus();
                                     }
                                 })
-                        .show();
+                                .show();
 
                     } else {
                         Toast.makeText(LoginActivity.this, getResources().getString(R.string.smthg_wrong_request), Toast.LENGTH_SHORT).show();

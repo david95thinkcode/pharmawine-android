@@ -4,21 +4,20 @@ import android.content.Context
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar
+import com.bumptech.glide.Glide
+import com.google.gson.Gson
 import com.jmaplus.pharmawine.R
+import com.jmaplus.pharmawine.activities.ClientDetailsActivity
 import com.jmaplus.pharmawine.models.Client
-import com.jmaplus.pharmawine.utils.Constants
+import com.jmaplus.pharmawine.models.Customer
 import de.hdodenhof.circleimageview.CircleImageView
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
@@ -30,12 +29,13 @@ private const val ARG_PARAM2 = "param2"
 class MedicalTeamDetailsFragment : Fragment(), View.OnClickListener {
 
     companion object {
-        private const val TAG = "MedicalTeamDetailsFragment"
+        private const val TAG = "MedicalTeamDetailsFrag"
     }
 
     private var listener: OnFragmentInteractionListener? = null
-    private var client: Client = Client()
+    private var mCustomer: Customer = Customer()
 
+    private lateinit var mContext: Context
     private lateinit var tvSexe: TextView
     private lateinit var tvBirthday: TextView
     private lateinit var tvNationality: TextView
@@ -56,6 +56,15 @@ class MedicalTeamDetailsFragment : Fragment(), View.OnClickListener {
                               savedInstanceState: Bundle?): View? {
 
         val rootView = inflater.inflate(R.layout.fragment_medical_team_details, container, false)
+
+        mContext = requireContext()
+
+        var gson = Gson()
+        var customerStringFronArguments = arguments?.getString(ClientDetailsActivity.CUSTOMER_OBJECT_EXTRA)
+        mCustomer = gson.fromJson(customerStringFronArguments, Customer::class.java)
+
+        // Binding UI views
+
         imgProfile = rootView.findViewById(R.id.img_profile_picture)
         tvClientName = rootView.findViewById(R.id.tv_i_client_name)
         tvClientCategory = rootView.findViewById(R.id.tv_i_client_category)
@@ -74,28 +83,33 @@ class MedicalTeamDetailsFragment : Fragment(), View.OnClickListener {
         tvProfileProgress = rootView.findViewById(R.id.tv_i_client_progress)
         profileProgress = rootView.findViewById(R.id.progress_client_i_filling)
 
-        getMedicalTeamClientDetails()
+        /**
+         * If customer received from parent is null
+         * A request is sent to parent activity to send us a customer object
+         */
+        if (mCustomer == null) listener?.onRequestCustomerObjectForUIInitialization()
+        else updateUI()
 
         return rootView
     }
 
-    private fun getMedicalTeamClientDetails() {
-        // todo: Fetch client datas from api and use it instead of fake data
-        val currentClient = getFakeClient()
-
-
-        // TODO: Call this method only when data was successfully fetched from server
-        updateViewsForMedicalTeamClient(currentClient)
-
-        listener?.onClientDetailsReceived(currentClient)
+    /**
+     * This method should be called from parent
+     */
+    fun updateCustomersWith(customer: Customer) {
+        updateUI()
     }
 
-    private fun updateViewsForMedicalTeamClient(client: Client) {
+    private fun updateUI() {
 
-        profileProgress.progress = client.getFillingLevel().toFloat()
-        tvProfileProgress.text = client.getFillingLevel().toString() + " %"
+        Glide.with(mContext).load(mCustomer.bigDefaultAvatar).into(imgProfile)
+        // Progress bar
 
-        val fillingLevel = client.getFillingLevel()
+        profileProgress.progress = mCustomer.getFillingLevel().toFloat()
+        tvProfileProgress.text = mCustomer.getFillingLevel().toString() + " %"
+
+        val fillingLevel = mCustomer.fillingLevel
+
         if (fillingLevel < 35) {
             profileProgress.progressColor = resources.getColor(R.color.red)
         } else if (fillingLevel < 69) {
@@ -104,67 +118,91 @@ class MedicalTeamDetailsFragment : Fragment(), View.OnClickListener {
             profileProgress.progressColor = resources.getColor(R.color.green)
         }
 
-        tvClientName.text = client.getFullName()
-        tvClientCategory.text = client.speciality
-        tvSexe.text = if (client.sex == "M") "Homme" else if (client.sex == "F") "Femme" else "-"
-        tvNationality.text = client.nationality
-        tvMaritalStatus.text = client.maritalStatus
-        tvEmail.text = client.email
-        tvAddress.text = client.address
-        tvBirthday.text = client.getRedabledate()
+        // Speciality
+        if (mCustomer.speciality != null && !mCustomer.speciality.name.isNullOrEmpty()) {
+            tvClientCategory.text = mCustomer.speciality.name
+        } else {
+            tvClientCategory.text = resources.getString(R.string.non_defini)
+        }
+
+        // Customer status
+        if (mCustomer.customerStatus != null && !mCustomer.customerStatus.name.isNullOrEmpty()) {
+            tvClientType.text = mCustomer.customerStatus.name
+        } else {
+            tvClientType.text = resources.getString(R.string.non_defini)
+        }
+
+        // Nationality
+        if (mCustomer.nationality != null && !mCustomer.nationality.isNullOrEmpty()) {
+            tvNationality.text = mCustomer.nationality
+        } else {
+            tvNationality.text = resources.getString(R.string.non_defini)
+        }
+
+        // Religion
+        if (mCustomer.religion != null && !mCustomer.religion.isNullOrEmpty()) {
+            tvBelieves.text = mCustomer.religion
+        } else {
+            tvBelieves.text = resources.getString(R.string.non_defini)
+        }
+
+        // Marital status
+        if (mCustomer.maritalStatus != null && !mCustomer.maritalStatus.isNullOrEmpty()) {
+            tvMaritalStatus.text = mCustomer.maritalStatus
+        } else {
+            tvMaritalStatus.text = resources.getString(R.string.non_defini)
+        }
+
+        tvClientName.text = mCustomer.fullName
+        tvSexe.text = if (mCustomer.sex.toUpperCase() == "M") "Homme" else if (mCustomer.sex == "F") "Femme" else "-"
+        tvEmail.text = mCustomer.email
+        tvAddress.text = mCustomer.address
+        tvBirthday.text = mCustomer.redabledate
 
         // PhoneNumber view management
-        if (!client.phoneNumber.trim { it <= ' ' }.isEmpty()) {
-            btnCall1.text = client.phoneNumber
-            btnCall1.setOnClickListener(this)
-        } else {
-            // Empty phone number
-            btnCall1.setText(R.string.call)
-            btnCall1.isEnabled = false
-            btnCall1.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.grey))
+        if (!mCustomer.phoneNumber2.isNullOrEmpty()) {
 
-            if (!client.phoneNumber2.trim { it <= ' ' }.isEmpty()) {
-                btnCall1.visibility = View.GONE
+            if (!mCustomer.tel.trim { it <= ' ' }.isEmpty()) {
+                btnCall1.text = mCustomer.tel
+                btnCall1.setOnClickListener(this)
+            } else {
+                // Empty phone number
+                btnCall1.setText(R.string.call)
+                btnCall1.isEnabled = false
+                btnCall1.backgroundTintList = ColorStateList.valueOf(resources.getColor(R.color.grey))
+
+                if (!mCustomer.phoneNumber2.trim { it <= ' ' }.isEmpty()) {
+                    btnCall1.visibility = View.GONE
+                }
             }
+        } else {
+            btnCall1.visibility = View.GONE
         }
 
         // PhoneNumber2 view management
-        if (!client.phoneNumber2.trim { it <= ' ' }.isEmpty()) {
-            btnCall2.text = client.phoneNumber2
-            btnCall2.setOnClickListener(this)
+        if (!mCustomer.phoneNumber2.isNullOrEmpty()) {
+            if (!mCustomer.phoneNumber2.trim { it <= ' ' }.isEmpty()) {
+                btnCall2.text = mCustomer.phoneNumber2
+                btnCall2.setOnClickListener(this)
+            } else {
+                btnCall2.visibility = View.GONE
+            }
         } else {
             btnCall2.visibility = View.GONE
         }
-    }
 
-    private fun getFakeClient(): Client {
-        val client = Client()
-
-        client.id = "2"
-        client.firstName = "Ablonon"
-        client.lastName = "Veronique"
-        client.sex = "F"
-        client.speciality = "Medecin generaliste"
-        client.status = "CFG"
-        client.isKnown = true
-        client.email = "davidhihea@gmail.com"
-        client.birthday = "08-09-2000"
-        client.phoneNumber = "+22966843445"
-        client.phoneNumber2 = "22995754591"
-        client.maritalStatus = "Marié"
-        client.nationality = "Béninoise"
-        client.type = Constants.CLIENT_PHARMACY_TYPE_KEY
-
-        return client
+        Log.i(TAG, "Progress ==> ${mCustomer.fillingLevel}")
     }
 
     override fun onClick(v: View?) {
+
         when (v?.id) {
             btnCall1.id -> {
-                listener?.onPhoneNumberCallInteraction(client.phoneNumber.trim { it <= ' ' })
+                Log.i(TAG, "Sending ==> ${mCustomer.tel}")
+                if (mCustomer.tel.isNotEmpty()) listener?.onPhoneNumberCallInteraction(mCustomer.tel)
             }
             btnCall2.id -> {
-                listener?.onPhoneNumberCallInteraction(client.phoneNumber2.trim { it <= ' ' })
+                if (mCustomer.phoneNumber2.isNotEmpty()) listener?.onPhoneNumberCallInteraction(mCustomer.phoneNumber2)
             }
             else -> { // Nothing to do}
             }
@@ -196,6 +234,8 @@ class MedicalTeamDetailsFragment : Fragment(), View.OnClickListener {
         fun onPhoneNumberCallInteraction(phoneNumber: String)
 
         fun onClientDetailsReceived(clientDetails: Client)
+
+        fun onRequestCustomerObjectForUIInitialization()
     }
 
 }

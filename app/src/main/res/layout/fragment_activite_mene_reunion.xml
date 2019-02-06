@@ -5,10 +5,111 @@
     android:layout_height="match_parent"
     tools:context=".fragments.rapportHebdo.ActiviteMeneReunionFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_margin="12dp"
+            android:backgroundTint="@color/bpWhite"
+            android:src="@drawable/progress_2_of_6" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="2dp"
+            android:fontFamily="@font/roboto_regular"
+            android:text="@string/reunions"
+            android:textColor="@color/bpblack"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|center"
+        android:layout_marginStart="-10dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="16dp"
+        android:gravity="center|top"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginStart="2dp"
+            android:fontFamily="@font/roboto_regular"
+            android:text="@string/precise_centre"
+            android:textColor="@color/sometxtcol"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginStart="2dp"
+            android:fontFamily="@font/roboto_regular"
+            android:text="@string/produit"
+            android:textColor="@color/sometxtcol"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginStart="2dp"
+            android:fontFamily="@font/roboto_regular"
+            android:text="@string/engagment"
+            android:textColor="@color/sometxtcol"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginStart="2dp"
+            android:fontFamily="@font/roboto_regular"
+            android:text="@string/mode_de_suivi"
+            android:textColor="@color/sometxtcol"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+
+
+    <EditText
+        android:id="@+id/ed_reunions"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="52dp"
+        android:hint="@string/enter_text_here" />
+
+    <Button
+        android:id="@+id/btn_back_to_garde"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="205dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="@color/colorAccent"
+        android:text="@string/precedent"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="13sp" />
+
+    <Button
+        android:id="@+id/btn_go_to_relation_public"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="205dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:background="@color/colorAccent"
+        android:text="@string/suivant"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="13sp" />
 
 </FrameLayout>

@@ -1,45 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="320dp"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
         android:orientation="vertical"
-        android:padding="8dp"
-        android:background="@color/colorPrimary">
+        android:padding="8dp">
 
         <TextView
             android:id="@+id/tv_product_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Norlevo"
-            android:textColor="@android:color/white"
             android:gravity="center"
+            android:padding="5dp"
+            android:text="Norlevo"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:padding="5dp"/>
+            android:textColor="@android:color/white" />
 
         <TextView
             android:id="@+id/tv_product_category"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Anti..."
-            android:textColor="@android:color/white"
             android:gravity="center"
+            android:paddingBottom="5dp"
+            android:text="Anti..."
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:paddingBottom="5dp"/>
+            android:textColor="@android:color/white" />
 
         <TextView
             android:id="@+id/tv_product_laboratory"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Denk Pharma"
-            android:textColor="@android:color/white"
             android:gravity="center"
-            android:textAppearance="?android:attr/textAppearanceSmall"/>
+            android:text="Denk Pharma"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@android:color/white" />
 
     </LinearLayout>
 
@@ -56,92 +55,92 @@
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="25"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:text="PGHT : "/>
+                android:layout_weight="25"
+                android:text="PGHT : "
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/tv_global_price_ht"
                 android:layout_width="0dp"
-                android:layout_weight="25"
                 android:layout_height="wrap_content"
-                android:text="1500"
-                android:textSize="16sp"
+                android:layout_weight="25"
+                android:ellipsize="end"
                 android:maxLines="1"
-                android:ellipsize="end"/>
+                android:text="1500"
+                android:textSize="16sp" />
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="50"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:text="FCFA"/>
+                android:layout_weight="50"
+                android:text="FCFA"
+                android:textSize="16sp" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="20dp">
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="25"
-                android:textSize="16sp"
                 android:layout_height="wrap_content"
-                android:text="PC : "/>
+                android:layout_weight="25"
+                android:text="PC : "
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/tv_pc_price"
                 android:layout_width="0dp"
-                android:layout_weight="25"
                 android:layout_height="wrap_content"
-                android:text="1500"
-                android:textSize="16sp"
+                android:layout_weight="25"
+                android:ellipsize="end"
                 android:maxLines="1"
-                android:ellipsize="end"/>
+                android:text="1500"
+                android:textSize="16sp" />
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="50"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:text="FCFA"/>
+                android:layout_weight="50"
+                android:text="FCFA"
+                android:textSize="16sp" />
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="20dp">
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="25"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:text="PP : "/>
+                android:layout_weight="25"
+                android:text="PP : "
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/tv_pp_price"
                 android:layout_width="0dp"
-                android:layout_weight="25"
-                android:textStyle="bold"
                 android:layout_height="wrap_content"
+                android:layout_weight="25"
+                android:ellipsize="end"
+                android:maxLines="1"
                 android:text="1500"
                 android:textSize="16sp"
-                android:maxLines="1"
-                android:ellipsize="end"/>
+                android:textStyle="bold" />
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_weight="50"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:text="FCFA"/>
+                android:layout_weight="50"
+                android:text="FCFA"
+                android:textSize="16sp" />
 
         </LinearLayout>
 

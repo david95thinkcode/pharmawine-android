@@ -57,7 +57,7 @@
         android:layout_height="60dp"
         android:layout_marginStart="30dp"
         android:layout_marginBottom="4dp"
-        android:src="@drawable/profil_sup"
+        android:src="@drawable/bg_doctor_man"
         app:civ_border_color="@color/light_grey"
         app:civ_border_width="1dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
@@ -180,6 +180,6 @@
         android:layout_height="wrap_content"
         android:foregroundGravity="center_horizontal"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="197dp" />
+        app:layout_constraintGuide_begin="205dp" />
 
 </android.support.constraint.ConstraintLayout>

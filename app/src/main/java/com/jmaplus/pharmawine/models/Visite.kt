@@ -33,7 +33,7 @@ class Visite {
     /**
      * contiendra des donnees uniquement si la propriete isForKnownProspect est a true
      */
-    var client: Client = Client()
+    var client: Customer = Customer()
 
     /**
      * Return true if all required data about visit report

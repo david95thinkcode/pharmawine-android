@@ -56,7 +56,7 @@
                     android:layout_weight="90"
                     android:gravity="center_vertical"
                     android:paddingLeft="60dp"
-                    android:text="Octobre 2018"
+                    android:text="Mois annee"
                     android:textSize="16sp"
                     android:textColor="@android:color/white" />
             </LinearLayout>

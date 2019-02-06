@@ -1,5 +1,6 @@
 package com.jmaplus.pharmawine.utils.RetrofitCalls;
 
+import com.jmaplus.pharmawine.models.ApiProduct;
 import com.jmaplus.pharmawine.models.AuthUser;
 import com.jmaplus.pharmawine.models.AuthUserResponse;
 import com.jmaplus.pharmawine.models.LoginCredentials;
@@ -21,7 +22,7 @@ public class AuthCalls {
         // creating a weak reference to callback to avoid memory leak
         final WeakReference<Callbacks> callbacksWeakReference = new WeakReference<Callbacks>(callbacks);
 
-        // CREATIN RETROFIT INSTANCE AND REALTED ENDPOINTS
+        // CREATING RETROFIT INSTANCE AND REALTED ENDPOINTS
         AuthService authService = AuthService.retrofit.create(AuthService.class);
 
         // Creating call to the api
@@ -74,6 +75,34 @@ public class AuthCalls {
         });
     }
 
+
+    public static void getAuthedUserProduct(final Callbacks callbacks, String token) {
+
+        final WeakReference<Callbacks> callbacksWeakReference = new WeakReference<Callbacks>(callbacks);
+
+        AuthService authService = AuthService.retrofit.create(AuthService.class);
+
+        Call<List<ApiProduct>> call = authService.getAuthUserProducts("Bearer " + token);
+
+        call.enqueue(new Callback<List<ApiProduct>>() {
+            @Override
+            public void onResponse(Call<List<ApiProduct>> call, Response<List<ApiProduct>> response) {
+                if (callbacksWeakReference.get() != null)
+                    if (response.code() == 200)
+                        callbacks.onAuthProductsResponse(response.body());
+                    else
+                        callbacks.onAuthProductFailure();
+            }
+
+            @Override
+            public void onFailure(Call<List<ApiProduct>> call, Throwable t) {
+                if (callbacksWeakReference.get() != null)
+                    callbacks.onAuthProductFailure();
+            }
+        });
+
+    }
+
     // CALLBACKS
     public interface Callbacks {
         void onLoginResponse(@Nullable AuthUserResponse response);
@@ -85,5 +114,9 @@ public class AuthCalls {
         void onFetchingDetailsResponse(@Nullable AuthUser response);
 
         void onFetchingDetailsFailure();
+
+        void onAuthProductsResponse(@Nullable List<ApiProduct> products);
+
+        void onAuthProductFailure();
     }
 }

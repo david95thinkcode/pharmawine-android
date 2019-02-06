@@ -9,13 +9,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import com.hbb20.CountryCodePicker
 import com.jmaplus.pharmawine.R
 
 class Step3MedicalTeamClientFragment : Fragment() {
+
+    companion object {
+        val TAG = "Step3MedicalFragment"
+    }
+
     private var listener: OnFragmentInteractionListener? = null
 
     private lateinit var mEmail: EditText
     private lateinit var mPhoneNumber2: EditText
+    private lateinit var mCcp: CountryCodePicker;
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -24,6 +31,9 @@ class Step3MedicalTeamClientFragment : Fragment() {
         mPhoneNumber2 = rootView.findViewById(R.id.ed_phone_number_2_full)
 
         setUpListenners()
+
+        listener?.onRequestExistingEmail()
+        listener?.onRequestExistingPhoneNumber2()
 
         return rootView
     }
@@ -36,7 +46,7 @@ class Step3MedicalTeamClientFragment : Fragment() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                listener?.onAdresseEmailEntered(s.toString())
+                listener?.onEmailEntered(s.toString())
             }
         })
 
@@ -66,6 +76,17 @@ class Step3MedicalTeamClientFragment : Fragment() {
         listener = null
     }
 
+    // =========== PUBLIC METHODS ==========
+
+    fun setExistingEmail(existingEmail: String) {
+        mEmail.setText(existingEmail)
+    }
+
+    fun setExistingPhoneNumber2(existingPhone2: String) {
+        mPhoneNumber2.setText(existingPhone2)
+
+    }
+
 
     /**
      * This interface must be implemented by activities that contain this
@@ -75,9 +96,13 @@ class Step3MedicalTeamClientFragment : Fragment() {
      */
     interface OnFragmentInteractionListener {
 
-        fun onAdresseEmailEntered(email: String)
+        fun onEmailEntered(email: String)
 
         fun onPhoneNumber2Entered(phoneNumber2: String)
+
+        fun onRequestExistingEmail()
+
+        fun onRequestExistingPhoneNumber2()
     }
 
 }
